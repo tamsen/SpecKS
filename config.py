@@ -3,4 +3,7 @@
 
 class SpecKS_config:
 
-    output_folder="~/Data/SpecKS_output"
+    output_folder="/home/tamsen/Data/SpecKS_output"
+
+    dup_rate_parameters = (4, 2460)
+    loss_rate_parameters = (4, 2053)

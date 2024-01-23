@@ -40,12 +40,27 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
     return new_dat_file
 
-template_evolver_control_file="/home/tamsen/Data/Ks_Genome_Simulator/Evolver/MCcodon_template.dat"
-new_evolver_control_file="/home/tamsen/Data/Ks_Genome_Simulator/Evolver/mc_3Seq_1000codons_10reps.dat"
-tree='(O:500,(P1:200,P2:200):300);'
-num_seq=3
-num_codons=1000
-num_replicates=10
-tree_length=5
-evolver_control_file=write_evolver_control_file(template_evolver_control_file,new_evolver_control_file,
-                              num_seq,num_codons,num_replicates,tree_length,tree)
+def get_gene_tree_from_file(gene_tree_file):
+    return '(O:500,(P1:200,P2:200):300);'
+
+def write_evolver_commands(out_dir,gene_tree_file):
+
+    template_evolver_control_file="input_templates/template.MCcodon.dat"
+    gene_tree = get_gene_tree_from_file(gene_tree_file)
+    num_seq=3
+    num_codons=1000
+    num_replicates=10
+    tree_length=5
+    new_evolver_control_file_name="mc_{0}Seq_{1}codons_{2}reps.dat".format(
+        num_seq,num_codons,tree_length)
+
+    new_evolver_control_file=os.path.join(out_dir,new_evolver_control_file_name)
+
+
+    evolver_control_file = write_evolver_control_file(template_evolver_control_file,
+                                                      new_evolver_control_file,
+                                                      num_seq, num_codons,
+                                                      num_replicates, tree_length, gene_tree)
+
+    cmd= "evolver 6 " + evolver_control_file
+    print(cmd)

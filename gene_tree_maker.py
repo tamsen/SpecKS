@@ -29,17 +29,32 @@ def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,n
     loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
     return dup_values,loss_values
 
-dup_values,loss_values=get_randomized_dup_and_loss_rates(
+    dup_values,loss_values=get_randomized_dup_and_loss_rates(
         dup_rate_parameters,loss_rate_parameters,10)
-plt.plot(dup_values)
-plt.plot(loss_values)
+
+def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
+
+    xs=[i for i in range(0,len(dup_values))]
+    plt.scatter(xs,dup_values, label="duplication rate",marker="o")
+    plt.scatter(xs,loss_values, label="loss rate",marker="o")
+
+    plt.title("Gene duplication and loss rates for each gene tree")
+    plt.legend()
+    file_to_save=os.path.join(out_folder,"Gene duplication and loss rates")
+    plt.savefig(file_to_save)
+    plt.cla()
+    plt.close()
 
 
-def write_gene_tree_commands(num_gene_trees_needed):
-    species_tree_newick = '\'(O:500,(P1:200,P2:200):300);\''
+
+def write_gene_tree_commands(species_tree_newick, num_gene_trees_needed,out_folder):
+
+    #species_tree_newick = '\'(O:500,(P1:200,P2:200):300);\''
 
     dup_values, loss_values = get_randomized_dup_and_loss_rates(
         dup_rate_parameters, loss_rate_parameters, num_gene_trees_needed)
+
+    visualize_dup_and_loss_rates(dup_values, loss_values, out_folder)
 
     for i in range(0, num_gene_trees_needed):
         out_file_name = "GeneTree" + str(i)

@@ -1,9 +1,8 @@
 import os
 import numpy as np
-import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 import glob
-from scipy.stats import beta
+
 
 def get_Ks_from_file(paml_out_file):
     KS_values = []
@@ -17,7 +16,7 @@ def get_Ks_from_file(paml_out_file):
 
 
 def get_Ks_from_folder(paml_out_folder, alg_name):
-    results = glob.glob(my_paml_out_folder + "/*")
+    res = glob.glob(paml_out_folder + "/*")
     og_list = [r for r in res if os.path.isdir(r)]
     # og_list = [og for og in os.listdir(paml_out_folder) if os.path.isdir(og)]
     KS_values = []
@@ -60,7 +59,7 @@ def summarize_Ks(paml_out_folder, species_name, max_ks, max_y, alg_name, color, 
 
     return [n, bins, patches, plt]
 
-my_paml_out_folder="/home/tamsen/Data/Ks_Genome_Simulator/Codeml"
-summarize_Ks(my_paml_out_folder,"my_species_name",5,False,"NG", 'c', 0.01)
-#get_Ks_from_folder(my_paml_out_folder,"NG")
+#my_paml_out_folder="/home/tamsen/Data/Ks_Genome_Simulator/Codeml"
+#summarize_Ks(my_paml_out_folder,"my_species_name",5,False,"NG", 'c', 0.01)
+
 
