@@ -50,15 +50,17 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_
 
 
 def summarize_Ks(paml_out_folder, species_name, max_ks, max_y, alg_name, color, step):
-    ks_results = get_Ks_from_folder(paml_out_folder, alg_name)
-    paml_hist_file = os.path.join(paml_out_folder, species_name + "_paml_hist_maxKS" + str(max_ks) +
-                                  alg_name + ".png")
+    print("making histograms")
+    #ks_results = get_Ks_from_folder(paml_out_folder, alg_name)
+    #paml_hist_file = os.path.join(paml_out_folder, species_name + "_paml_hist_maxKS" + str(max_ks) +
+    #                              alg_name + ".png")
 
-    [n, bins, patches, plt] = plot_Ks_histogram(paml_hist_file, species_name, ks_results, max_ks, max_y,
-                                                alg_name, color, step)
+    #[n, bins, patches, plt] = plot_Ks_histogram(paml_hist_file, species_name, ks_results, max_ks, max_y,
+    #                                            alg_name, color, step)
 
-    return [n, bins, patches, plt]
+    #return [n, bins, patches, plt]
 
+    #print("making histograms")
 #my_paml_out_folder="/home/tamsen/Data/Ks_Genome_Simulator/Codeml"
 #summarize_Ks(my_paml_out_folder,"my_species_name",5,False,"NG", 'c', 0.01)
 

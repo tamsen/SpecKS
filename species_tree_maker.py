@@ -18,9 +18,8 @@ def get_example_allopolyploid_tree(time_span, time_before_WGD):
 
     return nstring
 
-def plot_allopolyploid_species_tree(out_folder,time_span, time_before_WGD):
+def plot_allopolyploid_species_tree(file_to_save,time_span, time_before_WGD):
 
-    out_file_name="allopolyploid_species_tree_WGD{0}of{1}MY.png".format(time_before_WGD,time_span)
     fig, ax = plt.subplots()
     pos = {0: (0, 0), 1: (0, time_before_WGD), 2: (20, time_span), 3: (-20, time_span)}
     X=nx.Graph()
@@ -47,7 +46,32 @@ def plot_allopolyploid_species_tree(out_folder,time_span, time_before_WGD):
     ax.set_yticks(y_ticks[0:num_ticks-1])
     ax.set_yticklabels(new_ticks[0:num_ticks-1])
     plt.ylabel("MYA")
-    file_to_save=os.path.join(out_folder,out_file_name)
     plt.savefig(file_to_save)
     plt.cla()
     plt.close()
+
+def make_species_trees(config):
+
+    time_before_WGD=300
+    time_span=500
+    out_dir = config.output_folder
+    print(out_dir )
+    subfolder=os.path.join(out_dir, "species_trees")
+    print(subfolder)
+
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    out_file_png = "allopolyploid_species_tree_WGD{0}of{1}MY.png".format(time_before_WGD, time_span)
+    out_file_tree= out_file_png .replace(".png",".tree")
+
+    species_tree = get_example_allopolyploid_tree(time_span,time_before_WGD)
+    plot_allopolyploid_species_tree(os.path.join(subfolder,out_file_png),
+                                    time_span,time_before_WGD)
+
+    #save species tree netwick to file
+    tree_path=os.path.join(subfolder,out_file_tree)
+    with open(tree_path, 'w') as f:
+        f.writelines(species_tree + "\n")
+
+    return species_tree

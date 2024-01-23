@@ -1,9 +1,5 @@
 import os
-import numpy as np
-import matplotlib.mlab as mlab
-import matplotlib.pyplot as plt
-import glob
-from scipy.stats import beta
+import subprocess
 
 def write_evolver_control_file(template_dat_file, new_dat_file,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
@@ -40,13 +36,9 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
     return new_dat_file
 
-def get_gene_tree_from_file(gene_tree_file):
-    return '(O:500,(P1:200,P2:200):300);'
-
-def write_evolver_commands(out_dir,gene_tree_file):
+def write_evolver_commands(out_dir,gene_tree_newick):
 
     template_evolver_control_file="input_templates/template.MCcodon.dat"
-    gene_tree = get_gene_tree_from_file(gene_tree_file)
     num_seq=3
     num_codons=1000
     num_replicates=10
@@ -60,7 +52,34 @@ def write_evolver_commands(out_dir,gene_tree_file):
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
                                                       new_evolver_control_file,
                                                       num_seq, num_codons,
-                                                      num_replicates, tree_length, gene_tree)
+                                                      num_replicates, tree_length,
+                                                      gene_tree_newick)
 
-    cmd= "evolver 6 " + evolver_control_file
+    cmd= ["evolver","6", evolver_control_file]
     print(cmd)
+    return cmd
+
+def run_evolver(config,gene_trees_by_file_name):
+
+    out_dir = config.output_folder
+    subfolder = os.path.join(out_dir, "evolver")
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    print("my env:")
+    print(str(os.environ))
+    #my env: 'VIRTUAL_ENV': '/home/tamsen/Git/SpecKS/SpecKS/venv'
+    #the env that has what I need:   / opt / anaconda3 / envs / mynewenv / bin / python
+    #https: // stackoverflow.com / questions / 7438681 / how - to - duplicate - virtualenv
+
+    gene_tree_files =  list(gene_trees_by_file_name.keys())
+    for gene_tree_file in gene_tree_files[0:1]:
+
+        gene_tree_newick = gene_trees_by_file_name[gene_tree_file]
+        cmd = write_evolver_commands(out_dir, gene_tree_newick)
+        result = subprocess.run(cmd, capture_output=True)
+        print("result:\t" + str(result))
+        
+
+#need paml in env
+#conda activate mynewenv
