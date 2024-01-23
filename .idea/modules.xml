@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pythonProjectFoo2.iml" filepath="$PROJECT_DIR$/.idea/pythonProjectFoo2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SpecKS.iml" filepath="$PROJECT_DIR$/.idea/SpecKS.iml" />
     </modules>
   </component>
 </project>

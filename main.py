@@ -1,7 +1,11 @@
 from make_gene_trees import write_SaGePhy_GuestTreeGen_commands
-
+import config
 
 def run_sim(name):
+
+    configuration = config.SpecKS_config()
+    out_dir= configuration.output_folder
+    print(out_dir)
 
     print("1. Make species trees (SaGePhy or by hand)")
     #Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
