@@ -21,6 +21,7 @@ def run_sim():
     print("2. Make gene trees (SaGePhy)")
     num_gene_trees=2#10
     gene_trees_by_file_name = gene_tree_maker.run_sagephy(conf, species_tree, num_gene_trees)
+    print(gene_trees_by_file_name)
 
     print("3. Evolve sequences through gene trees (Evolver)")
     gene_evolver.run_evolver(conf, gene_trees_by_file_name)

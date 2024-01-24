@@ -14,3 +14,5 @@ def save_tree_plot(newick_string, out_file_name):
     Phylo.draw(tree, axes=axes, do_show=False)
     # plt.show()
     plt.savefig(out_file_name)
+    #simple_newick=out_file_name.replace(".png",".simple.tree")
+    #Phylo.write([tree], simple_newick, "newick")

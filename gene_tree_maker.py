@@ -11,9 +11,13 @@ def write_SaGePhy_GuestTreeGen_commands(species_tree_newick, dup_rate, loss_rate
 
     cmd = ["java", "-jar", "/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar",
          "GuestTreeGen", species_tree_newick,
-         str(dup_rate), str(loss_rate), "0.0",out_file_name, "-nox"]
+         str(dup_rate), str(loss_rate), "0.0",out_file_name]
 
     #"nox" is for "no auxillary tags" as per the manual
+    # If nox is ON you get the simple netwick that evolver wants
+    # If nox is OFF you don't get the *.pruned.leafmap
+    # files that help figure out how many sequsences you need
+    # to propagate through the tree
 
     print(cmd)
     return cmd
@@ -79,6 +83,7 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
 
     for pruned_tree_file in pruned_tree_files:
         plot_file_name=pruned_tree_file.replace(".tree",".png")
+        print("newick to plot:\t" +newicks_by_file[pruned_tree_file])
         tree_visuals.save_tree_plot(newicks_by_file[pruned_tree_file], plot_file_name)
 
     return newicks_by_file
