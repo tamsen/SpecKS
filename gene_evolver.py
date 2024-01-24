@@ -77,9 +77,11 @@ def run_evolver(config,gene_trees_by_file_name):
 
         gene_tree_newick = gene_trees_by_file_name[gene_tree_file]
         cmd = write_evolver_commands(out_dir, gene_tree_newick)
-        result = subprocess.run(cmd, capture_output=True)
-        print("result:\t" + str(result))
-        
+        #result = subprocess.run(cmd, capture_output=True)
+        print("cmd:\t" + str(cmd))
+        #print("result:\t" + str(result))
+
+#https: // gist.github.com / turicas / 2897697
 
 #need paml in env
 #conda activate mynewenv
