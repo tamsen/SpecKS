@@ -7,7 +7,6 @@ from io import StringIO
 
 def save_tree_plot(newick_string, out_file_name):
 
-    # Visualize neighbor joined tree
     tree = Phylo.read(StringIO(newick_string), "newick")
     fig = plt.figure(figsize=(10, 20), dpi=100)
     axes = fig.add_subplot(1, 1, 1)

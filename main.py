@@ -1,3 +1,5 @@
+import os
+
 import species_tree_maker
 import gene_tree_maker
 import gene_evolver
@@ -5,14 +7,12 @@ import tree_pruner
 import ks_calculator
 import ks_histogramer
 import config
-
+from datetime import datetime
 
 
 def run_sim():
 
-    conf = config.SpecKS_config()
-    out_dir = conf.output_folder
-    print(out_dir)
+    conf = setup()
 
     print("1. Make species trees (SaGePhy or by hand)")
     #Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
@@ -20,7 +20,8 @@ def run_sim():
 
     print("2. Make gene trees (SaGePhy)")
     num_gene_trees=2#10
-    gene_trees_by_file_name = gene_tree_maker.run_sagephy(conf, species_tree, num_gene_trees)
+    gene_trees_by_file_name = gene_tree_maker.run_sagephy(conf,
+                                                          species_tree, num_gene_trees)
     print(gene_trees_by_file_name)
 
     print("3. Evolve sequences through gene trees (Evolver)")
@@ -35,7 +36,22 @@ def run_sim():
     #ks_calculator.run_codeml()
 
     print("6. Plot histograms (matplotlib, or Ks rates)")
-    ks_histogramer.summarize_Ks(out_dir,"my_species_name",5,False,"NG", 'c', 0.01)
+    ks_histogramer.summarize_Ks(conf,"my_species_name",5,False,"NG", 'c', 0.01)
+
+
+def setup():
+
+    now = datetime.now()
+    date_time = now.strftime("m%md%dy%Y_h%Hm%Ms%S")
+    conf = config.SpecKS_config()
+    conf.output_folder = conf.output_folder_root + "_" + date_time
+
+    print(conf.output_folder)
+    if not os.path.exists(conf.output_folder):
+        os.makedirs(conf.output_folder)
+
+    return conf
+
 
 if __name__ == '__main__':
     run_sim()

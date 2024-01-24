@@ -39,7 +39,10 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
 def write_evolver_commands(out_dir,gene_tree_newick):
 
-    template_evolver_control_file="input_templates/template.MCcodon.dat"
+    cwd=os.getcwd()
+    print("cwd:\t" + cwd)
+
+    template_evolver_control_file="./input_templates/template.MCcodon.dat"
     num_seq=3
     num_codons=1000
     num_replicates=10

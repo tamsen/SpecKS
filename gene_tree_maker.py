@@ -6,10 +6,10 @@ import tree_visuals
 from scipy.stats import beta
 
 
-def write_SaGePhy_GuestTreeGen_commands(species_tree_newick, dup_rate, loss_rate, out_file_name):
+def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, loss_rate, out_file_name):
 
 
-    cmd = ["java", "-jar", "/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar",
+    cmd = ["java", "-jar", config.path_to_sagephy,
          "GuestTreeGen", species_tree_newick,
          str(dup_rate), str(loss_rate), "0.0",out_file_name]
 
@@ -70,12 +70,14 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
 
     for i in range(0, num_gene_trees_needed):
         out_file_name = "GeneTree" + str(i)
-        cmd = write_SaGePhy_GuestTreeGen_commands(species_tree_newick,
+        cmd = write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick,
                                                   dup_values[i], loss_values[i],
                                                   os.path.join(subfolder,out_file_name))
 
         result = subprocess.run(cmd, capture_output=True)
         print("result:\t" + str(result))
+        print("stderr:\t" + result.stderr.decode())
+        print("stdout:\t" + result.stdout.decode())
 
     newicks_by_file = read_pruned_trees(subfolder)
     pruned_tree_files=newicks_by_file.keys()
