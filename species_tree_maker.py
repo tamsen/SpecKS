@@ -1,7 +1,6 @@
 import os
 
 import networkx as nx
-import matplotlib as plt
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
@@ -56,7 +55,7 @@ def make_species_trees(config):
     time_span=500
     out_dir = config.output_folder
     print(out_dir )
-    subfolder=os.path.join(out_dir, "species_trees")
+    subfolder=os.path.join(out_dir, "1_species_trees")
     print(subfolder)
 
     if not os.path.exists(subfolder):

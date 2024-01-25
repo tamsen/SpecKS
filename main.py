@@ -24,18 +24,19 @@ def run_sim():
                                                           species_tree, num_gene_trees)
 
     print("3. Evolve sequences through gene trees (Evolver)")
-    gene_evolver.run_evolver(conf, gene_tree_results_by_file_name)
+    evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, gene_tree_results_by_file_name)
 
     print("4. Prune trees. at every time step, cull a certain percent of what remains")
-    #tree_pruner.prune_gene_trees()
+    tree_pruner.prune_gene_trees(conf)
 
     print("5. Get Ks for trees (Codeml)")
     #files needed: seq.codonalign.fa, codeml.ctl
     #Make 1000 gene trees per species tree. Tiley adds that "we simulated variation in the size of the gene families by altering the number of genes at the root of each gene tree by allowing the root age to be exponentially distributed with a mean of 600 Ma"
-    #ks_calculator.run_codeml()
+    codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,evolver_results_by_gene_tree)
 
     print("6. Plot histograms (matplotlib, or Ks rates)")
-    ks_histogramer.summarize_Ks(conf,"my_species_name",5,False,"NG", 'c', 0.01)
+    ks_histogramer.run_Ks_histogramer(conf,codeml_results_by_replicate_num)
+    #                            "my_species_name",5,False,"NG", 'c', 0.01)
 
 
 def setup():

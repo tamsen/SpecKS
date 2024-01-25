@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import glob
+import shutil
 
 
 def get_Ks_from_file(paml_out_file):
@@ -48,6 +49,27 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_
     plt.savefig(PAML_hist_out_file)
     return [n, bins, patches, plt]
 
+def run_Ks_histogramer(config,codeml_results_by_replicate_num):
+    out_dir = config.output_folder
+    subfolder = os.path.join(out_dir, "6_ks_histograms")
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    replicates = list(codeml_results_by_replicate_num.keys())
+    for replicate in replicates:
+        rep_subfolder = os.path.join(subfolder, "replicate" + str(replicate))
+        if not os.path.exists(rep_subfolder ):
+            os.makedirs(rep_subfolder )
+
+        ks_result_files=codeml_results_by_replicate_num[replicate]
+        gene_trees=ks_result_files.keys()
+        for gene_tree in gene_trees:
+            codeml_result=ks_result_files[gene_tree]
+            files=[codeml_result.ML_file,codeml_result.NG_file]
+            for file in files:
+                base=os.path.basename(file)
+                dst=os.path.join(rep_subfolder, gene_tree + "_" +base)
+                shutil.copyfile(file, dst)
 
 def summarize_Ks(paml_out_folder, species_name, max_ks, max_y, alg_name, color, step):
     print("making histograms")

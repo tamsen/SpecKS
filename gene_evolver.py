@@ -1,6 +1,5 @@
 import os
-import subprocess
-
+import common
 def write_evolver_control_file(template_dat_file, new_dat_file,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
@@ -37,7 +36,7 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
     return new_dat_file
 
-def write_evolver_commands(out_dir,gene_tree_result):
+def write_evolver_commands(out_dir,num_replicates,gene_tree_result):
 
     cwd=os.getcwd()
     print("cwd:\t" + cwd)
@@ -45,7 +44,7 @@ def write_evolver_commands(out_dir,gene_tree_result):
     template_evolver_control_file="./input_templates/template.MCcodon.dat"
     num_seq=gene_tree_result.num_extant_leaves
     num_codons=1000
-    num_replicates=10
+    #num_replicates=10
     tree_length=5
     new_evolver_control_file_name="mc_{0}Seq_{1}codons_{2}reps.dat".format(
         num_seq,num_codons,tree_length)
@@ -66,35 +65,26 @@ def write_evolver_commands(out_dir,gene_tree_result):
 def run_evolver(config, gene_tree_results_by_file_name):
 
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, "evolver")
+    subfolder = os.path.join(out_dir, "3_sequence_evolver")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    evolver_results_by_gene_tree={}
     gene_tree_files =  list(gene_tree_results_by_file_name.keys())
-    for gene_tree_file in gene_tree_files[0:1]:
+    for gene_tree_file in gene_tree_files[0:2]:
 
         gene_tree_result = gene_tree_results_by_file_name[gene_tree_file]
+        gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
+        os.makedirs(gene_tree_subfolder)
+
         print("gene tree file:\t " + gene_tree_file)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
-        cmd = write_evolver_commands(subfolder, gene_tree_result)
-        result_CompletedProcess = subprocess.run(cmd, capture_output=True, cwd=subfolder)
+        cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree, gene_tree_result)
+        common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
-        print("evolver stderr:\t" +result_CompletedProcess.stderr.decode())
-        print("evolver stdout:\t" +result_CompletedProcess.stdout.decode())
+        evolver_result_file=os.path.join(gene_tree_subfolder,"mc.txt")
+        evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file
 
-        #evolver complaining!!
-        #Error: error in tree: too many species in tree.
+    return evolver_results_by_gene_tree
 
-#current error mesg:
-#result:	CompletedProcess(args=['evolver', '6', '/home/tamsen/Data/SpecKS_output/mc_3Seq_1000codons_5reps.dat'], returncode=255,
-# stdout=b'EVOLVER in paml version 4.10.7, June 2023\n\n
-# Reading options from data file /home/tamsen/Data/SpecKS_output/mc_3Seq_1000codons_5reps.dat\n\nSimulated data will go into mc.txt.\ntranslated aa sequences will go into mc.aa.txt.\n\n3 seqs, 1000 sites, 10 replicate(s)\nSeq file will be about 121K bytes.\n\nSeq #3 (S3) is missing in the tree\n', stderr=b'')
-
-
-#print("my env:")
-#print(str(os.environ))
-
-#need paml in env
-#conda activate SpecksEnv1
-#open pycharm from the right venv with codeml & evolver to get this to work

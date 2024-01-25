@@ -1,6 +1,6 @@
 import glob
 import os
-import subprocess
+import common
 import matplotlib.pyplot as plt
 import tree_visuals
 from scipy.stats import beta
@@ -61,17 +61,15 @@ def read_tree_file(tree_file):
         clean_tree_string = clean_newick(lines[0])
         full_tree_string = lines[0]
 
+    gene_tree_name=os.path.basename(tree_file).replace(".pruned.tree","")
     result = gene_tree_result()
     result.simple_newick=clean_tree_string
     result.newick_with_tags=full_tree_string
+    result.gene_tree_name=gene_tree_name
     return result
 
 
 def read_leaf_map(leafmap_file, my_gene_tree_result):
-
-    #tree_files = glob.glob(subfolder + "/*.pruned.leafmap")
-    #leaves_by_file={}
-    #for tree_file in tree_files:
 
     leaves_by_species={}
     num_extant_leaves=0
@@ -88,7 +86,6 @@ def read_leaf_map(leafmap_file, my_gene_tree_result):
 
     my_gene_tree_result.leaves_by_species=leaves_by_species
     my_gene_tree_result.num_extant_leaves=num_extant_leaves
-
     return my_gene_tree_result
 def clean_newick(taggy_tree):
 
@@ -98,14 +95,14 @@ def clean_newick(taggy_tree):
 
         close_brackets_plus_zero = [0] + [i + 1 for i in range(0, len(taggy_tree)) if taggy_tree[i] == "]"]
         stuff_to_keep = [taggy_tree[close_brackets_plus_zero[i]:open_brackets[i]] for i in range(0, len(open_brackets))]
-        clean_tree = "".join(stuff_to_keep) +";" # .replace(" ","")
+        clean_tree = "".join(stuff_to_keep) +";"
         return clean_tree
 def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
 
     out_dir = config.output_folder
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
-    subfolder = os.path.join(out_dir, "gene_trees")
+    subfolder = os.path.join(out_dir, "2_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):
@@ -121,11 +118,8 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
         cmd = write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick,
                                                   dup_values[i], loss_values[i],
                                                   os.path.join(subfolder,out_file_name))
+        common.run_and_wait_on_process(cmd, subfolder)
 
-        result = subprocess.run(cmd, capture_output=True, cwd=subfolder)
-        print("result:\t" + str(result))
-        print("stderr:\t" + result.stderr.decode())
-        print("stdout:\t" + result.stdout.decode())
 
     gene_tree_data_by_file = read_pruned_trees(subfolder)
     pruned_tree_files=gene_tree_data_by_file.keys()
@@ -142,6 +136,7 @@ class gene_tree_result():
     simple_newick=""
     newick_with_tags=""
     num_extant_leaves=0
+    gene_tree_name=""
     leaves_by_species={}
 
 #https://docs.python.org/3/library/subprocess.html
