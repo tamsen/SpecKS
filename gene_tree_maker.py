@@ -43,15 +43,63 @@ def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
 def read_pruned_trees(subfolder):
 
     tree_files = glob.glob(subfolder + "/*.pruned.tree")
-    newicks_by_file={}
+    results_by_file={}
 
     for tree_file in tree_files:
-        with open(tree_file, "r") as f:
+
+        leafmap_file=tree_file.replace(".tree",".leafmap")
+        result = read_tree_file(tree_file)
+        result= read_leaf_map(leafmap_file, result)
+        results_by_file[tree_file]=result
+
+    return results_by_file
+
+
+def read_tree_file(tree_file):
+    with open(tree_file, "r") as f:
+        lines = f.readlines()
+        clean_tree_string = clean_newick(lines[0])
+        full_tree_string = lines[0]
+
+    result = gene_tree_result()
+    result.simple_newick=clean_tree_string
+    result.newick_with_tags=full_tree_string
+    return result
+
+
+def read_leaf_map(leafmap_file, my_gene_tree_result):
+
+    #tree_files = glob.glob(subfolder + "/*.pruned.leafmap")
+    #leaves_by_file={}
+    #for tree_file in tree_files:
+
+    leaves_by_species={}
+    num_extant_leaves=0
+    with open(leafmap_file, "r") as f:
             lines = f.readlines()
-            newicks_by_file[tree_file]=lines[0]
+            for line in lines:
+                splat=line.split()
+                leaf=splat[0]
+                species=splat[1]
+                if species not in leaves_by_species.keys():
+                    leaves_by_species[species]=[]
+                leaves_by_species[species].append(leaf)
+                num_extant_leaves=num_extant_leaves+1
 
-    return newicks_by_file
+    my_gene_tree_result.leaves_by_species=leaves_by_species
+    my_gene_tree_result.num_extant_leaves=num_extant_leaves
 
+    return my_gene_tree_result
+def clean_newick(taggy_tree):
+
+        open_brackets = [i for i in range(0, len(taggy_tree)) if taggy_tree[i] == "["]
+        if len(open_brackets) ==0:
+            return taggy_tree
+
+        close_brackets_plus_zero = [0] + [i + 1 for i in range(0, len(taggy_tree)) if taggy_tree[i] == "]"]
+        stuff_to_keep = [taggy_tree[close_brackets_plus_zero[i]:open_brackets[i]] for i in range(0, len(open_brackets))]
+        clean_tree = "".join(stuff_to_keep) +";" # .replace(" ","")
+        return clean_tree
 def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
 
     out_dir = config.output_folder
@@ -74,21 +122,27 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
                                                   dup_values[i], loss_values[i],
                                                   os.path.join(subfolder,out_file_name))
 
-        result = subprocess.run(cmd, capture_output=True)
+        result = subprocess.run(cmd, capture_output=True, cwd=subfolder)
         print("result:\t" + str(result))
         print("stderr:\t" + result.stderr.decode())
         print("stdout:\t" + result.stdout.decode())
 
-    newicks_by_file = read_pruned_trees(subfolder)
-    pruned_tree_files=newicks_by_file.keys()
+    gene_tree_data_by_file = read_pruned_trees(subfolder)
+    pruned_tree_files=gene_tree_data_by_file.keys()
     print("pruned_tree_files:\t" + str(pruned_tree_files))
 
     for pruned_tree_file in pruned_tree_files:
         plot_file_name=pruned_tree_file.replace(".tree",".png")
-        print("newick to plot:\t" +newicks_by_file[pruned_tree_file])
-        tree_visuals.save_tree_plot(newicks_by_file[pruned_tree_file], plot_file_name)
+        print("newick to plot:\t" +gene_tree_data_by_file[pruned_tree_file].simple_newick)
+        tree_visuals.save_tree_plot(gene_tree_data_by_file[pruned_tree_file].simple_newick, plot_file_name)
 
-    return newicks_by_file
+    return gene_tree_data_by_file
+
+class gene_tree_result():
+    simple_newick=""
+    newick_with_tags=""
+    num_extant_leaves=0
+    leaves_by_species={}
 
 #https://docs.python.org/3/library/subprocess.html
 #https://stackoverflow.com/questions/8953119/waiting-for-external-launched-process-finish

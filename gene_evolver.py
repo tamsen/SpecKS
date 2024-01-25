@@ -37,13 +37,13 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
     return new_dat_file
 
-def write_evolver_commands(out_dir,gene_tree_newick):
+def write_evolver_commands(out_dir,gene_tree_result):
 
     cwd=os.getcwd()
     print("cwd:\t" + cwd)
 
     template_evolver_control_file="./input_templates/template.MCcodon.dat"
-    num_seq=3
+    num_seq=gene_tree_result.num_extant_leaves
     num_codons=1000
     num_replicates=10
     tree_length=5
@@ -57,34 +57,34 @@ def write_evolver_commands(out_dir,gene_tree_newick):
                                                       new_evolver_control_file,
                                                       num_seq, num_codons,
                                                       num_replicates, tree_length,
-                                                      gene_tree_newick)
+                                                      gene_tree_result.simple_newick)
 
     cmd= ["evolver","6", evolver_control_file]
     print(cmd)
     return cmd
 
-def run_evolver(config,gene_trees_by_file_name):
+def run_evolver(config, gene_tree_results_by_file_name):
 
     out_dir = config.output_folder
     subfolder = os.path.join(out_dir, "evolver")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    print("my env:")
-    print(str(os.environ))
-
-
-    gene_tree_files =  list(gene_trees_by_file_name.keys())
+    gene_tree_files =  list(gene_tree_results_by_file_name.keys())
     for gene_tree_file in gene_tree_files[0:1]:
 
-        gene_tree_newick = gene_trees_by_file_name[gene_tree_file]
-        print("input newick " + gene_tree_newick)
-        cmd = write_evolver_commands(subfolder, gene_tree_newick)
-        result_CompletedProcess = subprocess.run(cmd, capture_output=True)
-        print("cmd:\t" + str(cmd))
-        print("result:\t" + str(result_CompletedProcess))
-        print("stderr:\t" +result_CompletedProcess.stderr.decode())
-        print("stdout:\t" +result_CompletedProcess.stdout.decode())
+        gene_tree_result = gene_tree_results_by_file_name[gene_tree_file]
+        print("gene tree file:\t " + gene_tree_file)
+        print("\t\tnewick:\t " + gene_tree_result.simple_newick)
+        print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
+        cmd = write_evolver_commands(subfolder, gene_tree_result)
+        result_CompletedProcess = subprocess.run(cmd, capture_output=True, cwd=subfolder)
+
+        print("evolver stderr:\t" +result_CompletedProcess.stderr.decode())
+        print("evolver stdout:\t" +result_CompletedProcess.stdout.decode())
+
+        #evolver complaining!!
+        #Error: error in tree: too many species in tree.
 
 #current error mesg:
 #result:	CompletedProcess(args=['evolver', '6', '/home/tamsen/Data/SpecKS_output/mc_3Seq_1000codons_5reps.dat'], returncode=255,

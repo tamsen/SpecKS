@@ -20,12 +20,11 @@ def run_sim():
 
     print("2. Make gene trees (SaGePhy)")
     num_gene_trees=2#10
-    gene_trees_by_file_name = gene_tree_maker.run_sagephy(conf,
+    gene_tree_results_by_file_name = gene_tree_maker.run_sagephy(conf,
                                                           species_tree, num_gene_trees)
-    print(gene_trees_by_file_name)
 
     print("3. Evolve sequences through gene trees (Evolver)")
-    gene_evolver.run_evolver(conf, gene_trees_by_file_name)
+    gene_evolver.run_evolver(conf, gene_tree_results_by_file_name)
 
     print("4. Prune trees. at every time step, cull a certain percent of what remains")
     #tree_pruner.prune_gene_trees()
@@ -49,6 +48,9 @@ def setup():
     print(conf.output_folder)
     if not os.path.exists(conf.output_folder):
         os.makedirs(conf.output_folder)
+
+    print("Current environment:")
+    print(str(os.environ))
 
     return conf
 

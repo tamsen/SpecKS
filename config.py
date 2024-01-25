@@ -15,3 +15,4 @@ class SpecKS_config:
     # dup_rate=0.00162
     # loss_rate=0.00194
     # out_file_name="foo"
+
