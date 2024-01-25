@@ -18,8 +18,6 @@ def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, l
     # If nox is OFF you don't get the *.pruned.leafmap
     # files that help figure out how many sequsences you need
     # to propagate through the tree
-
-    print(cmd)
     return cmd
 
 def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,num_values_needed):
@@ -43,16 +41,16 @@ def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
 def read_pruned_trees(subfolder):
 
     tree_files = glob.glob(subfolder + "/*.pruned.tree")
-    results_by_file={}
-
+    #results_by_file={}
+    results_by_tree_name = {}
     for tree_file in tree_files:
 
         leafmap_file=tree_file.replace(".tree",".leafmap")
         result = read_tree_file(tree_file)
         result= read_leaf_map(leafmap_file, result)
-        results_by_file[tree_file]=result
+        results_by_tree_name[result.gene_tree_name]=result
 
-    return results_by_file
+    return results_by_tree_name
 
 
 def read_tree_file(tree_file):
@@ -63,6 +61,7 @@ def read_tree_file(tree_file):
 
     gene_tree_name=os.path.basename(tree_file).replace(".pruned.tree","")
     result = gene_tree_result()
+    result.gene_tree_file_name=tree_file
     result.simple_newick=clean_tree_string
     result.newick_with_tags=full_tree_string
     result.gene_tree_name=gene_tree_name
@@ -121,22 +120,23 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
         common.run_and_wait_on_process(cmd, subfolder)
 
 
-    gene_tree_data_by_file = read_pruned_trees(subfolder)
-    pruned_tree_files=gene_tree_data_by_file.keys()
-    print("pruned_tree_files:\t" + str(pruned_tree_files))
+    gene_tree_data_by_tree_name = read_pruned_trees(subfolder)
+    pruned_tree_names=gene_tree_data_by_tree_name.keys()
+    print("pruned_tree_files:\t" + str(pruned_tree_names))
 
-    for pruned_tree_file in pruned_tree_files:
-        plot_file_name=pruned_tree_file.replace(".tree",".png")
-        print("newick to plot:\t" +gene_tree_data_by_file[pruned_tree_file].simple_newick)
-        tree_visuals.save_tree_plot(gene_tree_data_by_file[pruned_tree_file].simple_newick, plot_file_name)
+    for pruned_tree_file in pruned_tree_names:
+        plot_file_name= os.path.join(subfolder,pruned_tree_file +".png")
+        print("newick to plot:\t" +gene_tree_data_by_tree_name[pruned_tree_file].simple_newick)
+        tree_visuals.save_tree_plot(gene_tree_data_by_tree_name[pruned_tree_file].simple_newick, plot_file_name)
 
-    return gene_tree_data_by_file
+    return gene_tree_data_by_tree_name
 
 class gene_tree_result():
     simple_newick=""
     newick_with_tags=""
     num_extant_leaves=0
     gene_tree_name=""
+    gene_tree_file_name=""
     leaves_by_species={}
 
 #https://docs.python.org/3/library/subprocess.html

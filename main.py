@@ -20,11 +20,11 @@ def run_sim():
 
     print("2. Make gene trees (SaGePhy)")
     num_gene_trees=2#10
-    gene_tree_results_by_file_name = gene_tree_maker.run_sagephy(conf,
-                                                          species_tree, num_gene_trees)
+    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(conf,
+                                                                 species_tree, num_gene_trees)
 
     print("3. Evolve sequences through gene trees (Evolver)")
-    evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, gene_tree_results_by_file_name)
+    evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, gene_tree_results_by_tree_name)
 
     print("4. Prune trees. at every time step, cull a certain percent of what remains")
     tree_pruner.prune_gene_trees(conf)
@@ -35,8 +35,8 @@ def run_sim():
     codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,evolver_results_by_gene_tree)
 
     print("6. Plot histograms (matplotlib, or Ks rates)")
-    ks_histogramer.run_Ks_histogramer(conf,codeml_results_by_replicate_num)
-    #                            "my_species_name",5,False,"NG", 'c', 0.01)
+    ks_histogramer.run_Ks_histogramer(conf, codeml_results_by_replicate_num,
+                                      gene_tree_results_by_tree_name)
 
 
 def setup():
@@ -52,6 +52,9 @@ def setup():
 
     print("Current environment:")
     print(str(os.environ))
+
+    cwd=os.getcwd()
+    print("Current Working Directory:\t" + cwd)
 
     return conf
 

@@ -3,7 +3,7 @@ import os
 import common
 
 
-def evolver_out_to_sequences(evolver_out_file, expected_seq_names):
+def evolver_out_to_sequences(evolver_out_file):
     sequences_by_leaf = {}
     with open(evolver_out_file, 'r') as f:
 
@@ -14,16 +14,21 @@ def evolver_out_to_sequences(evolver_out_file, expected_seq_names):
             if not line:
                 break
 
-            for s in expected_seq_names:
-                if s in line:
-                    splat = line.split()
-                    seq_name_aka_leaf_name = splat[0]
-                    seq_data = "".join(splat[1:len(splat)])
+            splat = line.split()
 
-                    if not seq_name_aka_leaf_name in sequences_by_leaf:
-                        sequences_by_leaf[seq_name_aka_leaf_name] = []
+            if len(splat) < 1:
+                continue
 
-                    sequences_by_leaf[seq_name_aka_leaf_name].append(seq_data)
+            if "_" not in line:
+                continue
+
+            seq_name_aka_leaf_name = splat[0]
+            seq_data = "".join(splat[1:len(splat)])
+
+            if not seq_name_aka_leaf_name in sequences_by_leaf:
+                sequences_by_leaf[seq_name_aka_leaf_name] = []
+
+            sequences_by_leaf[seq_name_aka_leaf_name].append(seq_data)
 
     return sequences_by_leaf
 
@@ -56,7 +61,6 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
     lines_to_write = []
     base_name = os.path.basename(sequence_file).replace(".codonalign", "").replace(".fa", "")
     new_ctl_file = sequence_file.replace(".fa", ".ctl")
-    replacement_flags = ["DUMMY.codonalign.fa", "mlcTree_DUMMY.out"]
 
     with open(template_ctl_file, 'r') as f:
 
@@ -83,11 +87,6 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
-
-def write_codeml_control_files(template_ctl_file, sequence_files):
-    results = [write_codeml_control_file(template_ctl_file, sf) for sf in sequence_files]
-    return results
-
 def run_codeml(config,evolver_results_by_gene_tree):
 
     out_dir = config.output_folder
@@ -105,33 +104,32 @@ def run_codeml(config,evolver_results_by_gene_tree):
         if not os.path.exists(gene_tree_subfolder):
             os.makedirs(gene_tree_subfolder)
 
-        expected_seq_names = ['G0_1', 'G1_1']
 
         # sequences_by_leaf is plural bc we did replicates
-        sequences_by_leaf = evolver_out_to_sequences(evolver_output_file, expected_seq_names)
+        sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
         sequence_files_written=[]
 
         for r in replicates:
+
             replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ str(r))
             if not os.path.exists(replicates_subfolder):
                 os.makedirs(replicates_subfolder)
 
-            replicate_fa_file = os.path.join(replicates_subfolder,"3Seq_1000codons.codonalign.rep" + str(r) + ".fa")
-            #error, this file is coming up empty:
-            # 3Seq_1000codons.codonalign.rep4.fa
-            #specifically failing for gene tree 1
+            replicate_fa_file = os.path.join(replicates_subfolder,
+                                             gene_tree_name+".codons.rep" + str(r) + ".fa")
 
             with open(replicate_fa_file, 'w') as f:
 
-                for seq_name in expected_seq_names:
-                    if seq_name in sequences_by_leaf:
+                #if we decide to filter by seq names..
+                #for seq_name in expected_seq_names:
+                #   if seq_name in sequences_by_leaf:
+                for seq_name, seqs in sequences_by_leaf.items():
                         f.writelines(">" + seq_name + "\n")
-                        f.writelines(sequences_by_leaf[seq_name][r] + "\n")
+                        f.writelines(seqs[r] + "\n")
 
             sequence_files_written.append(replicate_fa_file )
             control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
             cmd = ["codeml",control_file]
-            print(cmd)
             common.run_and_wait_on_process(cmd, replicates_subfolder)
             result= codeml_result(replicates_subfolder)
 
@@ -146,5 +144,5 @@ class codeml_result():
     NG_file=""
     ML_file=""
     def __init__(self, gene_tree_subfolder):
-        self.NG_file = os.path.join(gene_tree_subfolder,"2NG.dN")
-        self.ML_file = os.path.join(gene_tree_subfolder,"2ML.dN")
+        self.NG_file = os.path.join(gene_tree_subfolder,"2NG.dS")
+        self.ML_file = os.path.join(gene_tree_subfolder,"2ML.dS")
