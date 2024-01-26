@@ -45,9 +45,13 @@ def read_pruned_trees(subfolder):
     results_by_tree_name = {}
     for tree_file in tree_files:
 
+        #TODO this could really be cleaned up into a single constructor
         leafmap_file=tree_file.replace(".tree",".leafmap")
+        info_file=tree_file.replace(".tree",".info")
+
         result = read_tree_file(tree_file)
-        result= read_leaf_map(leafmap_file, result)
+        result = read_leaf_map(leafmap_file, result)
+        result = read_gene_tree_info(info_file, result)
         results_by_tree_name[result.gene_tree_name]=result
 
     return results_by_tree_name
@@ -86,6 +90,27 @@ def read_leaf_map(leafmap_file, my_gene_tree_result):
     my_gene_tree_result.leaves_by_species=leaves_by_species
     my_gene_tree_result.num_extant_leaves=num_extant_leaves
     return my_gene_tree_result
+
+def read_gene_tree_info(gene_tree_info_file, my_gene_tree_result):
+
+    info_dict={}
+    with open(gene_tree_info_file, "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if "#" in line:
+                    continue
+                if "Arguments" in line:
+                    continue
+
+                splat=line.split(":")
+                if len(splat) < 2:
+                    continue
+
+                splat=line.split(":")
+                info_dict[splat[0]]=splat[1].strip()
+
+    my_gene_tree_result.info_dict=info_dict
+    return my_gene_tree_result
 def clean_newick(taggy_tree):
 
         open_brackets = [i for i in range(0, len(taggy_tree)) if taggy_tree[i] == "["]
@@ -96,12 +121,12 @@ def clean_newick(taggy_tree):
         stuff_to_keep = [taggy_tree[close_brackets_plus_zero[i]:open_brackets[i]] for i in range(0, len(open_brackets))]
         clean_tree = "".join(stuff_to_keep) +";"
         return clean_tree
-def run_sagephy(config, species_tree_newick, num_gene_trees_needed):
+def run_sagephy(config, species_tree_newick, num_gene_trees_needed, step_num):
 
     out_dir = config.output_folder
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
-    subfolder = os.path.join(out_dir, "2_gene_trees")
+    subfolder = os.path.join(out_dir, str(step_num) + "_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):
@@ -138,7 +163,7 @@ class gene_tree_result():
     gene_tree_name=""
     gene_tree_file_name=""
     leaves_by_species={}
-
+    info_dict={}
 #https://docs.python.org/3/library/subprocess.html
 #https://stackoverflow.com/questions/8953119/waiting-for-external-launched-process-finish
 #https://stackoverflow.com/questions/14762048/subprocess-call-in-python-to-invoke-java-jar-files-with-java-opts

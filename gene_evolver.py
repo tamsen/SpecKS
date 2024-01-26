@@ -5,6 +5,8 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
     lines_to_write = []
     specs_flags = "NUMSEQ NUMCODONS NUMREPLICATES"
 
+    newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
+
     with open(template_dat_file, 'r') as f:
 
         while (True):
@@ -36,10 +38,19 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
     return new_dat_file
 
+
+def work_around_for_evolver_bug(newick_tree_string):
+
+    if newick_tree_string[-2:] != ");":
+        fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
+        newick_tree_string = fixed_newick_tree_string
+    return newick_tree_string
+
+
 def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
 
     template_evolver_control_file="./input_templates/template.MCcodon.dat"
-    num_seq=gene_tree_result.num_extant_leaves
+    num_seq=gene_tree_result.info_dict["No. of vertices"]
     new_evolver_control_file_name="mc_{0}Seq_{1}codons_{2}reps.dat".format(
         num_seq,num_codons,tree_length)
 
@@ -55,10 +66,10 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
     cmd= ["evolver","6", evolver_control_file]
     return cmd
 
-def run_evolver(config, gene_tree_results_by_file_name):
+def run_evolver(config, gene_tree_results_by_file_name, step_num):
 
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, "3_sequence_evolver")
+    subfolder = os.path.join(out_dir, str(step_num) + "_sequence_evolver")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -77,8 +88,15 @@ def run_evolver(config, gene_tree_results_by_file_name):
                                      config.num_codons,config.tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
-        evolver_result_file=os.path.join(gene_tree_subfolder,"mc.txt")
-        evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file
+        evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
+        evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
+        if os.path.exists(evolver_result_file_A):
+            evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file_A
+        elif os.path.exists(evolver_result_file_B):
+            evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file_B
+        else:
+            raise ValueError('Evolver failed to output a sequence file.  It should be in '
+                             + gene_tree_subfolder + " but its not. Check the evolver stderr.")
 
     return evolver_results_by_gene_tree
 

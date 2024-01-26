@@ -87,10 +87,10 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
-def run_codeml(config,evolver_results_by_gene_tree):
+def run_codeml(config,evolver_results_by_gene_tree, step_num):
 
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, "5_ks_calcs_by_codeml")
+    subfolder = os.path.join(out_dir, str(step_num) + "_ks_calcs_by_codeml")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -104,13 +104,13 @@ def run_codeml(config,evolver_results_by_gene_tree):
         if not os.path.exists(gene_tree_subfolder):
             os.makedirs(gene_tree_subfolder)
 
-
+        print("calculationg Ks for " + gene_tree_name)
         # sequences_by_leaf is plural bc we did replicates
         sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
         sequence_files_written=[]
 
         for r in replicates:
-
+            print("\t replicate " + str(r))
             replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ str(r))
             if not os.path.exists(replicates_subfolder):
                 os.makedirs(replicates_subfolder)
@@ -130,7 +130,10 @@ def run_codeml(config,evolver_results_by_gene_tree):
             sequence_files_written.append(replicate_fa_file )
             control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
             cmd = ["codeml",control_file]
+            print("\t cmd: " + " ".join(cmd))
+            print("\t calculating Ks.. ")
             common.run_and_wait_on_process(cmd, replicates_subfolder)
+            print("\t Ks determined...")
             result= codeml_result(replicates_subfolder)
 
             if r not in codeml_results_by_replicate_num:

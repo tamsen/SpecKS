@@ -60,9 +60,9 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_
     plt.close()
 
 def run_Ks_histogramer(config,codeml_results_by_replicate_num,
-                       gene_tree_results_by_file_name):
+                       gene_tree_results_by_file_name, step_num):
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, "6_ks_histograms")
+    subfolder = os.path.join(out_dir, str(step_num) + "_ks_histograms")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
