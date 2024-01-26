@@ -4,6 +4,7 @@ genome-level speciation simulation to recreate Ks curves
 <br>
 
 ## Simulation overview
+SpecKS is a pipeline application, with the following steps:
 1) Make species trees for polyploids (custom code, allo and auto for a range of time frames)
 2) Make gene trees (SaGePhy)
 3) Relax gene trees (SaGePhy)
