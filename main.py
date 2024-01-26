@@ -15,39 +15,30 @@ def run_sim():
 
     conf = setup()
 
-    step_num=1
     #Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
-    print("{}. Make species trees (SaGePhy or by hand)".format(step_num))
-    species_tree = species_tree_maker.make_species_trees(conf, step_num)
+    print("\n\n{0}. Make species trees (custom code)".format(conf.sim_step_num))
+    species_tree = species_tree_maker.make_species_trees(conf)
 
-    step_num=2
-    print("{}. Make gene trees (SaGePhy)".format(step_num))
-    num_gene_trees=2#10
-    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(conf,
-                                                                 species_tree, num_gene_trees,step_num)
-    step_num = 3
-    print("{0}. Relax gene trees (SaGePhy)".format(step_num))
-    num_gene_trees=2#10
-    relaxed_gene_tree_results_by_tree_name = gene_tree_relaxer.relax(conf,
-                                                                 species_tree, num_gene_trees,step_num)
-    step_num = 4
-    print("{0}. Evolve sequences through gene trees (Evolver)".format(step_num))
-    evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, gene_tree_results_by_tree_name,step_num)
+    print("\n\n{0}. Make gene trees (SaGePhy)".format(conf.sim_step_num))
+    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(conf,species_tree)
 
-    step_num = 5
-    print("{0}. Prune trees. at every time step, cull a certain percent of what remains")
-    tree_pruner.prune_gene_trees(conf,step_num)
+    print("\n\n{0}. Relax gene trees (SaGePhy)".format(conf.sim_step_num))
+    relaxed_gene_tree_results = gene_tree_relaxer.relax(conf,gene_tree_results_by_tree_name)
 
-    step_num = 6
-    print("{0}. Get Ks for trees (Codeml)".format(step_num))
-    #Make 1000 gene trees per species tree. Tiley adds that "we simulated variation in the size of the gene families by altering the number of genes at the root of each gene tree by allowing the root age to be exponentially distributed with a mean of 600 Ma"
-    codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,evolver_results_by_gene_tree,step_num)
+    print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(conf.sim_step_num))
+    evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, relaxed_gene_tree_results)
 
-    step_num = 7
-    print("{0}. Plot histograms (matplotlib, or Ks rates)".format(step_num))
-    ks_histogramer.run_Ks_histogramer(conf, codeml_results_by_replicate_num,
-                                      gene_tree_results_by_tree_name,step_num)
+    print("\n\n{0}. Prune trees. ".format(conf.sim_step_num) +
+            "At every time step, cull a certain percent of what remains. (custom code)")
+    tree_pruner.prune_gene_trees(conf)
 
+    print("\n\n{0}. Get Ks for trees (Codeml)".format(conf.sim_step_num))
+    codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,evolver_results_by_gene_tree)
+
+    print("\n\n{0}. Plot histograms (matplotlib)".format(conf.sim_step_num))
+    ks_histogramer.run_Ks_histogramer(conf, codeml_results_by_replicate_num,relaxed_gene_tree_results)
+
+    print("\n\nSpecKS complete")
 
 def setup():
 

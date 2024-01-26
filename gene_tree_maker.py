@@ -121,12 +121,13 @@ def clean_newick(taggy_tree):
         stuff_to_keep = [taggy_tree[close_brackets_plus_zero[i]:open_brackets[i]] for i in range(0, len(open_brackets))]
         clean_tree = "".join(stuff_to_keep) +";"
         return clean_tree
-def run_sagephy(config, species_tree_newick, num_gene_trees_needed, step_num):
+def run_sagephy(config, species_tree_newick):
 
     out_dir = config.output_folder
+    num_gene_trees_needed = config.num_gene_trees_per_species_tree
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
-    subfolder = os.path.join(out_dir, str(step_num) + "_gene_trees")
+    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):
@@ -154,6 +155,7 @@ def run_sagephy(config, species_tree_newick, num_gene_trees_needed, step_num):
         print("newick to plot:\t" +gene_tree_data_by_tree_name[pruned_tree_file].simple_newick)
         tree_visuals.save_tree_plot(gene_tree_data_by_tree_name[pruned_tree_file].simple_newick, plot_file_name)
 
+    config.sim_step_num=config.sim_step_num+1
     return gene_tree_data_by_tree_name
 
 class gene_tree_result():

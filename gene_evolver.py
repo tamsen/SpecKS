@@ -66,22 +66,20 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
     cmd= ["evolver","6", evolver_control_file]
     return cmd
 
-def run_evolver(config, gene_tree_results_by_file_name, step_num):
+def run_evolver(config, gene_tree_results_by_gene_tree_name):
 
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(step_num) + "_sequence_evolver")
+    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_sequence_evolver")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
     evolver_results_by_gene_tree={}
-    gene_tree_files =  list(gene_tree_results_by_file_name.keys())
-    for gene_tree_file in gene_tree_files[0:2]:
+    for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
-        gene_tree_result = gene_tree_results_by_file_name[gene_tree_file]
         gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
 
-        print("gene tree file:\t " + gene_tree_file)
+        print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
         cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
@@ -91,12 +89,13 @@ def run_evolver(config, gene_tree_results_by_file_name, step_num):
         evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
         evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
         if os.path.exists(evolver_result_file_A):
-            evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file_A
+            evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
         elif os.path.exists(evolver_result_file_B):
-            evolver_results_by_gene_tree[gene_tree_result.gene_tree_name]=evolver_result_file_B
+            evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
         else:
             raise ValueError('Evolver failed to output a sequence file.  It should be in '
                              + gene_tree_subfolder + " but its not. Check the evolver stderr.")
 
+    config.sim_step_num=config.sim_step_num+1
     return evolver_results_by_gene_tree
 

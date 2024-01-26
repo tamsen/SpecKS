@@ -5,9 +5,10 @@ class SpecKS_config:
 
     output_folder_root="/home/tamsen/Data/SpecKS_output"
     #output_folder_root="/Users/tamsen/Data/SpecKS_output"
-    output_folder="TBD"
+
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
+    num_gene_trees_per_species_tree=4#10
     num_replicates_per_gene_tree=3#10
     num_codons=10#1000
     tree_length=5
@@ -19,3 +20,6 @@ class SpecKS_config:
 
     max_ks_for_hist_plot=2
     max_y_for_hist_plot=False
+
+    output_folder="TBD"  #this will be determined at run-time, by adding a timestamp to output_folder_root
+    sim_step_num=1       #this will be update at run-time

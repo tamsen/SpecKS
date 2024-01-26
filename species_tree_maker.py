@@ -49,14 +49,13 @@ def plot_allopolyploid_species_tree(file_to_save,time_span, time_before_WGD):
     plt.cla()
     plt.close()
 
-def make_species_trees(config,step_num):
+def make_species_trees(config):
 
-    #print("{}. Make species trees (SaGePhy or by hand)".format(step_num))
     time_before_WGD=300
     time_span=500
     out_dir = config.output_folder
     print(out_dir )
-    subfolder=os.path.join(out_dir, str(step_num) + "_species_trees")
+    subfolder=os.path.join(out_dir, str(config.sim_step_num) + "_species_trees")
     print(subfolder)
 
     if not os.path.exists(subfolder):
@@ -74,4 +73,5 @@ def make_species_trees(config,step_num):
     with open(tree_path, 'w') as f:
         f.writelines(species_tree + "\n")
 
+    config.sim_step_num=config.sim_step_num+1
     return species_tree

@@ -87,10 +87,10 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
-def run_codeml(config,evolver_results_by_gene_tree, step_num):
+def run_codeml(config,evolver_results_by_gene_tree):
 
     out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(step_num) + "_ks_calcs_by_codeml")
+    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_ks_calcs_by_codeml")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -142,6 +142,7 @@ def run_codeml(config,evolver_results_by_gene_tree, step_num):
 
             codeml_results_by_replicate_num[r][gene_tree_name]= result
 
+    config.sim_step_num=config.sim_step_num+1
     return codeml_results_by_replicate_num
 
 class codeml_result():
