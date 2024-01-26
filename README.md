@@ -16,9 +16,9 @@ SpecKS is a pipeline application, with the following steps:
 <br>
 
 ## Prerequisites
-6) Run on an environment with PAML installed
-7) Have SaGePhy installed (get sagephy.zip from https://compbio.engr.uconn.edu/software/sagephy/)
-8) Specify the path to the sagephy jar file (ie, /home/Apps/sagephy/sagephy-1.0.0.jar) in the config file
+*Run on an environment with PAML installed
+*Have SaGePhy installed (get sagephy.zip from https://compbio.engr.uconn.edu/software/sagephy/)
+*Specify the path to the sagephy jar file (ie, /home/Apps/sagephy/sagephy-1.0.0.jar) in the config file
 
 ## OS
-6) Tested on a mac and linux (ubuntu)
+* Tested on a mac and linux (ubuntu)
