@@ -129,8 +129,9 @@ def run_codeml(config,evolver_results_by_gene_tree, step_num):
 
             sequence_files_written.append(replicate_fa_file )
             control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
-            cmd = ["codeml",control_file]
+            cmd = ["codeml",os.path.basename(control_file)]
             print("\t cmd: " + " ".join(cmd))
+            print("\t cwd: " + replicates_subfolder)
             print("\t calculating Ks.. ")
             common.run_and_wait_on_process(cmd, replicates_subfolder)
             print("\t Ks determined...")

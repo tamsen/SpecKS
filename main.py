@@ -46,7 +46,7 @@ def run_sim():
     step_num = 7
     print("{0}. Plot histograms (matplotlib, or Ks rates)".format(step_num))
     ks_histogramer.run_Ks_histogramer(conf, codeml_results_by_replicate_num,
-                                      gene_tree_results_by_tree_name)
+                                      gene_tree_results_by_tree_name,step_num)
 
 
 def setup():

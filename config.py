@@ -8,8 +8,8 @@ class SpecKS_config:
     output_folder="TBD"
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
-    num_replicates_per_gene_tree=5#10
-    num_codons=30#1000
+    num_replicates_per_gene_tree=3#10
+    num_codons=10#1000
     tree_length=5
     path_to_sagephy = "/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar"
     #path_to_sagephy = "/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar"

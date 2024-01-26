@@ -38,9 +38,10 @@ def get_Ks_from_folder(paml_out_folder, alg_name,species_to_exclude):
     return KS_values
 
 
-def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_y, alg_name, color, step):
+def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_y, alg_name, color, bin_size):
 
-    bins = np.arange(0, max_Ks + 0.1, step)
+    fig = plt.figure(figsize=(10, 10), dpi=100)
+    bins = np.arange(0, max_Ks + 0.1, bin_size)
     x = Ks_results
     print(PAML_hist_out_file)
 
