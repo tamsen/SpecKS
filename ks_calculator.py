@@ -87,7 +87,7 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
-def run_codeml(config,evolver_results_by_gene_tree):
+def run_codeml(config,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     out_dir = config.output_folder
     subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_ks_calcs_by_codeml")
@@ -105,8 +105,9 @@ def run_codeml(config,evolver_results_by_gene_tree):
             os.makedirs(gene_tree_subfolder)
 
         print("calculationg Ks for " + gene_tree_name)
-        # sequences_by_leaf is plural bc we did replicates
-        sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
+
+        sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
+                                                                          relaxed_gene_tree_results)
         sequence_files_written=[]
 
         for r in replicates:
@@ -127,6 +128,10 @@ def run_codeml(config,evolver_results_by_gene_tree):
                         f.writelines(">" + seq_name + "\n")
                         f.writelines(seqs[r] + "\n")
 
+            if len(sequences_by_leaf.keys())==0:
+                print("Warning. No gene tree leaves made it into the polyploid for htis replicate.")
+                continue
+ 
             sequence_files_written.append(replicate_fa_file )
             control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
             cmd = ["codeml",os.path.basename(control_file)]
@@ -144,6 +149,32 @@ def run_codeml(config,evolver_results_by_gene_tree):
 
     config.sim_step_num=config.sim_step_num+1
     return codeml_results_by_replicate_num
+
+
+def get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name, relaxed_gene_tree_results):
+
+    # sequences_by_leaf is plural bc we did replicates
+    sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
+
+    #Get the map of which leaves in the gene tree are in which species
+    leaf_map = relaxed_gene_tree_results[gene_tree_name].leaves_by_species
+
+    #Get only leaves which are in the polyploid (ie P1 and P2)
+    leafs_of_interest = []
+    for species, leaves_in_species in leaf_map.items():
+        if species in ["P1", "P2"]:
+            leafs_of_interest = leafs_of_interest + leaves_in_species
+
+    #Now, get the sequences associated with each leaf in the polyploid  (ie P1 and P2).
+    #note, there are replicates, so there is a list of sequences for each leaf
+    sequences_by_leaf_in_polyploid_only = {}
+    for leaf, seq in sequences_by_leaf.items():
+        if leaf in leafs_of_interest:
+            sequences_by_leaf_in_polyploid_only[leaf] = sequences_by_leaf[leaf]
+
+    sequences_by_leaf = sequences_by_leaf_in_polyploid_only
+    return sequences_by_leaf
+
 
 class codeml_result():
     NG_file=""

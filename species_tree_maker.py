@@ -51,6 +51,7 @@ def plot_allopolyploid_species_tree(file_to_save,time_span, time_before_WGD):
 
 def make_species_trees(config):
 
+    species_results=[]
     time_before_WGD=300
     time_span=500
     out_dir = config.output_folder

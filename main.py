@@ -19,6 +19,8 @@ def run_sim():
     print("\n\n{0}. Make species trees (custom code)".format(conf.sim_step_num))
     species_tree = species_tree_maker.make_species_trees(conf)
 
+    #for species_tree  in species_trees:
+
     print("\n\n{0}. Make gene trees (SaGePhy)".format(conf.sim_step_num))
     gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(conf,species_tree)
 
@@ -29,11 +31,12 @@ def run_sim():
     evolver_results_by_gene_tree=gene_evolver.run_evolver(conf, relaxed_gene_tree_results)
 
     print("\n\n{0}. Prune trees. ".format(conf.sim_step_num) +
-            "At every time step, cull a certain percent of what remains. (custom code)")
+            "At every time step post WGD, cull a certain percent of what remains. (custom code)")
     tree_pruner.prune_gene_trees(conf)
 
     print("\n\n{0}. Get Ks for trees (Codeml)".format(conf.sim_step_num))
-    codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,evolver_results_by_gene_tree)
+    codeml_results_by_replicate_num = ks_calculator.run_codeml(conf,
+                                    relaxed_gene_tree_results,evolver_results_by_gene_tree)
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(conf.sim_step_num))
     ks_histogramer.run_Ks_histogramer(conf, codeml_results_by_replicate_num,relaxed_gene_tree_results)

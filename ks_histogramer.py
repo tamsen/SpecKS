@@ -7,13 +7,11 @@ import shutil
 
 def get_Ks_from_file(paml_out_file):
 
-    #TODO - update this to properly filter to keep the outgroup out of the data
     KS_values = []
     with open(paml_out_file, "r") as f:
         lines = f.readlines()
         for l in lines:
             data = l.split()
-            leafA=data[0]
             for d in data[1:len(data)]:
                 KS_values.append(float(d))
     return KS_values
@@ -31,9 +29,8 @@ def get_Ks_from_folder(paml_out_folder, alg_name,species_to_exclude):
             print(paml_out_file)
             Ks_for_og = get_Ks_from_file(paml_out_file)
             KS_values = KS_values + Ks_for_og
-            #gene_tree_name=os.path.basename()
-            f.writelines(paml_out_file+",Ks"+ str(Ks_for_og)+ "\n")
-
+            Ks_string = [str(ks) for ks in KS_values]
+            f.writelines(paml_out_file+","+ ",".join(Ks_string)+ "\n")
 
     return KS_values
 
@@ -56,7 +53,6 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_
     plt.title("Ks histogram for " + species_name + ", last ~" + str(max_Ks * 100) + " MY\n" +
               "algorithm: PAML " + alg_name)
     plt.savefig(PAML_hist_out_file)
-    #return [n, bins, patches, plt]
     plt.clf()
     plt.close()
 
