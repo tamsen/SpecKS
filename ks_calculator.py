@@ -151,7 +151,8 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
     return codeml_results_by_replicate_num
 
 
-def get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name, relaxed_gene_tree_results):
+def get_sequences_for_leaves_within_the_polyploid(
+        evolver_output_file, gene_tree_name, relaxed_gene_tree_results,species_of_interest):
 
     # sequences_by_leaf is plural bc we did replicates
     sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
@@ -162,7 +163,7 @@ def get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree
     #Get only leaves which are in the polyploid (ie P1 and P2)
     leafs_of_interest = []
     for species, leaves_in_species in leaf_map.items():
-        if species in ["P1", "P2"]:
+        if species in species_of_interest: #["P1", "P2"]:
             leafs_of_interest = leafs_of_interest + leaves_in_species
 
     #Now, get the sequences associated with each leaf in the polyploid  (ie P1 and P2).

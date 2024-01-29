@@ -8,10 +8,10 @@ import matplotlib.colors as mcolors
 def get_example_autopolyploid_trees(polyploid):
 
     time_before_WGD=polyploid.FULL_time_MYA - polyploid.WGD_time_MYA
-    before_WGD_nstring="(O:{0},P{1});".format(time_before_WGD,time_before_WGD )
+    before_WGD_nstring="(O:{0},P:{1});".format(time_before_WGD,time_before_WGD )
     after_WGD_nstrings=[
-        "(O1:{0},P1{1});".format(time_before_WGD,time_before_WGD ),
-        "(O2:{0},P2{1});".format(polyploid.WGD_time_MYA,polyploid.WGD_time_MYA)]
+        "(O1:{0},P1:{1});".format(time_before_WGD,time_before_WGD ),
+        "(O2:{0},P2:{1});".format(polyploid.WGD_time_MYA,polyploid.WGD_time_MYA)]
 
     return [before_WGD_nstring] + after_WGD_nstrings
 
