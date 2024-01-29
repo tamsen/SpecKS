@@ -10,10 +10,10 @@ import tree_pruner
 def run_allosim(polyploid):
 
     print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
-    species_tree = species_tree_maker.make_species_trees(polyploid)
+    species_trees = species_tree_maker.make_species_trees(polyploid)
 
     print("\n\n{0}. Make gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, species_tree)
+    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, species_trees[0])
 
     print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, gene_tree_results_by_tree_name)

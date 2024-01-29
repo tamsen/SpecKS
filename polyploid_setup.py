@@ -10,7 +10,7 @@ def setup_allopolyploid(config):
 
     subfolder = config.output_folder
     SPC_time_MYA = 300
-    WGD_time_MYA = 250
+    WGD_time_MYA = 200
     species_name = "Allopolyploid_1"
     species_tree_result = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
     return species_tree_result
@@ -18,8 +18,8 @@ def setup_allopolyploid(config):
 def setup_autopolyploid(config):
 
     subfolder = config.output_folder
-    SPC_time_MYA = 300
-    WGD_time_MYA = 300
+    SPC_time_MYA = 200
+    WGD_time_MYA = 200
     species_name = "Autopolyploid_1"
     species_tree_result = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
     return species_tree_result

@@ -14,7 +14,7 @@ def run_sim():
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
     list_of_polyploids = make_polyploids(conf)
 
-    for polyploid in list_of_polyploids:
+    for polyploid in list_of_polyploids[0:2]:
 
         if polyploid.is_allo():
             allosim.run_allosim(polyploid)
