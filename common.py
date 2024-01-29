@@ -22,3 +22,5 @@ def run_and_wait_on_process(cmd, folder):
         f.writelines(error_string)
     with open(os.path.join(folder, program+"_stdout.txt"), 'w') as f:
         f.writelines(out_string)
+
+    return out_string,error_string

@@ -87,10 +87,10 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
-def run_codeml(config,relaxed_gene_tree_results, evolver_results_by_gene_tree):
+def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
-    out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_ks_calcs_by_codeml")
+    config = polyploid.general_sim_config
+    subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_calcs_by_codeml")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -147,7 +147,7 @@ def run_codeml(config,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
             codeml_results_by_replicate_num[r][gene_tree_name]= result
 
-    config.sim_step_num=config.sim_step_num+1
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return codeml_results_by_replicate_num
 
 

@@ -1,11 +1,19 @@
 import os
 import common
-def write_evolver_control_file(template_dat_file, new_dat_file,
+def write_evolver_control_file(template_dat_file,out_dir,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
     specs_flags = "NUMSEQ NUMCODONS NUMREPLICATES"
+    new_evolver_control_file_name = "mc_{0}Seq_{1}codons_{2}reps.dat".format(
+        num_seq, num_codons, tree_length)
 
-    newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
+    new_dat_file = os.path.join(out_dir, new_evolver_control_file_name)
+
+    # Handle an evolver bug we dont seem to need for later versions.
+    # Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
+    s,vn,vd=get_evolver_version_string(out_dir)
+    if vd[0] < 4.0:
+        newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
 
     with open(template_dat_file, 'r') as f:
 
@@ -40,7 +48,6 @@ def write_evolver_control_file(template_dat_file, new_dat_file,
 
 
 def work_around_for_evolver_bug(newick_tree_string):
-
     if newick_tree_string[-2:] != ");":
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
         newick_tree_string = fixed_newick_tree_string
@@ -50,26 +57,32 @@ def work_around_for_evolver_bug(newick_tree_string):
 def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
 
     template_evolver_control_file="./input_templates/template.MCcodon.dat"
-    num_seq=gene_tree_result.info_dict["No. of vertices"]
-    new_evolver_control_file_name="mc_{0}Seq_{1}codons_{2}reps.dat".format(
-        num_seq,num_codons,tree_length)
-
-    new_evolver_control_file=os.path.join(out_dir,new_evolver_control_file_name)
-
+    #num_seq=gene_tree_result.info_dict["No. of vertices"]
+    num_seq = gene_tree_result.info_dict["No. of extant leaves"]
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
-                                                      new_evolver_control_file,
+                                                      out_dir,
                                                       num_seq, num_codons,
                                                       num_replicates, tree_length,
                                                       gene_tree_result.simple_newick)
 
     cmd= ["evolver","6", evolver_control_file]
     return cmd
+def get_evolver_version_string(gene_tree_subfolder):
+    cmd = ["evolver","-v"]
+    out_string, error_string = common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+    version_string=out_string.split("\n")[0]
+    version_number=version_string.split()[4][0:-1]
+    version_decimals=[int(v) for v in version_number.split(".")]
+    print(version_string)
+    print("v"+ version_number)
+    print("v:" + str(version_decimals))
+    return version_string, version_number, version_decimals
 
-def run_evolver(config, gene_tree_results_by_gene_tree_name):
+def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
 
-    out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_sequence_evolver")
+    config = polyploid.general_sim_config
+    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_sequence_evolver")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -84,7 +97,10 @@ def run_evolver(config, gene_tree_results_by_gene_tree_name):
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
         cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
                                      config.num_codons,config.tree_length, gene_tree_result)
-        common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+        out_string,error_string = common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+
+        #common evolver complaint:
+        #if "perhaps too many '('?" in error_string:
 
         evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
         evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
@@ -93,9 +109,11 @@ def run_evolver(config, gene_tree_results_by_gene_tree_name):
         elif os.path.exists(evolver_result_file_B):
             evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
         else:
-            raise ValueError('Evolver failed to output a sequence file.  It should be in '
-                             + gene_tree_subfolder + " but its not. Check the evolver stderr.")
+            error_string="Evolver failed to output a sequence file.  It should be in " + \
+                             gene_tree_subfolder + " but its not. Check the evolver stderr."
+            print("Error: " + error_string)
+            raise ValueError(error_string)
 
-    config.sim_step_num=config.sim_step_num+1
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return evolver_results_by_gene_tree
 

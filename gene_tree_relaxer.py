@@ -4,10 +4,10 @@ import gene_tree_maker
 import common
 
 
-def relax(config,gene_tree_results_by_tree_name):
+def relax(polyploid,gene_tree_results_by_tree_name):
 
-    out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_relaxed_gene_trees")
+    config = polyploid.general_sim_config
+    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_relaxed_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):
@@ -35,5 +35,5 @@ def relax(config,gene_tree_results_by_tree_name):
         print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
         tree_visuals.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name)
 
-    config.sim_step_num=config.sim_step_num+1
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return relaxed_gene_tree_results_by_gene_tree

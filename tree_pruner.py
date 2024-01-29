@@ -1,12 +1,12 @@
 import os
 
 
-def prune_gene_trees(config):
+def prune_gene_trees(polyploid):
 
-    out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(config.sim_step_num) +"_post_WGD_gene_pruning")
+    config = polyploid.general_sim_config
+    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_post_WGD_gene_pruning")
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
     print("TODO: after WGD event, remove x% of genes per MY")
-    config.sim_step_num=config.sim_step_num+1
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1

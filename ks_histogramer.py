@@ -56,10 +56,11 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, max_Ks, max_
     plt.clf()
     plt.close()
 
-def run_Ks_histogramer(config,codeml_results_by_replicate_num,gene_tree_results_by_file_name):
+def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num,gene_tree_results_by_file_name):
 
-    out_dir = config.output_folder
-    subfolder = os.path.join(out_dir, str(config.sim_step_num) + "_ks_histograms")
+    config = polyploid.general_sim_config
+    subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_histograms")
+
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -87,7 +88,7 @@ def run_Ks_histogramer(config,codeml_results_by_replicate_num,gene_tree_results_
         print("making histograms " + species_str + ", replicate " + str(replicate))
         summarize_ks(rep_subfolder, subgenomes_of_concern,leaves_by_species,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", 0.1)
-    config.sim_step_num=config.sim_step_num+1
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
 def summarize_ks(paml_out_folder, subgenomes_of_concern,leaves_by_species,
                  max_ks, max_y,color, step):
 
