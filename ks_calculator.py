@@ -1,4 +1,6 @@
 import os
+import shutil
+
 import common
 
 
@@ -86,6 +88,55 @@ def write_codeml_control_file(template_ctl_file, sequence_file):
 
     return new_ctl_file
 
+
+def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
+                                 pooled_evolver_results_by_subtree_by_gene_tree_by_replicate):
+
+    config = polyploid.general_sim_config
+    subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_calcs_by_codeml")
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    template_codeml_ctl_file="input_templates/template.codeml.ctl"
+    codeml_results_by_replicate_num={}
+    replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
+    subtree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate.keys()
+    gene_tree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate["Right"].keys()
+    #for gene_tree_name, evolver_output_files_by_replicate in pooled_evolver_results_by_gene_tree_by_replicate.items():
+    for gene_tree_name in gene_tree_names:
+
+        gene_tree_subfolder = os.path.join(subfolder, gene_tree_name)
+        if not os.path.exists(gene_tree_subfolder):
+            os.makedirs(gene_tree_subfolder)
+
+            for r in replicates:
+                print("\t replicate " + str(r))
+                replicates_subfolder = os.path.join(gene_tree_subfolder, "replicate_" + str(r))
+                if not os.path.exists(replicates_subfolder):
+                    os.makedirs(replicates_subfolder)
+
+                    #Grab the evolver output. TODO
+                    #I'm a bit worried this is now acocunting for replicates,
+                    #becasue its the same "evolver_output_file" for all rep.
+                    for subtree in subtree_names:
+                        dst = os.path.join(replicates_subfolder, subtree + "_mc.paml")
+                        evolver_out =pooled_evolver_results_by_subtree_by_gene_tree_by_replicate[subtree][gene_tree_name][r]
+                        shutil.copyfile(evolver_out, dst)
+
+                    #read the sequnces we want. Note, there should only be one seq per leaf
+                    #species_of_interest = ['P1', 'P2']
+                    #sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
+                    #    evolver_output_file, gene_tree_name, pooled_relaxed_gene_tree_results,species_of_interest)
+
+                    #replicate_fa_file = os.path.join(replicates_subfolder,
+                    #                                 gene_tree_name + ".codons.rep" + str(r) + ".fa")
+
+                    #with open(replicate_fa_file, 'w') as f:
+                    #    for seq_name, seqs in sequences_by_leaf.items():
+                    #        for seq in seqs:
+                    #            f.writelines(">" + seq_name + "\n")
+                    #            f.writelines(seq + "\n")
+
 def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     config = polyploid.general_sim_config
@@ -158,6 +209,8 @@ def get_sequences_for_leaves_within_the_polyploid(
     sequences_by_leaf = evolver_out_to_sequences(evolver_output_file)
 
     #Get the map of which leaves in the gene tree are in which species
+    #gene_tree_name='GeneTree0'
+    #but pooled_relaxed_gene_tree_results have "_Left" or "_Right" appended to each key name
     leaf_map = relaxed_gene_tree_results[gene_tree_name].leaves_by_species
 
     #Get only leaves which are in the polyploid (ie P1 and P2)

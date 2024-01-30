@@ -33,6 +33,7 @@ def relax(polyploid,gene_tree_results_by_tree_name):
         full_path_out_file=os.path.join(subfolder,out_file_name)
         relaxed_gene_tree_results=gene_tree_maker.read_tree_file(full_path_out_file)
         relaxed_gene_tree_results.info_dict=gene_tree_results.info_dict.copy()
+        relaxed_gene_tree_results.num_extant_leaves=gene_tree_results.num_extant_leaves
         relaxed_gene_tree_results.leaves_by_species =gene_tree_results.leaves_by_species.copy()
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 

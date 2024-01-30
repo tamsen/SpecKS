@@ -13,8 +13,8 @@ def write_evolver_control_file(template_dat_file,out_dir,
     # Handle an evolver bug we dont seem to need for later versions.
     # Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
     s,vn,vd=get_evolver_version_string(out_dir)
-    if vd[0] < 4.0:
-        newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
+    if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
+       newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
 
     with open(template_dat_file, 'r') as f:
 
@@ -58,8 +58,12 @@ def work_around_for_evolver_bug(newick_tree_string):
 def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
 
     template_evolver_control_file="./input_templates/template.MCcodon.dat"
-    #num_seq=gene_tree_result.info_dict["No. of vertices"]
-    num_seq = gene_tree_result.info_dict["No. of extant leaves"]
+
+    s,vn,vd=get_evolver_version_string(out_dir)
+    if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
+        num_seq=gene_tree_result.info_dict["No. of vertices"]
+    else:
+        num_seq = gene_tree_result.info_dict["No. of extant leaves"]
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
                                                       out_dir,
@@ -94,9 +98,10 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    evolver_results_by_gene_tree={}
+    evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
+        evolver_results_by_replicate= {}
         gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
         sequence_replicates=root_seq_files_written_by_gene_tree[gene_tree_name]
@@ -116,17 +121,21 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             evolver_result_file_B=os.path.join(replicate_subfolder,"mc.paml")
 
             if os.path.exists(evolver_result_file_A):
-                evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
+                evolver_results_by_replicate[replicate_i] =evolver_result_file_A
+                #evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
             elif os.path.exists(evolver_result_file_B):
-                evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
+                evolver_results_by_replicate[replicate_i] =evolver_result_file_B
+                #evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
             else:
                 error_string="Evolver failed to output a sequence file.  It should be in " + \
                               gene_tree_subfolder + " but its not. Check the evolver stderr."
                 print("Error: " + error_string)
                 raise ValueError(error_string)
 
+        evolver_results_by_gene_tree_by_replicate[gene_tree_name]=evolver_results_by_replicate
+
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
-    return evolver_results_by_gene_tree
+    return evolver_results_by_gene_tree_by_replicate
 
 
 
