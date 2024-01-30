@@ -102,39 +102,62 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
     subtree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate.keys()
     gene_tree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate["Right"].keys()
-    #for gene_tree_name, evolver_output_files_by_replicate in pooled_evolver_results_by_gene_tree_by_replicate.items():
+
+    for r in replicates:
+        codeml_results_by_replicate_num[r]={}
+
     for gene_tree_name in gene_tree_names:
 
         gene_tree_subfolder = os.path.join(subfolder, gene_tree_name)
         if not os.path.exists(gene_tree_subfolder):
             os.makedirs(gene_tree_subfolder)
 
+            sequence_files_written=[]
             for r in replicates:
                 print("\t replicate " + str(r))
                 replicates_subfolder = os.path.join(gene_tree_subfolder, "replicate_" + str(r))
                 if not os.path.exists(replicates_subfolder):
                     os.makedirs(replicates_subfolder)
 
+                    replicate_fa_file = os.path.join(replicates_subfolder,
+                                                     gene_tree_name + ".codons.rep" + str(r) + ".fa")
+
                     for subtree in subtree_names:
                         dst = os.path.join(replicates_subfolder, subtree + "_mc.paml")
-                        evolver_out =pooled_evolver_results_by_subtree_by_gene_tree_by_replicate[subtree][gene_tree_name][r]
-                        shutil.copyfile(evolver_out, dst)
+                        pooled_evolver_results_by_subtree_by_gene_tree=pooled_evolver_results_by_subtree_by_gene_tree_by_replicate[subtree][gene_tree_name]
 
-                    #TODO - put all these seq together into an .fa file that codeml can take
-                    #read the sequnces we want. Note, there should only be one seq per leaf
-                    #species_of_interest = ['P1', 'P2']
-                    #sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
-                    #    evolver_output_file, gene_tree_name, pooled_relaxed_gene_tree_results,species_of_interest)
+                        if r in pooled_evolver_results_by_subtree_by_gene_tree:
+                            evolver_out =pooled_evolver_results_by_subtree_by_gene_tree[r]
+                            shutil.copyfile(evolver_out, dst)
 
-                    #replicate_fa_file = os.path.join(replicates_subfolder,
-                    #                                 gene_tree_name + ".codons.rep" + str(r) + ".fa")
+                            #TODO - put all these seq together into an .fa file that codeml can take
+                            #read the sequnces we want. Note, there should only be one seq per leaf
+                            species_of_interest = ['P1', 'P2']
+                            sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
+                                evolver_out, gene_tree_name, pooled_relaxed_gene_tree_results[subtree],
+                                species_of_interest)
+                        else:
+                            continue
 
-                    #with open(replicate_fa_file, 'w') as f:
-                    #    for seq_name, seqs in sequences_by_leaf.items():
-                    #        for seq in seqs:
-                    #            f.writelines(">" + seq_name + "\n")
-                    #            f.writelines(seq + "\n")
+                        with open(replicate_fa_file, 'a') as f:
+                            for seq_name, seqs in sequences_by_leaf.items():
+                                for seq in seqs:
+                                    seq_name_with_subtree=seq_name+"_"+subtree
+                                    f.writelines(">" + seq_name_with_subtree + "\n")
+                                    f.writelines(seq + "\n")
 
+                    sequence_files_written.append(replicate_fa_file )
+                    control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
+                    cmd = ["codeml",os.path.basename(control_file)]
+                    print("\t cmd: " + " ".join(cmd))
+                    print("\t cwd: " + replicates_subfolder)
+                    print("\t calculating Ks.. ")
+                    common.run_and_wait_on_process(cmd, replicates_subfolder)
+                    print("\t Ks determined...")
+                    result= codeml_result(replicates_subfolder)
+                    codeml_results_by_replicate_num[r][gene_tree_name] = result
+
+    return codeml_results_by_replicate_num
 def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     config = polyploid.general_sim_config
@@ -170,9 +193,6 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
 
             with open(replicate_fa_file, 'w') as f:
 
-                #if we decide to filter by seq names..
-                #for seq_name in expected_seq_names:
-                #   if seq_name in sequences_by_leaf:
                 for seq_name, seqs in sequences_by_leaf.items():
                         f.writelines(">" + seq_name + "\n")
                         f.writelines(seqs[r] + "\n")

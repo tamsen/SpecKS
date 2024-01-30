@@ -49,11 +49,6 @@ def run_autosim(polyploid):
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
             polyploid, relaxed_gene_tree_results, root_seq_files_written_by_gene_tree)
 
-        #for gene_tree in evolver_results_by_gene_tree.keys():
-        #    #pooled_gene_tree_results_by_tree[gene_tree+"_"+subtree]=gene_tree_results_by_tree_name[gene_tree]
-        #    #pooled_relaxed_gene_tree_results_by_tree[gene_tree+"_"+subtree]=relaxed_gene_tree_results[gene_tree]
-        #    #pooled_evolver_results_by_tree_by_replicate[gene_tree+"_"+subtree]= \
-        #    #    evolver_results_by_gene_tree_by_replicate[gene_tree]
         pooled_gene_tree_results_by_tree[subtree]=gene_tree_results_by_tree_name
         pooled_relaxed_gene_tree_results_by_tree[subtree]=relaxed_gene_tree_results
         pooled_evolver_results_by_tree_by_replicate[subtree]= evolver_results_by_gene_tree_by_replicate
@@ -65,15 +60,16 @@ def run_autosim(polyploid):
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
     tree_pruner.prune_gene_trees(polyploid)
 
-
-    #todo - this part not all working yet...
     #note here, there is only one replicate per evolver run
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     codeml_results_by_replicate_num = ks_calculator.run_codeml_on_pooled_results(polyploid,
                                                                pooled_relaxed_gene_tree_results_by_tree,
                                                                pooled_evolver_results_by_tree_by_replicate)
 
+    #todo - this part not all working yet...
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    #ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num, pooled_relaxed_gene_tree_results_by_tree)
+    print(codeml_results_by_replicate_num)
+    #ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num,
+    #                                  pooled_relaxed_gene_tree_results_by_tree)
 
     print("\n\n" + polyploid.species_name + " complete")
