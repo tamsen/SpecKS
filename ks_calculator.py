@@ -115,14 +115,12 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
                 if not os.path.exists(replicates_subfolder):
                     os.makedirs(replicates_subfolder)
 
-                    #Grab the evolver output. TODO
-                    #I'm a bit worried this is now acocunting for replicates,
-                    #becasue its the same "evolver_output_file" for all rep.
                     for subtree in subtree_names:
                         dst = os.path.join(replicates_subfolder, subtree + "_mc.paml")
                         evolver_out =pooled_evolver_results_by_subtree_by_gene_tree_by_replicate[subtree][gene_tree_name][r]
                         shutil.copyfile(evolver_out, dst)
 
+                    #TODO - put all these seq together into an .fa file that codeml can take
                     #read the sequnces we want. Note, there should only be one seq per leaf
                     #species_of_interest = ['P1', 'P2']
                     #sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
