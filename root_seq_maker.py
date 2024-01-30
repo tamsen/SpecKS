@@ -32,6 +32,7 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    sequence_files_written_by_gene_tree = {}
     for gene_tree_name, evolver_output_file in evolver_results_by_gene_tree.items():
 
         gene_tree_subfolder = os.path.join(subfolder, gene_tree_name)
@@ -43,14 +44,11 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
         species_of_interest=["P"]
         sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
                                                                        relaxed_gene_tree_results,species_of_interest)
-        sequence_files_written=[]
 
-
-        for r in range(0,config.num_replicates_per_gene_tree):
-            print("\t replicate " + str(r))
-            replicate_seq_root_file = os.path.join(gene_tree_subfolder,
-                                         gene_tree_name + ".RootSeq.txt")
-
-            files_written = sequences_to_root_seq_in(sequences_by_leaf, replicate_seq_root_file)
+        replicate_seq_root_file = os.path.join(gene_tree_subfolder, gene_tree_name + ".RootSeq.txt")
+        files_written = sequences_to_root_seq_in(sequences_by_leaf, replicate_seq_root_file)
+        sequence_files_written_by_gene_tree[gene_tree_name] = files_written
 
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
+    print(str(sequence_files_written_by_gene_tree))
+    return sequence_files_written_by_gene_tree

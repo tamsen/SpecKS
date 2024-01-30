@@ -7,7 +7,12 @@ import common
 def relax(polyploid,gene_tree_results_by_tree_name):
 
     config = polyploid.general_sim_config
-    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_relaxed_gene_trees")
+
+    if len(polyploid.subtree_subfolder) > 0:
+        subfolder = os.path.join(polyploid.species_subfolder,
+                                 str(polyploid.analysis_step_num) + "_relaxed_gene_trees_" + polyploid.subtree_subfolder)
+    else:
+        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_relaxed_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):

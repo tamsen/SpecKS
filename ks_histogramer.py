@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import glob
 import shutil
 
-
 def get_Ks_from_file(paml_out_file):
 
     KS_values = []

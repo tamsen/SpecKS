@@ -127,7 +127,12 @@ def run_sagephy(polyploid, species_tree_newick):
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
-    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
+
+    if len(polyploid.subtree_subfolder)>0:
+        subfolder = os.path.join(polyploid.species_subfolder,
+                                 str(polyploid.analysis_step_num) + "_gene_trees_" + polyploid.subtree_subfolder)
+    else:
+        subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
 
     print(subfolder)
     if not os.path.exists(subfolder):

@@ -1,5 +1,6 @@
 import os
 import common
+import shutil
 def write_evolver_control_file(template_dat_file,out_dir,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
@@ -79,10 +80,65 @@ def get_evolver_version_string(gene_tree_subfolder):
     print("v:" + str(version_decimals))
     return version_string, version_number, version_decimals
 
+def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
+                              root_seq_files_written_by_gene_tree):
+
+    config = polyploid.general_sim_config
+    if len(polyploid.subtree_subfolder) > 0:
+        subfolder = os.path.join(polyploid.species_subfolder,
+                                 str(polyploid.analysis_step_num) + "_sequence_evolver_" + polyploid.subtree_subfolder)
+    else:
+        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_sequence_evolver")
+
+    print(subfolder)
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    evolver_results_by_gene_tree={}
+    for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
+
+        gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
+        os.makedirs(gene_tree_subfolder)
+        sequence_replicates=root_seq_files_written_by_gene_tree[gene_tree_name]
+
+        for replicate_i in range(0,(len(sequence_replicates))):
+            replicate_subfolder = os.path.join(gene_tree_subfolder , "rep" + str(replicate_i))
+            replicate_seq_file = sequence_replicates[replicate_i]
+            os.makedirs(replicate_subfolder)
+            dst=os.path.join(replicate_subfolder, "RootSeq.txt")
+            shutil.copyfile(replicate_seq_file, dst)
+
+            cmd = write_evolver_commands(replicate_subfolder,1,
+                                     config.num_codons,config.tree_length, gene_tree_result)
+            out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
+
+            evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
+            evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
+        # if os.path.exists(evolver_result_file_A):
+        #     evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
+        # elif os.path.exists(evolver_result_file_B):
+        #     evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
+        # else:
+        #     error_string="Evolver failed to output a sequence file.  It should be in " + \
+        #                      gene_tree_subfolder + " but its not. Check the evolver stderr."
+        #     print("Error: " + error_string)
+        #     raise ValueError(error_string)
+
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
+    return evolver_results_by_gene_tree
+
+
+
 def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
 
     config = polyploid.general_sim_config
-    subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_sequence_evolver")
+    if len(polyploid.subtree_subfolder) > 0:
+        subfolder = os.path.join(polyploid.species_subfolder,
+                                 str(polyploid.analysis_step_num) + "_sequence_evolver_" + polyploid.subtree_subfolder)
+    else:
+        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_sequence_evolver")
+
+    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
