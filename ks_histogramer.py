@@ -16,7 +16,7 @@ def get_Ks_from_file(paml_out_file):
     return KS_values
 
 
-def get_Ks_from_folder(paml_out_folder, alg_name,species_to_exclude):
+def get_Ks_from_folder(paml_out_folder, alg_name):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     KS_values = []
@@ -74,31 +74,29 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num,gene_tree_resul
         for gene_tree in gene_trees:
 
             codeml_result=ks_result_files[gene_tree]
-            leaves_by_species = gene_tree_results_by_file_name[gene_tree].leaves_by_species
-
             files=[codeml_result.ML_file,codeml_result.NG_file]
             for file in files:
                 base=os.path.basename(file)
                 dst=os.path.join(rep_subfolder, gene_tree + "_" +base)
-                shutil.copyfile(file, dst)
+                if os.path.exists(file):
+                    shutil.copyfile(file, dst)
+                    print("Warning: no codeml result for " + gene_tree + ", replicate " + str(replicate))
+                    print("Maybe gene tree had no extant leaves? Codeml result file would have been here: "
+                          + file)
 
         subgenomes_of_concern=["P1","P2"]
         species_str="between subgenomes " + "and".join(subgenomes_of_concern)
         print("making histograms " + species_str + ", replicate " + str(replicate))
-        summarize_ks(rep_subfolder, subgenomes_of_concern,leaves_by_species,
+        summarize_ks(rep_subfolder, subgenomes_of_concern,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", 0.1)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
-def summarize_ks(paml_out_folder, subgenomes_of_concern,leaves_by_species,
-                 max_ks, max_y,color, step):
+def summarize_ks(paml_out_folder, subgenomes_of_concern,max_ks, max_y,color, step):
 
-    #TODO, this currently gets KS between all orthologs. I need to exclude some of them.
-    #implement some "leaf filter" from gene_tree_result.leaves_by_species
     for alg_name in ["ML","NG"]:
 
         print("getting results for PAML alg name " + alg_name)
         species_name="Polyploid " + "and".join(subgenomes_of_concern)
-        species_to_exclude=[s for s in leaves_by_species.keys() if s not in subgenomes_of_concern]
-        ks_results = get_Ks_from_folder(paml_out_folder, alg_name, species_to_exclude)
+        ks_results = get_Ks_from_folder(paml_out_folder, alg_name)
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
 
