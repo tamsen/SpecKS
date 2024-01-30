@@ -112,17 +112,18 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
                                      config.num_codons,config.tree_length, gene_tree_result)
             out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
 
-            evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
-            evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
-        # if os.path.exists(evolver_result_file_A):
-        #     evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
-        # elif os.path.exists(evolver_result_file_B):
-        #     evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
-        # else:
-        #     error_string="Evolver failed to output a sequence file.  It should be in " + \
-        #                      gene_tree_subfolder + " but its not. Check the evolver stderr."
-        #     print("Error: " + error_string)
-        #     raise ValueError(error_string)
+            evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
+            evolver_result_file_B=os.path.join(replicate_subfolder,"mc.paml")
+
+            if os.path.exists(evolver_result_file_A):
+                evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
+            elif os.path.exists(evolver_result_file_B):
+                evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
+            else:
+                error_string="Evolver failed to output a sequence file.  It should be in " + \
+                              gene_tree_subfolder + " but its not. Check the evolver stderr."
+                print("Error: " + error_string)
+                raise ValueError(error_string)
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return evolver_results_by_gene_tree

@@ -105,8 +105,9 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
 
         print("calculationg Ks for " + gene_tree_name)
 
-        sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
-                                                                          relaxed_gene_tree_results)
+        species_of_interest=['P1','P2']
+        sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
+            evolver_output_file, gene_tree_name,relaxed_gene_tree_results,species_of_interest)
         sequence_files_written=[]
 
         for r in replicates:
