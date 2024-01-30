@@ -33,10 +33,17 @@ def plot_species_tree(file_to_save, polyploid):
     X = nx.Graph()
 
     if polyploid.is_allo():
-        pos = {0: (0, 0), 1: (0, time_before_SPEC), 2: (20, time_span), 3: (-20, time_span)}
-        edge_before_WGD = [(1, 0)]
-        edge_after_WGD = [(1, 2), (1, 3)]
+        offset_for_width=10
+        pos = {0: (0, 0), 1: (0, time_before_SPEC),
+               2: (20, time_span),
+               3: (-20, time_span),
+               4: (0, time_before_SPEC+offset_for_width),
+               5: (0, time_before_SPEC - 10*offset_for_width),
+               6: (0, time_before_SPEC - 10*offset_for_width)}
 
+        edge_before_WGD = [(1, 0)]
+        #edge_after_WGD = [(1, 2), (1, 3)]
+        edge_after_WGD = [(5, 2), (6, 3)]
     else:
         pos = {0: (0, 0), 1: (0, time_before_WGD),
                2: (20, time_before_WGD), 3: (-20, time_before_WGD), 4: (20, time_span), 5: (-20, time_span)}
@@ -46,7 +53,7 @@ def plot_species_tree(file_to_save, polyploid):
 
     X.add_edges_from(edge_before_WGD + edge_after_WGD)
 
-    #nx.draw_networkx_nodes(X,pos,node_size=3,nodelist=[0,1,2,3],node_color='r',
+    #nx.draw_networkx_nodes(X,pos,node_size=3,nodelist=[0,1,5,6],node_color='r',
     #                  ax=ax)
 
     nx.draw_networkx_edges(X, pos, edge_before_WGD, arrows=False,

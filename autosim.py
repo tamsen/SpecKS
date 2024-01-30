@@ -61,9 +61,10 @@ def run_autosim(polyploid):
 
 
     #todo - this part not all working yet...
-    #print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
-    #codeml_results_by_replicate_num = ks_calculator.run_codeml(polyploid,
-    #                                                           relaxed_gene_tree_results, evolver_results_by_gene_tree)
+    print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
+    codeml_results_by_replicate_num = ks_calculator.run_codeml(polyploid,
+                                                               relaxed_gene_tree_results,
+                                                               evolver_results_by_gene_tree)
 
     #print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     #ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num, relaxed_gene_tree_results)
