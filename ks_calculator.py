@@ -97,7 +97,7 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    template_codeml_ctl_file="input_templates/template.codeml.ctl"
+    template_codeml_ctl_file= "paml_input_templates/template.codeml.ctl"
     codeml_results_by_replicate_num={}
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
     subtree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate.keys()
@@ -165,7 +165,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    template_codeml_ctl_file="input_templates/template.codeml.ctl"
+    template_codeml_ctl_file= "paml_input_templates/template.codeml.ctl"
     codeml_results_by_replicate_num={}
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
 

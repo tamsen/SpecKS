@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <Paths>
+          <output_folder_root>/home/tamsen/Data/SpecKS_output</output_folder_root>
+          <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
+    </Paths>
+    <SpeciesTree>
+          <full_sim_time>500</full_sim_time>
+    </SpeciesTree>
+    <GeneTree>
+        <dup_rate_parameters>(4,2460)</dup_rate_parameters>
+        <loss_rate_parameters>(4,2053)</loss_rate_parameters>
+        <num_gene_trees_per_species_tree></num_gene_trees_per_species_tree>
+    </GeneTree>
+    <SequenceEvolution>
+        <num_replicates_per_gene_tree>3</num_replicates_per_gene_tree>
+        <num_codons>10</num_codons>
+        <tree_length>5</tree_length>
+    </SequenceEvolution>
+    <Histogram>
+        <maxKs>5</maxKs>
+        <maxY>False</maxY>
+    </Histogram>
+</metadata>

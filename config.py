@@ -1,6 +1,6 @@
 
 #eventually this should be read in from an xml config or similar
-
+import xml.etree.ElementTree as ET
 class SpecKS_config:
 
     output_folder_root="/home/tamsen/Data/SpecKS_output"
@@ -20,4 +20,32 @@ class SpecKS_config:
 
     max_ks_for_hist_plot=5
     max_y_for_hist_plot=False
+    def __init__(self, config_file):
 
+        mytree = ET.parse(config_file)
+        myroot = mytree.getroot()
+
+        for top_layer in myroot:
+
+                incoming_tag = top_layer.tag.strip()
+
+                if (incoming_tag == "Histogram"):
+                    for inner_layer in top_layer:
+                        incoming_txt = inner_layer.text.strip()
+                        incoming_tag = inner_layer.tag.strip()
+                        if (incoming_tag == "maxKs"):
+                            self.max_ks_for_hist_plot=int(incoming_txt)
+                        elif (incoming_tag == "maxY"):
+                            if incoming_txt == "False":
+                                self.max_y_for_hist_plot=False
+                            else:
+                                self.max_ks_for_hist_plot=int(incoming_txt)
+
+                if(incoming_tag == "Paths"):
+                    for inner_layer in top_layer:
+                        incoming_txt = inner_layer.text.strip()
+                        incoming_tag = inner_layer.tag.strip()
+                        if (incoming_tag == "output_folder_root"):
+                            self.output_folder_roott=incoming_txt
+                        elif (incoming_tag == "path_to_sagephy"):
+                            self.path_to_sagephy=incoming_txt
