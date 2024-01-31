@@ -1,6 +1,6 @@
 import os
 import tree_visuals
-import gene_tree_maker
+import pipeline_modules.gene_tree_maker as gene_tree_maker
 import common
 
 
@@ -31,7 +31,7 @@ def relax(polyploid,gene_tree_results_by_tree_name):
         common.run_and_wait_on_process(cmd, subfolder)
 
         full_path_out_file=os.path.join(subfolder,out_file_name)
-        relaxed_gene_tree_results=gene_tree_maker.read_tree_file(full_path_out_file)
+        relaxed_gene_tree_results= gene_tree_maker.read_tree_file(full_path_out_file)
         relaxed_gene_tree_results.info_dict=gene_tree_results.info_dict.copy()
         relaxed_gene_tree_results.num_extant_leaves=gene_tree_results.num_extant_leaves
         relaxed_gene_tree_results.leaves_by_species =gene_tree_results.leaves_by_species.copy()

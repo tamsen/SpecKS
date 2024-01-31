@@ -1,6 +1,6 @@
 import os
 
-from ks_calculator import get_sequences_for_leaves_within_the_polyploid
+from pipeline_modules.ks_calculator import get_sequences_for_leaves_within_the_polyploid
 
 
 def sequences_to_root_seq_in(sequences, codeml_in_file):

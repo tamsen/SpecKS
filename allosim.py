@@ -1,10 +1,5 @@
-import gene_evolver
-import gene_tree_maker
-import gene_tree_relaxer
-import ks_calculator
-import ks_histogramer
-import species_tree_maker
-import tree_pruner
+from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
+    species_tree_maker, tree_pruner
 
 
 def run_allosim(polyploid):

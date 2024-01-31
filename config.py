@@ -46,6 +46,40 @@ class SpecKS_config:
                         incoming_txt = inner_layer.text.strip()
                         incoming_tag = inner_layer.tag.strip()
                         if (incoming_tag == "output_folder_root"):
-                            self.output_folder_roott=incoming_txt
+                            self.output_folder_root=incoming_txt
                         elif (incoming_tag == "path_to_sagephy"):
                             self.path_to_sagephy=incoming_txt
+
+                if (incoming_tag == "SpeciesTree"):
+                    for inner_layer in top_layer:
+                        incoming_txt = inner_layer.text.strip()
+                        incoming_tag = inner_layer.tag.strip()
+                        if (incoming_tag == "full_sim_time"):
+                            self.full_sim_time = int(incoming_txt)
+
+                if (incoming_tag == "GeneTree"):
+                     for inner_layer in top_layer:
+                        incoming_txt = inner_layer.text.strip()
+                        incoming_tag = inner_layer.tag.strip()
+                        if (incoming_tag == "dup_rate_parameters"):
+                            self.dup_rate_parameters = parse_tuple_string(incoming_txt)
+                        if (incoming_tag == "loss_rate_parameters"):
+                            self.loss_rate_parameters = parse_tuple_string(incoming_txt)
+                        if (incoming_tag == "num_gene_trees_per_species_tree"):
+                            self.num_gene_trees_per_species_tree = int(incoming_txt)
+
+                if (incoming_tag == "SequenceEvolution"):
+                     for inner_layer in top_layer:
+                        incoming_txt = inner_layer.text.strip()
+                        incoming_tag = inner_layer.tag.strip()
+                        if (incoming_tag == "num_replicates_per_gene_tree"):
+                            self.num_replicates_per_gene_tree = int(incoming_txt)
+                        if (incoming_tag == "num_codons"):
+                            self.num_codons = int(incoming_txt)
+                        if (incoming_tag == "tree_length"):
+                            self.tree_length = int(incoming_txt)
+
+def parse_tuple_string(tuple_string):
+    splat=tuple_string.replace("(","").replace(")","").split(",")
+    data= [float(s) for s in splat]
+    return data

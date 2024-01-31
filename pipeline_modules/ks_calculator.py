@@ -1,6 +1,6 @@
 import os
 import shutil
-
+from pathlib import Path
 import common
 
 
@@ -97,11 +97,12 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    template_codeml_ctl_file= "paml_input_templates/template.codeml.ctl"
+    template_codeml_ctl_file = get_codeml_ctl_template()
     codeml_results_by_replicate_num={}
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
     subtree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate.keys()
-    gene_tree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate["Right"].keys()
+    any_subtree=list(subtree_names)[0]
+    gene_tree_names = pooled_evolver_results_by_subtree_by_gene_tree_by_replicate[any_subtree].keys()
 
     for r in replicates:
         codeml_results_by_replicate_num[r]={}
@@ -129,9 +130,6 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
                         if r in pooled_evolver_results_by_subtree_by_gene_tree:
                             evolver_out =pooled_evolver_results_by_subtree_by_gene_tree[r]
                             shutil.copyfile(evolver_out, dst)
-
-                            #TODO - put all these seq together into an .fa file that codeml can take
-                            #read the sequnces we want. Note, there should only be one seq per leaf
                             species_of_interest = ['P1', 'P2']
                             sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
                                 evolver_out, gene_tree_name, pooled_relaxed_gene_tree_results[subtree],
@@ -165,7 +163,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    template_codeml_ctl_file= "paml_input_templates/template.codeml.ctl"
+    template_codeml_ctl_file = get_codeml_ctl_template()
     codeml_results_by_replicate_num={}
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
 
@@ -175,7 +173,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
         if not os.path.exists(gene_tree_subfolder):
             os.makedirs(gene_tree_subfolder)
 
-        print("calculationg Ks for " + gene_tree_name)
+        print("calculating Ks for " + gene_tree_name)
 
         species_of_interest=['P1','P2']
         sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
@@ -218,6 +216,13 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return codeml_results_by_replicate_num
+
+
+def get_codeml_ctl_template():
+    par_dir = Path(__file__).parent.parent
+    template_codeml_ctl_file = os.path.join(par_dir, "paml_input_templates",
+                                            "template.codeml.ctl")
+    return template_codeml_ctl_file
 
 
 def get_sequences_for_leaves_within_the_polyploid(

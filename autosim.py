@@ -1,11 +1,6 @@
-import gene_evolver
-import gene_tree_maker
-import gene_tree_relaxer
-import ks_calculator
-import root_seq_maker
-import species_tree_maker
-import tree_pruner
-import ks_histogramer
+from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
+    species_tree_maker, root_seq_maker, tree_pruner
+
 
 def run_autosim(polyploid):
 
@@ -26,7 +21,7 @@ def run_autosim(polyploid):
 
     #collect sequences right before WGD, and get then ready to evolve through the next set of trees
     print("\n\n{0}. Collect sequences right before WGD".format(polyploid.analysis_step_num))
-    root_seq_files_written_by_gene_tree = root_seq_maker.run_root_seq_maker(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree)
+    root_seq_files_written_by_gene_tree = root_seq_maker.run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_gene_tree)
 
     subtrees=["Left","Right"]
     pooled_gene_tree_results_by_tree={}
@@ -63,8 +58,8 @@ def run_autosim(polyploid):
     #note here, there is only one replicate per evolver run
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     codeml_results_by_replicate_num = ks_calculator.run_codeml_on_pooled_results(polyploid,
-                                                               pooled_relaxed_gene_tree_results_by_tree,
-                                                               pooled_evolver_results_by_tree_by_replicate)
+                                                                                 pooled_relaxed_gene_tree_results_by_tree,
+                                                                                 pooled_evolver_results_by_tree_by_replicate)
 
     #todo - this part not all working yet...
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))

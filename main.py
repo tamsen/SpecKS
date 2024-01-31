@@ -13,6 +13,9 @@ def run_sim():
 
     conf = setup(sys.argv)
 
+    if not conf:
+        return
+
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
     list_of_polyploids = make_polyploids(conf)
 
@@ -27,13 +30,18 @@ def run_sim():
 
 def setup(arguments):
 
+    print('Command Arguments Given: %s' % arguments)
+    if len(arguments) < 2:
+        print('Please give an input file path.')
+        return False
+
     config_file=arguments[1]
     now = datetime.now()
     date_time = now.strftime("m%md%dy%Y_h%Hm%Ms%S")
     conf = config.SpecKS_config(config_file)
     conf.output_folder = conf.output_folder_root + "_" + date_time
 
-    print('Command Arguments Given: %s' % arguments)
+
     print('Conifg file: %s' % config_file)
     print("Current environment: %s" + str(os.environ))
     print("Current Working Directory:\t" + os.getcwd())

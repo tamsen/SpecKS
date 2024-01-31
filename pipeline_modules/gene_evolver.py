@@ -1,6 +1,7 @@
 import os
 import common
 import shutil
+from pathlib import Path
 def write_evolver_control_file(template_dat_file,out_dir,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
@@ -57,7 +58,9 @@ def work_around_for_evolver_bug(newick_tree_string):
 
 def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
 
-    template_evolver_control_file= "paml_input_templates/template.MCcodon.dat"
+    par_dir= Path(__file__).parent.parent
+    template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
+        "template.MCcodon.dat")
 
     s,vn,vd=get_evolver_version_string(out_dir)
     if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):

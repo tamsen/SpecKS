@@ -1,6 +1,7 @@
 import os
 import unittest
-import gene_evolver
+from pipeline_modules import gene_evolver
+
 
 class GeneEvolverTests(unittest.TestCase):
     def test_newick_fixer(self):
@@ -13,13 +14,13 @@ class GeneEvolverTests(unittest.TestCase):
         # Even though, clearly ";" is there. Adding a few parenthesis seems to fix it..
         # This issue is not in all evolve versions. Ie, its not in  4.10.7, June 2023
 
-        fixed_1=gene_evolver.work_around_for_evolver_bug(evolver_OK_1)
+        fixed_1= gene_evolver.work_around_for_evolver_bug(evolver_OK_1)
         self.assertEqual(fixed_1, evolver_OK_1)
 
-        fixed_2=gene_evolver.work_around_for_evolver_bug(evolver_OK_2)
+        fixed_2= gene_evolver.work_around_for_evolver_bug(evolver_OK_2)
         self.assertEqual(fixed_2, evolver_OK_2)
 
-        fixed_3=gene_evolver.work_around_for_evolver_bug(evolver_bug)
+        fixed_3= gene_evolver.work_around_for_evolver_bug(evolver_bug)
         self.assertEqual(fixed_3, evolver_OK_1)
 
     def test_check_evolver_version(self):
@@ -28,5 +29,5 @@ class GeneEvolverTests(unittest.TestCase):
         if not os.path.exists(test_out):
             os.makedirs(test_out)
 
-        version_string, version_number, version_decimals =gene_evolver.get_evolver_version_string(test_out)
+        version_string, version_number, version_decimals = gene_evolver.get_evolver_version_string(test_out)
         self.assertTrue("version" in version_string)

@@ -1,11 +1,12 @@
 import unittest
-import gene_tree_maker
+from pipeline_modules import gene_tree_maker
+
 
 class GeneTreeTests(unittest.TestCase):
     def test_newick_simplify(self):
 
         test_data_folder="."
-        results_dict=gene_tree_maker.read_pruned_trees(test_data_folder)
+        results_dict= gene_tree_maker.read_pruned_trees(test_data_folder)
 
         files=list(results_dict.keys())
         self.assertEqual(len(files), 1)
@@ -23,8 +24,8 @@ class GeneTreeTests(unittest.TestCase):
     def test_read_leaf_maps(self):
 
         test_data_file="GeneTree0.pruned.leafmap"
-        result=gene_tree_maker.gene_tree_result()
-        result=gene_tree_maker.read_leaf_map(test_data_file,result)
+        result= gene_tree_maker.gene_tree_result()
+        result= gene_tree_maker.read_leaf_map(test_data_file, result)
 
         leaf_dict_by_species=result.leaves_by_species
         print(leaf_dict_by_species)
@@ -33,8 +34,8 @@ class GeneTreeTests(unittest.TestCase):
     def test_read_leaf_maps(self):
 
         test_data_file="GeneTree1.pruned.info"
-        result=gene_tree_maker.gene_tree_result()
-        result=gene_tree_maker.read_gene_tree_info(test_data_file,result)
+        result= gene_tree_maker.gene_tree_result()
+        result= gene_tree_maker.read_gene_tree_info(test_data_file, result)
 
         info_dict_by_species=result.info_dict
         print(info_dict_by_species)
