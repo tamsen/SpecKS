@@ -20,6 +20,8 @@ class SpecKS_config:
 
     max_ks_for_hist_plot=5
     max_y_for_hist_plot=False
+    params_for_polyploids =[]
+    stop_at_step=999
     def __init__(self, config_file):
 
         mytree = ET.parse(config_file)
@@ -28,6 +30,9 @@ class SpecKS_config:
         for top_layer in myroot:
 
                 incoming_tag = top_layer.tag.strip()
+                incoming_txt = top_layer.text.strip()
+                if (incoming_tag == "StopAtStep"):
+                    self.stop_at_step=int(incoming_txt)
 
                 if (incoming_tag == "Histogram"):
                     for inner_layer in top_layer:
@@ -56,6 +61,16 @@ class SpecKS_config:
                         incoming_tag = inner_layer.tag.strip()
                         if (incoming_tag == "full_sim_time"):
                             self.full_sim_time = int(incoming_txt)
+                        if (incoming_tag == "polyploid"):
+                            new_params=PolyploidParams()
+                            for poly_layer in inner_layer:
+                                incoming_txt = poly_layer.text.strip()
+                                incoming_tag = poly_layer.tag.strip()
+                                if (incoming_tag == "SPC_time_MYA"):
+                                    new_params.SPC_time_MYA = int(incoming_txt)
+                                if (incoming_tag == "WGD_time_MYA"):
+                                    new_params.WGD_time_MYA = int(incoming_txt)
+                            self.params_for_polyploids.append(new_params)
 
                 if (incoming_tag == "GeneTree"):
                      for inner_layer in top_layer:
@@ -83,3 +98,8 @@ def parse_tuple_string(tuple_string):
     splat=tuple_string.replace("(","").replace(")","").split(",")
     data= [float(s) for s in splat]
     return data
+
+class PolyploidParams:
+
+    SPC_time_MYA=0
+    WGD_time_MYA=0

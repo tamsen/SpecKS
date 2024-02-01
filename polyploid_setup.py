@@ -3,27 +3,26 @@ import os
 
 def make_polyploids(config):
 
-    tree_1=setup_allopolyploid(config)
-    tree_2=setup_autopolyploid(config)
-    return [tree_1,tree_2]
-def setup_allopolyploid(config):
-
     subfolder = config.output_folder
-    SPC_time_MYA = 300
-    WGD_time_MYA = 200
-    species_name = "Allopolyploid_1"
-    species_tree_result = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
-    return species_tree_result
+    species_tree_results=[]
+    num_allos=0
+    num_autos=0
 
-def setup_autopolyploid(config):
+    for params in  config.params_for_polyploids:
+        SPC_time_MYA=params.SPC_time_MYA
+        WGD_time_MYA=params.WGD_time_MYA
 
-    subfolder = config.output_folder
-    SPC_time_MYA = 200
-    WGD_time_MYA = 200
-    species_name = "Autopolyploid_1"
-    species_tree_result = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
-    return species_tree_result
+        if (SPC_time_MYA==WGD_time_MYA):
+            num_autos=num_autos+1
+            species_name="Autopolyploid_" + str(num_autos)
+        else:
+            num_allos=num_allos+1
+            species_name="Allopolyploid_" + str(num_allos)
 
+        species_tree_result = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
+        species_tree_results.append(species_tree_result)
+
+    return species_tree_results
 
 class polyploid_data():
 

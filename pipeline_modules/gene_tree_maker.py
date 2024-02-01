@@ -2,7 +2,7 @@ import glob
 import os
 import common
 import matplotlib.pyplot as plt
-import tree_visuals
+import tree_visuals_by_phylo
 from scipy.stats import beta
 
 
@@ -28,8 +28,16 @@ def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,n
 def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
 
     xs=[i for i in range(0,len(dup_values))]
-    plt.scatter(xs,dup_values, label="duplication rate",marker="o")
-    plt.scatter(xs,loss_values, label="loss rate",marker="o")
+    plt.scatter(xs,dup_values, label="duplication rate",marker="o",color='r')
+    plt.scatter(xs,loss_values, label="loss rate",marker="o",color='b')
+
+    if len(dup_values) > 0 and  len(loss_values) > 0:
+        mean_dup_values=sum(dup_values)/len(dup_values)
+        mean_loss_values=sum(loss_values)/len(loss_values)
+        plt.axhline(y=mean_dup_values, color='r', linestyle='--', label="avg dup rate")
+        plt.axhline(y=mean_loss_values, color='b', linestyle=':', label="avg loss rate")
+        print("Mean Gene Duplication Rate:\t" + str(mean_dup_values))
+        print("Mean Gene Loss Rate:\t" + str(mean_loss_values))
 
     plt.title("Gene duplication and loss rates for each gene tree")
     plt.legend()

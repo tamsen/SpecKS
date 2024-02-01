@@ -3,13 +3,15 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
+import tree_visuals_as_network
+
 
 def get_example_autopolyploid_trees(polyploid):
 
     time_before_WGD=polyploid.FULL_time_MYA - polyploid.WGD_time_MYA
     before_WGD_nstring="(O:{0},P:{1});".format(time_before_WGD,time_before_WGD )
     after_WGD_nstrings=[
-        "(O1:{0},P1:{1});".format(time_before_WGD,time_before_WGD ),
+        "(O1:{0},P1:{1});".format(polyploid.WGD_time_MYA,polyploid.WGD_time_MYA ),
         "(O2:{0},P2:{1});".format(polyploid.WGD_time_MYA,polyploid.WGD_time_MYA)]
 
     return [before_WGD_nstring] + after_WGD_nstrings
@@ -51,7 +53,8 @@ def plot_species_tree(file_to_save, polyploid):
         edge_before_WGD = [(1, 0)]
         edge_after_WGD = [(2, 4), (3, 5)]
 
-    X.add_edges_from(edge_before_WGD + edge_after_WGD)
+    edges=edge_before_WGD + edge_after_WGD
+    X.add_edges_from(edges)
 
     #nx.draw_networkx_nodes(X,pos,node_size=3,nodelist=[0,1,5,6],node_color='r',
     #                  ax=ax)
@@ -79,6 +82,13 @@ def plot_species_tree(file_to_save, polyploid):
     plt.cla()
     plt.close()
 
+    species_tree_viz_data = tree_visuals_as_network.tree_viz_data
+    species_tree_viz_data.verts = edges
+    species_tree_viz_data.points = pos
+    species_tree_viz_data.color = mcolors.CSS4_COLORS['lightgrey']
+    species_tree_viz_data.name = polyploid.species_name
+    return species_tree_viz_data
+
 def make_species_trees(polyploid):
 
     time_before_WGD=polyploid.WGD_time_MYA
@@ -91,10 +101,8 @@ def make_species_trees(polyploid):
 
     if polyploid.is_allo():
         species_trees = get_example_allopolyploid_tree(time_span,time_before_WGD)
-        out_file_png = "allopolyploid_species_tree_WGD{0}of{1}MY.png".format(time_before_WGD, time_span)
     else:
         species_trees = get_example_autopolyploid_trees(polyploid)
-        out_file_png = "autopolyploid_species_tree_WGD{0}of{1}MY.png".format(time_before_WGD, time_span)
 
     out_file_png = polyploid.species_name + "_tree_WGD{0}of{1}MY.png".format(time_before_WGD, time_span)
     out_file_tree = out_file_png.replace(".png", ".tree")
