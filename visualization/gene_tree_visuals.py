@@ -9,20 +9,20 @@ from pipeline_modules import gene_tree_maker
 from visualization import tree_utils
 
 
-def plot_gene_tree_from_phylo_tree(file_to_save, tree):
+def plot_gene_tree_from_phylo_tree(
+        file_to_save, species_filter, leaf_map, tree):
 
     X = Phylo.to_networkx(tree)
     nodes = list(X.nodes)
     edges = list(X.edges)
     node_coordinates_by_i = {i:node_coordinate() for i in range(0,len(nodes))}
-    species_by_leaf_dict = get_species_by_leaf_dict()
+    species_by_leaf_dict = get_species_by_leaf_dict_from_leaf_map(leaf_map)
 
     #calculate x and y values for each node to graph
     node_i_by_name, node_names_by_i = set_node_y_values(node_coordinates_by_i, nodes, tree)
 
     #Only keep vertexes that touch the species of interst.
     #We dont want to clutter the diagram with the outgroup.
-    species_filter = ["P1", "P2"]
     nodes_to_visualize = set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
                                           species_filter, nodes, tree)
     print(nodes_to_visualize)
@@ -68,7 +68,7 @@ def pos_dict_in_i_coords(node_coordinates_by_i, nodes_to_visualize):
 
         if i in nodes_to_visualize:
             pos[i] = (nc.x, nc.y)
-            
+
     return pos
 
 def plot_node_labels(pos_by_i, node_names_by_i, plt):
@@ -142,6 +142,12 @@ def get_species_by_leaf_dict():
             leaf_map_by_leaf[leaf] = species
     return leaf_map_by_leaf
 
+def get_species_by_leaf_dict_from_leaf_map(leaf_map):
+    leaf_map_by_leaf = {}
+    for species in leaf_map:
+        for leaf in leaf_map[species]:
+            leaf_map_by_leaf[leaf] = species
+    return leaf_map_by_leaf
 
 class node_coordinate():
     y=0

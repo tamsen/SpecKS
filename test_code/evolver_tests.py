@@ -12,7 +12,7 @@ class GeneEvolverTests(unittest.TestCase):
 
         # Note, evolver_bug causes evolver to compain "Error: expecting ; in the tree file."
         # Even though, clearly ";" is there. Adding a few parenthesis seems to fix it..
-        # This issue is not in all evolve versions. Ie, its not in  4.10.7, June 2023
+        # This issue is not in all evolver versions. Ie, its not in  4.10.7, June 2023
 
         fixed_1= gene_evolver.work_around_for_evolver_bug(evolver_OK_1)
         self.assertEqual(fixed_1, evolver_OK_1)

@@ -19,7 +19,7 @@ def run_sim():
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
     list_of_polyploids = make_polyploids(conf)
 
-    for polyploid in list_of_polyploids[0:2]:
+    for polyploid in list_of_polyploids:
 
         if polyploid.is_allo():
             allosim.run_allosim(polyploid)
@@ -46,7 +46,7 @@ def setup(arguments):
     print("Current environment: %s" + str(os.environ))
     print("Current Working Directory:\t" + os.getcwd())
 
-    print("Output filder:\t" + conf.output_folder)
+    print("Output folder:\t" + conf.output_folder)
     if not os.path.exists(conf.output_folder):
         os.makedirs(conf.output_folder)
 

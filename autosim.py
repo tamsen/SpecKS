@@ -69,7 +69,6 @@ def run_autosim(polyploid):
                                                                                  pooled_relaxed_gene_tree_results_by_tree,
                                                                                  pooled_evolver_results_by_tree_by_replicate)
 
-    #todo - this part not all working yet...
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     print(codeml_results_by_replicate_num)
     ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num,
