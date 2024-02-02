@@ -25,14 +25,16 @@ class VisualizationTests2(unittest.TestCase):
     def test_gene_tree_plotting(self):
 
         species_filter = ["P1", "P2"]
-        test_out = "./test_out"
+        test_out = "test_out"
+        test_in = "gene_tree_visuals_test_data"
         if not os.path.exists(test_out):
             os.makedirs(test_out)
 
         newick_strings=[get_gt1(),get_gt1(),get_gt2(),get_gt3()]
         plot_names=["gt_test0.png","gt_test1.png","gt_test2.png","gt_test3.png"]
-        leaf_data_files=["GeneTree0.test.leafmap","GeneTree0.test.leafmap",
-                         "GeneTree495.pruned.leafmap", "GeneTree521.pruned.leafmap"]
+        leaf_data_files=[os.path.join(test_in ,f) for f in
+            ["GeneTree0.test.leafmap","GeneTree0.test.leafmap",
+                         "GeneTree495.pruned.leafmap", "GeneTree521.pruned.leafmap"]]
 
         for i in range(0,len(newick_strings)):
             tree = Phylo.read(StringIO(newick_strings[i]), "newick")
@@ -47,18 +49,21 @@ class VisualizationTests2(unittest.TestCase):
                 species_filter,leaf_map, tree)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
-    def test_plot_newick24(self):
-        #newick_string = "(O:500,(P1:300,P2:300):200);"
 
-        #SHOULD HAVE 13 NODES AND 12 EDGES
+    def test_plot_newick24(self):
+
+        species_filter = ["P1", "P2"]
+        leaf_data_file=os.path.join("gene_tree_visuals_test_data","GeneTree0.test.leafmap")
+        leaf_map = get_leaf_map(leaf_data_file)
         newick_string =get_gt1()
         tree = Phylo.read(StringIO(newick_string), "newick")
         #leaves_to_prune = ["G0_0", "G1_0", "G2_0"]
         #for leaf in leaves_to_prune:
         #    tree.prune(leaf)
         Phylo.draw_ascii(tree)
-        file_to_save = os.path.join("./test_out", "GeneTree42.png")
-        gene_tree_visuals.plot_gene_tree_from_phylo_tree(file_to_save, tree)
+        file_to_save = os.path.join("test_out", "GeneTree42.png")
+        gene_tree_visuals.plot_gene_tree_from_phylo_tree(
+            file_to_save,  species_filter,leaf_map,tree)
 
 def get_leaf_map(leaf_map_file_path):
     leaf_map = gene_tree_maker.read_leaf_map(

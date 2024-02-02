@@ -5,7 +5,7 @@ from pipeline_modules import gene_tree_maker
 class GeneTreeTests(unittest.TestCase):
     def test_newick_simplify(self):
 
-        test_data_folder="."
+        test_data_folder="gene_tree_maker_test_data"
         results_dict= gene_tree_maker.read_pruned_trees(test_data_folder)
 
         files=list(results_dict.keys())

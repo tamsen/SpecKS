@@ -49,7 +49,6 @@ def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
 def read_pruned_trees(subfolder):
 
     tree_files = glob.glob(subfolder + "/*.pruned.tree")
-    #results_by_file={}
     results_by_tree_name = {}
     for tree_file in tree_files:
 
