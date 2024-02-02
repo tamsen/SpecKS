@@ -6,9 +6,14 @@ from Bio import Phylo
 from matplotlib import pyplot as plt
 import numpy as np
 from pathlib import Path
-from pipeline_modules import gene_tree_maker
-from visualization import gene_tree_visuals, tree_visuals_by_phylo
 from io import StringIO
+
+import polyploid_setup
+from pipeline_modules import gene_tree_maker, species_tree_maker
+from visualization import gene_tree_visuals, tree_visuals_by_phylo
+import config
+from visualization.combined_tree_view import plot_combined_tree_view
+from visualization.gene_tree_visuals import plot_gene_tree_from_phylo_tree
 
 
 class VisualizationTests2(unittest.TestCase):
@@ -45,10 +50,59 @@ class VisualizationTests2(unittest.TestCase):
             expected_file_to_save = os.path.join("./test_out",
                                                  plot_names[i].replace(".png",".phylo.png"))
             tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
-            gene_tree_visuals.plot_gene_tree_from_phylo_tree(test_file_to_save,
-                species_filter,leaf_map, tree)
+            gene_tree_visuals.plot_gene_tree_from_phylo_tree(
+                species_filter,leaf_map, tree, test_file_to_save)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
+
+    def test_plotting_a_species_tree_under_a_gene_tree(self):
+
+        test_in = "gene_tree_visuals_test_data"
+        newick_strings=[get_gt1(),get_gt1(),get_gt2(),get_gt3()]
+        leaf_data_files=[os.path.join(test_in ,f) for f in
+            ["GeneTree0.test.leafmap","GeneTree0.test.leafmap",
+                         "GeneTree495.pruned.leafmap", "GeneTree521.pruned.leafmap"]]
+        #plot a simple newick
+        test_out = "test_out"
+        if not os.path.exists(test_out):
+            os.makedirs(test_out)
+
+        newick_string1="(O:500,(P1:300,P2:300):200);"
+        out_file_name=os.path.join(test_out,"species1_by_phylo.png")
+        tree_visuals_by_phylo.save_tree_plot(newick_string1, out_file_name)
+
+        self.assertEqual(True, os.path.exists(out_file_name))  # add assertion here
+
+        #plot the species tree outline using networkx
+        config_file=get_config_file()
+        general_sim_config=config.SpecKS_config(config_file)
+        polyploid=polyploid_setup.polyploid_data(test_out,"poly1",
+                                 300,200,general_sim_config)
+        species_tree_out_file_name = os.path.join(test_out, "species1_by_specks.png")
+        species_tree_viz_data = species_tree_maker.plot_species_tree(
+                species_tree_out_file_name, polyploid)
+
+        gt_tree_out_file_name = os.path.join(test_out, "gt1_by_specks.png")
+        species_filter = ["P1", "P2"]
+
+        tree_viz_data=[species_tree_viz_data]
+        time_of_WGD_MYA=200
+        time_of_SPEC_MYA=300
+
+        for i in range(1,4):
+            tree = Phylo.read(StringIO(newick_strings[i]), "newick")
+            leaf_map = get_leaf_map(leaf_data_files[i])
+            gt_tree_viz_data =plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree,
+                                                         gt_tree_out_file_name)
+            tree_viz_data.append(gt_tree_viz_data)
+
+
+        s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
+        plot_combined_tree_view(tree_viz_data,
+                                time_of_WGD_MYA, time_of_SPEC_MYA,
+                            s_and_gt_tree_out_file_name)
+
+
 
     def test_plot_newick24(self):
 
@@ -63,7 +117,7 @@ class VisualizationTests2(unittest.TestCase):
         Phylo.draw_ascii(tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
         gene_tree_visuals.plot_gene_tree_from_phylo_tree(
-            file_to_save,  species_filter,leaf_map,tree)
+              species_filter,leaf_map,tree, file_to_save)
 
 def get_leaf_map(leaf_map_file_path):
     leaf_map = gene_tree_maker.read_leaf_map(

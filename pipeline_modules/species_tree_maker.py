@@ -2,8 +2,7 @@ import os
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-
-from graveyard import tree_visuals_as_network
+from visualization.combined_tree_view import tree_viz_data
 
 
 def get_example_autopolyploid_trees(polyploid):
@@ -82,15 +81,22 @@ def plot_species_tree(file_to_save, polyploid):
     plt.cla()
     plt.close()
 
-    species_tree_viz_data = tree_visuals_as_network.tree_viz_data()
+    #TODO - clean up, this is a messy way to do it...
+    species_tree_viz_data = save_tree_vis_data(edges, polyploid, pos)
+
+    return species_tree_viz_data
+
+
+def save_tree_vis_data(edges, polyploid, pos):
+    species_tree_viz_data = tree_viz_data()
     species_tree_viz_data.verts = edges
     species_tree_viz_data.points = pos
     species_tree_viz_data.color = mcolors.CSS4_COLORS['lightgrey']
     species_tree_viz_data.name = polyploid.species_name
-    species_tree_viz_data.width=50
-    species_tree_viz_data.alpha=1.0
-
+    species_tree_viz_data.width = 50
+    species_tree_viz_data.alpha = 1.0
     return species_tree_viz_data
+
 
 def make_species_trees(polyploid):
 

@@ -7,11 +7,16 @@ import matplotlib.colors as mcolors
 
 from pipeline_modules import gene_tree_maker
 from visualization import tree_utils
+from visualization.combined_tree_view import tree_viz_data
 
 
-def plot_gene_tree_from_phylo_tree(
-        file_to_save, species_filter, leaf_map, tree):
+def plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree, file_to_save):
 
+    time_since_speciation=300.0
+    leaf_aim=12.0
+    width=5.0 #speciation_tree_width, the envelope
+
+    slope=leaf_aim/time_since_speciation  #this is where inside the parent tree the leaves should end up
     X = Phylo.to_networkx(tree)
     nodes = list(X.nodes)
     edges = list(X.edges)
@@ -21,10 +26,10 @@ def plot_gene_tree_from_phylo_tree(
     #calculate x and y values for each node to graph
     node_i_by_name, node_names_by_i = set_node_y_values(node_coordinates_by_i, nodes, tree)
 
-    #Only keep vertexes that touch the species of interst.
+    #Only keep vertexes that touch the species of interest.
     #We dont want to clutter the diagram with the outgroup.
     nodes_to_visualize = set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
-                                          species_filter, nodes, tree)
+                                          species_filter, slope, width,nodes, tree)
     print(nodes_to_visualize)
 
     #Translate so its indexed by "i", not by clade.
@@ -34,7 +39,19 @@ def plot_gene_tree_from_phylo_tree(
     #plot it
     plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
 
+    gt_vis_data=save_tree_vis_data(edge_list_in_i_coords, pos_by_i, node_names_by_i, "gt name")
+    return gt_vis_data
 
+def save_tree_vis_data(edges, pos, labels, name):
+    gt_vis_data = tree_viz_data()
+    gt_vis_data.verts = edges
+    gt_vis_data.points = pos
+    gt_vis_data.color = mcolors.CSS4_COLORS['green']
+    gt_vis_data.name = name
+    gt_vis_data.width = 3
+    gt_vis_data.alpha = 0.5
+    gt_vis_data.labels = labels
+    return gt_vis_data
 def plot_gene_tree(X, edge_list_in_i_coords,
                     node_names_by_i, pos_by_i, file_to_save):
     fig, ax = plt.subplots()
@@ -98,25 +115,31 @@ def get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize):
     return edges_to_visualize
 
 
-def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict, species_filter, nodes, tree):
+def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
+                      species_filter, slope, width, nodes, tree):
+
     nodes_to_visulize={}
     for i in range(0, len(nodes)):
         leafs = nodes[i].get_terminals()
         names = [leaf.name for leaf in leafs]
         species = [species_by_leaf_dict[name] for name in names]
 
-        if species_filter[0] in species: #ie, does a leaf land in P1
-            f = .3
+        #TODO - these magic numbers will be cleaned out to match the species tree..
+        if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1?
+            f = .0
             nodes_to_visulize[i]=names.copy()
-        elif species_filter[1] in species: #ie, does a leaf land in P2
-            f = -.3
+        elif species_filter[0] in species: #ie, does a leaf land in P1?
+            f = slope
+            nodes_to_visulize[i]=names.copy()
+        elif species_filter[1] in species: #ie, does a leaf land in P2/
+            f = -1.0 * slope
             nodes_to_visulize[i]=names.copy()
         else: #never conected with our species of interest
             f = 0
             print("bad")
             print(species)
         (b, num_sibs) = tree_utils.birth_order(tree, nodes[i])
-        delta = b * 100.0 / num_sibs
+        delta = b * width / num_sibs
         print(names)
         node_coordinates_by_i[i].x = tree.distance(nodes[i]) * f + delta
 
