@@ -1,5 +1,4 @@
 import os
-import tree_visuals_by_phylo
 import pipeline_modules.gene_tree_maker as gene_tree_maker
 import common
 

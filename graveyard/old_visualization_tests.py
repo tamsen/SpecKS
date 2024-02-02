@@ -3,7 +3,7 @@ import unittest
 from Bio import Phylo
 from matplotlib import pyplot as plt
 
-import tree_visuals_by_phylo
+from visualization import tree_visuals_by_phylo
 from pathlib import Path
 import polyploid_setup
 import config

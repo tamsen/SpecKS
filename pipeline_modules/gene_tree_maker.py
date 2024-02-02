@@ -2,7 +2,7 @@ import glob
 import os
 import common
 import matplotlib.pyplot as plt
-import tree_visuals_by_phylo
+from visualization import tree_visuals_by_phylo
 from scipy.stats import beta
 
 
