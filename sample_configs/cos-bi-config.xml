@@ -18,7 +18,7 @@
     <GeneTree>
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
-        <num_gene_trees_per_species_tree>1000</num_gene_trees_per_species_tree>
+        <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
     </GeneTree>
     <SequenceEvolution>
         <num_replicates_per_gene_tree>3</num_replicates_per_gene_tree>

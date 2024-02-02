@@ -166,7 +166,7 @@ def run_sagephy(polyploid, species_tree_newick):
     for pruned_tree_file in pruned_tree_names:
         plot_file_name= os.path.join(subfolder,pruned_tree_file +".png")
         print("newick to plot:\t" +gene_tree_data_by_tree_name[pruned_tree_file].simple_newick)
-        tree_visuals.save_tree_plot(gene_tree_data_by_tree_name[pruned_tree_file].simple_newick, plot_file_name)
+        tree_visuals_by_phylo.save_tree_plot(gene_tree_data_by_tree_name[pruned_tree_file].simple_newick, plot_file_name)
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_tree_data_by_tree_name
