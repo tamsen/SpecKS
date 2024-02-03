@@ -3,6 +3,7 @@ import os
 import common
 import matplotlib.pyplot as plt
 from visualization import tree_visuals_by_phylo
+from visualization import gene_tree_visuals
 from scipy.stats import beta
 
 

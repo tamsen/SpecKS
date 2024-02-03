@@ -1,3 +1,5 @@
+import os
+
 import networkx as nx
 import numpy as np
 from Bio import Phylo
@@ -5,9 +7,51 @@ from matplotlib import pyplot as plt
 from six import StringIO
 import matplotlib.colors as mcolors
 
-from pipeline_modules import gene_tree_maker
-from visualization import tree_utils
-from visualization.combined_tree_view import tree_viz_data
+from pipeline_modules import gene_tree_maker, species_tree_maker
+from visualization import tree_utils, tree_visuals_by_phylo
+from visualization.combined_tree_view import tree_viz_data, plot_combined_tree_view
+
+
+#TODO -ths fxn is just sketched out for now.
+#the idea is it does an overlay plot of all the gene trees for the polyploid.
+def plot_gene_trees_on_top_of_species_trees(polyploid, config,leaf_map):
+    test_in = "gene_tree_visuals_test_data"
+    newick_strings = ["get_gt1()", "get_gt1()", "get_gt2()", "get_gt3()"]
+    leaf_data_files = [os.path.join(test_in, f) for f in
+                       ["GeneTree0.test.leafmap", "GeneTree0.test.leafmap",
+                        "GeneTree495.pruned.leafmap", "GeneTree521.pruned.leafmap"]]
+    # plot a simple newick
+    test_out = "test_out"
+    if not os.path.exists(test_out):
+        os.makedirs(test_out)
+
+    newick_string1 = "(O:500,(P1:300,P2:300):200);"
+    out_file_name = os.path.join(test_out, "species1_by_phylo.png")
+    tree_visuals_by_phylo.save_tree_plot(newick_string1, out_file_name)
+
+    # plot the species tree outline using networkx
+    species_tree_out_file_name = os.path.join(test_out, "species1_by_specks.png")
+    species_tree_viz_data = species_tree_maker.plot_species_tree(
+        species_tree_out_file_name, polyploid)
+
+    gt_tree_out_file_name = os.path.join(test_out, "gt1_by_specks.png")
+    species_filter = ["P1", "P2"]
+
+    tree_viz_data = [species_tree_viz_data]
+    time_of_WGD_MYA = 200
+    time_of_SPEC_MYA = 300
+
+    for i in range(1, 4):
+        tree = Phylo.read(StringIO(newick_strings[i]), "newick")
+        #leaf_map = get_leaf_map(leaf_data_files[i])
+        gt_tree_viz_data = plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree,
+                                                          gt_tree_out_file_name)
+        tree_viz_data.append(gt_tree_viz_data)
+
+    s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
+    plot_combined_tree_view(tree_viz_data,
+                            time_of_WGD_MYA, time_of_SPEC_MYA,
+                            s_and_gt_tree_out_file_name)
 
 
 def plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree, file_to_save):
