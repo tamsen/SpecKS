@@ -31,13 +31,12 @@ class polyploid_data():
     SPC_time_MYA=0
     WGD_time_MYA=0
     FULL_time_MYA=0
+    subgenome_names = ["P1", "P2"]
     mode="TBD"
     general_sim_config=False
     species_subfolder=""
     subtree_subfolder=""
-    analysis_step_num=1       #this will be
-
-    # update at run-time
+    analysis_step_num=1       #this will be updated at run-time
     def __init__(self, subfolder,species_name, SPC_time,WGD_time,general_sim_config):
 
         self.species_subfolder=os.path.join(subfolder, species_name)

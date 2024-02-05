@@ -1,18 +1,52 @@
 import networkx as nx
+import random
 from matplotlib import pyplot as plt
+import matplotlib.colors as mcolors
 
-def plot_combined_tree_view(tree_viz_data_list,time_of_WGD_MYA, time_of_SPEC_MYA,
+
+def color_list():
+
+    return [mcolors.CSS4_COLORS['black'], mcolors.CSS4_COLORS['purple'], mcolors.CSS4_COLORS['gold'],
+            mcolors.CSS4_COLORS['pink'], mcolors.CSS4_COLORS['lavender'], mcolors.CSS4_COLORS['brown'],
+            mcolors.CSS4_COLORS['green'],mcolors.CSS4_COLORS['red'],mcolors.CSS4_COLORS['cyan'],
+            mcolors.CSS4_COLORS['blue'], mcolors.CSS4_COLORS['yellow'], mcolors.CSS4_COLORS['orange'],
+            mcolors.CSS4_COLORS['green'], mcolors.CSS4_COLORS['red'], mcolors.CSS4_COLORS['cyan'],
+            ]
+
+def plot_combined_tree_view(gt_tree_viz_data_by_name,species_tree_viz_data,
+                            time_of_WGD_MYA, time_of_SPEC_MYA, full_sim_time,
                             file_to_save):
 
-    time_before_WGD=500-time_of_WGD_MYA
-    time_before_SPEC=500-time_of_SPEC_MYA
+    #perturb the gene tree values so they dont sit right on top of each other for plotting
+    random.seed(10)
+    colors=color_list()
+    gt_names=list(gt_tree_viz_data_by_name.keys())
+    tree_viz_data_list=[species_tree_viz_data]
+    for i in range(0,len(gt_names)):
+        name=gt_names[i]
+        gt_viz_data = gt_tree_viz_data_by_name[name]
+        gt_viz_data.color = colors[i]
+        tree_viz_data_list.append(gt_viz_data)
+        num_to_add=20*(random.random()-0.5) # random float between 0 and 1
+        for id, point in gt_viz_data.points.items():
+            new_x=point[0]+num_to_add
+            old_y=point[1]
+            gt_viz_data.points[id]=(new_x,old_y)
+
+    time_before_WGD=full_sim_time-time_of_WGD_MYA
+    time_before_SPEC=full_sim_time-time_of_SPEC_MYA
     fig, ax = plt.subplots()
     X = nx.Graph()
 
     for data_to_plot in tree_viz_data_list:
+        label=None
+        if data_to_plot.width<10:
+            label=data_to_plot.name
+
         X.add_edges_from(data_to_plot.verts)
         nx.draw_networkx_edges(X, data_to_plot.points, data_to_plot.verts, arrows=False,
-                           edge_color=data_to_plot.color,alpha=data_to_plot.alpha , width=data_to_plot.width)
+                           edge_color=data_to_plot.color,alpha=data_to_plot.alpha , width=data_to_plot.width,
+                               label=label)
 
         #if data_to_plot.labels:
         #    plot_node_labels(data_to_plot.points, data_to_plot.labels, plt)

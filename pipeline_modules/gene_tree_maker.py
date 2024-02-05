@@ -163,11 +163,25 @@ def run_sagephy(polyploid, species_tree_newick):
     pruned_tree_names=gene_tree_data_by_tree_name.keys()
     print("pruned_tree_files:\t" + str(pruned_tree_names))
 
-    for pruned_tree_file in pruned_tree_names:
-        plot_file_name= os.path.join(subfolder,pruned_tree_file +".png")
-        print("newick to plot:\t" +gene_tree_data_by_tree_name[pruned_tree_file].simple_newick)
-        tree_visuals_by_phylo.save_tree_plot(gene_tree_data_by_tree_name[pruned_tree_file].simple_newick, plot_file_name)
+    gt_tree_viz_data_by_name={}
+    j=0
+    max_num_gt_to_plot=10
+    for gt_name in pruned_tree_names:
+        if j> max_num_gt_to_plot:
+            break
+        plot_file_name_1= os.path.join(subfolder,gt_name +"_phylo.png")
+        plot_file_name_2= os.path.join(subfolder,gt_name +"_specks.png")
+        gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
+        leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
+        print("newick to plot:\t" +gt_newick)
+        tree_visuals_by_phylo.save_tree_plot(gt_newick, plot_file_name_1)
+        gt_tree_viz_data=gene_tree_visuals.plot_gene_tree_alone(
+            polyploid.subgenome_names, leaf_map,gt_newick, gt_name, plot_file_name_2)
+        gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
+        i=i+1
 
+    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, config,
+                                                              gt_tree_viz_data_by_name, subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_tree_data_by_tree_name
 

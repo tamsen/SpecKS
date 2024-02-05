@@ -1,61 +1,36 @@
 import os
 
 import networkx as nx
-import numpy as np
+from io import StringIO
 from Bio import Phylo
 from matplotlib import pyplot as plt
-from six import StringIO
 import matplotlib.colors as mcolors
-
 from pipeline_modules import gene_tree_maker, species_tree_maker
-from visualization import tree_utils, tree_visuals_by_phylo
+from visualization import tree_utils, tree_visuals_by_phylo, combined_tree_view
 from visualization.combined_tree_view import tree_viz_data, plot_combined_tree_view
 
 
-#TODO -ths fxn is just sketched out for now.
-#the idea is it does an overlay plot of all the gene trees for the polyploid.
-def plot_gene_trees_on_top_of_species_trees(polyploid, config,leaf_map):
-    test_in = "gene_tree_visuals_test_data"
-    newick_strings = ["get_gt1()", "get_gt1()", "get_gt2()", "get_gt3()"]
-    leaf_data_files = [os.path.join(test_in, f) for f in
-                       ["GeneTree0.test.leafmap", "GeneTree0.test.leafmap",
-                        "GeneTree495.pruned.leafmap", "GeneTree521.pruned.leafmap"]]
-    # plot a simple newick
-    test_out = "test_out"
-    if not os.path.exists(test_out):
-        os.makedirs(test_out)
+def plot_gene_trees_on_top_of_species_trees(polyploid, config,
+                                            gt_tree_viz_data_by_name, out_folder):
 
-    newick_string1 = "(O:500,(P1:300,P2:300):200);"
-    out_file_name = os.path.join(test_out, "species1_by_phylo.png")
-    tree_visuals_by_phylo.save_tree_plot(newick_string1, out_file_name)
 
     # plot the species tree outline using networkx
-    species_tree_out_file_name = os.path.join(test_out, "species1_by_specks.png")
+    species_tree_out_file_name = os.path.join(out_folder, "species1_by_specks.png")
     species_tree_viz_data = species_tree_maker.plot_species_tree(
         species_tree_out_file_name, polyploid)
 
-    gt_tree_out_file_name = os.path.join(test_out, "gt1_by_specks.png")
-    species_filter = ["P1", "P2"]
-
-    tree_viz_data = [species_tree_viz_data]
-    time_of_WGD_MYA = 200
-    time_of_SPEC_MYA = 300
-
-    for i in range(1, 4):
-        tree = Phylo.read(StringIO(newick_strings[i]), "newick")
-        #leaf_map = get_leaf_map(leaf_data_files[i])
-        gt_tree_viz_data = plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree,
-                                                          gt_tree_out_file_name)
-        tree_viz_data.append(gt_tree_viz_data)
-
-    s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
-    plot_combined_tree_view(tree_viz_data,
-                            time_of_WGD_MYA, time_of_SPEC_MYA,
-                            s_and_gt_tree_out_file_name)
+    # plot the gene trees over the species tree
+    s_and_gt_tree_out_file_name = os.path.join(out_folder, "species_and_gt_by_specks.png")
+    combined_tree_view.plot_combined_tree_view(gt_tree_viz_data_by_name,
+                                               species_tree_viz_data,
+                            polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
+                            polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
 
 
-def plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree, file_to_save):
+def plot_gene_tree_alone(
+        species_filter, leaf_map, tree_as_newick, gt_name, file_to_save):
 
+    tree = Phylo.read(StringIO(tree_as_newick), "newick")
     time_since_speciation=300.0
     leaf_aim=12.0
     width=5.0 #speciation_tree_width, the envelope
@@ -74,7 +49,7 @@ def plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree, file_to_save)
     #We dont want to clutter the diagram with the outgroup.
     nodes_to_visualize = set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
                                           species_filter, slope, width,nodes, tree)
-    print(nodes_to_visualize)
+    #print(nodes_to_visualize)
 
     #Translate so its indexed by "i", not by clade.
     edge_list_in_i_coords = get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize)
@@ -83,7 +58,8 @@ def plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree, file_to_save)
     #plot it
     plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
 
-    gt_vis_data=save_tree_vis_data(edge_list_in_i_coords, pos_by_i, node_names_by_i, "gt name")
+    gt_vis_data=save_tree_vis_data(edge_list_in_i_coords, pos_by_i,
+                                   node_names_by_i,  gt_name)
     return gt_vis_data
 
 def save_tree_vis_data(edges, pos, labels, name):
@@ -93,17 +69,14 @@ def save_tree_vis_data(edges, pos, labels, name):
     gt_vis_data.color = mcolors.CSS4_COLORS['green']
     gt_vis_data.name = name
     gt_vis_data.width = 3
-    gt_vis_data.alpha = 0.5
+    gt_vis_data.alpha = 0.3
     gt_vis_data.labels = labels
     return gt_vis_data
 def plot_gene_tree(X, edge_list_in_i_coords,
                     node_names_by_i, pos_by_i, file_to_save):
+
     fig, ax = plt.subplots()
     X.add_edges_from(edge_list_in_i_coords)
-    # todo - dont visualize the outgroup. last time this worked with nodelist= [1,2,3]
-    # short_pos_list={i:pos[i] for i in [1,2,4]}
-    # for edge in new_edge_list:
-    #    nx.draw_networkx_edges(X, pos, new_edge_list)
     nx.draw_networkx_edges(X, pos_by_i, edge_list_in_i_coords)  # nodes_to_visulize)
     plot_node_labels(pos_by_i, node_names_by_i, plt)
     ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=False)
@@ -168,7 +141,6 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
         names = [leaf.name for leaf in leafs]
         species = [species_by_leaf_dict[name] for name in names]
 
-        #TODO - these magic numbers will be cleaned out to match the species tree..
         if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1?
             f = .0
             nodes_to_visulize[i]=names.copy()
@@ -180,11 +152,10 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
             nodes_to_visulize[i]=names.copy()
         else: #never conected with our species of interest
             f = 0
-            print("bad")
-            print(species)
+            #print(species)
         (b, num_sibs) = tree_utils.birth_order(tree, nodes[i])
         delta = b * width / num_sibs
-        print(names)
+        #print(names)
         node_coordinates_by_i[i].x = tree.distance(nodes[i]) * f + delta
 
     return nodes_to_visulize.keys() #we dont really need a full dict. that is just for troubleshooting

@@ -13,7 +13,7 @@ from pipeline_modules import gene_tree_maker, species_tree_maker
 from visualization import gene_tree_visuals, tree_visuals_by_phylo
 import config
 from visualization.combined_tree_view import plot_combined_tree_view
-from visualization.gene_tree_visuals import plot_gene_tree_from_phylo_tree
+from visualization.gene_tree_visuals import plot_gene_tree_alone
 
 
 class VisualizationTests2(unittest.TestCase):
@@ -50,7 +50,7 @@ class VisualizationTests2(unittest.TestCase):
             expected_file_to_save = os.path.join("./test_out",
                                                  plot_names[i].replace(".png",".phylo.png"))
             tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
-            gene_tree_visuals.plot_gene_tree_from_phylo_tree(
+            gene_tree_visuals.plot_gene_tree_alone(
                 species_filter,leaf_map, tree, test_file_to_save)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
@@ -92,14 +92,15 @@ class VisualizationTests2(unittest.TestCase):
         for i in range(1,4):
             tree = Phylo.read(StringIO(newick_strings[i]), "newick")
             leaf_map = get_leaf_map(leaf_data_files[i])
-            gt_tree_viz_data =plot_gene_tree_from_phylo_tree(species_filter, leaf_map, tree,
-                                                         gt_tree_out_file_name)
+            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_map, tree,
+                                                   gt_tree_out_file_name)
             tree_viz_data.append(gt_tree_viz_data)
 
 
+        full_sim_time=500
         s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
         plot_combined_tree_view(tree_viz_data,
-                                time_of_WGD_MYA, time_of_SPEC_MYA,
+                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,
                             s_and_gt_tree_out_file_name)
 
 
@@ -116,7 +117,7 @@ class VisualizationTests2(unittest.TestCase):
         #    tree.prune(leaf)
         Phylo.draw_ascii(tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
-        gene_tree_visuals.plot_gene_tree_from_phylo_tree(
+        gene_tree_visuals.plot_gene_tree_alone(
               species_filter,leaf_map,tree, file_to_save)
 
 def get_leaf_map(leaf_map_file_path):
