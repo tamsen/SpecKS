@@ -29,5 +29,5 @@
         <maxKs>5</maxKs>
         <maxY>False</maxY>
     </Histogram>
-    <StopAtStep>2</StopAtStep>
+    <StopAtStep>3</StopAtStep>
 </metadata>

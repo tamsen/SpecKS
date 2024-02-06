@@ -1,6 +1,7 @@
 import os
 import pipeline_modules.gene_tree_maker as gene_tree_maker
 import common
+from visualization import tree_visuals_by_phylo, gene_tree_visuals
 
 
 def relax(polyploid,gene_tree_results_by_tree_name):
@@ -18,6 +19,7 @@ def relax(polyploid,gene_tree_results_by_tree_name):
         os.makedirs(subfolder)
 
     relaxed_gene_tree_results_by_gene_tree={}
+    gt_tree_viz_data_by_gene_tree={}
     for gene_tree, gene_tree_results in gene_tree_results_by_tree_name.items():
 
         out_file_name=gene_tree +".relaxed.tree"
@@ -31,14 +33,25 @@ def relax(polyploid,gene_tree_results_by_tree_name):
 
         full_path_out_file=os.path.join(subfolder,out_file_name)
         relaxed_gene_tree_results= gene_tree_maker.read_tree_file(full_path_out_file)
+        relaxed_gene_tree_results = gene_tree_maker.add_back_outgroup(relaxed_gene_tree_results, polyploid.FULL_time_MYA)
         relaxed_gene_tree_results.info_dict=gene_tree_results.info_dict.copy()
         relaxed_gene_tree_results.num_extant_leaves=gene_tree_results.num_extant_leaves
         relaxed_gene_tree_results.leaves_by_species =gene_tree_results.leaves_by_species.copy()
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 
-        plot_file_name= full_path_out_file +".png"
+        plot_file_name_1= full_path_out_file +"_phylo.png"
+        plot_file_name_2= os.path.join(subfolder,gene_tree +"_specks.png")
         print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
-        tree_visuals.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name)
+        tree_visuals_by_phylo.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
 
+
+        gt_newick=relaxed_gene_tree_results.simple_newick
+        leaf_map = relaxed_gene_tree_results.leaves_by_species
+        gt_tree_viz_data=gene_tree_visuals.plot_gene_tree_alone(
+            polyploid.subgenome_names, leaf_map,gt_newick, gene_tree, plot_file_name_2)
+        gt_tree_viz_data_by_gene_tree[gene_tree]=gt_tree_viz_data
+
+    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, config,
+                                                              gt_tree_viz_data_by_gene_tree, subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return relaxed_gene_tree_results_by_gene_tree
