@@ -1,3 +1,27 @@
+from Bio import Phylo
+
+
+# It would be more efficient to stick this inside the "set_node_x_values"
+# method of the gene tree visuals module. But I'm leaving it here
+# for now for modularity.
+def print_node_distances(tree, out_file):
+
+    X = Phylo.to_networkx(tree)
+    nodes = list(X.nodes)
+    col_headers=["node_name","dist","leaves"]
+
+    with open(out_file, 'w') as f:
+        f.writelines(",".join(col_headers) +"\n")
+        for node in nodes:
+            name="no_name"
+            if node.name:
+                name = node.name
+            leaves = node.get_terminals()
+            leaf_names = " ".join([leaf.name for leaf in leaves])
+            dist_string=str(tree.distance(node))
+            data=[name ,dist_string,leaf_names]
+            f.writelines(",".join(data) + "\n")
+
 
 def get_parent(tree, child_clade):
         node_path = tree.get_path(child_clade)

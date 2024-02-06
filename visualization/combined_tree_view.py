@@ -79,3 +79,4 @@ class tree_viz_data():
     width=1
     alpha=0.5
     labels={}
+    node_distances={}

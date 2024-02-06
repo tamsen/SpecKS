@@ -3,7 +3,6 @@ import pipeline_modules.gene_tree_maker as gene_tree_maker
 import common
 from visualization import tree_visuals_by_phylo, gene_tree_visuals
 
-
 def relax(polyploid,gene_tree_results_by_tree_name):
 
     config = polyploid.general_sim_config
@@ -20,14 +19,15 @@ def relax(polyploid,gene_tree_results_by_tree_name):
 
     relaxed_gene_tree_results_by_gene_tree={}
     gt_tree_viz_data_by_gene_tree={}
+    random_seed=0
     for gene_tree, gene_tree_results in gene_tree_results_by_tree_name.items():
-
+        random_seed=random_seed+1
         out_file_name=gene_tree +".relaxed.tree"
         in_file_name =gene_tree_results.gene_tree_file_name
         cmd= ["java","-jar",
              config.path_to_sagephy,"BranchRelaxer",
               "-x","-innms","-o" ,out_file_name, in_file_name,
-              "ACRY07","1","0.000001"]
+              "ACRY07","1","0.000001", "-s", str(random_seed)]
 
         common.run_and_wait_on_process(cmd, subfolder)
 
@@ -51,7 +51,9 @@ def relax(polyploid,gene_tree_results_by_tree_name):
             polyploid.subgenome_names, leaf_map,gt_newick, gene_tree, plot_file_name_2)
         gt_tree_viz_data_by_gene_tree[gene_tree]=gt_tree_viz_data
 
-    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, config,
-                                                              gt_tree_viz_data_by_gene_tree, subfolder)
+    gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,
+                                               "relaxed",  subfolder)
+    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, gt_tree_viz_data_by_gene_tree,
+                                                              "relaxed",  subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return relaxed_gene_tree_results_by_gene_tree

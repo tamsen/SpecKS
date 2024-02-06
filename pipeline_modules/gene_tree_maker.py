@@ -10,12 +10,13 @@ from visualization import gene_tree_visuals
 from scipy.stats import beta
 
 
-def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, loss_rate, out_file_name):
+def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, loss_rate,
+                                        random_seed, out_file_name):
 
 
     cmd = ["java", "-jar", config.path_to_sagephy,
          "GuestTreeGen", species_tree_newick,
-         str(dup_rate), str(loss_rate), "0.0",out_file_name]
+         str(dup_rate), str(loss_rate), "0.0",out_file_name, "-s", str(random_seed)]
 
     #"nox" is for "no auxillary tags" as per the manual
     # If nox is ON you get the simple netwick that evolver wants
@@ -184,8 +185,10 @@ def run_sagephy(polyploid, species_tree_newick):
 
     for i in range(0, num_gene_trees_needed):
         out_file_name = "GeneTree" + str(i)
+        random_seed = i #to make the results repeatable, run to run, but different between GT
         cmd = write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick,
                                                   dup_values[i], loss_values[i],
+                                                  random_seed,
                                                   os.path.join(subfolder,out_file_name))
         common.run_and_wait_on_process(cmd, subfolder)
 
@@ -211,8 +214,11 @@ def run_sagephy(polyploid, species_tree_newick):
         gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
         i=i+1
 
-    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, config,
-                                                              gt_tree_viz_data_by_name, subfolder)
+    gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_name,
+                                               "raw_gene_tree",  subfolder)
+    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid,
+                                                              gt_tree_viz_data_by_name,
+                                                              "raw_gene_tree", subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_tree_data_by_tree_name
 

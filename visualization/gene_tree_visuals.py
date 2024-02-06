@@ -10,17 +10,49 @@ from visualization import tree_utils, tree_visuals_by_phylo, combined_tree_view
 from visualization.combined_tree_view import tree_viz_data, plot_combined_tree_view
 
 
-def plot_gene_trees_on_top_of_species_trees(polyploid, config,
-                                            gt_tree_viz_data_by_name, out_folder):
+def histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,
+                                               file_prefix,  out_folder):
+    dist_histogram_out_file_name = os.path.join(out_folder,
+                                              file_prefix + "_" + polyploid.species_name
+                                                + "_node_dist_histogram.png")
+
+    MYA_list=[]
+    for gene_tree, gt_tree_viz_data in gt_tree_viz_data_by_gene_tree.items():
+
+        #filter out the origin (dist==0) and reverse time, so its MYA and not distance
+        MYA= [polyploid.FULL_time_MYA-d for d in gt_tree_viz_data.node_distances if d > 1.0]
+        MYA_list= MYA + MYA_list
+
+    #https: // matplotlib.org / stable / gallery / statistics / hist.html
+
+    fig = plt.figure(figsize=(10, 10), dpi=100)
+    n_bins=50
+    n, bins, patches = plt.hist(MYA_list, bins=n_bins, facecolor='b', alpha=0.25, label='histogram data')
+    plt.axvline(x=polyploid.WGD_time_MYA, color='r', linestyle='--', label="WGD")
+    plt.axvline(x=polyploid.SPC_time_MYA, color='b', linestyle='--', label="SPEC")
+    plt.legend()
+    plt.xlim(0,polyploid.FULL_time_MYA + 50)
+    plt.xlabel("Node dist (MYA)")
+    plt.ylabel("Num nodes")
+    plt.title("Node-distance histogram for " + polyploid.species_name  + ", " + file_prefix)
+    plt.savefig(dist_histogram_out_file_name)
+    plt.clf()
+    plt.close()
+
+    return dist_histogram_out_file_name
+def plot_gene_trees_on_top_of_species_trees(polyploid,
+                                            gt_tree_viz_data_by_name, file_prefix, out_folder):
 
 
     # plot the species tree outline using networkx
-    species_tree_out_file_name = os.path.join(out_folder, "species1_by_specks.png")
+    species_tree_out_file_name = os.path.join(out_folder,
+                                              file_prefix + "_" + polyploid.species_name + "_by_specks.png")
     species_tree_viz_data = species_tree_maker.plot_species_tree(
         species_tree_out_file_name, polyploid)
 
     # plot the gene trees over the species tree
-    s_and_gt_tree_out_file_name = os.path.join(out_folder, "species_and_gt_by_specks.png")
+    s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
+                                               polyploid.species_name + "_species_and_gt_by_specks.png")
     combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
                             polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
@@ -54,16 +86,18 @@ def plot_gene_tree_alone(
     #Translate so its indexed by "i", not by clade.
     edge_list_in_i_coords = get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize)
     pos_by_i = pos_dict_in_i_coords(node_coordinates_by_i,nodes_to_visualize)
-
-    #plot it
+    node_distances=[node_coordinates_by_i[i].distance for i in range(0,len(node_coordinates_by_i)) ]
+    #plot it & print it
     if file_to_save:
         plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
+        css_to_save=file_to_save.replace(".png",".dist.csv")
+        tree_utils.print_node_distances(tree, css_to_save)
 
     gt_vis_data=save_tree_vis_data(edge_list_in_i_coords, pos_by_i,
-                                   node_names_by_i,  gt_name)
+                                   node_names_by_i, node_distances, gt_name)
     return gt_vis_data
 
-def save_tree_vis_data(edges, pos, labels, name):
+def save_tree_vis_data(edges, pos, labels, node_distances, name):
     gt_vis_data = tree_viz_data()
     gt_vis_data.verts = edges
     gt_vis_data.points = pos
@@ -72,6 +106,7 @@ def save_tree_vis_data(edges, pos, labels, name):
     gt_vis_data.width = 3
     gt_vis_data.alpha = None
     gt_vis_data.labels = labels
+    gt_vis_data.node_distances = node_distances
     return gt_vis_data
 def plot_gene_tree(X, edge_list_in_i_coords,
                     node_names_by_i, pos_by_i, file_to_save):
@@ -145,8 +180,8 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
         leafs = nodes[i].get_terminals()
         names = [leaf.name for leaf in leafs]
         species = [species_by_leaf_dict[name] for name in names]
-
-        if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1?
+        distance =tree.distance(nodes[i])
+        if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1 AND P2?
             f = .0
             nodes_to_visulize[i]=names.copy()
         elif species_filter[0] in species: #ie, does a leaf land in P1?
@@ -157,11 +192,13 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
             nodes_to_visulize[i]=names.copy()
         else: #never conected with our species of interest
             f = 0.0
+            distance = -1
 
         (b, num_sibs) = tree_utils.birth_order(tree, nodes[i])
         delta = b * width / num_sibs
         #print(names)
-        node_coordinates_by_i[i].x = tree.distance(nodes[i]) * f + delta
+        node_coordinates_by_i[i].x = distance * f + delta
+        node_coordinates_by_i[i].distance=distance
 
     return nodes_to_visulize.keys() #we dont really need a full dict. that is just for troubleshooting
 
@@ -202,10 +239,4 @@ class node_coordinate():
     y=0
     x=0
     name=""
-class tree_data_for_nx():
-    points={}
-    verts=[]
-    color='k'
-    name=""
-    width=1
-    alpha=0
+    distance=0
