@@ -1,10 +1,6 @@
 import os
 import unittest
-
-import networkx as nx
 from Bio import Phylo
-from matplotlib import pyplot as plt
-import numpy as np
 from pathlib import Path
 from io import StringIO
 
@@ -51,7 +47,7 @@ class VisualizationTests2(unittest.TestCase):
                                                  plot_names[i].replace(".png",".phylo.png"))
             tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
             gene_tree_visuals.plot_gene_tree_alone(
-                species_filter,leaf_map, tree, test_file_to_save)
+                species_filter,leaf_map, newick_strings[i], "gt_name", test_file_to_save)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
 
@@ -85,25 +81,109 @@ class VisualizationTests2(unittest.TestCase):
         gt_tree_out_file_name = os.path.join(test_out, "gt1_by_specks.png")
         species_filter = ["P1", "P2"]
 
-        tree_viz_data=[species_tree_viz_data]
+        gt_tree_viz_data_by_gt_name= {}
         time_of_WGD_MYA=200
         time_of_SPEC_MYA=300
 
         for i in range(1,4):
-            tree = Phylo.read(StringIO(newick_strings[i]), "newick")
             leaf_map = get_leaf_map(leaf_data_files[i])
-            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_map, tree,
+            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_map,newick_strings[i],
                                                    gt_tree_out_file_name)
-            tree_viz_data.append(gt_tree_viz_data)
+            gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
 
 
         full_sim_time=500
         s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
-        plot_combined_tree_view(tree_viz_data,
+        plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_gt_name,
                                 time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,
                             s_and_gt_tree_out_file_name)
 
+    def test_short_gts(self):
 
+        tree_files=["GeneTree0.pruned.tree","GeneTree1.pruned.tree",
+                    "GeneTree2.pruned.tree","GeneTree3.pruned.tree",
+                    "GeneTree4.pruned.tree"]
+
+        test_out = "test_out"
+        test_in = "gene_tree_visuals_test_data"
+        if not os.path.exists(test_out):
+            os.makedirs(test_out)
+
+        newick_strings=[]
+        leaf_maps=[]
+        tree_data_files=[os.path.join(test_in,"short_gene_trees" ,f) for f in tree_files]
+
+        for tree_file in tree_data_files:
+            newick,leaf_map = get_gt_from_file(tree_file)
+            newick_strings.append(newick)
+            leaf_maps.append(leaf_map)
+
+        #plot the species tree outline using networkx
+        config_file=get_config_file()
+        general_sim_config=config.SpecKS_config(config_file)
+        polyploid=polyploid_setup.polyploid_data(test_out,"poly1",
+                                 300,200,general_sim_config)
+        species_tree_out_file_name = os.path.join(test_out, "species1_by_specks.png")
+        species_tree_viz_data = species_tree_maker.plot_species_tree(
+                species_tree_out_file_name, polyploid)
+
+        gt_tree_out_file_name = os.path.join(test_out, "gt1_by_specks.png")
+        species_filter = ["P1", "P2"]
+
+        gt_tree_viz_data_by_gt_name= {}
+        time_of_WGD_MYA=200
+        time_of_SPEC_MYA=300
+
+        for i in range(0,5):
+            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_maps[i],newick_strings[i],
+                                                   "gt" + str(i),
+                                                   gt_tree_out_file_name)
+            gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
+
+
+        full_sim_time=500
+        s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_short_gt_by_specks.png")
+        plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_gt_name,
+                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,
+                            s_and_gt_tree_out_file_name)
+
+    def test_add_back_root(self):
+
+
+        tree_files=["GeneTree0.pruned.tree","GeneTree1.pruned.tree",
+                    "GeneTree2.pruned.tree","GeneTree3.pruned.tree",
+                    "GeneTree4.pruned.tree"]
+
+        test_in = "gene_tree_visuals_test_data"
+        newick_strings=[]
+        tree_data_files=[os.path.join(test_in,"short_gene_trees" ,f) for f in tree_files]
+
+        for tree_file in tree_data_files:
+            newick,leaf_map = get_gt_from_file(tree_file)
+            newick_strings.append(newick)
+
+
+        # we need some smarts to add back in the outgroup, if it got lost..
+        for newick_1 in newick_strings:
+
+            tree_1 = Phylo.read(StringIO(newick_1), "newick")
+            Phylo.draw_ascii(tree_1)
+            terminals = tree_1.get_terminals()
+
+            for t in terminals:
+                dist = tree_1.distance(t)
+                print(dist)
+
+            adjusted_newick = gene_tree_maker.unprune_outgroup(newick_1,500)
+            tree_1_fixed = Phylo.read(StringIO(adjusted_newick), "newick")
+            Phylo.draw_ascii(tree_1_fixed)
+            terminals = tree_1_fixed.get_terminals()
+
+            tolerance=0.005
+            for t in terminals:
+                dist = tree_1_fixed.distance(t)
+                print(dist)
+                self.assertEqual(True, dist>=(500-tolerance))
 
     def test_plot_newick24(self):
 
@@ -115,10 +195,12 @@ class VisualizationTests2(unittest.TestCase):
         #leaves_to_prune = ["G0_0", "G1_0", "G2_0"]
         #for leaf in leaves_to_prune:
         #    tree.prune(leaf)
+        my_clade=Phylo.clade("foo",distance=500)
+        tree.add(my_clade)
         Phylo.draw_ascii(tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
         gene_tree_visuals.plot_gene_tree_alone(
-              species_filter,leaf_map,tree, file_to_save)
+              species_filter,leaf_map,newick_string, file_to_save)
 
 def get_leaf_map(leaf_map_file_path):
     leaf_map = gene_tree_maker.read_leaf_map(
@@ -139,6 +221,13 @@ def get_gt3():
     #GeneTree521.pruned.tree
     gt3="(G0_0:500.0[ID=0 HOST=0 GUEST=null VERTEXTYPE=Leaf],((G1_1:300.0[ID=1 HOST=1 GUEST=null VERTEXTYPE=Leaf],G2_2:300.0[ID=2 HOST=2 GUEST=null VERTEXTYPE=Leaf])G3_3:181.08452[ID=3 HOST=3 GUEST=null VERTEXTYPE=Speciation DISCPT=(1,0)],((G4_2:166.45892[ID=4 HOST=2 GUEST=null VERTEXTYPE=Leaf],G5_2:166.45892[ID=5 HOST=2 GUEST=null VERTEXTYPE=Leaf])G6_2:106.52013404221599[ID=6 HOST=2 GUEST=null VERTEXTYPE=Duplication DISCPT=(0,2)],G7_2:272.97905[ID=7 HOST=2 GUEST=null VERTEXTYPE=Leaf])G8_2:208.10547[ID=8 HOST=2 GUEST=null VERTEXTYPE=Duplication DISCPT=(0,2)])G9_3:18.915483193535646[ID=9 HOST=3 GUEST=null VERTEXTYPE=Duplication DISCPT=(1,2)])G10_4:0.0[ID=10 HOST=4 GUEST=null VERTEXTYPE=Speciation DISCPT=(2,0)][NAME=PrunedTree];"
     return gt3
+
+def get_gt_from_file(tree_file):
+    result= gene_tree_maker.read_tree_file(tree_file)
+    leafmap_file = tree_file.replace(".tree", ".leafmap")
+    result= gene_tree_maker.read_leaf_map(leafmap_file, result)
+    result= gene_tree_maker.add_back_outgroup(result,500)
+    return result.simple_newick,result.leaves_by_species
 def get_config_file():
     par_dir = Path(__file__).parent.parent
     config_file = os.path.join(par_dir, "sample_configs","cos-bi-config.xml")

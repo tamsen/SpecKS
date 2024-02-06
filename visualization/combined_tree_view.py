@@ -7,13 +7,12 @@ import matplotlib.colors as mcolors
 def color_list():
 
     return [mcolors.CSS4_COLORS['black'], mcolors.CSS4_COLORS['purple'], mcolors.CSS4_COLORS['gold'],
-            mcolors.CSS4_COLORS['pink'], mcolors.CSS4_COLORS['lavender'], mcolors.CSS4_COLORS['brown'],
+            mcolors.CSS4_COLORS['hotpink'], mcolors.CSS4_COLORS['darkgreen'], mcolors.CSS4_COLORS['brown'],
             mcolors.CSS4_COLORS['green'],mcolors.CSS4_COLORS['red'],mcolors.CSS4_COLORS['cyan'],
-            mcolors.CSS4_COLORS['blue'], mcolors.CSS4_COLORS['yellow'], mcolors.CSS4_COLORS['orange'],
-            mcolors.CSS4_COLORS['green'], mcolors.CSS4_COLORS['red'], mcolors.CSS4_COLORS['cyan'],
+            mcolors.CSS4_COLORS['blue'], mcolors.CSS4_COLORS['yellow'], mcolors.CSS4_COLORS['orange']
             ]
 
-def plot_combined_tree_view(gt_tree_viz_data_by_name,species_tree_viz_data,
+def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             time_of_WGD_MYA, time_of_SPEC_MYA, full_sim_time,
                             file_to_save):
 

@@ -1,5 +1,8 @@
 import glob
 import os
+
+from Bio import Phylo
+from io import StringIO
 import common
 import matplotlib.pyplot as plt
 from visualization import tree_visuals_by_phylo
@@ -47,7 +50,7 @@ def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
     plt.cla()
     plt.close()
 
-def read_pruned_trees(subfolder):
+def read_pruned_trees(subfolder,full_sim_time):
 
     tree_files = glob.glob(subfolder + "/*.pruned.tree")
     results_by_tree_name = {}
@@ -60,17 +63,33 @@ def read_pruned_trees(subfolder):
         result = read_tree_file(tree_file)
         result = read_leaf_map(leafmap_file, result)
         result = read_gene_tree_info(info_file, result)
+        result = add_back_outgroup(result, full_sim_time)
         results_by_tree_name[result.gene_tree_name]=result
 
     return results_by_tree_name
 
+def unprune_outgroup(newick_1, full_sim_time):
+
+        tree_1 = Phylo.read(StringIO(newick_1), "newick")
+        terminals = tree_1.get_terminals()
+
+        #this is the pruned tree, so all terminals should go the length of the tree
+        if len(terminals)>0:
+            dist = tree_1.distance(terminals[0])
+        else:
+            return "(O1:500,O2:500)",["O1","O2"] #I guess all the nodes died..
+
+        missing_distance = full_sim_time - dist
+        prefix = "(O1:500,"
+        suffix = ":" + str(missing_distance) + ");"
+        adjusted_newick = prefix + newick_1.replace(";", suffix)
+        return adjusted_newick,["O1"]
 
 def read_tree_file(tree_file):
     with open(tree_file, "r") as f:
         lines = f.readlines()
         clean_tree_string = clean_newick(lines[0])
         full_tree_string = lines[0]
-
     gene_tree_name=os.path.basename(tree_file).replace(".pruned.tree","")
     result = gene_tree_result()
     result.gene_tree_file_name=tree_file
@@ -79,6 +98,18 @@ def read_tree_file(tree_file):
     result.gene_tree_name=gene_tree_name
     return result
 
+def add_back_outgroup(result,full_sim_time):
+    original_newick = result.simple_newick
+    new_newick, new_leaves=unprune_outgroup(result.simple_newick,full_sim_time)
+    result.simple_newick = new_newick
+    result.original_newick = original_newick
+
+    for new_leaf in new_leaves:
+        if not "O" in result.leaves_by_species:
+            result.leaves_by_species["O"]=[]
+        result.leaves_by_species["O"].append(new_leaf)
+
+    return result
 
 def read_leaf_map(leafmap_file, my_gene_tree_result):
 
@@ -159,7 +190,7 @@ def run_sagephy(polyploid, species_tree_newick):
         common.run_and_wait_on_process(cmd, subfolder)
 
 
-    gene_tree_data_by_tree_name = read_pruned_trees(subfolder)
+    gene_tree_data_by_tree_name = read_pruned_trees(subfolder, polyploid.FULL_time_MYA)
     pruned_tree_names=gene_tree_data_by_tree_name.keys()
     print("pruned_tree_files:\t" + str(pruned_tree_names))
 
@@ -186,6 +217,7 @@ def run_sagephy(polyploid, species_tree_newick):
     return gene_tree_data_by_tree_name
 
 class gene_tree_result():
+    original_newick=""
     simple_newick=""
     newick_with_tags=""
     num_extant_leaves=0

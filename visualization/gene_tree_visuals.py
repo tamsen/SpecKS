@@ -21,16 +21,16 @@ def plot_gene_trees_on_top_of_species_trees(polyploid, config,
 
     # plot the gene trees over the species tree
     s_and_gt_tree_out_file_name = os.path.join(out_folder, "species_and_gt_by_specks.png")
-    combined_tree_view.plot_combined_tree_view(gt_tree_viz_data_by_name,
-                                               species_tree_viz_data,
+    combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
                             polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
 
 
 def plot_gene_tree_alone(
-        species_filter, leaf_map, tree_as_newick, gt_name, file_to_save):
+        species_filter, leaf_map, tree_as_newick, gt_name, file_to_save=False):
 
     tree = Phylo.read(StringIO(tree_as_newick), "newick")
+    tree.clade.name = "Origin"
     time_since_speciation=300.0
     leaf_aim=12.0
     width=5.0 #speciation_tree_width, the envelope
@@ -56,7 +56,8 @@ def plot_gene_tree_alone(
     pos_by_i = pos_dict_in_i_coords(node_coordinates_by_i,nodes_to_visualize)
 
     #plot it
-    plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
+    if file_to_save:
+        plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
 
     gt_vis_data=save_tree_vis_data(edge_list_in_i_coords, pos_by_i,
                                    node_names_by_i,  gt_name)
@@ -69,7 +70,7 @@ def save_tree_vis_data(edges, pos, labels, name):
     gt_vis_data.color = mcolors.CSS4_COLORS['green']
     gt_vis_data.name = name
     gt_vis_data.width = 3
-    gt_vis_data.alpha = 0.3
+    gt_vis_data.alpha = None
     gt_vis_data.labels = labels
     return gt_vis_data
 def plot_gene_tree(X, edge_list_in_i_coords,
@@ -123,11 +124,15 @@ def get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize):
     for edge in edges:
         n1 = edge[0]
         n2 = edge[1]
-        index_1 = node_i_by_name[n1.name]
-        index_2 = node_i_by_name[n2.name]
 
-        if index_1 in nodes_to_visualize and index_2 in nodes_to_visualize:
-            edges_to_visualize.append((index_1, index_2))
+        if (n1.name and n2.name):
+            index_1 = node_i_by_name[n1.name]
+            index_2 = node_i_by_name[n2.name]
+
+            if index_1 in nodes_to_visualize and index_2 in nodes_to_visualize:
+                edges_to_visualize.append((index_1, index_2))
+        else:
+            print("what happened here?")
 
     return edges_to_visualize
 
@@ -151,8 +156,8 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
             f = -1.0 * slope
             nodes_to_visulize[i]=names.copy()
         else: #never conected with our species of interest
-            f = 0
-            #print(species)
+            f = 0.0
+
         (b, num_sibs) = tree_utils.birth_order(tree, nodes[i])
         delta = b * width / num_sibs
         #print(names)
@@ -168,6 +173,12 @@ def set_node_y_values(node_coordinates_by_i, nodes, tree):
         if nodes[i].name:
             node_names_by_i[i] = nodes[i].name
             node_i_by_name[nodes[i].name] = i
+        else:
+            if i==0:
+                origin_name="0"
+                node_names_by_i[i] = origin_name
+                node_i_by_name[origin_name] = i
+
     return node_i_by_name, node_names_by_i
 
 
@@ -197,4 +208,4 @@ class tree_data_for_nx():
     color='k'
     name=""
     width=1
-    alpha=0.5
+    alpha=0
