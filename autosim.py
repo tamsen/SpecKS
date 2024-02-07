@@ -1,5 +1,5 @@
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, root_seq_maker, tree_pruner
+    species_tree_maker, root_seq_maker, gene_shedder
 
 
 def run_autosim(polyploid):
@@ -61,7 +61,7 @@ def run_autosim(polyploid):
 
     print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
-    tree_pruner.prune_gene_trees(polyploid)
+    tree_pruner.shed_gene_trees(polyploid)
 
     #note here, there is only one replicate per evolver run
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))

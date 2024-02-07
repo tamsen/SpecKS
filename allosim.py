@@ -1,5 +1,5 @@
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, tree_pruner
+    species_tree_maker, gene_shedder
 
 
 def run_allosim(polyploid):
@@ -19,16 +19,17 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
+    print("\n\n{0}. Simulate gene shedding. ".format(polyploid.analysis_step_num) +
+          "At every time step post WGD, cull a certain percent of what remains. (custom code)")
+    gene_shedder.shed_gene_trees(polyploid, relaxed_gene_tree_results)
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
-          "At every time step post WGD, cull a certain percent of what remains. (custom code)")
-    tree_pruner.prune_gene_trees(polyploid)
-    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-        return
 
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     codeml_results_by_replicate_num = ks_calculator.run_codeml(polyploid,

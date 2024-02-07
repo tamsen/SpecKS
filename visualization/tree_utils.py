@@ -9,10 +9,9 @@ def print_node_distances(tree, out_file):
     X = Phylo.to_networkx(tree)
     nodes = list(X.nodes)
     col_headers=["node_name","dist","leaves"]
+    data_lines = []
 
-    with open(out_file, 'w') as f:
-        f.writelines(",".join(col_headers) +"\n")
-        for node in nodes:
+    for node in nodes:
             name="no_name"
             if node.name:
                 name = node.name
@@ -20,9 +19,15 @@ def print_node_distances(tree, out_file):
             leaf_names = " ".join([leaf.name for leaf in leaves])
             dist_string=str(tree.distance(node))
             data=[name ,dist_string,leaf_names]
-            f.writelines(",".join(data) + "\n")
+            data_lines.append(",".join(data) + "\n")
+
+    with open(out_file, 'w') as f:
+        f.writelines(",".join(col_headers) +"\n")
+        f.writelines(data_lines)
 
 
+
+#TODO, put a test case around this
 def get_parent(tree, child_clade):
         node_path = tree.get_path(child_clade)
         if len(node_path)>2:
