@@ -34,61 +34,98 @@ class GeneShedderTestCases(unittest.TestCase):
         self.assertEqual(edges_that_cross_this_time[0], 0)
         self.assertEqual(edges_that_cross_this_time[1], 1)
 
-        #TODO: check we remove the right num edges
-        execute_gene_shedding(tree_1, max_sim_time, WGD_time)
 
+    def test_execute_gene_shedding_1(self):
 
-def execute_gene_shedding(tree, max_sim_time, WGD_time):
-    X = Phylo.to_networkx(tree)
-    nodes = list(X.nodes)
-    edges = list(X.edges)
-    col_headers = ["node_name", "dist", "leaves"]
-    data_lines = []
-    bin_size = 1 #1 MY
-    bins_post_WGD=  np.arange(WGD_time, max_sim_time, bin_size)
-    print("bins_post_WGD:\t" + str(bins_post_WGD[0:5]) + "..." + str(bins_post_WGD[-5:]))
-    fraction_to_remove=0.1
-    edges_that_cross_time_list_by_time={}
-    for time_slice in bins_post_WGD:
+        max_sim_time=500
+        WGD_time = 200
+        bin_size = 1
+        time_slices = np.arange(WGD_time, max_sim_time, bin_size)
 
-        edges_that_cross_this_time=get_edges_that_cross_this_time(tree,time_slice)
+        #At each time-slice post WGD, the number of extant genes are counted.
+        #The total number of genes to be shed is calculated as a percent of the
+        # #total on the time slice.
+        num_genes_to_shed=2
+        n1="(O:500,(P1:300,P2:300):200);"
+        n2="(O:500,(P1:300,P2:300):200);"
+        n3="(O:500,(P1:300,P2:300):200);"
+        newicks={1:n1,2:n2,3:n3}
+        gt_to_loose_a_gene= sample(list(newicks.keys()), num_genes_to_shed)
+        self.assertEqual(len(gt_to_loose_a_gene), 2)
 
-        #TODO - worry about rounding errors
-        # If the number of edges is so very low, that the number to remove
-        # ends up always being less that 0.5, ie, rounding to zero,
-        # then we will not get any genes removed..
-        # should probably change the algorithm not to pick n at random,
-        # put to give each gene a chance of being removed and see if it executes.
-        edges_to_remove=pick_edges_to_remove(edges_that_cross_this_time, fraction_to_remove)
+        # For each gene to be shed, a GT is randomly selected without replacement,
+        # and a vertex from that GT which crosses the time-slice is removed.
+        #   This process is repeated until the desired number of genes are shed.
 
-        #for edge in edges_to_remove:
-        print("edges_to_remove:\t" + str(edges))
+        time_slices= time_slices[0]
+        for gt in gt_to_loose_a_gene:
+            tree_1 = Phylo.read(StringIO(newicks[gt]), "newick")
+            X = Phylo.to_networkx(tree_1)
+
+            # test removing a tree node by edge...
+            edges = list(X.edges)
+            first_edge=edges[0]
+            second_node_in_edge=first_edge[1]
+            print("nodes to remove:" + str(second_node_in_edge))
+            print("tree before:")
+            Phylo.draw_ascii(tree_1)
+            tree_1.prune(second_node_in_edge)
+            print("tree after:")
+            Phylo.draw_ascii(tree_1)
+            #
+
+            edges_that_cross_this_time, nodes_on_edges_that_cross_this_time = get_edges_that_cross_this_time(tree_1, 5)
+            nodes_to_remove = sample(nodes_on_edges_that_cross_this_time , 1)
+            print("nodes to remove:" + str(nodes_to_remove))
+            print("tree before:")
+            Phylo.draw_ascii(tree_1)
+            for edge_idx in edges_that_cross_this_time:
+                print("pruning " + str(edge))
+                print("pruning " + str(edge_idx ))
+                tree_1.prune(edge_idx )
+            print("tree after:")
+            Phylo.draw_ascii(tree_1)
+        print()
+
 
 def get_distance_intervals_for_edge(edges, tree):
     distance_intervals_by_edge_idx = {}
+    nodes_by_edge_idx = {}
     for e_idx in range(0, len(edges)):
         edge = edges[e_idx]
         dist1 = tree.distance(edge[0])
         dist2 = tree.distance(edge[1])
-        interval = (min(dist1, dist2), max(dist1, dist2))
+        if dist1 < dist2:
+            interval = (dist1, dist2)
+            nodes = (edge[0],edge[1])
+        else:
+            interval = (dist2, dist1)
+            nodes = (edge[1],edge[0])
         distance_intervals_by_edge_idx[e_idx] = interval
-    return distance_intervals_by_edge_idx
+        nodes_by_edge_idx[e_idx] = nodes
+
+    return distance_intervals_by_edge_idx,nodes_by_edge_idx
 
 
 def get_edges_that_cross_this_time(tree,
                                    time_slice):
     X = Phylo.to_networkx(tree)
     edges = list(X.edges)
-    distance_intervals_by_edge_idx=get_distance_intervals_for_edge(edges, tree)
+    distance_intervals_by_edge_idx,nodes_by_edge_idx=get_distance_intervals_for_edge(edges, tree)
+
+    tree.prune(edges[0])
     list_of_edges_that_cross_this_time=[]
+    nodes_on_edges_that_cross_this_time=[]
     for e_idx in range(0, len(edges)):
         distance_interval = distance_intervals_by_edge_idx[e_idx]
-
+        nodes = nodes_by_edge_idx[e_idx]
         # does edge cross the slice of time?
         if (distance_interval[0]) < time_slice and (distance_interval[1] >= time_slice):
             list_of_edges_that_cross_this_time.append(e_idx)
+            outer_node=  nodes_by_edge_idx[e_idx][1]
+            nodes_on_edges_that_cross_this_time.append(outer_node)
 
-    return list_of_edges_that_cross_this_time
+    return list_of_edges_that_cross_this_time, nodes_on_edges_that_cross_this_time
 
 #https://stackoverflow.com/questions/46718281/remove-percentage-of-items-in-a-list-randomly
 def pick_edges_to_remove(my_list, fraction_to_remove):
