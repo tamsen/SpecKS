@@ -166,11 +166,13 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
         cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
                                      config.num_codons,config.tree_length, gene_tree_result)
-        out_string,error_string = common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+        common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
-        #common evolver complaint:
-        #if "perhaps too many '('?" in error_string:
+        #common evolver complaints:
+        #if "perhaps too many '('?" in error_string:  <- fix newick
+        #Error: error in tree: too many species in tree. <- make sure the requested seq matches the tree topology
 
+        #this mess is b/c diff versions of evoler can output diff file names, A & B
         evolver_result_file_A=os.path.join(gene_tree_subfolder,"mc.txt")
         evolver_result_file_B=os.path.join(gene_tree_subfolder,"mc.paml")
         if os.path.exists(evolver_result_file_A):

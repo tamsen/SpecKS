@@ -3,59 +3,81 @@ from random import sample
 from io import StringIO
 import numpy as np
 from Bio import Phylo
-def execute_gene_shedding():
 
-        max_sim_time = 500
-        WGD_time = 200
-        bin_size = 1
-        time_slices = np.arange(WGD_time, max_sim_time, bin_size)
+from visualization import tree_visuals_by_phylo
 
-        # At each time-slice post WGD, the number of extant genes are counted.
-        # The total number of genes to be shed is calculated as a percent of the
-        # #total on the time slice.
-        num_genes_to_shed = 2
-        n1 = "(O:500,(P1:300,P2:300):200);"
-        n2 = "(O:500,(P1:300,P2:300):200);"
-        n3 = "(O:500,(P1:300,P2:300):200);"
-        newicks = {1: n1, 2: n2, 3: n3, 4: n1, 5: n2, 6: n3}
-        gt_to_loose_a_gene = sample(list(newicks.keys()), num_genes_to_shed)
-        self.assertEqual(len(gt_to_loose_a_gene), 2)
 
-        # For each gene to be shed, a GT is randomly selected without replacement,
-        # and a vertex from that GT which crosses the time-slice is removed.
-        #   This process is repeated until the desired number of genes are shed.
-        unprunable_leaves = ['O', 'O1', 'O2']
-        time_slice = time_slices[-10]
-        num_genes_to_remove_per_gene_tree = 1
-        print("time slice:\t" + str(time_slice))
-        for gt in gt_to_loose_a_gene:
-            tree_1 = Phylo.read(StringIO(newicks[gt]), "newick")
+def shed_genes(polyploid, relaxed_gene_tree_results):
+
+
+    if len(polyploid.subtree_subfolder) > 0:
+        subfolder = os.path.join(polyploid.species_subfolder,
+                                 str(polyploid.analysis_step_num) + "_gene_shedder_" + polyploid.subtree_subfolder)
+    else:
+        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_shedder")
+
+    print(subfolder)
+    if not os.path.exists(subfolder):
+        os.makedirs(subfolder)
+
+    max_tree_distance = polyploid.FULL_time_MYA
+    tree_distance_defore_WGD = polyploid.FULL_time_MYA - polyploid.WGD_time_MYA
+    bin_size = 1
+    time_slices = np.arange(tree_distance_defore_WGD, max_tree_distance, bin_size)
+    gene_trees_after_gene_shedding_by_gt=relaxed_gene_tree_results.copy()
+
+    # At each time-slice post WGD, the number of extant genes are counted.
+    # The total number of genes to be shed is calculated as a percent of the
+    # total on the time slice. Each gene will come from a different gene tree.
+
+    #TODO, this needs to be calculated based on some parameters.
+    num_genes_to_shed = 2
+    all_gene_trees=relaxed_gene_tree_results.keys()
+    gene_trees_to_loose_a_gene = sample(all_gene_trees, num_genes_to_shed)
+
+    # For each gene to be shed, a GT is randomly selected without replacement,
+    # and a vertex from that GT which crosses the time-slice is removed.
+    #   This process is repeated until the desired number of genes are shed.
+    unprunable_leaves = ['O', 'O1', 'O2']
+    time_slice = time_slices[-10]
+    num_genes_to_remove_per_gene_tree = 1
+    print("time slice:\t" + str(time_slice))
+
+    for gt_name in gene_trees_to_loose_a_gene:
+
+            newick_string_from_relaxer=gene_trees_after_gene_shedding_by_gt[gt_name].simple_newick
+
+            #just to visualize what is going on
+            gt_tree = Phylo.read(StringIO(newick_string_from_relaxer), "newick")
+            out_file=os.path.join(subfolder ,gt_name + "_newick_pre_gene_shedding.txt")
+            Phylo.write(gt_tree, out_file, "newick")
+            tree_visuals_by_phylo.save_tree_plot(newick_string_from_relaxer,
+                                                 out_file.replace("txt","png"))
+
             nodes_on_edges_that_cross_this_time = (
-                get_edges_that_cross_this_time(tree_1, time_slice))
+                get_edges_that_cross_this_time(gt_tree, time_slice))
 
-            list_of_terminal_leaves_to_remove = self.chose_leaves_to_remove(
+            list_of_terminal_leaves_to_remove = chose_leaves_to_remove(
                 nodes_on_edges_that_cross_this_time, num_genes_to_remove_per_gene_tree, unprunable_leaves)
 
-            print("tree before:")
-            terminals_after = [t.name for t in tree_1.get_terminals()]
-            self.assertEqual(len(terminals_after), 3)
-            self.assertEqual(terminals_after, ['O', 'P1', 'P2'])
-            Phylo.draw_ascii(tree_1)
 
             for leaf in list_of_terminal_leaves_to_remove:
-                print("pruning leaf " + str(leaf))
-                tree_1.prune(leaf)
+                gt_tree.prune(leaf)
 
-            print("tree after:")
-            if len(tree_1.clade.clades) > 0:
-                Phylo.draw_ascii(tree_1)
-            else:
-                print("No branches remaining")
+            handle = StringIO()
+            out_file=os.path.join(subfolder , gt_name + "_newick_post_gene_shedding.txt")
+            Phylo.write(gt_tree, out_file, "newick")
+            Phylo.write(gt_tree, handle , "newick")
+            new_newick = handle.getvalue()
+            gene_trees_after_gene_shedding_by_gt[gt_name].simple_newick = new_newick
+            print(new_newick)
+            tree_visuals_by_phylo.save_tree_plot(new_newick,
+                                                 out_file.replace("txt", "png"))
 
-            terminals_after = [t.name for t in tree_1.get_terminals()]
-            self.assertEqual(len(terminals_after), 2)
-            self.assertEqual(terminals_after[0], 'O')
-            self.assertTrue((terminals_after[1] == 'P1') or (terminals_after[1] == 'P2'))
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
+    return gene_trees_after_gene_shedding_by_gt
+
+
 
 def chose_leaves_to_remove(nodes_on_edges_that_cross_this_time,num_to_remove, unprunable_leaves):
 

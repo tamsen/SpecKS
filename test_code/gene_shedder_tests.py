@@ -1,3 +1,4 @@
+import os
 import unittest
 from random import sample
 import numpy as np
@@ -7,7 +8,6 @@ from pipeline_modules import gene_shedder
 
 class GeneShedderTestCases(unittest.TestCase):
     def test_gene_sheddder(self):
-
 
         newick_1="(O:500,(P1:300,P2:300):200);"
         tree_1 = Phylo.read(StringIO(newick_1), "newick")
@@ -35,6 +35,10 @@ class GeneShedderTestCases(unittest.TestCase):
 
 
     def test_execute_gene_shedding_1(self):
+
+        test_out = "test_out"
+        if not os.path.exists(test_out):
+            os.makedirs(test_out)
 
         max_sim_time=500
         WGD_time = 200
@@ -90,8 +94,13 @@ class GeneShedderTestCases(unittest.TestCase):
             self.assertEqual(terminals_after[0],'O')
             self.assertTrue((terminals_after[1]=='P1') or (terminals_after[1]=='P2'))
 
-
-
+            handle = StringIO()
+            out_file=os.path.join(test_out,"text_newick_generation.txt")
+            Phylo.write(tree_1, out_file, "newick")
+            Phylo.write(tree_1, handle , "newick")
+            print(handle )
+            contents = handle.getvalue()
+            print(contents)
 
 if __name__ == '__main__':
     unittest.main()
