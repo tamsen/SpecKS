@@ -42,5 +42,10 @@ class GeneTreeTests(unittest.TestCase):
         self.assertEqual(len(info_dict_by_species), 17)
         self.assertEqual(info_dict_by_species["No. of vertices"], "7")
 
+    def test_unprune_outgroup(self):
+        #adjusted_newick = gene_tree_maker.unprune_outgroup(newick_1, 500)
+        #tree_1_fixed = Phylo.read(StringIO(adjusted_newick), "newick")
+        #Phylo.draw_ascii(tree_1_fixed)
+        #terminals = tree_1_fixed.get_terminals()
 if __name__ == '__main__':
     unittest.main()
