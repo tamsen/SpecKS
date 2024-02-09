@@ -44,6 +44,9 @@ def relax(polyploid,gene_tree_results_by_tree_name):
         print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
         tree_visuals_by_phylo.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
 
+        new_tree_file=full_path_out_file.replace(".tree",".updated.tree")
+        with open(new_tree_file, 'w') as f:
+            f.writelines(relaxed_gene_tree_results.simple_newick + "\n")
 
         gt_newick=relaxed_gene_tree_results.simple_newick
         leaf_map = relaxed_gene_tree_results.leaves_by_species

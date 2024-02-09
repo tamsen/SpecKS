@@ -67,6 +67,10 @@ def read_pruned_trees(subfolder,full_sim_time):
         result = add_back_outgroup(result, full_sim_time)
         results_by_tree_name[result.gene_tree_name]=result
 
+        new_tree_file=tree_file.replace(".tree",".updated.tree")
+        with open(new_tree_file, 'w') as f:
+            f.writelines(result.simple_newick + "\n")
+
     return results_by_tree_name
 
 def unprune_outgroup(newick_1, full_sim_time):
