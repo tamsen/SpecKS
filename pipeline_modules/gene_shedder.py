@@ -32,7 +32,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
 
     #TODO, this needs to be calculated based on some parameters.
     num_genes_to_shed = 2
-    all_gene_trees=relaxed_gene_tree_results.keys()
+    all_gene_trees=list(relaxed_gene_tree_results.keys())
     gene_trees_to_loose_a_gene = sample(all_gene_trees, num_genes_to_shed)
 
     # For each gene to be shed, a GT is randomly selected without replacement,

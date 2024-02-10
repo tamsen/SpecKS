@@ -77,16 +77,20 @@ def unprune_outgroup(newick_1, full_sim_time):
 
         tree_1 = Phylo.read(StringIO(newick_1), "newick")
         terminals = tree_1.get_terminals()
-
+        terminal_names= [t.name for t in terminals]
         #this is the pruned tree, so all terminals should go the length of the tree
         if len(terminals)>0:
             dist = tree_1.distance(terminals[0])
         else:
             return "(O1:500,O2:500)",["O1","O2"] #I guess all the nodes died..
 
+        if ("O" in terminals) or ("O" in terminals):
+            return newick_1,[]
+
         missing_distance = full_sim_time - dist
         prefix = "(O1:500,"
-        suffix = ":" + str(missing_distance) + ");"
+        #suffix = ":" + str(missing_distance) + ");"
+        suffix = ");"
         adjusted_newick = prefix + newick_1.replace(";", suffix)
         return adjusted_newick,["O1"]
 
@@ -103,16 +107,35 @@ def read_tree_file(tree_file):
     result.gene_tree_name=gene_tree_name
     return result
 
+def unprune_outgroup_2(old_newick, full_sim_time, out_group_leaf, origin_node_name):
+        old_tree = Phylo.read(StringIO(old_newick), "newick")
+        outgroup_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=out_group_leaf)
+        new_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=origin_node_name,
+                                         clades=[outgroup_clade, old_tree.clade])
+        new_tree = Phylo.BaseTree.Tree.from_clade(new_clade)
+        handle = StringIO()
+        Phylo.write(new_tree, handle, "newick")
+        new_newick = handle.getvalue()
+        return new_newick, new_tree, [out_group_leaf]
+
 def add_back_outgroup(result,full_sim_time):
     original_newick = result.simple_newick
-    new_newick, new_leaves=unprune_outgroup(result.simple_newick,full_sim_time)
-    result.simple_newick = new_newick
-    result.original_newick = original_newick
+    original_tree= Phylo.read(StringIO(original_newick), "newick")
+    terminal_leaf_names = [t.name for t in  original_tree.get_terminals()]
+    if (not "O" in terminal_leaf_names) and (not "O1" in terminal_leaf_names):
+        out_group_leaf="O1"
+        origin_node_name="O"
+        #new_newick, new_leaves=unprune_outgroup(result.simple_newick,full_sim_time)
+        new_newick, tree,new_leaves = unprune_outgroup_2(result.simple_newick,
+                                                full_sim_time, out_group_leaf, origin_node_name)
 
-    for new_leaf in new_leaves:
-        if not "O" in result.leaves_by_species:
-            result.leaves_by_species["O"]=[]
-        result.leaves_by_species["O"].append(new_leaf)
+        result.simple_newick = new_newick
+        result.original_newick = original_newick
+
+        for new_leaf in new_leaves:
+            if not "O" in result.leaves_by_species:
+                result.leaves_by_species["O"]=[]
+            result.leaves_by_species["O"].append(new_leaf)
 
     return result
 

@@ -2,6 +2,8 @@ import os
 import common
 import shutil
 from pathlib import Path
+from Bio import Phylo
+from io import StringIO
 def write_evolver_control_file(template_dat_file,out_dir,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
@@ -11,8 +13,8 @@ def write_evolver_control_file(template_dat_file,out_dir,
 
     new_dat_file = os.path.join(out_dir, new_evolver_control_file_name)
 
-    # Handle an evolver bug we dont seem to need for later versions.
-    # Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
+    #Handle an evolver bug we dont seem to need for later versions.
+    #Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
     s,vn,vd=get_evolver_version_string(out_dir)
     if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
        newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
@@ -62,11 +64,18 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
     template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
         "template.MCcodon.dat")
 
+
     s,vn,vd=get_evolver_version_string(out_dir)
     if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
         num_seq=gene_tree_result.info_dict["No. of vertices"]
     else:
         num_seq = gene_tree_result.info_dict["No. of extant leaves"]
+
+    #todo - carry Tree around with result, instead of just  newick string
+    newick = gene_tree_result.simple_newick
+    tree= Phylo.read(StringIO(newick), "newick")
+    terminal_leaf_names = [t.name for t in  tree.get_terminals()]
+    num_seq = len(terminal_leaf_names)
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
                                                       out_dir,

@@ -1,5 +1,9 @@
 import unittest
+from io import StringIO
+from Bio import Phylo
+
 from pipeline_modules import gene_tree_maker
+from pipeline_modules.gene_tree_maker import unprune_outgroup_2
 
 
 class GeneTreeTests(unittest.TestCase):
@@ -42,10 +46,30 @@ class GeneTreeTests(unittest.TestCase):
         self.assertEqual(len(info_dict_by_species), 17)
         self.assertEqual(info_dict_by_species["No. of vertices"], "7")
 
+#https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-209/tables/1
+# https: // biopython.org / docs / 1.75 / api / Bio.Phylo.BaseTree.html?highlight = split  # Bio.Phylo.BaseTree.TreeMixin.split
     def test_unprune_outgroup(self):
-        #adjusted_newick = gene_tree_maker.unprune_outgroup(newick_1, 500)
-        #tree_1_fixed = Phylo.read(StringIO(adjusted_newick), "newick")
-        #Phylo.draw_ascii(tree_1_fixed)
-        #terminals = tree_1_fixed.get_terminals()
+
+        newick1="(G0_1:292.9058231549251,(G1_2:167.19426864617353,G2_2:166.32932582899295)G3_2:128.15959745471997)G4_3:198.68395473225863;"
+        out_group_leaf="O1"
+        origin_node_name="O"
+        new_newick, tree4 = unprune_outgroup_2(newick1, 500, out_group_leaf, origin_node_name)
+        print(new_newick)
+        terminal_leaves = tree4.get_terminals()
+        print("tree4")
+        Phylo.draw_ascii(tree4)
+
+        for node in terminal_leaves:
+            distance=tree4.distance(node)
+            if node.name:
+                print("node:\t" + node.name + "\tdistance:\t" + str(distance))
+            else:
+                print("node:\t" + "no name"+ "\tdistance:\t" + str(distance))
+
+            self.assertTrue(distance>490)
+            self.assertTrue(distance<510)
+
+        self.assertEqual(len(terminal_leaves), 4)
+
 if __name__ == '__main__':
     unittest.main()
