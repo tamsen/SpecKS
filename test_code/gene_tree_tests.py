@@ -1,26 +1,27 @@
+import os
 import unittest
 from io import StringIO
 from Bio import Phylo
 
-from pipeline_modules import gene_tree_maker
-from pipeline_modules.gene_tree_maker import unprune_outgroup_2
-
+from pipeline_modules import gene_tree_maker, gene_tree_data
+#from pipeline_modules.gene_tree_maker import unprune_outgroup_2
+from pipeline_modules.gene_tree_data import unprune_outgroup
 
 class GeneTreeTests(unittest.TestCase):
     def test_newick_simplify(self):
 
         test_data_folder="gene_tree_maker_test_data"
-        results_dict= gene_tree_maker.read_pruned_trees(test_data_folder)
+        results_dict= gene_tree_maker.read_pruned_trees(test_data_folder, 500)
 
         files=list(results_dict.keys())
         self.assertEqual(len(files), 1)
 
-        taggy_tree=results_dict[files[0]].newick_with_tags
+        taggy_tree=results_dict[files[0]].original_newick
         expected_clean_tree="((((G0_1:43.39704,(G1_1:18.169443,G2_1:18.169443)G3_1:25.227596824464555)"+\
             "G4_1:10.494192025367472,G5_1:53.891232)G6_1:136.6172393732139,G7_1:190.50847)"+\
             "G8_1:9.491528753855258,G9_2:200.0)G10_3:300.0;"
 
-        clean_tree = gene_tree_maker.clean_newick(taggy_tree)
+        clean_tree = gene_tree_data.clean_newick(taggy_tree)
         print(taggy_tree)
         print(clean_tree)
         self.assertEqual(clean_tree, expected_clean_tree)
@@ -28,23 +29,11 @@ class GeneTreeTests(unittest.TestCase):
     def test_read_leaf_maps(self):
 
         test_data_file="GeneTree0.pruned.leafmap"
-        result= gene_tree_maker.gene_tree_result()
-        result= gene_tree_maker.read_leaf_map(test_data_file, result)
-
-        leaf_dict_by_species=result.leaves_by_species
-        print(leaf_dict_by_species)
-        self.assertEqual(len(leaf_dict_by_species), 3)
-
-    def test_read_leaf_maps(self):
-
-        test_data_file="GeneTree1.pruned.info"
-        result= gene_tree_maker.gene_tree_result()
-        result= gene_tree_maker.read_gene_tree_info(test_data_file, result)
-
-        info_dict_by_species=result.info_dict
-        print(info_dict_by_species)
-        self.assertEqual(len(info_dict_by_species), 17)
-        self.assertEqual(info_dict_by_species["No. of vertices"], "7")
+        test_data_folder="gene_tree_maker_test_data"
+        full_path=os.path.join(test_data_folder,test_data_file)
+        leaves_by_species,num_extant_leaves = gene_tree_data.read_leaf_map_data(full_path)
+        print(leaves_by_species)
+        self.assertEqual(len(leaves_by_species), 3)
 
 #https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-209/tables/1
 # https: // biopython.org / docs / 1.75 / api / Bio.Phylo.BaseTree.html?highlight = split  # Bio.Phylo.BaseTree.TreeMixin.split
@@ -53,7 +42,9 @@ class GeneTreeTests(unittest.TestCase):
         newick1="(G0_1:292.9058231549251,(G1_2:167.19426864617353,G2_2:166.32932582899295)G3_2:128.15959745471997)G4_3:198.68395473225863;"
         out_group_leaf="O1"
         origin_node_name="O"
-        new_newick, tree4 = unprune_outgroup_2(newick1, 500, out_group_leaf, origin_node_name)
+        tree1= Phylo.read(StringIO(newick1), "newick")
+
+        new_newick, tree4, new_leaves = gene_tree_data.unprune_outgroup(tree1, 500, out_group_leaf, origin_node_name)
         print(new_newick)
         terminal_leaves = tree4.get_terminals()
         print("tree4")

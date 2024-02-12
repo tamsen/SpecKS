@@ -19,7 +19,7 @@ class GeneShedderTestCases(unittest.TestCase):
         edges = list(X.edges)
 
         #check we calculate the distance intervals right
-        distance_intervals=gene_shedder.get_distance_intervals_for_edge(edges, tree_1)
+        distance_intervals, nodes_by_edge_idx =gene_shedder.get_distance_intervals_for_edge(edges, tree_1)
         print(distance_intervals)
         self.assertEqual(len(distance_intervals.keys()), 4)
         self.assertEqual(distance_intervals[0], (0,500))
@@ -27,11 +27,11 @@ class GeneShedderTestCases(unittest.TestCase):
         #{0: (0, 500.0), 1: (0, 200.0), 2: (200.0, 500.0), 3: (200.0, 500.0)}
 
         #check we know when a gene-tree branch crosses a time interval
-        edges_that_cross_this_time= gene_shedder.get_edges_that_cross_this_time(tree_1, 5)
-        print(edges_that_cross_this_time)
-        self.assertEqual(len(edges_that_cross_this_time), 2)
-        self.assertEqual(edges_that_cross_this_time[0], 0)
-        self.assertEqual(edges_that_cross_this_time[1], 1)
+        nodes_on_edges_that_cross_this_time= gene_shedder.get_nodes_on_edges_that_cross_this_time(tree_1, 5)
+        print(nodes_on_edges_that_cross_this_time)
+        self.assertEqual(len(nodes_on_edges_that_cross_this_time), 2)
+        self.assertEqual(nodes_on_edges_that_cross_this_time[0].name, 'O')
+        self.assertEqual(nodes_on_edges_that_cross_this_time[1].name, None)
 
 
     def test_execute_gene_shedding_1(self):
@@ -66,7 +66,7 @@ class GeneShedderTestCases(unittest.TestCase):
         for gt in gt_to_loose_a_gene:
             tree_1 = Phylo.read(StringIO(newicks[gt]), "newick")
             nodes_on_edges_that_cross_this_time = (
-                gene_shedder.get_edges_that_cross_this_time(tree_1, time_slice))
+                gene_shedder.get_nodes_on_edges_that_cross_this_time(tree_1, time_slice))
 
 
             list_of_terminal_leaves_to_remove = gene_shedder.chose_leaves_to_remove(

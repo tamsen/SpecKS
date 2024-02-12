@@ -55,7 +55,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
                                                  out_file.replace("txt","png"))
 
             nodes_on_edges_that_cross_this_time = (
-                get_edges_that_cross_this_time(gt_tree, time_slice))
+                get_nodes_on_edges_that_cross_this_time(gt_tree, time_slice))
 
             list_of_terminal_leaves_to_remove = chose_leaves_to_remove(
                 nodes_on_edges_that_cross_this_time, num_genes_to_remove_per_gene_tree, unprunable_leaves)
@@ -120,8 +120,8 @@ def get_distance_intervals_for_edge(edges, tree):
     return distance_intervals_by_edge_idx, nodes_by_edge_idx
 
 
-def get_edges_that_cross_this_time(tree,
-                                   time_slice):
+def get_nodes_on_edges_that_cross_this_time(tree,
+                                            time_slice):
     X = Phylo.to_networkx(tree)
     edges = list(X.edges)
     distance_intervals_by_edge_idx, nodes_by_edge_idx = get_distance_intervals_for_edge(edges, tree)
