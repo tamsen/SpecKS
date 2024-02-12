@@ -219,15 +219,6 @@ def set_node_y_values(node_coordinates_by_i, nodes, tree):
     return node_i_by_name, node_names_by_i
 
 
-def get_species_by_leaf_dict():
-    leaf_map = gene_tree_maker.read_leaf_map(
-        "GeneTree0.test.leafmap", gene_tree_maker.gene_tree_result()).leaves_by_species
-    leaf_map_by_leaf = {}
-    for species in leaf_map:
-        for leaf in leaf_map[species]:
-            leaf_map_by_leaf[leaf] = species
-    return leaf_map_by_leaf
-
 def get_species_by_leaf_dict_from_leaf_map(leaf_map):
     leaf_map_by_leaf = {}
     for species in leaf_map:

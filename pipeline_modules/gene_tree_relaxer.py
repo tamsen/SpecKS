@@ -1,6 +1,7 @@
 import os
 import pipeline_modules.gene_tree_maker as gene_tree_maker
 import common
+from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo, gene_tree_visuals
 
 def relax(polyploid,gene_tree_results_by_tree_name):
@@ -22,29 +23,26 @@ def relax(polyploid,gene_tree_results_by_tree_name):
     random_seed=0
     for gene_tree, gene_tree_results in gene_tree_results_by_tree_name.items():
         random_seed=random_seed+1
-        out_file_name=gene_tree +".relaxed.tree"
+        relaxed_tree_file_out=gene_tree +".relaxed.tree"
         in_file_name =gene_tree_results.gene_tree_file_name
         cmd= ["java","-jar",
              config.path_to_sagephy,"BranchRelaxer",
-              "-x","-innms","-o" ,out_file_name, in_file_name,
+              "-x","-innms","-o" ,relaxed_tree_file_out, in_file_name,
               "ACRY07","1","0.000001", "-s", str(random_seed)]
 
         common.run_and_wait_on_process(cmd, subfolder)
-
-        full_path_out_file=os.path.join(subfolder,out_file_name)
-        relaxed_gene_tree_results= gene_tree_maker.read_tree_file(full_path_out_file)
-        relaxed_gene_tree_results = gene_tree_maker.add_back_outgroup(relaxed_gene_tree_results, polyploid.FULL_time_MYA)
-        relaxed_gene_tree_results.info_dict=gene_tree_results.info_dict.copy()
-        relaxed_gene_tree_results.num_extant_leaves=gene_tree_results.num_extant_leaves
-        relaxed_gene_tree_results.leaves_by_species =gene_tree_results.leaves_by_species.copy()
+        full_path_to_relaxed_tree_file=os.path.join(subfolder,relaxed_tree_file_out)
+        relaxed_gene_tree_results = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(
+            full_path_to_relaxed_tree_file, gene_tree_results.leaf_map_file_name)
+        relaxed_gene_tree_results.add_back_outgroup(polyploid.FULL_time_MYA)
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 
-        plot_file_name_1= full_path_out_file +"_phylo.png"
+        plot_file_name_1= full_path_to_relaxed_tree_file +"_phylo.png"
         plot_file_name_2= os.path.join(subfolder,gene_tree +"_specks.png")
         print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
         tree_visuals_by_phylo.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
 
-        new_tree_file=full_path_out_file.replace(".tree",".updated.tree")
+        new_tree_file=full_path_to_relaxed_tree_file.replace(".tree",".updated.tree")
         with open(new_tree_file, 'w') as f:
             f.writelines(relaxed_gene_tree_results.simple_newick + "\n")
 

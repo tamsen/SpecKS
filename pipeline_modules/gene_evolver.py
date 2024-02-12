@@ -65,11 +65,11 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
         "template.MCcodon.dat")
 
 
-    s,vn,vd=get_evolver_version_string(out_dir)
-    if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
-        num_seq=gene_tree_result.info_dict["No. of vertices"]
-    else:
-        num_seq = gene_tree_result.info_dict["No. of extant leaves"]
+    #s,vn,vd=get_evolver_version_string(out_dir)
+    #if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
+    #    num_seq=gene_tree_result.info_dict["No. of vertices"]
+    #else:
+    #    num_seq = gene_tree_result.info_dict["No. of extant leaves"]
 
     #todo - carry Tree around with result, instead of just  newick string
     newick = gene_tree_result.simple_newick
@@ -172,7 +172,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
 
         print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
-        print("\t\tnum leaves:\t " + str(gene_tree_result.num_extant_leaves))
+        print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
         cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
                                      config.num_codons,config.tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)

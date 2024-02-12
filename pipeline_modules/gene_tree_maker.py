@@ -5,6 +5,8 @@ from Bio import Phylo
 from io import StringIO
 import common
 import matplotlib.pyplot as plt
+
+from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo
 from visualization import gene_tree_visuals
 from scipy.stats import beta
@@ -57,14 +59,9 @@ def read_pruned_trees(subfolder,full_sim_time):
     results_by_tree_name = {}
     for tree_file in tree_files:
 
-        #TODO this could really be cleaned up into a single constructor
         leafmap_file=tree_file.replace(".tree",".leafmap")
-        info_file=tree_file.replace(".tree",".info")
-
-        result = read_tree_file(tree_file)
-        result = read_leaf_map(leafmap_file, result)
-        result = read_gene_tree_info(info_file, result)
-        result = add_back_outgroup(result, full_sim_time)
+        result = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(tree_file, leafmap_file)
+        result.add_back_outgroup(full_sim_time)
         results_by_tree_name[result.gene_tree_name]=result
 
         new_tree_file=tree_file.replace(".tree",".updated.tree")
@@ -73,121 +70,6 @@ def read_pruned_trees(subfolder,full_sim_time):
 
     return results_by_tree_name
 
-def unprune_outgroup(newick_1, full_sim_time):
-
-        tree_1 = Phylo.read(StringIO(newick_1), "newick")
-        terminals = tree_1.get_terminals()
-        terminal_names= [t.name for t in terminals]
-        #this is the pruned tree, so all terminals should go the length of the tree
-        if len(terminals)>0:
-            dist = tree_1.distance(terminals[0])
-        else:
-            return "(O1:500,O2:500)",["O1","O2"] #I guess all the nodes died..
-
-        if ("O" in terminals) or ("O" in terminals):
-            return newick_1,[]
-
-        missing_distance = full_sim_time - dist
-        prefix = "(O1:500,"
-        #suffix = ":" + str(missing_distance) + ");"
-        suffix = ");"
-        adjusted_newick = prefix + newick_1.replace(";", suffix)
-        return adjusted_newick,["O1"]
-
-def read_tree_file(tree_file):
-    with open(tree_file, "r") as f:
-        lines = f.readlines()
-        clean_tree_string = clean_newick(lines[0])
-        full_tree_string = lines[0]
-    gene_tree_name=os.path.basename(tree_file).replace(".pruned.tree","")
-    result = gene_tree_result()
-    result.gene_tree_file_name=tree_file
-    result.simple_newick=clean_tree_string
-    result.newick_with_tags=full_tree_string
-    result.gene_tree_name=gene_tree_name
-    return result
-
-def unprune_outgroup_2(old_newick, full_sim_time, out_group_leaf, origin_node_name):
-        old_tree = Phylo.read(StringIO(old_newick), "newick")
-        outgroup_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=out_group_leaf)
-        new_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=origin_node_name,
-                                         clades=[outgroup_clade, old_tree.clade])
-        new_tree = Phylo.BaseTree.Tree.from_clade(new_clade)
-        handle = StringIO()
-        Phylo.write(new_tree, handle, "newick")
-        new_newick = handle.getvalue()
-        return new_newick, new_tree, [out_group_leaf]
-
-def add_back_outgroup(result,full_sim_time):
-    original_newick = result.simple_newick
-    original_tree= Phylo.read(StringIO(original_newick), "newick")
-    terminal_leaf_names = [t.name for t in  original_tree.get_terminals()]
-    if (not "O" in terminal_leaf_names) and (not "O1" in terminal_leaf_names):
-        out_group_leaf="O1"
-        origin_node_name="O"
-        #new_newick, new_leaves=unprune_outgroup(result.simple_newick,full_sim_time)
-        new_newick, tree,new_leaves = unprune_outgroup_2(result.simple_newick,
-                                                full_sim_time, out_group_leaf, origin_node_name)
-
-        result.simple_newick = new_newick
-        result.original_newick = original_newick
-
-        for new_leaf in new_leaves:
-            if not "O" in result.leaves_by_species:
-                result.leaves_by_species["O"]=[]
-            result.leaves_by_species["O"].append(new_leaf)
-
-    return result
-
-def read_leaf_map(leafmap_file, my_gene_tree_result):
-
-    leaves_by_species={}
-    num_extant_leaves=0
-    with open(leafmap_file, "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                splat=line.split()
-                leaf=splat[0]
-                species=splat[1]
-                if species not in leaves_by_species.keys():
-                    leaves_by_species[species]=[]
-                leaves_by_species[species].append(leaf)
-                num_extant_leaves=num_extant_leaves+1
-
-    my_gene_tree_result.leaves_by_species=leaves_by_species
-    my_gene_tree_result.num_extant_leaves=num_extant_leaves
-    return my_gene_tree_result
-
-def read_gene_tree_info(gene_tree_info_file, my_gene_tree_result):
-
-    info_dict={}
-    with open(gene_tree_info_file, "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                if "#" in line:
-                    continue
-                if "Arguments" in line:
-                    continue
-
-                splat=line.split(":")
-                if len(splat) < 2:
-                    continue
-
-                splat=line.split(":")
-                info_dict[splat[0]]=splat[1].strip()
-
-    my_gene_tree_result.info_dict=info_dict
-    return my_gene_tree_result
-def clean_newick(taggy_tree):
-
-        open_brackets = [i for i in range(0, len(taggy_tree)) if taggy_tree[i] == "["]
-        if len(open_brackets) ==0:
-            return taggy_tree
-
-        close_brackets_plus_zero = [0] + [i + 1 for i in range(0, len(taggy_tree)) if taggy_tree[i] == "]"]
-        stuff_to_keep = [taggy_tree[close_brackets_plus_zero[i]:open_brackets[i]] for i in range(0, len(open_brackets))]
-        clean_tree = "".join(stuff_to_keep) +";"
-        return clean_tree
 def run_sagephy(polyploid, species_tree_newick):
 
     config = polyploid.general_sim_config
@@ -248,17 +130,3 @@ def run_sagephy(polyploid, species_tree_newick):
                                                               "raw_gene_tree", subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_tree_data_by_tree_name
-
-class gene_tree_result():
-    original_newick=""
-    simple_newick=""
-    newick_with_tags=""
-    num_extant_leaves=0
-    gene_tree_name=""
-    gene_tree_file_name=""
-    leaves_by_species={}
-    info_dict={}
-#https://docs.python.org/3/library/subprocess.html
-#https://stackoverflow.com/questions/8953119/waiting-for-external-launched-process-finish
-#https://stackoverflow.com/questions/14762048/subprocess-call-in-python-to-invoke-java-jar-files-with-java-opts
-#java -jar /home/tamsen/Apps/sagephy/sagephy-1.0.0.jar BranchRelaxer -x -innms -o genetree.relaxed.tree genetree_test1.unpruned.tree ACRY07 1 0.000001
