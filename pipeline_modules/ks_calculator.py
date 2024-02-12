@@ -196,7 +196,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
                         f.writelines(seqs[r] + "\n")
 
             if len(sequences_by_leaf.keys())==0:
-                print("Warning. No gene tree leaves made it into the polyploid for htis replicate.")
+                print("Warning. No gene tree leaves made it into the polyploid for this replicate.")
                 continue
  
             sequence_files_written.append(replicate_fa_file )

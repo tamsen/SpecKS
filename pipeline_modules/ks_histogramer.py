@@ -80,8 +80,9 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num,gene_tree_resul
                 dst=os.path.join(rep_subfolder, gene_tree + "_" +base)
                 if os.path.exists(file):
                     shutil.copyfile(file, dst)
+                else:
                     print("Warning: no codeml result for " + gene_tree + ", replicate " + str(replicate))
-                    print("Maybe gene tree had no extant leaves? Codeml result file would have been here: "
+                    print("Maybe gene tree had no extant leaves? Codeml result file is here: "
                           + file)
 
         subgenomes_of_concern=["P1","P2"]
