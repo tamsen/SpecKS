@@ -46,6 +46,9 @@ def setup(arguments):
     print("Current environment: %s" + str(os.environ))
     print("Current Working Directory:\t" + os.getcwd())
 
+    if conf.output_folder[0:2]== "./":
+        conf.output_folder = os.path.join(os.getcwd(),conf.output_folder.replace("./",""))
+
     print("Output folder:\t" + conf.output_folder)
     if not os.path.exists(conf.output_folder):
         os.makedirs(conf.output_folder)

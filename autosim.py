@@ -46,6 +46,10 @@ def run_autosim(polyploid):
         print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
         relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, gene_tree_results_by_tree_name)
 
+        print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
+              "At every time step post WGD, cull a certain percent of what remains. (custom code)")
+        gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid,relaxed_gene_tree_results)
+
         # TODO (1) probably have to set tree length here. It defaults to500
         # TODO (2) moove all the root_seq files into the evolver cwd
         print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
@@ -59,9 +63,6 @@ def run_autosim(polyploid):
 
     polyploid.subtree_subfolder = ""
 
-    print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
-          "At every time step post WGD, cull a certain percent of what remains. (custom code)")
-    tree_pruner.shed_gene_trees(polyploid)
 
     #note here, there is only one replicate per evolver run
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
