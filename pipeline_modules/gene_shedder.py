@@ -94,7 +94,11 @@ def chose_leaves_to_remove(nodes_on_edges_that_cross_this_time,num_to_remove, un
                 nodes_allowed_to_prune.append(node)
                 leaves_to_remove_by_node[node] = leaves.copy()
 
-        nodes_to_remove_list = sample(nodes_allowed_to_prune, num_to_remove)
+        if (len(nodes_allowed_to_prune) >= num_to_remove):
+            nodes_to_remove_list = sample(nodes_allowed_to_prune, num_to_remove)
+        else:
+            nodes_to_remove_list =[]
+
         leaves_to_remove_list = []
         for node in nodes_to_remove_list:
             leaves_to_remove_list = leaves_to_remove_list + leaves_to_remove_by_node[node]

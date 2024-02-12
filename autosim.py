@@ -34,6 +34,7 @@ def run_autosim(polyploid):
     subtrees=["Left","Right"]
     pooled_gene_tree_results_by_tree={}
     pooled_relaxed_gene_tree_results_by_tree={}
+    pooled_shed_gene_tree_results_by_tree={}
     pooled_evolver_results_by_tree_by_replicate = {}
     for i in range(0,len(subtrees)):
 
@@ -54,10 +55,11 @@ def run_autosim(polyploid):
         # TODO (2) moove all the root_seq files into the evolver cwd
         print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
-            polyploid, relaxed_gene_tree_results, root_seq_files_written_by_gene_tree)
+            polyploid, gene_trees_after_gene_shedding, root_seq_files_written_by_gene_tree)
 
         pooled_gene_tree_results_by_tree[subtree]=gene_tree_results_by_tree_name
         pooled_relaxed_gene_tree_results_by_tree[subtree]=relaxed_gene_tree_results
+        pooled_shed_gene_tree_results_by_tree[subtree]= gene_trees_after_gene_shedding 
         pooled_evolver_results_by_tree_by_replicate[subtree]= evolver_results_by_gene_tree_by_replicate
 
 

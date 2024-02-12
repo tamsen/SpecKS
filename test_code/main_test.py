@@ -31,13 +31,15 @@ class TestMain(unittest.TestCase):
 
         self.assertTrue(os.path.exists(conf.output_folder))  # ad
 
-        #check a final histogram file was created for the allopolyploid and the autopolyploid
+        #check a final histogram file was created for the allopolyploid
         expected_allo_hist= os.path.join(conf.output_folder,"Allopolyploid_1",
                                          "7_ks_histograms","replicate2","Polyploid P1andP2_paml_hist_maxKS5_NG.png")
-
         self.assertTrue(os.path.exists(expected_allo_hist))
 
-        #TDI, add an extra test for the autopolyploid case, once I get it working again..
+        #check a final histogram file was created for the autopolyploid
+        expected_auto_hist= os.path.join(conf.output_folder,"Autopolyploid_1",
+                                         "14_ks_histograms","replicate2","Polyploid P1andP2_paml_hist_maxKS5_NG.png")
+        self.assertTrue(os.path.exists(expected_auto_hist))
 
 if __name__ == '__main__':
     unittest.main()
