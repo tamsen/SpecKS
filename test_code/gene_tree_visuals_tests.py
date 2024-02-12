@@ -5,7 +5,7 @@ from pathlib import Path
 from io import StringIO
 
 import polyploid_setup
-from pipeline_modules import gene_tree_maker, species_tree_maker
+from pipeline_modules import gene_tree_maker, species_tree_maker, gene_tree_data
 from visualization import gene_tree_visuals, tree_visuals_by_phylo
 import config
 from visualization.combined_tree_view import plot_combined_tree_view
@@ -174,7 +174,11 @@ class VisualizationTests2(unittest.TestCase):
                 dist = tree_1.distance(t)
                 print(dist)
 
-            adjusted_newick = gene_tree_maker.unprune_outgroup(newick_1,500)
+            out_group_leaf="O1"
+            origin_node_name="O"
+
+            adjusted_newick, new_tree, [out_group_leaf] = gene_tree_data.unprune_outgroup(tree_1,500,
+                                                              out_group_leaf, origin_node_name)
             tree_1_fixed = Phylo.read(StringIO(adjusted_newick), "newick")
             Phylo.draw_ascii(tree_1_fixed)
             terminals = tree_1_fixed.get_terminals()
@@ -195,16 +199,22 @@ class VisualizationTests2(unittest.TestCase):
         #leaves_to_prune = ["G0_0", "G1_0", "G2_0"]
         #for leaf in leaves_to_prune:
         #    tree.prune(leaf)
-        my_clade=Phylo.clade("foo",distance=500)
-        tree.add(my_clade)
-        Phylo.draw_ascii(tree)
+
+        #new_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=origin_node_name,
+        #                                 clades=[outgroup_clade, old_tree.clade])
+        #new_tree = Phylo.BaseTree.Tree.from_clade(new_clade)
+
+        my_clade1=Phylo.BaseTree.Clade( name="foo1",branch_length=500)
+        my_clade2=Phylo.BaseTree.Clade( name="foo2",branch_length=500)
+        my_clade3=Phylo.BaseTree.Clade( name="foo3",branch_length=500, clades=[my_clade1,my_clade2])
+        new_tree = Phylo.BaseTree.Tree.from_clade(my_clade3)
+        Phylo.draw_ascii(new_tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
         gene_tree_visuals.plot_gene_tree_alone(
               species_filter,leaf_map,newick_string, file_to_save)
 
 def get_leaf_map(leaf_map_file_path):
-    leaf_map = gene_tree_maker.read_leaf_map(
-        leaf_map_file_path, gene_tree_maker.gene_tree_result()).leaves_by_species
+    leaf_map,num_extant_leaves = gene_tree_data.read_leaf_map_data(leaf_map_file_path)
     return leaf_map
 
 def get_gt1():
@@ -223,10 +233,9 @@ def get_gt3():
     return gt3
 
 def get_gt_from_file(tree_file):
-    result= gene_tree_maker.read_tree_file(tree_file)
     leafmap_file = tree_file.replace(".tree", ".leafmap")
-    result= gene_tree_maker.read_leaf_map(leafmap_file, result)
-    result= gene_tree_maker.add_back_outgroup(result,500)
+    result= gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(tree_file,leafmap_file)
+    result= result.add_back_outgroup(500)
     return result.simple_newick,result.leaves_by_species
 def get_config_file():
     par_dir = Path(__file__).parent.parent
