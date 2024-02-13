@@ -26,7 +26,8 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
-    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_trees_after_gene_shedding)
+    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_trees_after_gene_shedding,
+                                                            polyploid.FULL_time_MYA)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 

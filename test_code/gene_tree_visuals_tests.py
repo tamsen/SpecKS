@@ -9,7 +9,7 @@ from pipeline_modules import gene_tree_maker, species_tree_maker, gene_tree_data
 from visualization import gene_tree_visuals, tree_visuals_by_phylo
 import config
 from visualization.combined_tree_view import plot_combined_tree_view
-from visualization.gene_tree_visuals import plot_gene_tree_alone
+from visualization.gene_tree_visuals import plot_polyploid_gene_tree_alone
 
 
 class VisualizationTests2(unittest.TestCase):
@@ -46,7 +46,7 @@ class VisualizationTests2(unittest.TestCase):
             expected_file_to_save = os.path.join("./test_out",
                                                  plot_names[i].replace(".png",".phylo.png"))
             tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
-            gene_tree_visuals.plot_gene_tree_alone(
+            gene_tree_visuals.plot_polyploid_gene_tree_alone(
                 species_filter,leaf_map, newick_strings[i], "gt_name", test_file_to_save)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
@@ -87,8 +87,8 @@ class VisualizationTests2(unittest.TestCase):
 
         for i in range(1,4):
             leaf_map = get_leaf_map(leaf_data_files[i])
-            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_map,newick_strings[i],
-                                                   gt_tree_out_file_name)
+            gt_tree_viz_data =plot_polyploid_gene_tree_alone(species_filter, leaf_map, newick_strings[i],
+                                                             gt_tree_out_file_name)
             gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
 
 
@@ -135,9 +135,9 @@ class VisualizationTests2(unittest.TestCase):
         time_of_SPEC_MYA=300
 
         for i in range(0,5):
-            gt_tree_viz_data =plot_gene_tree_alone(species_filter, leaf_maps[i],newick_strings[i],
+            gt_tree_viz_data =plot_polyploid_gene_tree_alone(species_filter, leaf_maps[i], newick_strings[i],
                                                    "gt" + str(i),
-                                                   gt_tree_out_file_name)
+                                                             gt_tree_out_file_name)
             gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
 
 
@@ -210,7 +210,7 @@ class VisualizationTests2(unittest.TestCase):
         new_tree = Phylo.BaseTree.Tree.from_clade(my_clade3)
         Phylo.draw_ascii(new_tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
-        gene_tree_visuals.plot_gene_tree_alone(
+        gene_tree_visuals.plot_polyploid_gene_tree_alone(
               species_filter,leaf_map,newick_string, file_to_save)
 
 def get_leaf_map(leaf_map_file_path):

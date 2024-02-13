@@ -32,6 +32,7 @@ class polyploid_data():
     WGD_time_MYA=0
     FULL_time_MYA=0
     subgenome_names = ["P1", "P2"]
+    original_genome_name = ["P"]
     mode="TBD"
     general_sim_config=False
     species_subfolder=""

@@ -97,7 +97,7 @@ def get_evolver_version_string(gene_tree_subfolder):
     return version_string, version_number, version_decimals
 
 def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
-                              root_seq_files_written_by_gene_tree):
+                              root_seq_files_written_by_gene_tree, tree_length_for_this_leg):
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:
@@ -125,8 +125,8 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             dst=os.path.join(replicate_subfolder, "RootSeq.txt")
             shutil.copyfile(replicate_seq_file, dst)
 
-            cmd = write_evolver_commands(replicate_subfolder,1,
-                                     config.num_codons,config.tree_length, gene_tree_result)
+            cmd = write_evolver_commands(replicate_subfolder, 1,
+                                         config.num_codons, tree_length_for_this_leg, gene_tree_result)
             out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
 
             evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
@@ -151,7 +151,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
 
 
-def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
+def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length):
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:
@@ -174,7 +174,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name):
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
         cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
-                                     config.num_codons,config.tree_length, gene_tree_result)
+                                     config.num_codons,tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
         #common evolver complaints:

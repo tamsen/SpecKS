@@ -70,7 +70,7 @@ def read_pruned_trees(subfolder,full_sim_time):
 
     return results_by_tree_name
 
-def run_sagephy(polyploid, species_tree_newick):
+def run_sagephy(polyploid, species_tree_newick, subgenomes_to_visualize, time_range):
 
     config = polyploid.general_sim_config
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
@@ -117,9 +117,12 @@ def run_sagephy(polyploid, species_tree_newick):
         gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
         leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
         print("newick to plot:\t" +gt_newick)
+
         tree_visuals_by_phylo.save_tree_plot(gt_newick, plot_file_name_1)
-        gt_tree_viz_data=gene_tree_visuals.plot_gene_tree_alone(
-            polyploid.subgenome_names, leaf_map,gt_newick, gt_name, plot_file_name_2)
+        gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
+            subgenomes_to_visualize, time_range, leaf_map,gt_newick, gt_name,
+            polyploid.SPC_time_MYA,
+            plot_file_name_2)
         gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
         i=i+1
 

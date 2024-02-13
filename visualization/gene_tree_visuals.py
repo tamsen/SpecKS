@@ -58,12 +58,11 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
                             polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
 
 
-def plot_gene_tree_alone(
-        species_filter, leaf_map, tree_as_newick, gt_name, file_to_save=False):
+def plot_polyploid_gene_tree_alone(
+        species_filter, time_range, leaf_map, tree_as_newick, gt_name, time_since_speciation, file_to_save=False):
 
     tree = Phylo.read(StringIO(tree_as_newick), "newick")
     tree.clade.name = "Origin"
-    time_since_speciation=300.0
     leaf_aim=12.0
     width=5.0 #speciation_tree_width, the envelope
 
@@ -75,12 +74,13 @@ def plot_gene_tree_alone(
     species_by_leaf_dict = get_species_by_leaf_dict_from_leaf_map(leaf_map)
 
     #calculate x and y values for each node to graph
-    node_i_by_name, node_names_by_i = set_node_y_values(node_coordinates_by_i, nodes, tree)
+    node_i_by_name, node_names_by_i = set_node_y_values(node_coordinates_by_i,
+                                                        nodes, time_range,  tree)
 
     #Only keep vertexes that touch the species of interest.
     #We dont want to clutter the diagram with the outgroup.
     nodes_to_visualize = set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
-                                          species_filter, slope, width,nodes, tree)
+                                           species_filter, slope, width, nodes, tree)
     #print(nodes_to_visualize)
 
     #Translate so its indexed by "i", not by clade.
@@ -171,7 +171,6 @@ def get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize):
 
     return edges_to_visualize
 
-
 def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
                       species_filter, slope, width, nodes, tree):
 
@@ -181,18 +180,27 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
         names = [leaf.name for leaf in leafs]
         species = [species_by_leaf_dict[name] for name in names]
         distance =tree.distance(nodes[i])
-        if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1 AND P2?
-            f = .0
-            nodes_to_visulize[i]=names.copy()
-        elif species_filter[0] in species: #ie, does a leaf land in P1?
-            f = slope
-            nodes_to_visulize[i]=names.copy()
-        elif species_filter[1] in species: #ie, does a leaf land in P2/
-            f = -1.0 * slope
-            nodes_to_visulize[i]=names.copy()
-        else: #never conected with our species of interest
-            f = 0.0
-            distance = -1
+
+        if len(species_filter)==1: #ie, "P" is the only subgenome we are looking at...
+            if (species_filter[0] in species):  # ie, does a leaf land in "P" ?
+                f = .0
+                nodes_to_visulize[i] = names.copy()
+            else:
+                f = 0.0
+                distance = -1
+        else:
+            if (species_filter[0] in species) and (species_filter[1] in species):#ie, does a leaf land in P1 AND P2?
+                f = .0
+                nodes_to_visulize[i]=names.copy()
+            elif species_filter[0] in species: #ie, does a leaf land in P1?
+                f = slope
+                nodes_to_visulize[i]=names.copy()
+            elif species_filter[1] in species: #ie, does a leaf land in P2/
+                f = -1.0 * slope
+                nodes_to_visulize[i]=names.copy()
+            else: #never conected with our species of interest
+                f = 0.0
+                distance = -1
 
         (b, num_sibs) = tree_utils.birth_order(tree, nodes[i])
         delta = b * width / num_sibs
@@ -202,7 +210,7 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
 
     return nodes_to_visulize.keys() #we dont really need a full dict. that is just for troubleshooting
 
-def set_node_y_values(node_coordinates_by_i, nodes, tree):
+def set_node_y_values(node_coordinates_by_i, nodes, time_range, tree):
     node_names_by_i = {}
     node_i_by_name = {}
     for i in range(0, len(nodes)):
