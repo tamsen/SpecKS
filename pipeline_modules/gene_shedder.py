@@ -50,7 +50,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
             nodes_on_edges_that_cross_this_time = (
                 get_nodes_on_edges_that_cross_this_time(gt_tree, time_slice))
 
-            #just to visualize what is going on
+            #just to visualize what is going on beforehand
             out_file=os.path.join(subfolder ,gt_name + "_newick_pre_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
             tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
@@ -64,7 +64,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
 
             gene_trees_after_gene_shedding_by_gt[gt_name].update_tree(gt_tree)
 
-            # just to visualize what is going on
+            # just to visualize what is going on after shedding..
             out_file = os.path.join(subfolder, gt_name + "_newick_post_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
             tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
@@ -90,10 +90,14 @@ def chose_leaves_to_remove(nodes_on_edges_that_cross_this_time,num_to_remove, un
                 nodes_allowed_to_prune.append(node)
                 leaves_to_remove_by_node[node] = leaves.copy()
 
+        #Normally, you'd expect num_to_remove to be < nodes_allowed_to_prune
+        #But *just in case* num_to_remove >= nodes_allowed_to_prune,
+        #in that case, we just have to remove *all* the nodes.
+
         if (len(nodes_allowed_to_prune) >= num_to_remove):
             nodes_to_remove_list = sample(nodes_allowed_to_prune, num_to_remove)
-        else:
-            nodes_to_remove_list =[]
+        else: # just have to remove everything!
+            nodes_to_remove_list = nodes_allowed_to_prune
 
         leaves_to_remove_list = []
         for node in nodes_to_remove_list:
