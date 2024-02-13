@@ -180,7 +180,7 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict, slope,
         leafs = nodes[i].get_terminals()
         names = [leaf.name for leaf in leafs]
         species = [species_by_leaf_dict[name] for name in names]
-        distance =tree.distance(nodes[i])
+        distance =tree.distance(nodes[i]) + simulation_leg.interval_start_time_MY
 
         if len(species_filter)==1: #ie, "P" is the only subgenome we are looking at...
             if (species_filter[0] in species):  # ie, does a leaf land in "P" ?
@@ -194,10 +194,10 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict, slope,
                 f = .0
                 nodes_to_visulize[i]=names.copy()
             elif species_filter[0] in species: #ie, does a leaf land in P1?
-                f = slope
+                f = -1.0*slope
                 nodes_to_visulize[i]=names.copy()
             elif species_filter[1] in species: #ie, does a leaf land in P2/
-                f = -1.0 * slope
+                f = 1.0 * slope
                 nodes_to_visulize[i]=names.copy()
             else: #never conected with our species of interest
                 f = 0.0
