@@ -5,11 +5,10 @@
           <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
-        <!--
         <polyploid>
                 <SPC_time_MYA>300</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
-        </polyploid>-->
+        </polyploid>
         <polyploid>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>

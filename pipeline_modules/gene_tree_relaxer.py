@@ -4,7 +4,7 @@ import common
 from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo, gene_tree_visuals
 
-def relax(polyploid,gene_tree_results_by_tree_name,subgenomes_to_visualize,time_range):
+def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
 
     config = polyploid.general_sim_config
 
@@ -34,7 +34,7 @@ def relax(polyploid,gene_tree_results_by_tree_name,subgenomes_to_visualize,time_
         full_path_to_relaxed_tree_file=os.path.join(subfolder,relaxed_tree_file_out)
         relaxed_gene_tree_results = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(
             full_path_to_relaxed_tree_file, gene_tree_results.leaf_map_file_name)
-        relaxed_gene_tree_results.add_back_outgroup(polyploid.FULL_time_MYA)
+        relaxed_gene_tree_results.add_back_outgroup(simulation_leg.leg_length())
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 
         plot_file_name_1= full_path_to_relaxed_tree_file +"_phylo.png"
@@ -49,7 +49,7 @@ def relax(polyploid,gene_tree_results_by_tree_name,subgenomes_to_visualize,time_
         gt_newick=relaxed_gene_tree_results.simple_newick
         leaf_map = relaxed_gene_tree_results.leaves_by_species
         gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
-            subgenomes_to_visualize, time_range, leaf_map,gt_newick, gene_tree, polyploid.SPC_time_MYA, plot_file_name_2)
+            simulation_leg, leaf_map,gt_newick, gene_tree, polyploid.SPC_time_MYA, plot_file_name_2)
         gt_tree_viz_data_by_gene_tree[gene_tree]=gt_tree_viz_data
 
     gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,

@@ -1,8 +1,13 @@
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
     species_tree_maker, gene_shedder
 
-
+from Bio import Phylo
+from io import StringIO
 def run_allosim(polyploid):
+
+
+    #the allopolyploid has only one simulation leg for the full sim
+    simulation_leg=polyploid.simulation_legs[0]
 
     print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_trees = species_tree_maker.make_species_trees(polyploid)
@@ -10,20 +15,29 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Make gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, species_trees[0])
+    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, simulation_leg,
+                                                                 species_trees[0])
+
+    check_for_gt_disparity(gene_tree_results_by_tree_name)
+
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, gene_tree_results_by_tree_name)
+    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, simulation_leg,
+                                                    gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
+
+    check_for_gt_disparity(relaxed_gene_tree_results)
 
     print("\n\n{0}. Shed genes post WDG. ".format(polyploid.analysis_step_num) +
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
     gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, relaxed_gene_tree_results)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
+
+    check_for_gt_disparity(gene_trees_after_gene_shedding)
 
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_trees_after_gene_shedding,
@@ -43,3 +57,16 @@ def run_allosim(polyploid):
         return
 
     print("\n\n" + polyploid.species_name + " complete.\n\n")
+
+
+def check_for_gt_disparity(gene_tree_results_by_tree_name):
+    for gt_name, gene_tree_result in gene_tree_results_by_tree_name.items():
+        test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
+        X1 = Phylo.to_networkx(gene_tree_result.tree)
+        X2 = Phylo.to_networkx(test_tree)
+        len_nodes1 = len(list(X1.nodes))
+        len_nodes2 = len(list(X2.nodes))
+        print("nodes1=\t" + str(len_nodes1))
+        print("nodes2=\t" + str(len_nodes2))
+        if len_nodes1 != len_nodes2:
+            print("big problem here!!")

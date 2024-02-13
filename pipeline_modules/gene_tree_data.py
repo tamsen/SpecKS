@@ -19,14 +19,13 @@ class gene_tree_result():
         self.tree= Phylo.read(StringIO(self.original_newick), "newick")
         self.terminal_leaf_names = [t.name for t in self.tree.get_terminals()]
         self.num_terminal_leaves  = len(self.terminal_leaf_names)
-
         self.gene_tree_name = gene_tree_name
         self.gene_tree_file_name = gene_tree_file_name
         self.leaf_map_file_name=leaf_map_file
 
         self.set_leafmap_data(leaf_map_file)
 
-    def add_back_outgroup(self,full_sim_time):
+    def add_back_outgroup(self, leg_distance):
         original_newick = self.simple_newick
         terminal_leaf_names = self.terminal_leaf_names
 
@@ -34,7 +33,7 @@ class gene_tree_result():
             out_group_leaf="O1"
             origin_node_name="O"
             new_newick, new_tree,new_leaves = unprune_outgroup(self.tree,
-                                                               full_sim_time, out_group_leaf, origin_node_name)
+                                                               leg_distance, out_group_leaf, origin_node_name)
 
             self.simple_newick = new_newick
             self.original_newick = original_newick
@@ -49,16 +48,29 @@ class gene_tree_result():
         self.num_terminal_leaves = len(self.terminal_leaf_names)
         return self
 
+    def update_tree(self, new_tree):
+
+        handle = StringIO()
+        Phylo.write(new_tree, handle , "newick")
+        new_newick = handle.getvalue()
+
+        self.tree=new_tree
+        self.original_newick = self.simple_newick
+        self.simple_newick=clean_newick(new_newick)
+        self.terminal_leaf_names = [t.name for t in self.tree.get_terminals()]
+        self.num_terminal_leaves  = len(self.terminal_leaf_names)
+
+        return self
     def set_leafmap_data(self, leafmap_file):
 
         leaves_by_species,num_extant_leaves= read_leaf_map_data(leafmap_file)
         self.leaves_by_species=leaves_by_species
         self.num_extant_leaves=num_extant_leaves
         return self
-def unprune_outgroup(old_tree, full_sim_time, out_group_leaf, origin_node_name):
+def unprune_outgroup(old_tree, leg_distance, out_group_leaf, origin_node_name):
 
-        outgroup_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=out_group_leaf)
-        new_clade = Phylo.BaseTree.Clade(branch_length=full_sim_time, name=origin_node_name,
+        outgroup_clade = Phylo.BaseTree.Clade(branch_length=leg_distance, name=out_group_leaf)
+        new_clade = Phylo.BaseTree.Clade(branch_length=leg_distance, name=origin_node_name,
                                          clades=[outgroup_clade, old_tree.clade])
         new_tree = Phylo.BaseTree.Tree.from_clade(new_clade)
         handle = StringIO()

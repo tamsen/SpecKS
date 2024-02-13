@@ -15,6 +15,7 @@ def write_evolver_control_file(template_dat_file,out_dir,
 
     #Handle an evolver bug we dont seem to need for later versions.
     #Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
+    #*but* do need it for EVOLVER 4.9, March 2015
     s,vn,vd=get_evolver_version_string(out_dir)
     if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
        newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
@@ -64,18 +65,22 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
     template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
         "template.MCcodon.dat")
 
+    test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
 
-    #s,vn,vd=get_evolver_version_string(out_dir)
-    #if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
-    #    num_seq=gene_tree_result.info_dict["No. of vertices"]
-    #else:
-    #    num_seq = gene_tree_result.info_dict["No. of extant leaves"]
-
-    #todo - carry Tree around with result, instead of just  newick string
-    newick = gene_tree_result.simple_newick
-    tree= Phylo.read(StringIO(newick), "newick")
-    terminal_leaf_names = [t.name for t in  tree.get_terminals()]
-    num_seq = len(terminal_leaf_names)
+    s,vn,vd=get_evolver_version_string(out_dir)
+    if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
+        X1 = Phylo.to_networkx(gene_tree_result.tree)
+        X2 = Phylo.to_networkx(test_tree)
+        nodes1 = list(X1.nodes)
+        nodes2 = list(X2.nodes)
+        num_seq = len(nodes1)
+        print("nodes1=\t" + str(len(nodes1)))
+        print("nodes2=\t" + str(len(nodes2)))
+        print("num seq = num nodes:\t" + str(num_seq))
+    else:
+        #num_seq = gene_tree_result.info_dict["No. of extant leaves"]
+        num_seq = gene_tree_result.num_extant_leaves
+        print("num seq = num_extant_leaves:\t" + str(num_seq))
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
                                                       out_dir,
@@ -110,6 +115,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
     evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -126,7 +132,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             shutil.copyfile(replicate_seq_file, dst)
 
             cmd = write_evolver_commands(replicate_subfolder, 1,
-                                         config.num_codons, tree_length_for_this_leg, gene_tree_result)
+                                         config.num_codons, evolver_tree_length, gene_tree_result)
             out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
 
             evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
@@ -151,7 +157,8 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
 
 
-def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length):
+def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_this_leg):
+
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:
@@ -164,6 +171,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
     evolver_results_by_gene_tree={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -173,12 +181,16 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length):
         print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
-        cmd = write_evolver_commands(gene_tree_subfolder,config.num_replicates_per_gene_tree,
-                                     config.num_codons,tree_length, gene_tree_result)
+        cmd = write_evolver_commands(gene_tree_subfolder, config.num_replicates_per_gene_tree,
+                                     config.num_codons, evolver_tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
         #common evolver complaints:
         #if "perhaps too many '('?" in error_string:  <- fix newick
+        # See this with evolver 4.9. Where is asks for "# seq" it actually wants the num nodes
+        # (including internal nodes). Where as more recent versions want the num extant leaves.
+
+
         #Error: error in tree: too many species in tree. <- make sure the requested seq matches the tree topology
 
         #this mess is b/c diff versions of evoler can output diff file names, A & B
@@ -196,4 +208,13 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length):
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return evolver_results_by_gene_tree
+
+
+def get_evolver_tree_length(config, tree_length_for_this_leg):
+    # The "evolver" tree length is the expected number of substitutions per site along all
+    # branches in the phylogeny, calculated as the sum of the branch lengths
+    # so, if my tree length is 500MY, and Ks = 0.01/Myr”, =>
+    # Then, the "evolver" tree length is 0.01*500 = 5.
+    evolver_tree_length = config.Ks_per_Myr * tree_length_for_this_leg
+    return evolver_tree_length
 

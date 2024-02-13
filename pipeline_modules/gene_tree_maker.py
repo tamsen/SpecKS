@@ -53,7 +53,7 @@ def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
     plt.cla()
     plt.close()
 
-def read_pruned_trees(subfolder,full_sim_time):
+def read_pruned_trees(subfolder, leg_distance):
 
     tree_files = glob.glob(subfolder + "/*.pruned.tree")
     results_by_tree_name = {}
@@ -61,7 +61,7 @@ def read_pruned_trees(subfolder,full_sim_time):
 
         leafmap_file=tree_file.replace(".tree",".leafmap")
         result = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(tree_file, leafmap_file)
-        result.add_back_outgroup(full_sim_time)
+        result.add_back_outgroup(leg_distance)
         results_by_tree_name[result.gene_tree_name]=result
 
         new_tree_file=tree_file.replace(".tree",".updated.tree")
@@ -70,7 +70,7 @@ def read_pruned_trees(subfolder,full_sim_time):
 
     return results_by_tree_name
 
-def run_sagephy(polyploid, species_tree_newick, subgenomes_to_visualize, time_range):
+def run_sagephy(polyploid, simulation_leg, species_tree_newick):
 
     config = polyploid.general_sim_config
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
@@ -102,7 +102,7 @@ def run_sagephy(polyploid, species_tree_newick, subgenomes_to_visualize, time_ra
         common.run_and_wait_on_process(cmd, subfolder)
 
 
-    gene_tree_data_by_tree_name = read_pruned_trees(subfolder, polyploid.FULL_time_MYA)
+    gene_tree_data_by_tree_name = read_pruned_trees(subfolder, simulation_leg.leg_length())
     pruned_tree_names=gene_tree_data_by_tree_name.keys()
     print("pruned_tree_files:\t" + str(pruned_tree_names))
 
@@ -117,10 +117,9 @@ def run_sagephy(polyploid, species_tree_newick, subgenomes_to_visualize, time_ra
         gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
         leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
         print("newick to plot:\t" +gt_newick)
-
         tree_visuals_by_phylo.save_tree_plot(gt_newick, plot_file_name_1)
         gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
-            subgenomes_to_visualize, time_range, leaf_map,gt_newick, gt_name,
+            simulation_leg, leaf_map,gt_newick, gt_name,
             polyploid.SPC_time_MYA,
             plot_file_name_2)
         gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data

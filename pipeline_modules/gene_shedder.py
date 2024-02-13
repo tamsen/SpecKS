@@ -45,33 +45,29 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
 
     for gt_name in gene_trees_to_loose_a_gene:
 
-            newick_string_from_relaxer=gene_trees_after_gene_shedding_by_gt[gt_name].simple_newick
-
-            #just to visualize what is going on
-            gt_tree = Phylo.read(StringIO(newick_string_from_relaxer), "newick")
-            out_file=os.path.join(subfolder ,gt_name + "_newick_pre_gene_shedding.txt")
-            Phylo.write(gt_tree, out_file, "newick")
-            tree_visuals_by_phylo.save_tree_plot(newick_string_from_relaxer,
-                                                 out_file.replace("txt","png"))
-
+            gt_data_to_edit= gene_trees_after_gene_shedding_by_gt[gt_name]
+            gt_tree = gt_data_to_edit.tree
             nodes_on_edges_that_cross_this_time = (
                 get_nodes_on_edges_that_cross_this_time(gt_tree, time_slice))
+
+            #just to visualize what is going on
+            out_file=os.path.join(subfolder ,gt_name + "_newick_pre_gene_shedding.txt")
+            Phylo.write(gt_tree, out_file, "newick")
+            tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
+                                                 out_file.replace("txt","png"))
 
             list_of_terminal_leaves_to_remove = chose_leaves_to_remove(
                 nodes_on_edges_that_cross_this_time, num_genes_to_remove_per_gene_tree, unprunable_leaves)
 
-
             for leaf in list_of_terminal_leaves_to_remove:
                 gt_tree.prune(leaf)
 
-            handle = StringIO()
-            out_file=os.path.join(subfolder , gt_name + "_newick_post_gene_shedding.txt")
+            gene_trees_after_gene_shedding_by_gt[gt_name].update_tree(gt_tree)
+
+            # just to visualize what is going on
+            out_file = os.path.join(subfolder, gt_name + "_newick_post_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
-            Phylo.write(gt_tree, handle , "newick")
-            new_newick = handle.getvalue()
-            gene_trees_after_gene_shedding_by_gt[gt_name].simple_newick = new_newick
-            print(new_newick)
-            tree_visuals_by_phylo.save_tree_plot(new_newick,
+            tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
                                                  out_file.replace("txt", "png"))
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1

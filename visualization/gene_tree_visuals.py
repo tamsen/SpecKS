@@ -58,9 +58,9 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
                             polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
 
 
-def plot_polyploid_gene_tree_alone(
-        species_filter, time_range, leaf_map, tree_as_newick, gt_name, time_since_speciation, file_to_save=False):
-
+def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,
+                                   gt_name, time_since_speciation, file_to_save=False):
+    #species_filter, time_range
     tree = Phylo.read(StringIO(tree_as_newick), "newick")
     tree.clade.name = "Origin"
     leaf_aim=12.0
@@ -75,12 +75,12 @@ def plot_polyploid_gene_tree_alone(
 
     #calculate x and y values for each node to graph
     node_i_by_name, node_names_by_i = set_node_y_values(node_coordinates_by_i,
-                                                        nodes, time_range,  tree)
+                                                        nodes,  tree, simulation_leg)
 
     #Only keep vertexes that touch the species of interest.
     #We dont want to clutter the diagram with the outgroup.
     nodes_to_visualize = set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
-                                           species_filter, slope, width, nodes, tree)
+                                           slope, width, nodes, tree, simulation_leg)
     #print(nodes_to_visualize)
 
     #Translate so its indexed by "i", not by clade.
@@ -171,9 +171,10 @@ def get_edge_list_in_i_coords(edges, node_i_by_name,nodes_to_visualize):
 
     return edges_to_visualize
 
-def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
-                      species_filter, slope, width, nodes, tree):
+def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict, slope,
+                      width, nodes, tree, simulation_leg):
 
+    species_filter=simulation_leg.subgenomes_during_this_interval
     nodes_to_visulize={}
     for i in range(0, len(nodes)):
         leafs = nodes[i].get_terminals()
@@ -210,11 +211,11 @@ def set_node_x_values(node_coordinates_by_i, species_by_leaf_dict,
 
     return nodes_to_visulize.keys() #we dont really need a full dict. that is just for troubleshooting
 
-def set_node_y_values(node_coordinates_by_i, nodes, time_range, tree):
+def set_node_y_values(node_coordinates_by_i, nodes, tree, simulation_leg):
     node_names_by_i = {}
     node_i_by_name = {}
     for i in range(0, len(nodes)):
-        node_coordinates_by_i[i].y = tree.distance(nodes[i])
+        node_coordinates_by_i[i].y = tree.distance(nodes[i]) + simulation_leg.interval_start_time_MY
         if nodes[i].name:
             node_names_by_i[i] = nodes[i].name
             node_i_by_name[nodes[i].name] = i

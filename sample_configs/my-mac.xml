@@ -5,14 +5,14 @@
           <path_to_sagephy>/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
-        <polyploid>
+        <!--<polyploid>
                 <SPC_time_MYA>300</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
-        </polyploid>
-        <!--<polyploid>
+        </polyploid>-->
+        <polyploid>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
-        </polyploid>-->
+        </polyploid>
         <full_sim_time>500</full_sim_time>
     </SpeciesTree>
     <GeneTree>
