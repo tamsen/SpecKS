@@ -18,7 +18,8 @@ def write_evolver_control_file(template_dat_file,out_dir,
     #*but* do need it for EVOLVER 4.9, March 2015
     s,vn,vd=get_evolver_version_string(out_dir)
     if (vd[0] < 4.0) or ((vd[0] == 4.0)  and (vd[1] < 10.0) ):
-       newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
+        newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
+    #newick_tree_string =work_around_for_no_parenthesis_in_newick(newick_tree_string)
 
     with open(template_dat_file, 'r') as f:
 
@@ -56,9 +57,15 @@ def work_around_for_evolver_bug(newick_tree_string):
     if newick_tree_string[-2:] != ");":
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
         newick_tree_string = fixed_newick_tree_string
+    return fixed_newick_tree_string
+
+def work_around_for_no_parenthesis_in_newick(newick_tree_string):
+
+    open_parenthesis = [i for i in range(0, len(newick_tree_string)) if newick_tree_string[i] == "("]
+    if len(open_parenthesis) ==0:
+        fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
+        newick_tree_string = fixed_newick_tree_string
     return newick_tree_string
-
-
 def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
 
     par_dir= Path(__file__).parent.parent
@@ -181,6 +188,11 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
         print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
+
+        if gene_tree_result.num_terminal_leaves < 2:
+            #Then all we have left is the outgroup. No point in running evolver.
+            continue
+
         cmd = write_evolver_commands(gene_tree_subfolder, config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)

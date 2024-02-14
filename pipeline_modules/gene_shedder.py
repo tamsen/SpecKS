@@ -30,15 +30,17 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
     # The total number of genes to be shed is calculated as a percent of the
     # total on the time slice. Each gene will come from a different gene tree.
 
-    #TODO, this needs to be calculated based on some parameters.
-    num_genes_to_shed = 2
+    #TODO, this needs to be calculated based on some parameters we will set in the config.
+    #For now, keep this alg turned off. Ie,  num_genes_to_shed = 0
+    num_genes_to_shed = 0
     all_gene_trees=list(relaxed_gene_tree_results.keys())
     gene_trees_to_loose_a_gene = sample(all_gene_trees, num_genes_to_shed)
 
     # For each gene to be shed, a GT is randomly selected without replacement,
     # and a vertex from that GT which crosses the time-slice is removed.
     #   This process is repeated until the desired number of genes are shed.
-    unprunable_leaves = ['O', 'O1', 'O2']
+
+    unprunable_leaves = ['O', 'O1', 'O2'] #no pruning the outgroup
     time_slice = time_slices[-10]
     num_genes_to_remove_per_gene_tree = 1
     print("time slice:\t" + str(time_slice))
