@@ -53,9 +53,12 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
     # plot the gene trees over the species tree
     s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
                                                polyploid.species_name + "_species_and_gt_by_specks.png")
+
+    max_num_gt_to_visualize=5
     combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
-                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name)
+                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name,
+                                               max_num_gt_to_visualize )
 
 
 def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,

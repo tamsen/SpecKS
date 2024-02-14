@@ -14,7 +14,7 @@ def color_list():
 
 def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             time_of_WGD_MYA, time_of_SPEC_MYA, full_sim_time,
-                            species_name, file_to_save):
+                            species_name, file_to_save, limit_gt_number=False):
 
     #perturb the gene tree values so they dont sit right on top of each other for plotting
     random.seed(10)
@@ -22,6 +22,11 @@ def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
     gt_names=list(gt_tree_viz_data_by_name.keys())
     tree_viz_data_list=[species_tree_viz_data]
     for i in range(0,len(gt_names)):
+
+        if limit_gt_number:
+            if i > limit_gt_number:
+                break
+
         name=gt_names[i]
         gt_viz_data = gt_tree_viz_data_by_name[name]
         gt_viz_data.color = colors[i]
