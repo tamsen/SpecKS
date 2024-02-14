@@ -78,8 +78,8 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
         print("nodes2=\t" + str(len(nodes2)))
         print("num seq = num nodes:\t" + str(num_seq))
     else:
-        #num_seq = gene_tree_result.info_dict["No. of extant leaves"]
-        num_seq = gene_tree_result.num_extant_leaves
+        #for recent versions of PAML
+        num_seq = gene_tree_result.num_terminal_leaves
         print("num seq = num_extant_leaves:\t" + str(num_seq))
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,

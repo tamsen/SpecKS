@@ -16,7 +16,7 @@ class gene_tree_result():
 
         self.original_newick=get_newick_from_tree_file(gene_tree_file_name)
         self.simple_newick=clean_newick(self.original_newick)
-        self.tree= Phylo.read(StringIO(self.original_newick), "newick")
+        self.tree= Phylo.read(StringIO(self.simple_newick), "newick")
         self.terminal_leaf_names = [t.name for t in self.tree.get_terminals()]
         self.num_terminal_leaves  = len(self.terminal_leaf_names)
         self.gene_tree_name = gene_tree_name
@@ -65,7 +65,7 @@ class gene_tree_result():
 
         leaves_by_species,num_extant_leaves= read_leaf_map_data(leafmap_file)
         self.leaves_by_species=leaves_by_species
-        self.num_extant_leaves=num_extant_leaves
+        self.num_terminal_leaves = num_extant_leaves
         return self
 def unprune_outgroup(old_tree, leg_distance, out_group_leaf, origin_node_name):
 
