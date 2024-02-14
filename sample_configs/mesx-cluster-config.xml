@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <Paths>
-          <output_folder_root>/usr/scratch2/userdata2/tdunn/SpecKS_Output</output_folder_root>
+          <output_folder_root>/usr/scratch2/userdata2/tdunn/SpecKS_Output/SpecKS</output_folder_root>
           <path_to_sagephy>/home/tdunn/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
