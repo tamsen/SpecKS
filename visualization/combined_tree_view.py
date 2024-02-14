@@ -29,7 +29,12 @@ def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
 
         name=gt_names[i]
         gt_viz_data = gt_tree_viz_data_by_name[name]
-        gt_viz_data.color = colors[i]
+
+        if limit_gt_number:
+            gt_viz_data.color = colors[i]
+        else:
+            gt_viz_data.color = 'k'
+
         tree_viz_data_list.append(gt_viz_data)
         num_to_add=20*(random.random()-0.5) # random float between 0 and 1
         for id, point in gt_viz_data.points.items():
@@ -45,7 +50,8 @@ def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
     for data_to_plot in tree_viz_data_list:
         label=None
         if data_to_plot.width<10:
-            label=data_to_plot.name
+            if limit_gt_number:
+                label=data_to_plot.name
 
         X.add_edges_from(data_to_plot.verts)
         nx.draw_networkx_edges(X, data_to_plot.points, data_to_plot.verts, arrows=False,

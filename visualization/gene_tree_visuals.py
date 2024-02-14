@@ -52,13 +52,19 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
 
     # plot the gene trees over the species tree
     s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
-                                               polyploid.species_name + "_species_and_gt_by_specks.png")
+                                               polyploid.species_name + "_species_and_5gt_by_specks.png")
 
     max_num_gt_to_visualize=5
     combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
                             polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name,
                                                max_num_gt_to_visualize )
+
+    s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
+                                               polyploid.species_name + "_species_and_all_gt_by_specks.png")
+    combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
+                            polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
+                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name)
 
 
 def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,
@@ -108,7 +114,7 @@ def save_tree_vis_data(edges, pos, labels, node_distances, name):
     gt_vis_data.color = mcolors.CSS4_COLORS['green']
     gt_vis_data.name = name
     gt_vis_data.width = 3
-    gt_vis_data.alpha = None
+    gt_vis_data.alpha = 0.5
     gt_vis_data.labels = labels
     gt_vis_data.node_distances = node_distances
     return gt_vis_data
