@@ -90,7 +90,6 @@ def run_autosim(polyploid):
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     print(codeml_results_by_replicate_num)
-    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num,
-                                      pooled_relaxed_gene_tree_results_by_tree)
+    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
 
     print("\n\n" + polyploid.species_name + " complete")

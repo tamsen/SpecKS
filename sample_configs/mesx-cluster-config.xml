@@ -24,7 +24,7 @@
     <SequenceEvolution>
         <num_replicates_per_gene_tree>3</num_replicates_per_gene_tree>
         <num_codons>10</num_codons>
-        <tree_length>5</tree_length>
+        <Ks_per_Myr>0.01</Ks_per_Myr>
     </SequenceEvolution>
     <Histogram>
         <maxKs>5</maxKs>

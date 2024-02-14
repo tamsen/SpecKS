@@ -33,12 +33,12 @@ class TestMain(unittest.TestCase):
 
         #check a final histogram file was created for the allopolyploid
         expected_allo_hist= os.path.join(conf.output_folder,"Allopolyploid_1",
-                                         "7_ks_histograms","replicate2","Polyploid P1andP2_paml_hist_maxKS5_NG.png")
+                                         "7_ks_histograms","replicate2","Allopolyploid_1_paml_hist_maxKS5_NG.png")
         self.assertTrue(os.path.exists(expected_allo_hist))
 
         #check a final histogram file was created for the autopolyploid
         expected_auto_hist= os.path.join(conf.output_folder,"Autopolyploid_1",
-                                         "14_ks_histograms","replicate2","Polyploid P1andP2_paml_hist_maxKS5_NG.png")
+                                         "14_ks_histograms","replicate2","Autopolyploid_1_paml_hist_maxKS5_NG.png")
         self.assertTrue(os.path.exists(expected_auto_hist))
 
 if __name__ == '__main__':

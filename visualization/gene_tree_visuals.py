@@ -55,12 +55,13 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
                                                polyploid.species_name + "_species_and_gt_by_specks.png")
     combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
-                            polyploid.FULL_time_MYA, s_and_gt_tree_out_file_name)
+                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name)
 
 
 def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,
-                                   gt_name, time_since_speciation, file_to_save=False):
-    #species_filter, time_range
+                                   gt_name, time_since_speciation,
+                                   species_name, file_to_save=False):
+
     tree = Phylo.read(StringIO(tree_as_newick), "newick")
     tree.clade.name = "Origin"
     leaf_aim=12.0
@@ -89,7 +90,7 @@ def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,
     node_distances=[node_coordinates_by_i[i].distance for i in range(0,len(node_coordinates_by_i)) ]
     #plot it & print it
     if file_to_save:
-        plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, file_to_save)
+        plot_gene_tree(X, edge_list_in_i_coords,node_names_by_i, pos_by_i, species_name, file_to_save)
         css_to_save=file_to_save.replace(".png",".dist.csv")
         tree_utils.print_node_distances(tree, css_to_save)
 
@@ -109,7 +110,7 @@ def save_tree_vis_data(edges, pos, labels, node_distances, name):
     gt_vis_data.node_distances = node_distances
     return gt_vis_data
 def plot_gene_tree(X, edge_list_in_i_coords,
-                    node_names_by_i, pos_by_i, file_to_save):
+                    node_names_by_i, pos_by_i, polyploid_species_name, file_to_save):
 
     fig, ax = plt.subplots()
     X.add_edges_from(edge_list_in_i_coords)
@@ -121,7 +122,7 @@ def plot_gene_tree(X, edge_list_in_i_coords,
     y_ticks = plt.yticks()[0]
     new_ticks = [500 - y_tick for y_tick in y_ticks]
     num_ticks = len(y_ticks)
-    plt.title('polyploid.species_name')
+    plt.title(polyploid_species_name)
     # reverse, since back in time
     ax.set_yticks(y_ticks[0:num_ticks - 1])
     ax.set_yticklabels(new_ticks[0:num_ticks - 1])

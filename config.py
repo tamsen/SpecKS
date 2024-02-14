@@ -91,8 +91,8 @@ class SpecKS_config:
                             self.num_replicates_per_gene_tree = int(incoming_txt)
                         if (incoming_tag == "num_codons"):
                             self.num_codons = int(incoming_txt)
-                        if (incoming_tag == "tree_length"):
-                            self.tree_length = int(incoming_txt)
+                        if (incoming_tag == "Ks_per_Myr"):
+                            self.Ks_per_Myr = float(incoming_txt)
 
 def parse_tuple_string(tuple_string):
     splat=tuple_string.replace("(","").replace(")","").split(",")

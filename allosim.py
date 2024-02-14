@@ -45,7 +45,7 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num, relaxed_gene_tree_results)
+    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 

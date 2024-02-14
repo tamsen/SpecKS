@@ -69,6 +69,20 @@ class polyploid_data():
         else:
             return False
 
+    def WGD_time_as_ks(self):
+
+        if self.general_sim_config:
+            return self.general_sim_config.Ks_per_Myr * self.WGD_time_MYA
+        else:
+            return False
+
+    def SPEC_time_as_ks(self):
+
+        if self.general_sim_config:
+            return self.general_sim_config.Ks_per_Myr * self.SPC_time_MYA
+        else:
+            return False
+
 
 class sim_time_interval_forward_in_time():
 

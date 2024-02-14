@@ -120,7 +120,7 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
         tree_visuals_by_phylo.save_tree_plot(gt_newick, plot_file_name_1)
         gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
             simulation_leg, leaf_map,gt_newick, gt_name,
-            polyploid.SPC_time_MYA,
+            polyploid.SPC_time_MYA,polyploid.species_name,
             plot_file_name_2)
         gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
         i=i+1

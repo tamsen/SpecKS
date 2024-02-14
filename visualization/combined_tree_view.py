@@ -14,7 +14,7 @@ def color_list():
 
 def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
                             time_of_WGD_MYA, time_of_SPEC_MYA, full_sim_time,
-                            file_to_save):
+                            species_name, file_to_save):
 
     #perturb the gene tree values so they dont sit right on top of each other for plotting
     random.seed(10)
@@ -58,7 +58,7 @@ def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
     y_ticks = plt.yticks()[0]
     new_ticks = [500 - y_tick for y_tick in y_ticks]
     num_ticks = len(y_ticks)
-    plt.title('polyploid.species_name')
+    plt.title(species_name)
     # reverse, since back in time
     ax.set_yticks(y_ticks[0:num_ticks - 1])
     ax.set_yticklabels(new_ticks[0:num_ticks - 1])
