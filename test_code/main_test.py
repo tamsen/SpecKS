@@ -38,7 +38,7 @@ class TestMain(unittest.TestCase):
 
         #check a final histogram file was created for the autopolyploid
         expected_auto_hist= os.path.join(conf.output_folder,"Autopolyploid_1",
-                                         "14_ks_histograms","replicate2","Autopolyploid_1_paml_hist_maxKS5_NG.png")
+                                         "15_ks_histograms","replicate2","Autopolyploid_1_paml_hist_maxKS5_NG.png")
         self.assertTrue(os.path.exists(expected_auto_hist))
 
 if __name__ == '__main__':

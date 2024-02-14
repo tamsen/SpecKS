@@ -30,9 +30,11 @@ def run_autosim(polyploid):
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
     length_of_time_of_first_leg_of_sim=polyploid.FULL_time_MYA-polyploid.WGD_time_MYA
+    first_leg_random_seed=137
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results,
-                                                            length_of_time_of_first_leg_of_sim)
+                                                            length_of_time_of_first_leg_of_sim,
+                                                            first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -46,8 +48,8 @@ def run_autosim(polyploid):
     # For the second leg of the autopolyploid sim, we evolve sequences from
     # the time of WGD (say, 300 MYA) to the present, so
     second_leg_of_sim_time=polyploid.WGD_time_MYA
-    second_leg_time_range=(polyploid.FULL_time_MYA-polyploid.WGD_time_MYA,polyploid.FULL_time_MYA)
     subtrees=["Left","Right"]
+    second_leg_random_seeds = [43,99]
     pooled_gene_tree_results_by_tree={}
     pooled_relaxed_gene_tree_results_by_tree={}
     pooled_shed_gene_tree_results_by_tree={}
@@ -71,7 +73,7 @@ def run_autosim(polyploid):
         print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
             polyploid, gene_trees_after_gene_shedding, root_seq_files_written_by_gene_tree,
-            second_leg_of_sim_time)
+            second_leg_of_sim_time,second_leg_random_seeds[i])
 
         pooled_gene_tree_results_by_tree[subtree]=gene_tree_results_by_tree_name
         pooled_relaxed_gene_tree_results_by_tree[subtree]=relaxed_gene_tree_results

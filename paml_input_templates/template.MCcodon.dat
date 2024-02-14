@@ -1,5 +1,5 @@
 0          * 0,1:seqs or patters in paml format (mc.txt); 2:paup format (mc.nex)
-13147       * random number seed (odd number)
+RANDOM       * random number seed (odd number)
 NUMSEQ NUMCODONS NUMREPLICATES   * <# seqs>  <# codons>  <# replicates>
 
 LENGTH         * <tree length; see note below; use -1 if tree below has absolute branch lengths>

@@ -155,6 +155,7 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
                     result= codeml_result(replicates_subfolder)
                     codeml_results_by_replicate_num[r][gene_tree_name] = result
 
+    polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return codeml_results_by_replicate_num
 def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree):
 

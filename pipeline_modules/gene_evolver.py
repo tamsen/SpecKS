@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 from Bio import Phylo
 from io import StringIO
-def write_evolver_control_file(template_dat_file,out_dir,
+def write_evolver_control_file(template_dat_file,out_dir, random_seed_odd_integer,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
     specs_flags = "NUMSEQ NUMCODONS NUMREPLICATES"
@@ -40,6 +40,9 @@ def write_evolver_control_file(template_dat_file,out_dir,
             if "LENGTH" in line:
                 new_line = line.replace("LENGTH", str(tree_length))
 
+            if "RANDOM" in line:
+                new_line = line.replace("RANDOM", str(random_seed_odd_integer))
+
             lines_to_write.append(new_line)
 
             if not line:
@@ -66,7 +69,8 @@ def work_around_for_no_parenthesis_in_newick(newick_tree_string):
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
         newick_tree_string = fixed_newick_tree_string
     return newick_tree_string
-def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tree_result):
+def write_evolver_commands(out_dir,random_seed_odd_integer,
+                           num_replicates,num_codons,tree_length,gene_tree_result):
 
     par_dir= Path(__file__).parent.parent
     template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
@@ -90,7 +94,7 @@ def write_evolver_commands(out_dir,num_replicates,num_codons,tree_length,gene_tr
         print("num seq = num_extant_leaves:\t" + str(num_seq))
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
-                                                      out_dir,
+                                                      out_dir, random_seed_odd_integer,
                                                       num_seq, num_codons,
                                                       num_replicates, tree_length,
                                                       gene_tree_result.simple_newick)
@@ -109,7 +113,7 @@ def get_evolver_version_string(gene_tree_subfolder):
     return version_string, version_number, version_decimals
 
 def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
-                              root_seq_files_written_by_gene_tree, tree_length_for_this_leg):
+                              root_seq_files_written_by_gene_tree, tree_length_for_this_leg, random_seed_odd_integer):
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:
@@ -138,7 +142,8 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             dst=os.path.join(replicate_subfolder, "RootSeq.txt")
             shutil.copyfile(replicate_seq_file, dst)
 
-            cmd = write_evolver_commands(replicate_subfolder, 1,
+            cmd = write_evolver_commands(replicate_subfolder,random_seed_odd_integer,
+                                         1,
                                          config.num_codons, evolver_tree_length, gene_tree_result)
             out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
 
@@ -164,7 +169,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
 
 
-def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_this_leg):
+def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_this_leg, random_seed_odd_integer):
 
 
     config = polyploid.general_sim_config
@@ -193,7 +198,8 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
             #Then all we have left is the outgroup. No point in running evolver.
             continue
 
-        cmd = write_evolver_commands(gene_tree_subfolder, config.num_replicates_per_gene_tree,
+        cmd = write_evolver_commands(gene_tree_subfolder, random_seed_odd_integer,
+                                     config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
         common.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
