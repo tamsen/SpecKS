@@ -12,7 +12,7 @@ from visualization.combined_tree_view import plot_combined_tree_view
 from visualization.gene_tree_visuals import plot_polyploid_gene_tree_alone
 
 
-class VisualizationTests2(unittest.TestCase):
+class GeneTreeVisualsTests(unittest.TestCase):
 
     def test_newick_to_ascii(self):
 

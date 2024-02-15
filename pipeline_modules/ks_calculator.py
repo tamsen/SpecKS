@@ -1,7 +1,7 @@
 import os
 import shutil
 from pathlib import Path
-import common
+import process_wrapper
 
 
 def evolver_out_to_sequences(evolver_out_file):
@@ -150,7 +150,7 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
                     print("\t cmd: " + " ".join(cmd))
                     print("\t cwd: " + replicates_subfolder)
                     print("\t calculating Ks.. ")
-                    common.run_and_wait_on_process(cmd, replicates_subfolder)
+                    process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
                     print("\t Ks determined...")
                     result= codeml_result(replicates_subfolder)
                     codeml_results_by_replicate_num[r][gene_tree_name] = result
@@ -206,7 +206,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
             print("\t cmd: " + " ".join(cmd))
             print("\t cwd: " + replicates_subfolder)
             print("\t calculating Ks.. ")
-            common.run_and_wait_on_process(cmd, replicates_subfolder)
+            process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
             print("\t Ks determined...")
             result= codeml_result(replicates_subfolder)
 

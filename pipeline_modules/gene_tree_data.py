@@ -61,6 +61,22 @@ class gene_tree_result():
         self.num_terminal_leaves  = len(self.terminal_leaf_names)
 
         return self
+
+    def get_tree_length_as_in_PAML(self):
+        
+        # As per the PAML manual, “The tree length is the expected number of substitutions
+        # per site along all branches in the phylogeny, calculated as the sum of the branch lengths”.
+
+        X = Phylo.to_networkx(self.tree)
+        nodes = list(X.nodes)
+        sum_of_the_branch_lengths = 0
+
+        for node in nodes:
+            distance = self.tree.distance(node)
+            sum_of_the_branch_lengths = sum_of_the_branch_lengths + distance
+
+        return distance
+
     def set_leafmap_data(self, leafmap_file):
 
         leaves_by_species,num_extant_leaves= read_leaf_map_data(leafmap_file)

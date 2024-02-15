@@ -1,6 +1,6 @@
 import os
 import pipeline_modules.gene_tree_maker as gene_tree_maker
-import common
+import process_wrapper
 from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo, gene_tree_visuals
 
@@ -30,7 +30,7 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
               "-x","-innms","-o" ,relaxed_tree_file_out, in_file_name,
               "ACRY07","1","0.000001", "-s", str(random_seed)]
 
-        common.run_and_wait_on_process(cmd, subfolder)
+        process_wrapper.run_and_wait_on_process(cmd, subfolder)
         full_path_to_relaxed_tree_file=os.path.join(subfolder,relaxed_tree_file_out)
         relaxed_gene_tree_results = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(
             full_path_to_relaxed_tree_file, gene_tree_results.leaf_map_file_name)

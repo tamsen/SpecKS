@@ -58,6 +58,9 @@ def run_autosim(polyploid):
 
         subtree=subtrees[i]
         polyploid.subtree_subfolder=subtree
+        #TODO - the num gene tress needed here should actaully be taken from the
+        # number of terminal leaves after the first leg. Which would be close to the original
+        # number but might be a bit more or less.
         print("\n\n{0}. Make gene trees after WGD (SaGePhy)".format(polyploid.analysis_step_num))
         gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i])
@@ -70,6 +73,10 @@ def run_autosim(polyploid):
               "At every time step post WGD, cull a certain percent of what remains. (custom code)")
         gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid,relaxed_gene_tree_results)
 
+        #note, root_seq_files_written_by_gene_tree might not be 1-1
+        #with the gt names. If some gt split during the first leg, there might
+        #be two seq or more coming off a single gt, which is
+        #why there is a list of seq in eac h "GeneTree0.RootSeq.rep0.txt" etc.
         print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
             polyploid, gene_trees_after_gene_shedding, root_seq_files_written_by_gene_tree,

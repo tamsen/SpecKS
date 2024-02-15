@@ -1,15 +1,13 @@
 import glob
 import os
-
-from Bio import Phylo
-from io import StringIO
-import common
 import matplotlib.pyplot as plt
+from scipy.stats import beta
 
+import process_wrapper
 from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo
 from visualization import gene_tree_visuals
-from scipy.stats import beta
+
 
 
 def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, loss_rate,
@@ -99,7 +97,7 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
                                                   dup_values[i], loss_values[i],
                                                   random_seed,
                                                   os.path.join(subfolder,out_file_name))
-        common.run_and_wait_on_process(cmd, subfolder)
+        process_wrapper.run_and_wait_on_process(cmd, subfolder)
 
 
     gene_tree_data_by_tree_name = read_pruned_trees(subfolder, simulation_leg.leg_length())

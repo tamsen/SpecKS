@@ -1,5 +1,5 @@
 import os
-import common
+import process_wrapper
 import shutil
 from pathlib import Path
 from Bio import Phylo
@@ -103,7 +103,7 @@ def write_evolver_commands(out_dir,random_seed_odd_integer,
     return cmd
 def get_evolver_version_string(gene_tree_subfolder):
     cmd = ["evolver","-v"]
-    out_string, error_string = common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+    out_string, error_string = process_wrapper.run_and_wait_on_process(cmd, gene_tree_subfolder)
     version_string=out_string.split("\n")[0]
     version_number=version_string.split()[4][0:-1]
     version_decimals=[int(v) for v in version_number.split(".")]
@@ -126,7 +126,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
+    #evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
     evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -134,6 +134,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
         gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
         sequence_replicates=root_seq_files_written_by_gene_tree[gene_tree_name]
+        evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
 
         for replicate_i in range(0,(len(sequence_replicates))):
             replicate_subfolder = os.path.join(gene_tree_subfolder , "rep" + str(replicate_i))
@@ -145,17 +146,15 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             cmd = write_evolver_commands(replicate_subfolder,random_seed_odd_integer,
                                          1,
                                          config.num_codons, evolver_tree_length, gene_tree_result)
-            out_string,error_string = common.run_and_wait_on_process(cmd, replicate_subfolder)
+            out_string,error_string = process_wrapper.run_and_wait_on_process(cmd, replicate_subfolder)
 
             evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
             evolver_result_file_B=os.path.join(replicate_subfolder,"mc.paml")
 
             if os.path.exists(evolver_result_file_A):
                 evolver_results_by_replicate[replicate_i] =evolver_result_file_A
-                #evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_A
             elif os.path.exists(evolver_result_file_B):
                 evolver_results_by_replicate[replicate_i] =evolver_result_file_B
-                #evolver_results_by_gene_tree[gene_tree_name]=evolver_result_file_B
             else:
                 error_string="Evolver failed to output a sequence file.  It should be in " + \
                               gene_tree_subfolder + " but its not. Check the evolver stderr."
@@ -183,7 +182,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
+
     evolver_results_by_gene_tree={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -193,6 +192,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
         print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
+        evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
 
         if gene_tree_result.num_terminal_leaves < 2:
             #Then all we have left is the outgroup. No point in running evolver.
@@ -201,7 +201,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
         cmd = write_evolver_commands(gene_tree_subfolder, random_seed_odd_integer,
                                      config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
-        common.run_and_wait_on_process(cmd, gene_tree_subfolder)
+        process_wrapper.run_and_wait_on_process(cmd, gene_tree_subfolder)
 
         #common evolver complaints:
         #if "perhaps too many '('?" in error_string:  <- fix newick
@@ -228,11 +228,12 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
     return evolver_results_by_gene_tree
 
 
-def get_evolver_tree_length(config, tree_length_for_this_leg):
+def get_evolver_tree_length(config,gene_tree_result):
     # The "evolver" tree length is the expected number of substitutions per site along all
     # branches in the phylogeny, calculated as the sum of the branch lengths
     # so, if my tree length is 500MY, and Ks = 0.01/Myr”, =>
     # Then, the "evolver" tree length is 0.01*500 = 5.
-    evolver_tree_length = config.Ks_per_Myr * tree_length_for_this_leg
+    total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
+    evolver_tree_length = config.Ks_per_Myr * total_tree_length
     return evolver_tree_length
 
