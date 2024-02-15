@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <Paths>
-          <output_folder_root>/Users/tamsen/Data/SpecKS_output</output_folder_root>
+          <output_folder_root>/Users/tamsen/Data/SpecKS_output/specks</output_folder_root>
           <path_to_sagephy>/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
