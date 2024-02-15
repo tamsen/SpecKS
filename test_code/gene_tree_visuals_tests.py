@@ -46,8 +46,10 @@ class VisualizationTests2(unittest.TestCase):
             expected_file_to_save = os.path.join("./test_out",
                                                  plot_names[i].replace(".png",".phylo.png"))
             tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
+            sl= polyploid_setup.sim_time_interval_forward_in_time(0, 300,['P1','P2'])
             gene_tree_visuals.plot_polyploid_gene_tree_alone(
-                species_filter,leaf_map, newick_strings[i], "gt_name", test_file_to_save)
+                sl,leaf_map, newick_strings[i], "gt_name",
+                300, "species_name" ,test_file_to_save)
             made_a_file=os.path.exists(test_file_to_save)
             self.assertTrue(made_a_file)
 
@@ -87,7 +89,9 @@ class VisualizationTests2(unittest.TestCase):
 
         for i in range(1,4):
             leaf_map = get_leaf_map(leaf_data_files[i])
-            gt_tree_viz_data =plot_polyploid_gene_tree_alone(species_filter, leaf_map, newick_strings[i],
+            sl= polyploid_setup.sim_time_interval_forward_in_time(0, 300,species_filter)
+            gt_tree_viz_data =plot_polyploid_gene_tree_alone(sl, leaf_map, newick_strings[i],'gt_name',
+                                                             300,'species_name',
                                                              gt_tree_out_file_name)
             gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
 
@@ -95,7 +99,7 @@ class VisualizationTests2(unittest.TestCase):
         full_sim_time=500
         s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_gt_by_specks.png")
         plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_gt_name,
-                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,
+                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,"species_name",
                             s_and_gt_tree_out_file_name)
 
     def test_short_gts(self):
@@ -135,8 +139,10 @@ class VisualizationTests2(unittest.TestCase):
         time_of_SPEC_MYA=300
 
         for i in range(0,5):
-            gt_tree_viz_data =plot_polyploid_gene_tree_alone(species_filter, leaf_maps[i], newick_strings[i],
-                                                   "gt" + str(i),
+
+            sl= polyploid_setup.sim_time_interval_forward_in_time(0, 300,species_filter)
+            gt_tree_viz_data =plot_polyploid_gene_tree_alone(sl, leaf_maps[i], newick_strings[i],
+                                                   "gt" + str(i),300,'species_name',
                                                              gt_tree_out_file_name)
             gt_tree_viz_data_by_gt_name["gt"+str(i)]=gt_tree_viz_data
 
@@ -144,7 +150,7 @@ class VisualizationTests2(unittest.TestCase):
         full_sim_time=500
         s_and_gt_tree_out_file_name = os.path.join(test_out, "species_and_short_gt_by_specks.png")
         plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_gt_name,
-                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,
+                                time_of_WGD_MYA, time_of_SPEC_MYA,full_sim_time,'species_name',
                             s_and_gt_tree_out_file_name)
 
     def test_add_back_root(self):
@@ -210,8 +216,9 @@ class VisualizationTests2(unittest.TestCase):
         new_tree = Phylo.BaseTree.Tree.from_clade(my_clade3)
         Phylo.draw_ascii(new_tree)
         file_to_save = os.path.join("test_out", "GeneTree42.png")
+        sl = polyploid_setup.sim_time_interval_forward_in_time(0, 300, species_filter)
         gene_tree_visuals.plot_polyploid_gene_tree_alone(
-              species_filter,leaf_map,newick_string, file_to_save)
+              sl,leaf_map,newick_string, "gt_name",300, "species_name",file_to_save)
 
 def get_leaf_map(leaf_map_file_path):
     leaf_map,num_extant_leaves = gene_tree_data.read_leaf_map_data(leaf_map_file_path)

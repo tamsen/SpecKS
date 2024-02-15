@@ -7,7 +7,7 @@ def run_allosim(polyploid):
 
 
     #the allopolyploid has only one simulation leg for the full sim
-    simulation_leg=polyploid.simulation_legs[0]
+    only_simulation_leg=polyploid.simulation_legs[0]
     first_leg_random_seed=137
 
     print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
@@ -16,13 +16,13 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Make gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, simulation_leg,
+    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, only_simulation_leg,
                                                                  species_trees[0])
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, simulation_leg,
+    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
                                                     gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return

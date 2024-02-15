@@ -57,9 +57,9 @@ def write_evolver_control_file(template_dat_file,out_dir, random_seed_odd_intege
 
 
 def work_around_for_evolver_bug(newick_tree_string):
+    fixed_newick_tree_string=newick_tree_string
     if newick_tree_string[-2:] != ");":
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
-        newick_tree_string = fixed_newick_tree_string
     return fixed_newick_tree_string
 
 def work_around_for_no_parenthesis_in_newick(newick_tree_string):
