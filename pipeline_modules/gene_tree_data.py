@@ -75,7 +75,7 @@ class gene_tree_result():
             distance = self.tree.distance(node)
             sum_of_the_branch_lengths = sum_of_the_branch_lengths + distance
 
-        return distance
+        return sum_of_the_branch_lengths
 
     def set_leafmap_data(self, leafmap_file):
 
