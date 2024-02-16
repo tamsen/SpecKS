@@ -67,21 +67,18 @@ class gene_tree_result():
         # As per the PAML manual, “The tree length is the expected number of substitutions
         # per site along all branches in the phylogeny, calculated as the sum of the branch lengths”.
 
-        X = Phylo.to_networkx(self.tree)
-        nodes = list(X.nodes)
-        sum_of_the_branch_lengths = 0
-
-        for node in nodes:
-            distance = self.tree.distance(node)
-            sum_of_the_branch_lengths = sum_of_the_branch_lengths + distance
-
-        return sum_of_the_branch_lengths
+        total_branch_length = self.tree.total_branch_length()
+        return total_branch_length
 
     def set_leafmap_data(self, leafmap_file):
 
         leaves_by_species,num_extant_leaves= read_leaf_map_data(leafmap_file)
         self.leaves_by_species=leaves_by_species
-        self.num_terminal_leaves = num_extant_leaves
+
+        #if this is thrown off, then there is a disconnect..
+        if num_extant_leaves != self.num_terminal_leaves:
+            raise Exception('leafmap data is out of sync with the gene tree')
+
         return self
 def unprune_outgroup(old_tree, leg_distance, out_group_leaf, origin_node_name):
 

@@ -2,6 +2,7 @@ import os
 import unittest
 
 from Bio import Phylo
+from matplotlib import pyplot as plt
 
 import process_wrapper
 from pipeline_modules import gene_evolver, gene_tree_data, ks_calculator, ks_histogramer
@@ -51,11 +52,10 @@ class GeneEvolverTests(unittest.TestCase):
         if not os.path.exists(evolver_test_out_folder):
             os.makedirs(evolver_test_out_folder)
 
-
+        gt_root="SpeciesTree.test"
         test_data_folder="gene_tree_evolver_test_data"
-        gt_file=os.path.join(test_data_folder,"GeneTree33.test.tree")
-        gt_leaf_map=os.path.join(test_data_folder,"GeneTree33.test.leafmap")
-        random_seed_odd_integer=41
+        gt_file=os.path.join(test_data_folder,gt_root+".tree")
+        gt_leaf_map=os.path.join(test_data_folder,gt_root+".leafmap")
         num_replicates_per_gene_tree=1
         num_codons=1000
 
@@ -72,8 +72,10 @@ class GeneEvolverTests(unittest.TestCase):
                 name=node.name
             print(name + " distance from root:\t" + str(distance) )
 
-        evolver_tree_length = sum_of_the_branch_lengths * 0.01
-        #evolver_tree_length = 6
+        total_branch_length=tree.total_branch_length()
+        print("total_branch_length:\t" + str(total_branch_length))
+        evolver_tree_length = total_branch_length * 0.01 * 1.2
+
         all_ML_ks_results=[]
         all_NG_ks_results=[]
         for i in range(0,100):
@@ -86,6 +88,10 @@ class GeneEvolverTests(unittest.TestCase):
 
         print(all_ML_ks_results)
         print(all_NG_ks_results)
+
+        expected_ks=2.0*2.0
+        histogram_ks_data(all_ML_ks_results, expected_ks,"ML_ks_results", evolver_test_out_folder)
+        histogram_ks_data(all_NG_ks_results, expected_ks,"NG_ks_results", evolver_test_out_folder)
 
         ML_avg=sum(all_ML_ks_results)/len(all_ML_ks_results)
         NG_avg=sum(all_NG_ks_results)/len(all_NG_ks_results)
@@ -105,7 +111,8 @@ def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_res
         # make a .fa input file for codeml
         fa_file = os.path.join(evolver_test_out_folder, "evolver_test.fa")
         evolver_out_file = os.path.join(evolver_test_out_folder, "mc.paml")
-        seq_names = ["G1_0", "G2_0"]
+        #seq_names = ["G1_0", "G2_0"]
+        seq_names = ["P1", "P2"]
         sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file, seq_names)
         write_seq_for_codeml_input(fa_file, sequences_by_seq_name)
         # run codeml
@@ -144,3 +151,24 @@ def write_seq_for_codeml_input(fa_file, sequences_by_name):
         for seq_name in sequence_names:
             f.writelines(">" + seq_name + "\n")
             f.writelines(sequences_by_name[seq_name] + "\n")
+
+
+def histogram_ks_data(ks_data,expected_ks,file_prefix,  out_folder):
+    dist_histogram_out_file_name = os.path.join(out_folder,
+                                              file_prefix + "_Ks_histogram.png")
+
+
+    fig = plt.figure(figsize=(10, 10), dpi=100)
+    n_bins=50
+    n, bins, patches = plt.hist(ks_data, bins=n_bins, facecolor='b', alpha=0.25, label='histogram data')
+    #plt.axvline(x=polyploid.WGD_time_MYA, color='r', linestyle='--', label="WGD")
+    plt.axvline(x=expected_ks, color='b', linestyle='--', label="expected_ks")
+    plt.legend()
+    plt.xlabel("Ks")
+    plt.ylabel("Num data points")
+    plt.title("Ks data histogram")
+    plt.savefig(dist_histogram_out_file_name)
+    plt.clf()
+    plt.close()
+
+    return dist_histogram_out_file_name

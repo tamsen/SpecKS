@@ -88,6 +88,8 @@ def write_evolver_commands(out_dir,random_seed_odd_integer,
         print("nodes1=\t" + str(len(nodes1)))
         print("nodes2=\t" + str(len(nodes2)))
         print("num seq = num nodes:\t" + str(num_seq))
+        num_seq = gene_tree_result.num_terminal_leaves
+        print("num seq = num_extant_leaves:\t" + str(num_seq))
     else:
         #for recent versions of PAML
         num_seq = gene_tree_result.num_terminal_leaves
@@ -231,9 +233,9 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
 def get_evolver_tree_length(config,gene_tree_result):
     # The "evolver" tree length is the expected number of substitutions per site along all
     # branches in the phylogeny, calculated as the sum of the branch lengths
-    # so, if my tree length is 500MY, and Ks = 0.01/Myr”, =>
-    # Then, the "evolver" tree length is 0.01*500 = 5.
+    # so, if my tree length is 500MY, and Ks = 0.01/Myr”, and Kn = 0.01*0.2 =>
+    # Then, the "evolver" tree length is 0.012*500 = 5.
     total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
-    evolver_tree_length = config.Ks_per_Myr * total_tree_length
+    evolver_tree_length = config.Ks_per_Myr * total_tree_length * 1.2
     return evolver_tree_length
 
