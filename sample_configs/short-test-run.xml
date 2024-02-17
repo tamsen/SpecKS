@@ -9,10 +9,11 @@
                 <SPC_time_MYA>300</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
         </polyploid>
+        <!--
         <polyploid>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
-        </polyploid>
+        </polyploid>-->
         <full_sim_time>500</full_sim_time>
     </SpeciesTree>
     <GeneTree>

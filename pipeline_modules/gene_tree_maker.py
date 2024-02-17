@@ -28,6 +28,8 @@ def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, l
 def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,num_values_needed):
     dup_values = beta.rvs(dup_rate_parameters[0],dup_rate_parameters[1], size=num_values_needed)
     loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
+    dup_values = [0 for x in dup_values]
+    loss_values =  [0 for x in loss_values]
     return dup_values,loss_values
 
 def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
@@ -59,7 +61,7 @@ def read_pruned_trees(subfolder, leg_distance):
 
         leafmap_file=tree_file.replace(".tree",".leafmap")
         result = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(tree_file, leafmap_file)
-        result.add_back_outgroup(leg_distance)
+        #result.add_back_outgroup(leg_distance)
         results_by_tree_name[result.gene_tree_name]=result
 
         new_tree_file=tree_file.replace(".tree",".updated.tree")
@@ -112,10 +114,13 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
             break
         plot_file_name_1= os.path.join(subfolder,gt_name +"_phylo.png")
         plot_file_name_2= os.path.join(subfolder,gt_name +"_specks.png")
+        plot_file_name_3= os.path.join(subfolder,gt_name +"_tree_phylo.png")
+        gt_tree=gene_tree_data_by_tree_name[gt_name].tree
         gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
         leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
         print("newick to plot:\t" +gt_newick)
-        tree_visuals_by_phylo.save_tree_plot(gt_newick, plot_file_name_1)
+        tree_visuals_by_phylo.save_tree_plot_from_newick(gt_newick, plot_file_name_1)
+        tree_visuals_by_phylo.save_tree_plot_directly_from_tree(gt_tree, plot_file_name_3)
         gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
             simulation_leg, leaf_map,gt_newick, gt_name,
             polyploid.SPC_time_MYA,polyploid.species_name,

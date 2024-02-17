@@ -21,15 +21,15 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
-                                                    gene_tree_results_by_tree_name)
-    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-        return
+    #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
+    #                                                gene_tree_results_by_tree_name)
+    #if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+    #    return
 
     print("\n\n{0}. Shed genes post WDG. ".format(polyploid.analysis_step_num) +
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
-    gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, relaxed_gene_tree_results)
+    gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, gene_tree_results_by_tree_name )
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -41,7 +41,7 @@ def run_allosim(polyploid):
 
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     codeml_results_by_replicate_num = ks_calculator.run_codeml(polyploid,
-                                                               relaxed_gene_tree_results, evolver_results_by_gene_tree)
+                                                               gene_tree_results_by_tree_name , evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 

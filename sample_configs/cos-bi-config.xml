@@ -18,7 +18,7 @@
     <GeneTree>
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
-        <num_gene_trees_per_species_tree>50</num_gene_trees_per_species_tree>
+        <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>
     <SequenceEvolution>

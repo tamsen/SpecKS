@@ -1,4 +1,6 @@
 import os
+
+from visualization import tree_visuals_by_phylo
 from visualization.species_tree_visuals import plot_species_tree
 
 
@@ -41,11 +43,16 @@ def make_species_trees(polyploid):
     out_file_tree = out_file_png.replace(".png", ".tree")
     plot_species_tree(os.path.join(subfolder, out_file_png), polyploid)
 
-    #save species tree netwick to file
+    #save species tree netwick to file, and also plot the tree
+    i=0
     tree_path=os.path.join(subfolder,out_file_tree)
     with open(tree_path, 'w') as f:
-        for tree in species_trees:
-            f.writelines(tree + "\n")
+
+        for tree_as_newick in species_trees:
+            f.writelines(tree_as_newick + "\n")
+            out_file_png_by_phylo = out_file_png.replace(".png", "_"+str(i)+"_by_phylo.png")
+            tree_visuals_by_phylo.save_tree_plot_from_newick(tree_as_newick, os.path.join(subfolder, out_file_png_by_phylo))
+            i=i+1
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return species_trees

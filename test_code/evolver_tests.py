@@ -1,4 +1,5 @@
 import os
+import shutil
 import unittest
 
 from Bio import Phylo
@@ -38,71 +39,89 @@ class GeneEvolverTests(unittest.TestCase):
         self.assertTrue("version" in version_string)
 
     # Idea of test: Run evolver along a known length (say 200), then compute the Ks.
-    # The Ks *should* average about 2 if all the parameters are set right
+    # The Ks *should* average about 2 (or 4 full path between the leaves)
+    # if all the parameters are set right
     def test_run_evolver_on_simple_newick(self):
 
-        #newick_string = "(O:500,(P1:300,P2:300):200);"
-        cwd=os.getcwd()
+        seq_names = ["P1", "P2"]
+        gt_root="SpeciesTree.test"
+        expected_ks=2.0*2.0
+        total_num_iterations=100
+
+        self.test_evolver_and_ks_results_are_as_expected(expected_ks, gt_root, seq_names, total_num_iterations,
+                                                                    "evolver_simple_newick")
+
+    def test_run_evolver_on_more_complex_newick(self):
+
+        seq_names = ["G1_0", "G2_0"]
+        gt_root="GeneTree33.test"
+        expected_ks=233.79*2.0*0.01
+        total_num_iterations=100
+
+        self.test_evolver_and_ks_results_are_as_expected(expected_ks, gt_root, seq_names,
+                                                         total_num_iterations, "evolver_complex_newick")
+
+
+    def test_evolver_and_ks_results_are_as_expected(self, expected_ks,
+                                                    gt_root, seq_names, total_num_iterations, test_name):
+        # newick_string = "(O:500,(P1:300,P2:300):200);"
+        cwd = os.getcwd()
         print("Current Working Directory:\t" + cwd)
-        test_out= os.path.join(cwd,"test_out")
+        test_out = os.path.join(cwd, "test_out")
         if not os.path.exists(test_out):
             os.makedirs(test_out)
-
-        evolver_test_out_folder=os.path.join(test_out,"evolver_test_out")
-        if not os.path.exists(evolver_test_out_folder):
-            os.makedirs(evolver_test_out_folder)
-
-        gt_root="SpeciesTree.test"
-        test_data_folder="gene_tree_evolver_test_data"
-        gt_file=os.path.join(test_data_folder,gt_root+".tree")
-        gt_leaf_map=os.path.join(test_data_folder,gt_root+".leafmap")
-        num_replicates_per_gene_tree=1
-        num_codons=1000
-
-        gene_tree_result=gene_tree_data.gene_tree_result("gt_name",gt_file,gt_leaf_map)
-        tree=gene_tree_result.tree
+        evolver_test_out_folder = os.path.join(test_out,  test_name)
+        # remove the old output folder
+        if os.path.exists(evolver_test_out_folder):
+            shutil.rmtree(evolver_test_out_folder)
+        os.makedirs(evolver_test_out_folder)
+        test_data_folder = "gene_tree_evolver_test_data"
+        gt_file = os.path.join(test_data_folder, gt_root + ".tree")
+        gt_leaf_map = os.path.join(test_data_folder, gt_root + ".leafmap")
+        num_replicates_per_gene_tree = 1
+        num_codons = 1000
+        gene_tree_result = gene_tree_data.gene_tree_result("gt_name", gt_file, gt_leaf_map)
+        tree = gene_tree_result.tree
         X = Phylo.to_networkx(tree)
         nodes = list(X.nodes)
-        sum_of_the_branch_lengths=0
+        sum_of_the_branch_lengths = 0
         for node in nodes:
-            distance=tree.distance(node)
-            sum_of_the_branch_lengths =sum_of_the_branch_lengths+distance
-            name="no name"
+            distance = tree.distance(node)
+            sum_of_the_branch_lengths = sum_of_the_branch_lengths + distance
+            name = "no name"
             if node.name:
-                name=node.name
-            print(name + " distance from root:\t" + str(distance) )
-
-        total_branch_length=tree.total_branch_length()
+                name = node.name
+            print(name + " distance from root:\t" + str(distance))
+        total_branch_length = tree.total_branch_length()
         print("total_branch_length:\t" + str(total_branch_length))
         evolver_tree_length = total_branch_length * 0.01 * 1.2
-
-        all_ML_ks_results=[]
-        all_NG_ks_results=[]
-        for i in range(0,100):
-
-            random_seed=i*2+1
-            ML_ks_results,NG_ks_results = run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_result, num_codons,
-                              num_replicates_per_gene_tree, random_seed)
-            all_ML_ks_results= all_ML_ks_results+ ML_ks_results
-            all_NG_ks_results= all_NG_ks_results + NG_ks_results
-
+        all_ML_ks_results = []
+        all_NG_ks_results = []
+        for i in range(0, total_num_iterations):
+            random_seed = i * 2 + 1
+            ML_ks_results, NG_ks_results = run_evolver_loop(evolver_test_out_folder,
+                                                            evolver_tree_length, gene_tree_result, num_codons,
+                                                            num_replicates_per_gene_tree, random_seed, seq_names)
+            all_ML_ks_results = all_ML_ks_results + ML_ks_results
+            all_NG_ks_results = all_NG_ks_results + NG_ks_results
         print(all_ML_ks_results)
         print(all_NG_ks_results)
-
-        expected_ks=2.0*2.0
-        histogram_ks_data(all_ML_ks_results, expected_ks,"ML_ks_results", evolver_test_out_folder)
-        histogram_ks_data(all_NG_ks_results, expected_ks,"NG_ks_results", evolver_test_out_folder)
-
-        ML_avg=sum(all_ML_ks_results)/len(all_ML_ks_results)
-        NG_avg=sum(all_NG_ks_results)/len(all_NG_ks_results)
+        ML_histogram_out_file_name = os.path.join(evolver_test_out_folder,
+                                                  "ML_ks_results" + "_Ks_histogram.png")
+        NG_histogram_out_file_name = os.path.join(evolver_test_out_folder,
+                                                  "NG_ks_results" + "_Ks_histogram.png")
+        histogram_ks_data(all_ML_ks_results, expected_ks, ML_histogram_out_file_name)
+        histogram_ks_data(all_NG_ks_results, expected_ks, NG_histogram_out_file_name)
+        ML_avg = sum(all_ML_ks_results) / len(all_ML_ks_results)
+        NG_avg = sum(all_NG_ks_results) / len(all_NG_ks_results)
         print("avg ML " + str(ML_avg))
         print("avg NG " + str(NG_avg))
-        #avg ML 1.851786
-        #avg NG 1.845688118811881
-        self.assertTrue(True)
+        self.assertTrue(os.path.exists(ML_histogram_out_file_name))
+        self.assertTrue(os.path.exists(NG_histogram_out_file_name))
+
 
 def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_result, num_codons,
-                         num_replicates_per_gene_tree, random_seed_odd_integer):
+                         num_replicates_per_gene_tree, random_seed_odd_integer,seq_names):
         # run evolver
         cmd = gene_evolver.write_evolver_commands(evolver_test_out_folder, random_seed_odd_integer,
                                                   num_replicates_per_gene_tree,
@@ -111,8 +130,6 @@ def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_res
         # make a .fa input file for codeml
         fa_file = os.path.join(evolver_test_out_folder, "evolver_test.fa")
         evolver_out_file = os.path.join(evolver_test_out_folder, "mc.paml")
-        #seq_names = ["G1_0", "G2_0"]
-        seq_names = ["P1", "P2"]
         sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file, seq_names)
         write_seq_for_codeml_input(fa_file, sequences_by_seq_name)
         # run codeml
@@ -153,15 +170,14 @@ def write_seq_for_codeml_input(fa_file, sequences_by_name):
             f.writelines(sequences_by_name[seq_name] + "\n")
 
 
-def histogram_ks_data(ks_data,expected_ks,file_prefix,  out_folder):
-    dist_histogram_out_file_name = os.path.join(out_folder,
-                                              file_prefix + "_Ks_histogram.png")
+def histogram_ks_data(ks_data,expected_ks,dist_histogram_out_file_name):
 
+    ks_avg = sum(ks_data) / len(ks_data)
 
     fig = plt.figure(figsize=(10, 10), dpi=100)
     n_bins=50
     n, bins, patches = plt.hist(ks_data, bins=n_bins, facecolor='b', alpha=0.25, label='histogram data')
-    #plt.axvline(x=polyploid.WGD_time_MYA, color='r', linestyle='--', label="WGD")
+    plt.axvline(x=ks_avg, color='r', linestyle='--', label="empirical_avg")
     plt.axvline(x=expected_ks, color='b', linestyle='--', label="expected_ks")
     plt.legend()
     plt.xlabel("Ks")

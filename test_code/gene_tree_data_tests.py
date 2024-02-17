@@ -35,6 +35,39 @@ class GeneTreeTests(unittest.TestCase):
         print(leaves_by_species)
         self.assertEqual(len(leaves_by_species), 3)
 
+    def test_get_distances_from_newick(self):
+
+        gt_leaf_map="GeneTree4.pruned.leafmap"
+        gt_file="GeneTree4.pruned.tree"
+        test_data_folder="gene_tree_maker_test_data"
+        leaf_map_path=os.path.join(test_data_folder,gt_leaf_map)
+        tree_path=os.path.join(test_data_folder,gt_file)
+        leaves_by_species,num_extant_leaves = gene_tree_data.read_leaf_map_data(leaf_map_path)
+        print(leaves_by_species)
+        self.assertEqual(len(leaves_by_species), 1)
+        gene_tree_result = gene_tree_data.gene_tree_result("gt_name",tree_path, leaf_map_path)
+        tree = gene_tree_result.tree
+        X = Phylo.to_networkx(tree)
+        nodes = list(X.nodes)
+        sum_of_the_branch_lengths = 0
+        root_distance=tree.clade.branch_length
+        clades=tree.find_clades()
+        for node in nodes:
+            distance = tree.distance(node)
+            sum_of_the_branch_lengths = sum_of_the_branch_lengths + distance
+            name = "no name"
+            if node.name:
+                name = node.name
+            print(name + " distance from first node:\t" + str(distance))
+            print(name + " distance from root:\t" + str(distance+root_distance))
+        total_branch_length = tree.total_branch_length()
+        expected_total_branch_length = 399.86767+399.86767+100.13233
+
+        print("total_branch_length:\t" + str(total_branch_length))
+        print("expected_branch_length:\t" + str(expected_total_branch_length))
+        self.assertAlmostEqual(total_branch_length, expected_total_branch_length,4)
+
+
 #https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-209/tables/1
 # https: // biopython.org / docs / 1.75 / api / Bio.Phylo.BaseTree.html?highlight = split  # Bio.Phylo.BaseTree.TreeMixin.split
     def test_unprune_outgroup(self):

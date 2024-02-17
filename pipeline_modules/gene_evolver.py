@@ -4,6 +4,10 @@ import shutil
 from pathlib import Path
 from Bio import Phylo
 from io import StringIO
+
+from visualization import tree_visuals_by_phylo
+
+
 def write_evolver_control_file(template_dat_file,out_dir, random_seed_odd_integer,
                                num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
     lines_to_write = []
@@ -88,8 +92,8 @@ def write_evolver_commands(out_dir,random_seed_odd_integer,
         print("nodes1=\t" + str(len(nodes1)))
         print("nodes2=\t" + str(len(nodes2)))
         print("num seq = num nodes:\t" + str(num_seq))
-        num_seq = gene_tree_result.num_terminal_leaves
-        print("num seq = num_extant_leaves:\t" + str(num_seq))
+        #num_seq = gene_tree_result.num_terminal_leaves
+        #print("num seq = num_extant_leaves:\t" + str(num_seq))
     else:
         #for recent versions of PAML
         num_seq = gene_tree_result.num_terminal_leaves
@@ -186,21 +190,26 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_
 
 
     evolver_results_by_gene_tree={}
+    random_seed=random_seed_odd_integer
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
+        random_seed = random_seed+2
         gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
-
+        evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
         print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
-        evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
+        print("\t\tevolver tree length:\t " + str(evolver_tree_length))
+
+        plot_file_name_1 = os.path.join(gene_tree_subfolder, "gt_used_by_evolver_phylo.png")
+        tree_visuals_by_phylo.save_tree_plot_from_newick(gene_tree_result.simple_newick, plot_file_name_1)
 
         if gene_tree_result.num_terminal_leaves < 2:
             #Then all we have left is the outgroup. No point in running evolver.
             continue
 
-        cmd = write_evolver_commands(gene_tree_subfolder, random_seed_odd_integer,
+        cmd = write_evolver_commands(gene_tree_subfolder, random_seed,
                                      config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
         process_wrapper.run_and_wait_on_process(cmd, gene_tree_subfolder)

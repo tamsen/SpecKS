@@ -45,7 +45,7 @@ class GeneTreeVisualsTests(unittest.TestCase):
             test_file_to_save = os.path.join("./test_out", plot_names[i])
             expected_file_to_save = os.path.join("./test_out",
                                                  plot_names[i].replace(".png",".phylo.png"))
-            tree_visuals_by_phylo.save_tree_plot(newick_strings[i], expected_file_to_save )
+            tree_visuals_by_phylo.save_tree_plot_from_newick(newick_strings[i], expected_file_to_save)
             sl= polyploid_setup.sim_time_interval_forward_in_time(0, 300,['P1','P2'])
             gene_tree_visuals.plot_polyploid_gene_tree_alone(
                 sl,leaf_map, newick_strings[i], "gt_name",
@@ -67,7 +67,7 @@ class GeneTreeVisualsTests(unittest.TestCase):
 
         newick_string1="(O:500,(P1:300,P2:300):200);"
         out_file_name=os.path.join(test_out,"species1_by_phylo.png")
-        tree_visuals_by_phylo.save_tree_plot(newick_string1, out_file_name)
+        tree_visuals_by_phylo.save_tree_plot_from_newick(newick_string1, out_file_name)
 
         self.assertEqual(True, os.path.exists(out_file_name))  # add assertion here
 

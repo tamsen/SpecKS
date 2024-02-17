@@ -1,0 +1,10 @@
+# GUEST-TO-HOST MAP
+Host tree:	(O:500.0[ID=0 NT=0.0 EPOCHS=(0...1)],(P1:300.0[ID=1 NT=0.0 EPOCHS=(0...0)],P2:300.0[ID=2 NT=0.0 EPOCHS=(0...0)]):200.0[ID=3 NT=300.0 EPOCHS=(1...1)]):1.0E-64[ID=4 NT=500.0 EPOCHS=(2...2)][NAME=null DISCTYPE=RBTreeEpochDiscretiser NMIN=1 NMAX=1 DELTAT=NaN NROOT=1];
+Guest vertex name:	Guest vertex ID:	Guest vertex type:	Guest vertex time:	Host vertex/arc ID:	Host epoch ID:
+G6_4	6	SPECIATION	500.0	4	2
+G2_0	2	DUPLICATION	33.83211047976488	0	0
+G5_3	5	SPECIATION	300.0	3	1
+G0_0	0	LEAF	0.0	0	0
+G1_0	1	LEAF	0.0	0	0
+G3_1	3	LEAF	0.0	1	0
+G4_2	4	LEAF	0.0	2	0

@@ -1,0 +1,18 @@
+# GUESTTREEGEN
+Arguments:	[(O:500, (P1:300, P2:300):200);, 0.0025023224333739855, 0.0013709167568130903, 0.0, /home/tamsen/Data/SpecKS_output/specks_m02d16y2024_h09m20s00/Allopolyploid_1/2_gene_trees/GeneTree42, -s, 42]
+Attempts:	2
+No. of vertices:	7
+No. of extant leaves:	4
+No. of speciations:	2
+No. of duplications:	1
+No. of losses:	0
+No. of replacing losses:	0
+No. of additive transfers:	0
+No. of replacing transfers:	0
+Total branch time:	1333.8321
+Total branch time beneath host stem:	1333.8321
+Duplication ML estimate:	7.4971955E-4
+Loss ML estimate:	0.0
+Replacing Loss ML estimate:	0.0
+Additive Transfer ML estimate:	0.0
+Replacing Transfer ML estimate:	0.0

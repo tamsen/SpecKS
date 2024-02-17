@@ -57,8 +57,8 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
             Phylo.write(gt_tree, out_file, "newick")
 
             print("newick before gene shedding:" + gt_data_to_edit.simple_newick)
-            tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
-                                                 out_file.replace("txt","png"))
+            tree_visuals_by_phylo.save_tree_plot_from_newick(gt_data_to_edit.simple_newick,
+                                                             out_file.replace("txt","png"))
 
             list_of_terminal_leaves_to_remove = chose_leaves_to_remove(
                 nodes_on_edges_that_cross_this_time, num_genes_to_remove_per_gene_tree, unprunable_leaves)
@@ -73,8 +73,8 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
             out_file = os.path.join(subfolder, gt_name + "_newick_post_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
             print("newick after gene shedding:" + gt_data_to_edit.simple_newick)
-            tree_visuals_by_phylo.save_tree_plot(gt_data_to_edit.simple_newick,
-                                                 out_file.replace("txt", "png"))
+            tree_visuals_by_phylo.save_tree_plot_from_newick(gt_data_to_edit.simple_newick,
+                                                             out_file.replace("txt", "png"))
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_trees_after_gene_shedding_by_gt

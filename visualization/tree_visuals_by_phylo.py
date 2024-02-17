@@ -5,7 +5,16 @@ from Bio import Phylo
 import matplotlib.pyplot as plt
 from io import StringIO
 
-def save_tree_plot(newick_string, out_file_name):
+
+def save_tree_plot_directly_from_tree(phylo_tree, out_file_name):
+
+    fig = plt.figure(figsize=(10, 20), dpi=100)
+    axes = fig.add_subplot(1, 1, 1)
+    Phylo.draw(phylo_tree, axes=axes, do_show=False)
+    plt.savefig(out_file_name)
+    plt.clf()
+    plt.close()
+def save_tree_plot_from_newick(newick_string, out_file_name):
 
     tree = Phylo.read(StringIO(newick_string), "newick")
     fig = plt.figure(figsize=(10, 20), dpi=100)

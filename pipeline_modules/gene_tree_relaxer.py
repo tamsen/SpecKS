@@ -34,13 +34,13 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
         full_path_to_relaxed_tree_file=os.path.join(subfolder,relaxed_tree_file_out)
         relaxed_gene_tree_results = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(
             full_path_to_relaxed_tree_file, gene_tree_results.leaf_map_file_name)
-        relaxed_gene_tree_results.add_back_outgroup(simulation_leg.leg_length())
+        #relaxed_gene_tree_results.add_back_outgroup(simulation_leg.leg_length())
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 
         plot_file_name_1= full_path_to_relaxed_tree_file +"_phylo.png"
         plot_file_name_2= os.path.join(subfolder,gene_tree +"_specks.png")
         print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
-        tree_visuals_by_phylo.save_tree_plot(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
+        tree_visuals_by_phylo.save_tree_plot_from_newick(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
 
         new_tree_file=full_path_to_relaxed_tree_file.replace(".tree",".updated.tree")
         with open(new_tree_file, 'w') as f:

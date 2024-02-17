@@ -1,0 +1,10 @@
+# BRANCHLENGTHRELAXER
+Arguments:	[-x, -innms, -o, GeneTree42.relaxed.tree, /home/tamsen/Data/SpecKS_output/specks_m02d16y2024_h09m20s00/Allopolyploid_1/2_gene_trees/GeneTree42.pruned.tree, ACRY07, 1, 0.000001, -s, 16]
+Attempts:	1
+Original lengths:	[33.83211, 33.83211, 466.1678895202351, 300.0, 300.0, 200.0, 0.0]
+Rates:	[1.0028990465671443, 0.9976656114121208, 1.0106557204345108, 1.0153538850220047, 1.010372340218522, 1.0207129691416144, 1.0]
+Relaxed lengths:	[33.93019086235475, 33.753132708512126, 471.1352442265087, 304.6061655066014, 303.11170206555664, 204.14259382832287, 0.0]
+Model:	RannalaYang07Rates
+Model parameters:
+	start rate	1.0
+	sigma2	1.0E-6

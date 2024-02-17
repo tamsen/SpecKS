@@ -6,22 +6,38 @@ import shutil
 
 def get_Ks_from_file(paml_out_file):
 
-    KS_values = []
+    ks_results =[]
+    leaf_names = []
     with open(paml_out_file, "r") as f:
         lines = f.readlines()
+        row_index=-1
         for l in lines:
             data = l.split()
-            for d in data[1:len(data)]:
-                KS_values.append(float(d))
-    return KS_values
+            if len(data)==0:
+                print(l)
+                continue
+
+            print("line: " + l)
+            leaf_names.append(data[0])
+            for col_index in range(1,len(data)):
+
+                d=data[col_index]
+                print("data:" + d)
+                for d in data[1:len(data)]:
+                    new_ks_result=ks_data(float(d),row_index,col_index-1)
+                    print("new_ks_result:" + str(new_ks_result.ks_between_leaves))
+                    ks_results.append(new_ks_result)
+            row_index = row_index+1
+    return ks_results
 
 
-def get_Ks_from_folder(paml_out_folder, alg_name):
+def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     KS_values = []
 
-    with open(os.path.join(paml_out_folder,"Ks_by_GeneTree.csv"), 'w') as f:
+    with open(os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
+                                           "_Ks_by_GeneTree.csv"), 'w') as f:
 
         f.writelines("GeneTree,Ks,full_path\n")
         for paml_out_file in res_files:
@@ -39,13 +55,14 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
                       max_Ks, max_y, alg_name, color, bin_size):
 
     fig = plt.figure(figsize=(10, 10), dpi=100)
-    bins = np.arange(0, max_Ks + 0.1, bin_size)
+    #bins = np.arange(0, max_Ks + 0.1, bin_size)
+    nBins=50
     x = Ks_results
     print(PAML_hist_out_file)
 
-    n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
+    n, bins, patches = plt.hist(x, bins=nBins, facecolor=color, alpha=0.25, label='histogram data')
 
-    plt.xlim([0, max_Ks * (1.1)])
+    #plt.xlim([0, max_Ks * (1.1)])
     if max_y:
         plt.ylim([0, max_y])
 
@@ -95,16 +112,17 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
         print("making histograms " + species_str + ", replicate " + str(replicate))
         WGD_as_Ks=polyploid.WGD_time_as_ks()
         SPEC_as_Ks=polyploid.SPEC_time_as_ks()
-        summarize_ks(rep_subfolder, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
+        summarize_ks(rep_subfolder, replicate, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", 0.1)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
-def summarize_ks(paml_out_folder, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,color, step):
+def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,color, step):
 
     for alg_name in ["ML","NG"]:
 
         print("getting results for PAML alg name " + alg_name)
-        ks_results = get_Ks_from_folder(paml_out_folder, alg_name)
-        paml_hist_file = os.path.join(paml_out_folder, species_name + "_paml_hist_maxKS" + str(max_ks) +
+        ks_results = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
+        paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
+                                      "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
 
         plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,
@@ -114,4 +132,17 @@ def summarize_ks(paml_out_folder, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, m
 
 
 
+class ks_data():
 
+    ks_between_leaves=0
+    leaves=[]
+    row_index=-1
+    col_index=-1
+    def __init__(self, ks_data_result,row_index,col_index):
+        self.ks_between_leaves = ks_data_result
+        self.leaves = []
+        self.row_index = row_index
+        self.col_index = col_index
+
+    def set_leaves(self):
+        #TODO
