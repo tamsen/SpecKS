@@ -52,10 +52,12 @@ class GeneEvolverTests(unittest.TestCase):
                                                                     "evolver_simple_newick")
 
     def test_run_evolver_on_more_complex_newick(self):
+    #getting quite funky values...
+    #https: // www.biostars.org / p / 286328 /
 
-        seq_names = ["G1_0", "G2_0"]
+        seq_names = ["G1_0", "G0_0"]
         gt_root="GeneTree33.test"
-        expected_ks=233.79*2.0*0.01
+        expected_ks=233.79*2.0*1
         total_num_iterations=100
 
         self.test_evolver_and_ks_results_are_as_expected(expected_ks, gt_root, seq_names,
@@ -94,7 +96,8 @@ class GeneEvolverTests(unittest.TestCase):
             print(name + " distance from root:\t" + str(distance))
         total_branch_length = tree.total_branch_length()
         print("total_branch_length:\t" + str(total_branch_length))
-        evolver_tree_length = total_branch_length * 0.01 * 1.2
+        #evolver_tree_length = total_branch_length * 0.01 * 1.2
+        evolver_tree_length = total_branch_length * 1 * 1.2
         all_ML_ks_results = []
         all_NG_ks_results = []
         for i in range(0, total_num_iterations):
@@ -129,8 +132,12 @@ def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_res
         process_wrapper.run_and_wait_on_process(cmd, evolver_test_out_folder)
         # make a .fa input file for codeml
         fa_file = os.path.join(evolver_test_out_folder, "evolver_test.fa")
-        evolver_out_file = os.path.join(evolver_test_out_folder, "mc.paml")
-        sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file, seq_names)
+        evolver_out_file1 = os.path.join(evolver_test_out_folder, "mc.paml")
+        evolver_out_file2 = os.path.join(evolver_test_out_folder, "mc.txt")
+        if os.path.exists(evolver_out_file1):
+            sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file1, seq_names)
+        else:
+            sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file2, seq_names)
         write_seq_for_codeml_input(fa_file, sequences_by_seq_name)
         # run codeml
         template_codeml_ctl_file = ks_calculator.get_codeml_ctl_template()
@@ -140,8 +147,10 @@ def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_res
         # read Ks result
         ML_out_file = os.path.join(evolver_test_out_folder, "2ML.dS")
         NG_out_file = os.path.join(evolver_test_out_folder, "2NG.dS")
-        ML_ks_results = ks_histogramer.get_Ks_from_file(ML_out_file)
-        NG_ks_results = ks_histogramer.get_Ks_from_file(NG_out_file)
+        ML_ks_result_data = ks_histogramer.get_Ks_from_file(ML_out_file)
+        NG_ks_result_data = ks_histogramer.get_Ks_from_file(NG_out_file)
+        ML_ks_results =[ks.ks_between_orthologs for ks in ML_ks_result_data ]
+        NG_ks_results =[ks.ks_between_orthologs for ks in NG_ks_result_data ]
         print(ML_ks_results)
         print(NG_ks_results)
         return ML_ks_results,NG_ks_results
@@ -178,7 +187,7 @@ def histogram_ks_data(ks_data,expected_ks,dist_histogram_out_file_name):
     n_bins=50
     n, bins, patches = plt.hist(ks_data, bins=n_bins, facecolor='b', alpha=0.25, label='histogram data')
     plt.axvline(x=ks_avg, color='r', linestyle='--', label="empirical_avg")
-    plt.axvline(x=expected_ks, color='b', linestyle='--', label="expected_ks")
+    #plt.axvline(x=expected_ks, color='b', linestyle='--', label="expected_ks")
     plt.legend()
     plt.xlabel("Ks")
     plt.ylabel("Num data points")
