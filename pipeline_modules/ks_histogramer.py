@@ -7,27 +7,26 @@ import shutil
 def get_Ks_from_file(paml_out_file):
 
     ks_results =[]
-    leaf_names = []
+    ordered_ortholog_list = []
     with open(paml_out_file, "r") as f:
         lines = f.readlines()
-        row_index=-1
-        for l in lines:
+        row_index=0
+        for l in lines[1:len(lines)]:
             data = l.split()
             if len(data)==0:
-                print(l)
                 continue
 
-            print("line: " + l)
-            leaf_names.append(data[0])
+            #print("line: " + l)
+            ordered_ortholog_list.append(data[0])
             for col_index in range(1,len(data)):
-
                 d=data[col_index]
-                print("data:" + d)
-                for d in data[1:len(data)]:
-                    new_ks_result=ks_data(float(d),row_index,col_index-1)
-                    print("new_ks_result:" + str(new_ks_result.ks_between_leaves))
-                    ks_results.append(new_ks_result)
+                new_ks_result=ks_data(float(d),row_index,col_index-1)
+                ks_results.append(new_ks_result)
             row_index = row_index+1
+
+    for ks_result in ks_results:
+        ks_result.set_orthologs(ordered_ortholog_list)
+
     return ks_results
 
 
@@ -44,9 +43,12 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
             print(paml_out_file)
             base_name=os.path.basename(paml_out_file)
             Ks_for_og = get_Ks_from_file(paml_out_file)
-            for Ks_value in Ks_for_og:
-                f.writelines(base_name + "," + str(Ks_value)  +","+paml_out_file + "\n")
-            KS_values = KS_values + Ks_for_og
+            for Ks_data in Ks_for_og:
+                Ks_value = Ks_data.ks_between_orthologs
+                ortholog_names_str = str(Ks_data.ortholog_pair).replace(","," ")
+                f.writelines(base_name + "," +  ortholog_names_str + "," +
+                             str(Ks_value)  +","+paml_out_file + "\n")
+                KS_values.append(Ks_value)
 
     return KS_values
 
@@ -134,15 +136,18 @@ def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks
 
 class ks_data():
 
-    ks_between_leaves=0
-    leaves=[]
+    ks_between_orthologs=0
+    ortholog_pair=[]
     row_index=-1
     col_index=-1
     def __init__(self, ks_data_result,row_index,col_index):
-        self.ks_between_leaves = ks_data_result
-        self.leaves = []
+        self.ks_between_orthologs = ks_data_result
+        self.ortholog_pair = []
         self.row_index = row_index
         self.col_index = col_index
 
-    def set_leaves(self):
-        #TODO
+    def set_orthologs(self, ordered_ortholog_list):
+
+        ortholog1=ordered_ortholog_list[self.row_index]
+        ortholog2=ordered_ortholog_list[self.col_index]
+        self.ortholog_pair = [ortholog1,ortholog2]

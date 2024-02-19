@@ -132,7 +132,6 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    #evolver_tree_length = get_evolver_tree_length(config, tree_length_for_this_leg)
     evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -174,7 +173,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
 
 
-def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, tree_length_for_this_leg, random_seed_odd_integer):
+def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_integer):
 
 
     config = polyploid.general_sim_config
