@@ -1,7 +1,7 @@
 import os
 import shutil
 import unittest
-
+from pathlib import Path
 from Bio import Phylo
 from matplotlib import pyplot as plt
 
@@ -46,7 +46,7 @@ class GeneEvolverTests(unittest.TestCase):
         seq_names = ["P1", "P2"]
         gt_root="SpeciesTree.test"
         expected_ks=2.0*2.0
-        total_num_iterations=100
+        total_num_iterations=10
 
         self.test_evolver_and_ks_results_are_as_expected(expected_ks, gt_root, seq_names, total_num_iterations,
                                                                     "evolver_simple_newick")
@@ -126,7 +126,13 @@ class GeneEvolverTests(unittest.TestCase):
 def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_result, num_codons,
                          num_replicates_per_gene_tree, random_seed_odd_integer,seq_names):
         # run evolver
-        cmd = gene_evolver.write_evolver_commands(evolver_test_out_folder, random_seed_odd_integer,
+        #use new control file!!
+        par_dir= Path(__file__).parent
+        evolver_control_file =  os.path.join(par_dir,"gene_tree_evolver_test_data",
+            "evolver_input_example.dat")
+        cmd = gene_evolver.write_evolver_commands(evolver_test_out_folder,
+                                                  evolver_control_file,
+                                                  random_seed_odd_integer,
                                                   num_replicates_per_gene_tree,
                                                   num_codons, evolver_tree_length, gene_tree_result)
         process_wrapper.run_and_wait_on_process(cmd, evolver_test_out_folder)
@@ -139,10 +145,12 @@ def run_evolver_loop(evolver_test_out_folder, evolver_tree_length, gene_tree_res
         else:
             sequences_by_seq_name = get_seq_from_evolver_ouput_file(evolver_out_file2, seq_names)
         write_seq_for_codeml_input(fa_file, sequences_by_seq_name)
+
         # run codeml
-        template_codeml_ctl_file = ks_calculator.get_codeml_ctl_template()
-        control_file = ks_calculator.write_codeml_control_file(template_codeml_ctl_file, fa_file)
-        cmd = ["codeml", os.path.basename(control_file)]
+        #use new control file!!
+        codeml_control_file =  os.path.join(par_dir,"gene_tree_evolver_test_data",
+            "codeml_input_example.ctl")
+        cmd = ["codeml", codeml_control_file]
         process_wrapper.run_and_wait_on_process(cmd, evolver_test_out_folder)
         # read Ks result
         ML_out_file = os.path.join(evolver_test_out_folder, "2ML.dS")

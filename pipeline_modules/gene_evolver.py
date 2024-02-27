@@ -8,12 +8,12 @@ from io import StringIO
 from visualization import tree_visuals_by_phylo
 
 
-def write_evolver_control_file(template_dat_file,out_dir, random_seed_odd_integer,
-                               num_seq, num_codons, num_replcates, tree_length, newick_tree_string):
+def write_evolver_control_file(template_dat_file, out_dir, random_seed_odd_integer,
+                               num_seq, num_codons, num_replicates, tree_length, newick_tree_string):
     lines_to_write = []
     specs_flags = "NUMSEQ NUMCODONS NUMREPLICATES"
-    new_evolver_control_file_name = "mc_{0}Seq_{1}codons_{2}reps.dat".format(
-        num_seq, num_codons, tree_length)
+    new_evolver_control_file_name = "mc_{0}Seq_{1}codons_{2}replicates_{3}treelength.dat".format(
+        num_seq, num_codons, num_replicates, tree_length)
 
     new_dat_file = os.path.join(out_dir, new_evolver_control_file_name)
 
@@ -35,7 +35,7 @@ def write_evolver_control_file(template_dat_file,out_dir, random_seed_odd_intege
             if specs_flags in line:
                 new_line = line.replace("NUMSEQ", str(num_seq))
                 new_line = new_line.replace("NUMCODONS", str(num_codons))
-                new_line = new_line.replace("NUMREPLICATES", str(num_replcates))
+                new_line = new_line.replace("NUMREPLICATES", str(num_replicates))
 
             if "TREE" in line:
                 new_line = line.replace("TREE", newick_tree_string)
@@ -73,12 +73,12 @@ def work_around_for_no_parenthesis_in_newick(newick_tree_string):
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
         newick_tree_string = fixed_newick_tree_string
     return newick_tree_string
-def write_evolver_commands(out_dir,random_seed_odd_integer,
+def write_evolver_commands(out_dir,template_evolver_control_file, random_seed_odd_integer,
                            num_replicates,num_codons,tree_length,gene_tree_result):
 
-    par_dir= Path(__file__).parent.parent
-    template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
-        "template.MCcodon.dat")
+    #par_dir= Path(__file__).parent.parent
+    #template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
+    #    "template.MCcodon.dat")
 
     test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
 
@@ -88,7 +88,8 @@ def write_evolver_commands(out_dir,random_seed_odd_integer,
         X2 = Phylo.to_networkx(test_tree)
         nodes1 = list(X1.nodes)
         nodes2 = list(X2.nodes)
-        num_seq = len(nodes1)
+        num_seq = len(nodes1) -1 #because the root counts as a clade, but we are not going to evolve it
+        #maybe it just wants the named nodes here?
         print("nodes1=\t" + str(len(nodes1)))
         print("nodes2=\t" + str(len(nodes2)))
         print("num seq = num nodes:\t" + str(num_seq))
