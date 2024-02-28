@@ -6,8 +6,8 @@
     </Paths>
     <SpeciesTree>
         <polyploid>
-                <SPC_time_MYA>300</SPC_time_MYA>
-                <WGD_time_MYA>200</WGD_time_MYA>
+                <SPC_time_MYA>100</SPC_time_MYA>
+                <WGD_time_MYA>50</WGD_time_MYA>
         </polyploid>
         <!--
         <polyploid>

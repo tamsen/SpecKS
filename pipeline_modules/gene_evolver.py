@@ -88,7 +88,10 @@ def write_evolver_commands(out_dir,template_evolver_control_file, random_seed_od
         X2 = Phylo.to_networkx(test_tree)
         nodes1 = list(X1.nodes)
         nodes2 = list(X2.nodes)
-        num_seq = len(nodes1) -1 #because the root counts as a clade, but we are not going to evolve it
+        num_seq = len(nodes1)
+
+        #use len(nodes1) -1) for the species tree,
+        # because the root counts as a clade, but we are not going to evolve it
         #maybe it just wants the named nodes here?
         print("nodes1=\t" + str(len(nodes1)))
         print("nodes2=\t" + str(len(nodes2)))
@@ -209,7 +212,11 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
             #Then all we have left is the outgroup. No point in running evolver.
             continue
 
-        cmd = write_evolver_commands(gene_tree_subfolder, random_seed,
+        par_dir= Path(__file__).parent.parent
+        template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
+            "evolver_input_example.dat")
+
+        cmd = write_evolver_commands(gene_tree_subfolder, template_evolver_control_file, random_seed,
                                      config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
         process_wrapper.run_and_wait_on_process(cmd, gene_tree_subfolder)

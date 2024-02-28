@@ -222,7 +222,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
 def get_codeml_ctl_template():
     par_dir = Path(__file__).parent.parent
     template_codeml_ctl_file = os.path.join(par_dir, "paml_input_templates",
-                                            "template.codeml.ctl")
+                                            "codeml_input_example.ctl")
     return template_codeml_ctl_file
 
 
