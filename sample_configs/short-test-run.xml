@@ -6,8 +6,8 @@
     </Paths>
     <SpeciesTree>
         <polyploid>
-                <SPC_time_MYA>100</SPC_time_MYA>
-                <WGD_time_MYA>50</WGD_time_MYA>
+                <SPC_time_MYA>200</SPC_time_MYA>
+                <WGD_time_MYA>150</WGD_time_MYA>
         </polyploid>
         <!--
         <polyploid>
@@ -19,17 +19,17 @@
     <GeneTree>
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
-        <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
+        <num_gene_trees_per_species_tree>100</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>
     <SequenceEvolution>
-        <num_replicates_per_gene_tree>3</num_replicates_per_gene_tree>
-        <num_codons>10</num_codons>
+        <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
+        <num_codons>1000</num_codons>
         <Ks_per_Myr>0.01</Ks_per_Myr>
     </SequenceEvolution>
     <Histogram>
         <maxKs>5</maxKs>
-        <maxY>False</maxY>
+        <maxY>5</maxY>
     </Histogram>
     <StopAtStep>999</StopAtStep>
 </metadata>

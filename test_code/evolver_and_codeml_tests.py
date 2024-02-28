@@ -10,13 +10,17 @@ class GeneEvolverAndCodemlTests(unittest.TestCase):
 
     def test_run_evolver_on_simple_newicks_for_a_range_of_Ks(self):
 
-        self.run_evolver_on_simple_newick("SpeciesTreeKs4.test",4.0,3)
-        self.run_evolver_on_simple_newick("SpeciesTreeKs4.test", 4.0, 1995)
-        self.run_evolver_on_simple_newick("SpeciesTreeKs4.test", 4.0, 43)
+        #self.run_evolver_on_simple_newick("SpeciesTreeKs4.test",4.0,3)
+        #self.run_evolver_on_simple_newick("SpeciesTreeKs4.test", 4.0, 1995)
+        #self.run_evolver_on_simple_newick("SpeciesTreeKs4.test", 4.0, 43)
 
         #self.run_evolver_on_simple_newick("SpeciesTreeKs2.test",2.0,3)
         #self.run_evolver_on_simple_newick("SpeciesTreeKs2.test", 2.0, 1995)
         #self.run_evolver_on_simple_newick("SpeciesTreeKs2.test", 2.0, 43)
+
+        self.run_evolver_on_simple_newick("SpeciesTreeKs2_extranode.test",2.0,3)
+        #self.run_evolver_on_simple_newick("SpeciesTreeKs2_extranode.test", 2.0, 1995)
+        #self.run_evolver_on_simple_newick("SpeciesTreeKs2_extranode.test", 2.0, 43)
 
         #self.run_evolver_on_simple_newick("SpeciesTreeKs1.test",1.0,3)
         #self.run_evolver_on_simple_newick("SpeciesTreeKs1.test", 1.0, 1995)
@@ -34,7 +38,7 @@ class GeneEvolverAndCodemlTests(unittest.TestCase):
         # Newick: ((O:500, (P1:100, P2:100)G2_0:400));
         #because in "evolver_input_example.dat" the total tree length is
         # 1+ 1 + 4 + 5 = 11
-        #ie, if we want P1 and P2 to be 2 Ks apart, for 2 MYA
+        #ie, if we want P1 and P2 to be 2 unit of Ks apart, for 1 MYA
         #Then we expect tree length of 11*1.2 = 13.2
         #so Ks between them is 2.0 (with Ks + Kn being 2.4)
 

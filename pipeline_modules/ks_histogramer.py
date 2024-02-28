@@ -64,7 +64,9 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
 
     n, bins, patches = plt.hist(x, bins=nBins, facecolor=color, alpha=0.25, label='histogram data')
 
-    #plt.xlim([0, max_Ks * (1.1)])
+    if max_Ks:
+        plt.xlim([0, max_Ks * (1.1)])
+
     if max_y:
         plt.ylim([0, max_y])
 
@@ -128,6 +130,12 @@ def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks
                                   "_"+ alg_name + ".png")
 
         plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,
+                                                alg_name, color, step)
+
+        paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
+                                      "_paml_hist" +
+                                  "_"+ alg_name + ".png")
+        plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, False, max_y,
                                                 alg_name, color, step)
 
     return
