@@ -21,11 +21,12 @@ def run_autosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
-                                                        gene_tree_results_by_tree_name)
-    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-        return
+    relaxed_gene_tree_results=gene_tree_results_by_tree_name
+    #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
+    #                                                    gene_tree_results_by_tree_name)
+    #if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+    #    return
 
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
@@ -33,7 +34,6 @@ def run_autosim(polyploid):
     first_leg_random_seed=137
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results,
-                                                            length_of_time_of_first_leg_of_sim,
                                                             first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
@@ -65,9 +65,10 @@ def run_autosim(polyploid):
         gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i])
 
-        print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-        relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid,  postWGD_simulation_leg,
-                                                            gene_tree_results_by_tree_name)
+        #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+        #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid,  postWGD_simulation_leg,
+        #                                                    gene_tree_results_by_tree_name)
+        relaxed_gene_tree_results = gene_tree_results_by_tree_name
 
         print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
               "At every time step post WGD, cull a certain percent of what remains. (custom code)")

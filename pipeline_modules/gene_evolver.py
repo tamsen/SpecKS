@@ -136,6 +136,10 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    par_dir = Path(__file__).parent.parent
+    template_evolver_control_file = os.path.join(par_dir, "paml_input_templates",
+                                                 "evolver_input_example.dat")
+
     evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -152,7 +156,8 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             dst=os.path.join(replicate_subfolder, "RootSeq.txt")
             shutil.copyfile(replicate_seq_file, dst)
 
-            cmd = write_evolver_commands(replicate_subfolder,random_seed_odd_integer,
+            cmd = write_evolver_commands(replicate_subfolder,template_evolver_control_file,
+                                         random_seed_odd_integer,
                                          1,
                                          config.num_codons, evolver_tree_length, gene_tree_result)
             out_string,error_string = process_wrapper.run_and_wait_on_process(cmd, replicate_subfolder)
@@ -194,6 +199,10 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
 
     evolver_results_by_gene_tree={}
     random_seed=random_seed_odd_integer
+    par_dir = Path(__file__).parent.parent
+    template_evolver_control_file = os.path.join(par_dir, "paml_input_templates",
+                                                 "evolver_input_example.dat")
+
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
         random_seed = random_seed+2
@@ -211,10 +220,6 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
         if gene_tree_result.num_terminal_leaves < 2:
             #Then all we have left is the outgroup. No point in running evolver.
             continue
-
-        par_dir= Path(__file__).parent.parent
-        template_evolver_control_file =  os.path.join(par_dir,"paml_input_templates",
-            "evolver_input_example.dat")
 
         cmd = write_evolver_commands(gene_tree_subfolder, template_evolver_control_file, random_seed,
                                      config.num_replicates_per_gene_tree,
