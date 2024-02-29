@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import glob
 import shutil
 
+from pipeline_modules import ks_calculator
+
+
 def get_Ks_from_file(paml_out_file):
 
     ks_results =[]
@@ -89,9 +92,10 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    replicate_index_formatter = ks_calculator.get_replicate_index_format(config.num_replicates_per_gene_tree)
     replicates = list(codeml_results_by_replicate_num.keys())
     for replicate in replicates:
-        rep_subfolder = os.path.join(subfolder, "replicate" + str(replicate))
+        rep_subfolder = os.path.join(subfolder, "replicate_" + replicate_index_formatter.format(replicate))
         if not os.path.exists(rep_subfolder ):
             os.makedirs(rep_subfolder)
 

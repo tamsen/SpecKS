@@ -136,10 +136,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    par_dir = Path(__file__).parent.parent
-    template_evolver_control_file = os.path.join(par_dir, "paml_input_templates",
-                                                 "evolver_input_example.dat")
-
+    template_evolver_control_file = get_evolver_template_file()
     evolver_results_by_gene_tree_by_replicate={}
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -199,9 +196,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
 
     evolver_results_by_gene_tree={}
     random_seed=random_seed_odd_integer
-    par_dir = Path(__file__).parent.parent
-    template_evolver_control_file = os.path.join(par_dir, "paml_input_templates",
-                                                 "evolver_input_example.dat")
+    template_evolver_control_file = get_evolver_template_file()
 
     for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
@@ -249,6 +244,13 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return evolver_results_by_gene_tree
+
+
+def get_evolver_template_file():
+    par_dir = Path(__file__).parent.parent
+    template_evolver_control_file = os.path.join(par_dir, "paml_input_templates",
+                                                 "evolver_input_example.dat")
+    return template_evolver_control_file
 
 
 def get_evolver_tree_length(config,gene_tree_result):

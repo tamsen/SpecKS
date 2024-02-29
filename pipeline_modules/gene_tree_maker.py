@@ -32,6 +32,11 @@ def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,n
     loss_values =  [0 for x in loss_values]
     return dup_values,loss_values
 
+def get_gt_index_format(num_gene_trees_needed):
+        decimals_needed = len(str(num_gene_trees_needed))
+        formatter = "{:0" + str(decimals_needed) + "d}"
+        return formatter
+
 def visualize_dup_and_loss_rates(dup_values,loss_values,out_folder):
 
     xs=[i for i in range(0,len(dup_values))]
@@ -76,6 +81,7 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
+    gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
 
     if len(polyploid.subtree_subfolder)>0:
         subfolder = os.path.join(polyploid.species_subfolder,
@@ -92,8 +98,9 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
 
     visualize_dup_and_loss_rates(dup_values, loss_values, subfolder)
 
+
     for i in range(0, num_gene_trees_needed):
-        out_file_name = "GeneTree" + str(i)
+        out_file_name = "GeneTree" +  gt_index_formatter.format(i)
         random_seed = i #to make the results repeatable, run to run, but different between GT
         cmd = write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick,
                                                   dup_values[i], loss_values[i],

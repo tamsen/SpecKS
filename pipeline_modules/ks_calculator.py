@@ -4,6 +4,11 @@ from pathlib import Path
 import process_wrapper
 
 
+def get_replicate_index_format(num_replicates_needed):
+    decimals_needed = len(str(num_replicates_needed))
+    formatter = "{:0" + str(decimals_needed) + "d}"
+    return formatter
+
 def evolver_out_to_sequences(evolver_out_file):
     sequences_by_leaf = {}
     with open(evolver_out_file, 'r') as f:
@@ -166,6 +171,7 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
 
     template_codeml_ctl_file = get_codeml_ctl_template()
     codeml_results_by_replicate_num={}
+    replicate_index_formater = get_replicate_index_format(config.num_replicates_per_gene_tree)
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
 
     for gene_tree_name, evolver_output_file in evolver_results_by_gene_tree.items():
@@ -182,13 +188,14 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
         sequence_files_written=[]
 
         for r in replicates:
-            print("\t replicate " + str(r))
-            replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ str(r))
+            rep_string=replicate_index_formater.format(r)
+            print("\t replicate " + rep_string)
+            replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ rep_string)
             if not os.path.exists(replicates_subfolder):
                 os.makedirs(replicates_subfolder)
 
             replicate_fa_file = os.path.join(replicates_subfolder,
-                                             gene_tree_name+".codons.rep" + str(r) + ".fa")
+                                             gene_tree_name+".codons.rep" + rep_string + ".fa")
 
             with open(replicate_fa_file, 'w') as f:
 

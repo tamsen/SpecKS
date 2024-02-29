@@ -19,7 +19,7 @@ def plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
     #perturb the gene tree values so they dont sit right on top of each other for plotting
     random.seed(10)
     colors=color_list()
-    gt_names=list(gt_tree_viz_data_by_name.keys())
+    gt_names= sorted(list(gt_tree_viz_data_by_name.keys()))
     tree_viz_data_list=[species_tree_viz_data]
     for i in range(0,len(gt_names)):
 
