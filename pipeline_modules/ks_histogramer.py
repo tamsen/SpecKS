@@ -13,8 +13,9 @@ def get_Ks_from_file(paml_out_file):
     ordered_ortholog_list = []
     with open(paml_out_file, "r") as f:
         lines = f.readlines()
-        row_index=0
-        for l in lines[1:len(lines)]:
+
+    row_index=0
+    for l in lines[1:len(lines)]:
             data = l.split()
             if len(data)==0:
                 continue
