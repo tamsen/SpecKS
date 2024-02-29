@@ -12,18 +12,49 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        csv_file=os.path.join(output_folder,"ML_rep0_Ks_by_GeneTree.csv")
-        ks_results=read_Ks_csv(csv_file)
-        ks_results_by_scenario={}
-        species="Allo1_S050W025"
-        ks_results_by_scenario["Sim1"]=ks_results
-        ks_results_by_scenario["Sim2"]=ks_results
-        ks_results_by_scenario["Sim3"]=ks_results
+        csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
+        example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
+        replicates=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim].keys())
+        algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
 
-        plot_traces_for_the_sample(output_folder, 'sample_name',
-                                    ks_results_by_scenario)
+        for replicate in replicates:
+            for alg in algs:
+                plot_histograms_for_the_sim_runs(output_folder, 'Simulation without gene birth/death',
+                                         csvfiles_by_polyploid_by_rep_by_algorthim,
+                                         replicate, alg)
 
         self.assertEqual(True,True)
+
+    def get_ks_data_from_folders(self, output_folder):
+        polyploid_data_folders = os.listdir(output_folder)
+        csvfiles_by_polyploid_by_rep_by_algorthim = {}
+        for polyploid_folder in polyploid_data_folders:
+            print(polyploid_folder)
+            full_polyploid_folder_path = os.path.join(output_folder, polyploid_folder)
+            if (os.path.isdir(full_polyploid_folder_path)):
+                files = os.listdir(full_polyploid_folder_path)
+                csvfiles_by_replicate = {}
+                for csv_file in files:
+
+                    if not ".csv" in csv_file:
+                        continue
+
+                    # example file name: ML_rep0_Ks_by_GeneTree.csv
+                    splat = csv_file.split("_")
+                    algorithm = splat[0]
+                    replicate = splat[1]
+                    if not replicate in csvfiles_by_replicate:
+                        csvfiles_by_alg = {}
+                        csvfiles_by_replicate[replicate] = csvfiles_by_alg
+
+                    # csvfiles_by_replicate[replicate][algorithm]=csv_file
+                    full_csv_path = os.path.join(full_polyploid_folder_path, csv_file)
+                    print("reading " + full_csv_path)
+                    ks_result_for_file = read_Ks_csv(full_csv_path)
+                    csvfiles_by_replicate[replicate][algorithm] = ks_result_for_file
+
+                csvfiles_by_polyploid_by_rep_by_algorthim[polyploid_folder] = csvfiles_by_replicate
+        return csvfiles_by_polyploid_by_rep_by_algorthim
 
 
 def read_Ks_csv(csv_file):
@@ -48,36 +79,57 @@ def read_Ks_csv(csv_file):
 
     return ks_results
 
-def plot_traces_for_the_sample(run_folder, sample_name, ks_results_by_scenario):
+def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
+                                     replicate, alg):
 
-    #fig = plt.figure(figsize=(10, 10))
-    Ks_results=ks_results_by_scenario["Sim1"]
-    sim_labels=["Sim0","Sim1","Sim2","Sim3"]
+    result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
+    result_names.sort()
+    ordered_allo_results=[n for n in result_names if "Allo" in n]
+    ordered_auto_results=[n for n in result_names if "Auto" in n]
+
     max_Ks = 2
     bin_size = 0.01
     #f, a = plt.subplots(4, 2)
 
     # making subplots
     fig, ax = plt.subplots(4, 2,figsize=(10, 10))
-    ax[0, 0].set_title("Allopolyploid\n\n",fontsize=20)
-    ax[0, 1].set_title("Autopolyploid\n\n",fontsize=20)
+    fig.suptitle(sample_name + " for " + replicate +", "+ alg + " algorithm")
+    ax[0, 0].set_title("Allopolyploid\n",fontsize=20)
+    ax[0, 1].set_title("Autopolyploid\n",fontsize=20)
 
-    num_sims=len(sim_labels)
-    for sim_idx in range(0, num_sims):
+    num_sims=len(ordered_allo_results)
+    for sim_idx in range(0, 4):
 
+        allo_result_name=ordered_allo_results[sim_idx]
+        auto_result_name=ordered_auto_results[sim_idx]
+        ks_for_allo_result= csvfiles_by_polyploid_by_rep_by_algorthim[allo_result_name][replicate][alg]
+        ks_for_auto_result= csvfiles_by_polyploid_by_rep_by_algorthim[auto_result_name][replicate][alg]
+
+        #plot allo result
         this_ax = ax[sim_idx, 0]
-        make_subplot(this_ax , Ks_results, bin_size,
+        make_subplot(this_ax ,ks_for_allo_result, bin_size,
             "some text",max_Ks ,  "blue")
 
-        this_ax.set(ylabel=sim_labels[sim_idx])
+        this_ax.set(ylabel=allo_result_name)
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(50,25)
         this_ax.text(0.8, 0.8, text_string,
                      horizontalalignment='center', verticalalignment='center',
                      transform=this_ax.transAxes)
 
-    plot_title = sample_name
-    plt.savefig(run_folder + "/" + sample_name + "_histogram" + "_plot" + ".png")
+        #plot auto result
+        this_ax = ax[sim_idx, 1]
+        make_subplot(this_ax ,ks_for_auto_result, bin_size,
+            "some text",max_Ks ,  "blue")
+
+        text_string="SPC: {0} MYA\nWGD: {1} MYA".format(50,25)
+        this_ax.text(0.8, 0.8, text_string,
+                     horizontalalignment='center', verticalalignment='center',
+                     transform=this_ax.transAxes)
+
+
+
+    plt.savefig(os.path.join(run_folder,"histogram" + "_plot_" + replicate +"_"+ alg+".png"))
 
     plt.close()
 
