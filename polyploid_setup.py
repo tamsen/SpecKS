@@ -12,12 +12,15 @@ def make_polyploids(config):
         SPC_time_MYA=params.SPC_time_MYA
         WGD_time_MYA=params.WGD_time_MYA
 
-        if (SPC_time_MYA==WGD_time_MYA):
-            num_autos=num_autos+1
-            species_name="Autopolyploid_" + str(num_autos)
+        if params.name:
+            species_name=params.name
         else:
-            num_allos=num_allos+1
-            species_name="Allopolyploid_" + str(num_allos)
+            if (SPC_time_MYA==WGD_time_MYA):
+                num_autos=num_autos+1
+                species_name="Autopolyploid_" + str(num_autos)
+            else:
+                num_allos=num_allos+1
+                species_name="Allopolyploid_" + str(num_allos)
 
         polyploid = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
         polyploids.append(polyploid)

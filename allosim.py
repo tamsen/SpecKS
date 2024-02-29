@@ -1,5 +1,5 @@
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, gene_shedder
+    species_tree_maker, gene_shedder, results_organizer
 
 from Bio import Phylo
 from io import StringIO
@@ -21,15 +21,15 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
-    #                                                gene_tree_results_by_tree_name)
-    #if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-    #    return
+    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
+                                                    gene_tree_results_by_tree_name)
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
 
     print("\n\n{0}. Shed genes post WDG. ".format(polyploid.analysis_step_num) +
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
-    gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, gene_tree_results_by_tree_name )
+    gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, relaxed_gene_tree_results)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -46,9 +46,12 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
+    final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
+
+    print("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
+    results_organizer.collate_results(polyploid, final_result_files_by_replicate)
 
     print("\n\n" + polyploid.species_name + " complete.\n\n")
 

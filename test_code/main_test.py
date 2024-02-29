@@ -32,13 +32,16 @@ class TestMain(unittest.TestCase):
         self.assertTrue(os.path.exists(conf.output_folder))  # ad
 
         #check a final histogram file was created for the allopolyploid
-        expected_allo_hist= os.path.join(conf.output_folder,"Allopolyploid_1",
-                                         "7_ks_histograms","replicate2","Allopolyploid_1_paml_hist_maxKS5_NG.png")
+        expected_allo_hist= os.path.join(conf.output_folder,"Allo1_S200W150",
+                                         "7_ks_histograms","replicate_02","Allo1_S200W150_rep02_paml_hist_ML.png")
+
+        print("Expecting file " + expected_allo_hist)
         self.assertTrue(os.path.exists(expected_allo_hist))
 
         #check a final histogram file was created for the autopolyploid
-        expected_auto_hist= os.path.join(conf.output_folder,"Autopolyploid_1",
-                                         "15_ks_histograms","replicate2","Autopolyploid_1_paml_hist_maxKS5_NG.png")
+        expected_auto_hist= os.path.join(conf.output_folder,"Auto1_S150W150",
+                                         "15_ks_histograms","replicate_02","Auto1_S150W150_rep02_paml_hist_ML.png")
+        print("Expecting file " + expected_auto_hist)
         self.assertTrue(os.path.exists(expected_auto_hist))
 
 if __name__ == '__main__':

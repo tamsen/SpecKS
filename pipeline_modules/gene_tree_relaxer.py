@@ -24,11 +24,22 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
     for gene_tree, gene_tree_results in gene_tree_results_by_tree_name.items():
         random_seed=random_seed+1
         relaxed_tree_file_out=gene_tree +".relaxed.tree"
+        relaxation_model=config.branch_relaxation_parameters
+
+        if not relaxation_model:
+            relaxed_gene_tree_results_by_gene_tree[gene_tree] = gene_tree_results
+            continue
+
         in_file_name =gene_tree_results.gene_tree_file_name
         cmd= ["java","-jar",
              config.path_to_sagephy,"BranchRelaxer",
               "-x","-innms","-o" ,relaxed_tree_file_out, in_file_name,
-              "ACRY07","1","0.000001", "-s", str(random_seed)]
+              *relaxation_model, "-s", str(random_seed)]
+
+        #-x for "include auxillary tags
+        #-innms for "Keep interior vertex names in the output tree."
+        # relaxation_model of "ACRY07 1 0.000001" is Autocorrelated lognormal rate in accordance with Rannala-
+        # Yang ’07, with parameters as specified.
 
         process_wrapper.run_and_wait_on_process(cmd, subfolder)
         full_path_to_relaxed_tree_file=os.path.join(subfolder,relaxed_tree_file_out)

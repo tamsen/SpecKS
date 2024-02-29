@@ -6,18 +6,26 @@
     </Paths>
     <SpeciesTree>
         <polyploid>
+                <name>Allo1_S200W150</name>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>150</WGD_time_MYA>
         </polyploid>
         <polyploid>
-                <SPC_time_MYA>200</SPC_time_MYA>
-                <WGD_time_MYA>200</WGD_time_MYA>
+                <name>Auto1_S150W150</name>
+                <SPC_time_MYA>150</SPC_time_MYA>
+                <WGD_time_MYA>150</WGD_time_MYA>
         </polyploid>
         <full_sim_time>500</full_sim_time>
     </SpeciesTree>
     <GeneTree>
+        <!--
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
+        <branch_relaxer_parameters>ACRY07,1,0.000001</branch_relaxer_parameters>
+-->
+        <dup_rate_parameters>False</dup_rate_parameters>
+        <loss_rate_parameters>False</loss_rate_parameters>
+        <branch_relaxer_parameters>False</branch_relaxer_parameters>
         <num_gene_trees_per_species_tree>10</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>

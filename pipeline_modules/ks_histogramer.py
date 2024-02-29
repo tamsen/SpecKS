@@ -36,10 +36,11 @@ def get_Ks_from_file(paml_out_file):
 def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
+    csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
+                                           "_Ks_by_GeneTree.csv")
     KS_values = []
 
-    with open(os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
-                                           "_Ks_by_GeneTree.csv"), 'w') as f:
+    with open(csv_file_out, 'w') as f:
 
         f.writelines("GeneTree,Ks,full_path\n")
         for paml_out_file in res_files:
@@ -53,7 +54,7 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
                              str(Ks_value)  +","+paml_out_file + "\n")
                 KS_values.append(Ks_value)
 
-    return KS_values
+    return KS_values,csv_file_out
 
 
 def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, SPEC_as_Ks,
@@ -88,6 +89,7 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
 
     config = polyploid.general_sim_config
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_histograms")
+    results_files_by_replicate={}
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
@@ -95,7 +97,9 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
     replicate_index_formatter = ks_calculator.get_replicate_index_format(config.num_replicates_per_gene_tree)
     replicates = list(codeml_results_by_replicate_num.keys())
     for replicate in replicates:
-        rep_subfolder = os.path.join(subfolder, "replicate_" + replicate_index_formatter.format(replicate))
+
+        replicate_string = replicate_index_formatter.format(replicate)
+        rep_subfolder = os.path.join(subfolder, "replicate_" + replicate_string)
         if not os.path.exists(rep_subfolder ):
             os.makedirs(rep_subfolder)
 
@@ -107,28 +111,33 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
             files=[codeml_result.ML_file,codeml_result.NG_file]
             for file in files:
                 base=os.path.basename(file)
-                dst=os.path.join(rep_subfolder, gene_tree + "_" +base)
+                dst=os.path.join(rep_subfolder, gene_tree + "_" + base)
                 if os.path.exists(file):
                     shutil.copyfile(file, dst)
                 else:
-                    print("Warning: no codeml result for " + gene_tree + ", replicate " + str(replicate))
+                    print("Warning: no codeml result for " + gene_tree + ", replicate " + replicate_string )
                     print("Maybe gene tree had no extant leaves? Codeml result file should be here: "
                           + file)
 
         subgenomes_of_concern=["P1","P2"]
         species_str="between subgenomes " + "and".join(subgenomes_of_concern)
-        print("making histograms " + species_str + ", replicate " + str(replicate))
+        print("making histograms " + species_str + ", replicate " + replicate_string )
         WGD_as_Ks=polyploid.WGD_time_as_ks()
         SPEC_as_Ks=polyploid.SPEC_time_as_ks()
-        summarize_ks(rep_subfolder, replicate, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
+        outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", 0.1)
+        results_files_by_replicate[replicate]=outfiles
+
+
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
+    return results_files_by_replicate
 def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,color, step):
 
+    outfiles=[]
     for alg_name in ["ML","NG"]:
 
         print("getting results for PAML alg name " + alg_name)
-        ks_results = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
+        ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
                                       "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
@@ -142,7 +151,9 @@ def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks
         plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, False, max_y,
                                                 alg_name, color, step)
 
-    return
+        outfiles.append(csv_file_out)
+
+    return outfiles
 
 
 

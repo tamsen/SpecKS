@@ -11,12 +11,11 @@ class SpecKS_config:
     full_sim_time = 500
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
+    branch_relaxation_parameters = ["ACRY07","1","0.000001"]
     num_gene_trees_per_species_tree=4#10
     num_replicates_per_gene_tree=3#10
     num_codons=10#1000
     Ks_per_Myr= 0.01
-
-
 
     max_ks_for_hist_plot=5
     max_y_for_hist_plot=False
@@ -70,6 +69,8 @@ class SpecKS_config:
                                     new_params.SPC_time_MYA = int(incoming_txt)
                                 if (incoming_tag == "WGD_time_MYA"):
                                     new_params.WGD_time_MYA = int(incoming_txt)
+                                if (incoming_tag == "name"):
+                                    new_params.name = incoming_txt
                             self.params_for_polyploids.append(new_params)
 
                 if (incoming_tag == "GeneTree"):
@@ -80,6 +81,8 @@ class SpecKS_config:
                             self.dup_rate_parameters = parse_tuple_string(incoming_txt)
                         if (incoming_tag == "loss_rate_parameters"):
                             self.loss_rate_parameters = parse_tuple_string(incoming_txt)
+                        if (incoming_tag == "branch_relaxer_parameters"):
+                            self.branch_relaxation_parameters = parse_branch_relaxation_string(incoming_txt)
                         if (incoming_tag == "num_gene_trees_per_species_tree"):
                             self.num_gene_trees_per_species_tree = int(incoming_txt)
 
@@ -95,11 +98,24 @@ class SpecKS_config:
                             self.Ks_per_Myr = float(incoming_txt)
 
 def parse_tuple_string(tuple_string):
-    splat=tuple_string.replace("(","").replace(")","").split(",")
-    data= [float(s) for s in splat]
-    return data
+
+    if tuple_string=="False":
+        return False
+    else:
+        splat=tuple_string.replace("(","").replace(")","").split(",")
+        data= [float(s) for s in splat]
+        return data
+
+def parse_branch_relaxation_string(branch_relaxation_string):
+
+    if branch_relaxation_string=="False":
+        return False
+    else:
+        splat=branch_relaxation_string.split(",")
+        return splat
 
 class PolyploidParams:
 
     SPC_time_MYA=0
     WGD_time_MYA=0
+    name=False

@@ -1,5 +1,5 @@
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, root_seq_maker, gene_shedder
+    species_tree_maker, root_seq_maker, gene_shedder, results_organizer
 
 
 def run_autosim(polyploid):
@@ -21,12 +21,11 @@ def run_autosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    relaxed_gene_tree_results=gene_tree_results_by_tree_name
-    #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
-    #                                                    gene_tree_results_by_tree_name)
-    #if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-    #    return
+    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
+                                                        gene_tree_results_by_tree_name)
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
 
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
@@ -65,10 +64,9 @@ def run_autosim(polyploid):
         gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i])
 
-        #print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-        #relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid,  postWGD_simulation_leg,
-        #                                                    gene_tree_results_by_tree_name)
-        relaxed_gene_tree_results = gene_tree_results_by_tree_name
+        print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+        relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid,  postWGD_simulation_leg,
+                                                            gene_tree_results_by_tree_name)
 
         print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
               "At every time step post WGD, cull a certain percent of what remains. (custom code)")
@@ -100,6 +98,9 @@ def run_autosim(polyploid):
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     print(codeml_results_by_replicate_num)
-    ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
+    final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
+
+    print("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
+    results_organizer.collate_results(polyploid, final_result_files_by_replicate)
 
     print("\n\n" + polyploid.species_name + " complete")

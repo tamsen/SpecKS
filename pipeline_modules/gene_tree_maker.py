@@ -26,10 +26,17 @@ def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, l
     return cmd
 
 def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,num_values_needed):
-    dup_values = beta.rvs(dup_rate_parameters[0],dup_rate_parameters[1], size=num_values_needed)
-    loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
-    dup_values = [0 for x in dup_values]
-    loss_values =  [0 for x in loss_values]
+
+    if dup_rate_parameters:
+        dup_values = beta.rvs(dup_rate_parameters[0],dup_rate_parameters[1], size=num_values_needed)
+    else:
+        dup_values = [0 for x in range(0,num_values_needed)]
+
+    if loss_rate_parameters:
+        loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
+    else:
+        loss_values = [0 for x in range(0,num_values_needed)]
+
     return dup_values,loss_values
 
 def get_gt_index_format(num_gene_trees_needed):
