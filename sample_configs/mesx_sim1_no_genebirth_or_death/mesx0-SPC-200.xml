@@ -6,12 +6,12 @@
     </Paths>
     <SpeciesTree>
         <polyploid>
-                 <name>Allo0_S150W150</name>
+                 <name>Allo0_S200W150</name>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>150</WGD_time_MYA>
         </polyploid>
         <polyploid>
-                <name>Auto0_S150W150</name>
+                <name>Auto0_S200W200</name>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>200</WGD_time_MYA>
         </polyploid>

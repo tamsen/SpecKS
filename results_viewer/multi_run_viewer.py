@@ -15,16 +15,18 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim1_no_genebirth_or_death"
+
         csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
         example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
         replicates=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim].keys())
         algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
 
         params_by_polyploid={}
-        params_by_polyploid["Allo0"]= config.PolyploidParams(250,200,"Allo0")
-        params_by_polyploid["Allo1"]= config.PolyploidParams(200,150,"Allo1")
-        params_by_polyploid["Allo2"]= config.PolyploidParams(100, 50,"Allo2")
-        params_by_polyploid["Allo3"]= config.PolyploidParams( 50, 25,"Allo3")
+        params_by_polyploid["Allo0"]= config.PolyploidParams(200,150,"Allo0")
+        params_by_polyploid["Allo1"]= config.PolyploidParams(150,100,"Allo1")
+        params_by_polyploid["Allo2"]= config.PolyploidParams(50, 25,"Allo2")
+        params_by_polyploid["Allo3"]= config.PolyploidParams( 25, 20,"Allo3")
 
         params_by_polyploid["Auto0"]= config.PolyploidParams(200,200,"Auto0")
         params_by_polyploid["Auto1"]= config.PolyploidParams(150,150,"Auto1")
@@ -122,26 +124,26 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #plot allo result
         params=params_by_polyploid[allo_result_name]
         this_ax = ax[sim_idx, 0]
-        make_subplot(this_ax, ks_for_allo_result, bin_size,
-            "some text", max_Ks_for_x_axis, "blue")
+        make_subplot(this_ax, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
+            max_Ks_for_x_axis, "blue")
 
         this_ax.set(ylabel="simulation #" + str(sim_idx))
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
-        this_ax.text(0.8, 0.8, text_string,
-                     horizontalalignment='center', verticalalignment='center',
-                     transform=this_ax.transAxes)
+        #this_ax.text(0.8, 0.8, text_string,
+        #             horizontalalignment='center', verticalalignment='center',
+        #             transform=this_ax.transAxes)
 
         #plot auto result
         params=params_by_polyploid[auto_result_name]
         this_ax = ax[sim_idx, 1]
-        make_subplot(this_ax, ks_for_auto_result, bin_size,
-            "some text", max_Ks_for_x_axis, "blue")
+        make_subplot(this_ax, ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
+            max_Ks_for_x_axis, "blue")
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
-        this_ax.text(0.8, 0.8, text_string,
-                     horizontalalignment='center', verticalalignment='center',
-                     transform=this_ax.transAxes)
+        #this_ax.text(0.8, 0.8, text_string,
+        #             horizontalalignment='center', verticalalignment='center',
+        #             transform=this_ax.transAxes)
 
 
 
@@ -150,16 +152,20 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     plt.close()
 
 
-def make_subplot(this_ax, Ks_results, bin_size, text_to_write, max_Ks, plot_color):
+def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, plot_color):
 
     bins = np.arange(0, max_Ks + 0.1, bin_size)
     x = Ks_results
     n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
 
-    #this_ax= plt.gca()
-    #this_ax.text(0.05, 0.95, text_to_write, horizontalalignment='left',
-    #              verticalalignment='top', transform=ax.transAxes)
+    WGD_as_Ks = WGD_time_MYA * 0.01
+    SPEC_as_Ks =SPC_time_MYA * 0.01
+    this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
+    this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
+    this_ax.legend()
 
-    plt.xlim([0, max_Ks * (1.1)])
+    #this_ax.set(ylim=[0, 200])
+    this_ax.set(xlim=[0, SPEC_as_Ks+1])
+    #plt.xlim([0, max_Ks * (1.1)])
 
     return this_ax
