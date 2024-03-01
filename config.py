@@ -119,3 +119,8 @@ class PolyploidParams:
     SPC_time_MYA=0
     WGD_time_MYA=0
     name=False
+
+    def __init__(self, SPC_time_MYA,WGD_time_MYA,name):
+        self.SPC_time_MYA = SPC_time_MYA
+        self.WGD_time_MYA = WGD_time_MYA
+        self.name = name

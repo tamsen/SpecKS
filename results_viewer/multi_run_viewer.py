@@ -4,6 +4,9 @@ import unittest
 import numpy as np
 from matplotlib import pyplot as plt
 
+import config
+
+
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
 class MulitRunViewerTests(unittest.TestCase):
     def test_multi_run_viewer(self):
@@ -17,11 +20,22 @@ class MulitRunViewerTests(unittest.TestCase):
         replicates=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim].keys())
         algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
 
+        params_by_polyploid={}
+        params_by_polyploid["Allo0"]= config.PolyploidParams(250,200,"Allo0")
+        params_by_polyploid["Allo1"]= config.PolyploidParams(200,150,"Allo1")
+        params_by_polyploid["Allo2"]= config.PolyploidParams(100, 50,"Allo2")
+        params_by_polyploid["Allo3"]= config.PolyploidParams( 50, 25,"Allo3")
+
+        params_by_polyploid["Auto0"]= config.PolyploidParams(200,200,"Auto0")
+        params_by_polyploid["Auto1"]= config.PolyploidParams(150,150,"Auto1")
+        params_by_polyploid["Auto2"]= config.PolyploidParams( 50, 50,"Auto2")
+        params_by_polyploid["Auto3"]= config.PolyploidParams( 25, 25,"Auto3")
+
         for replicate in replicates:
             for alg in algs:
                 plot_histograms_for_the_sim_runs(output_folder, 'Simulation without gene birth/death',
                                          csvfiles_by_polyploid_by_rep_by_algorthim,
-                                         replicate, alg)
+                                         replicate, alg, params_by_polyploid)
 
         self.assertEqual(True,True)
 
@@ -80,7 +94,7 @@ def read_Ks_csv(csv_file):
     return ks_results
 
 def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
-                                     replicate, alg):
+                                     replicate, alg, params_by_polyploid):
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
@@ -106,23 +120,25 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         ks_for_auto_result= csvfiles_by_polyploid_by_rep_by_algorthim[auto_result_name][replicate][alg]
 
         #plot allo result
+        params=params_by_polyploid[allo_result_name]
         this_ax = ax[sim_idx, 0]
         make_subplot(this_ax ,ks_for_allo_result, bin_size,
             "some text",max_Ks ,  "blue")
 
         this_ax.set(ylabel=allo_result_name)
 
-        text_string="SPC: {0} MYA\nWGD: {1} MYA".format(50,25)
+        text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         this_ax.text(0.8, 0.8, text_string,
                      horizontalalignment='center', verticalalignment='center',
                      transform=this_ax.transAxes)
 
         #plot auto result
+        params=params_by_polyploid[auto_result_name]
         this_ax = ax[sim_idx, 1]
         make_subplot(this_ax ,ks_for_auto_result, bin_size,
             "some text",max_Ks ,  "blue")
 
-        text_string="SPC: {0} MYA\nWGD: {1} MYA".format(50,25)
+        text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         this_ax.text(0.8, 0.8, text_string,
                      horizontalalignment='center', verticalalignment='center',
                      transform=this_ax.transAxes)
