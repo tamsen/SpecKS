@@ -61,7 +61,7 @@ class SpecKS_config:
                         if (incoming_tag == "full_sim_time"):
                             self.full_sim_time = int(incoming_txt)
                         if (incoming_tag == "polyploid"):
-                            new_params=PolyploidParams()
+                            new_params=PolyploidParams(-1,-1,"foo")
                             for poly_layer in inner_layer:
                                 incoming_txt = poly_layer.text.strip()
                                 incoming_tag = poly_layer.tag.strip()
