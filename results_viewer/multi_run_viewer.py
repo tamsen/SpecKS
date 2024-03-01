@@ -31,11 +31,12 @@ class MulitRunViewerTests(unittest.TestCase):
         params_by_polyploid["Auto2"]= config.PolyploidParams( 50, 50,"Auto2")
         params_by_polyploid["Auto3"]= config.PolyploidParams( 25, 25,"Auto3")
 
+        max_Ks = 3
         for replicate in replicates:
             for alg in algs:
                 plot_histograms_for_the_sim_runs(output_folder, 'Simulation without gene birth/death',
                                          csvfiles_by_polyploid_by_rep_by_algorthim,
-                                         replicate, alg, params_by_polyploid)
+                                         replicate, alg, params_by_polyploid, max_Ks )
 
         self.assertEqual(True,True)
 
@@ -94,14 +95,13 @@ def read_Ks_csv(csv_file):
     return ks_results
 
 def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
-                                     replicate, alg, params_by_polyploid):
+                                     replicate, alg, params_by_polyploid, max_Ks_for_x_axis):
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
     ordered_allo_results=[n for n in result_names if "Allo" in n]
     ordered_auto_results=[n for n in result_names if "Auto" in n]
 
-    max_Ks = 2
     bin_size = 0.01
     #f, a = plt.subplots(4, 2)
 
@@ -122,10 +122,10 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #plot allo result
         params=params_by_polyploid[allo_result_name]
         this_ax = ax[sim_idx, 0]
-        make_subplot(this_ax ,ks_for_allo_result, bin_size,
-            "some text",max_Ks ,  "blue")
+        make_subplot(this_ax, ks_for_allo_result, bin_size,
+            "some text", max_Ks_for_x_axis, "blue")
 
-        this_ax.set(ylabel=allo_result_name)
+        this_ax.set(ylabel="simulation #" + str(sim_idx))
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         this_ax.text(0.8, 0.8, text_string,
@@ -135,8 +135,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #plot auto result
         params=params_by_polyploid[auto_result_name]
         this_ax = ax[sim_idx, 1]
-        make_subplot(this_ax ,ks_for_auto_result, bin_size,
-            "some text",max_Ks ,  "blue")
+        make_subplot(this_ax, ks_for_auto_result, bin_size,
+            "some text", max_Ks_for_x_axis, "blue")
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         this_ax.text(0.8, 0.8, text_string,
@@ -153,7 +153,6 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
 def make_subplot(this_ax, Ks_results, bin_size, text_to_write, max_Ks, plot_color):
 
     bins = np.arange(0, max_Ks + 0.1, bin_size)
-    #nBins=50
     x = Ks_results
     n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
 
