@@ -3,7 +3,7 @@ import os
 from pipeline_modules.ks_calculator import get_sequences_for_leaves_within_the_polyploid
 
 
-def sequences_to_root_seq_in(sequences, codeml_in_file):
+def sequences_to_root_seq_in(sequences, gene_tree_subfolder, gene_tree_name):
 
     if len(sequences)== 0:
         return []
@@ -13,14 +13,19 @@ def sequences_to_root_seq_in(sequences, codeml_in_file):
 
     for i in range(0, num_replicates):
 
-        replicate_out_file = codeml_in_file.replace(".txt", ".rep" + str(i) + ".txt")
+        for seq_name in sequence_names:
 
-        with open(replicate_out_file, 'w') as f:
+            subtree_path=os.path.join(gene_tree_subfolder, seq_name)
+            if not os.path.exists(subtree_path):
+                os.makedirs(subtree_path)
 
-            for seq_name in sequence_names:
+            out_file_name = gene_tree_name + "_child" + seq_name +".rep" + str(i) + ".txt"
+            replicate_out_file = os.path.join(subtree_path, out_file_name)
+
+            with open(replicate_out_file, 'w') as f:
                 f.writelines(sequences[seq_name][i] + "\n")
 
-        files_written.append(replicate_out_file)
+            files_written.append(replicate_out_file)
 
     return files_written
 
@@ -45,8 +50,8 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
         sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
                                                                        relaxed_gene_tree_results,species_of_interest)
 
-        replicate_seq_root_file = os.path.join(gene_tree_subfolder, gene_tree_name + ".RootSeq.txt")
-        files_written = sequences_to_root_seq_in(sequences_by_leaf, replicate_seq_root_file)
+        #replicate_seq_root_file = os.path.join(gene_tree_subfolder, gene_tree_name + ".txt")
+        files_written = sequences_to_root_seq_in(sequences_by_leaf, gene_tree_subfolder, gene_tree_name )
         sequence_files_written_by_gene_tree[gene_tree_name] = files_written
 
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1

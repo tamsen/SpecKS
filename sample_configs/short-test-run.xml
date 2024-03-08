@@ -5,11 +5,12 @@
           <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
-        <polyploid>
+        <!--<polyploid>
                 <name>Allo1_S200W150</name>
                 <SPC_time_MYA>200</SPC_time_MYA>
                 <WGD_time_MYA>150</WGD_time_MYA>
-        </polyploid>
+        </polyploid>-->
+
         <polyploid>
                 <name>Auto1_S150W150</name>
                 <SPC_time_MYA>150</SPC_time_MYA>
@@ -21,7 +22,7 @@
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
         <branch_relaxer_parameters>ACRY07,1,0.000001</branch_relaxer_parameters>
-        <!--
+          <!--
         <dup_rate_parameters>False</dup_rate_parameters>
         <loss_rate_parameters>False</loss_rate_parameters>
         <branch_relaxer_parameters>False</branch_relaxer_parameters>-->
@@ -29,8 +30,8 @@
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>
     <SequenceEvolution>
-        <num_replicates_per_gene_tree>10</num_replicates_per_gene_tree>
-        <num_codons>1000</num_codons>
+        <num_replicates_per_gene_tree>2</num_replicates_per_gene_tree>
+        <num_codons>10</num_codons>
         <Ks_per_Myr>0.01</Ks_per_Myr>
     </SequenceEvolution>
     <Histogram>
