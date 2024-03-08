@@ -7,8 +7,8 @@
     <SpeciesTree>
         <polyploid>
                  <name>Allo3_S050W025</name>
-                <SPC_time_MYA>50</SPC_time_MYA>
-                <WGD_time_MYA>25</WGD_time_MYA>
+                <SPC_time_MYA>25</SPC_time_MYA>
+                <WGD_time_MYA>20</WGD_time_MYA>
         </polyploid>
         <polyploid>
                 <name>Auto3_S025W025</name>

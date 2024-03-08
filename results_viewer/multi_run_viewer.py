@@ -14,8 +14,9 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim1_no_genebirth_or_death"
+        #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
+        #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim1_no_genebirth_or_death"
+        output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
         csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
         example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
@@ -33,7 +34,7 @@ class MulitRunViewerTests(unittest.TestCase):
         params_by_polyploid["Auto2"]= config.PolyploidParams( 50, 50,"Auto2")
         params_by_polyploid["Auto3"]= config.PolyploidParams( 25, 25,"Auto3")
 
-        max_Ks = 3
+        max_Ks = 4
         for replicate in replicates:
             for alg in algs:
                 plot_histograms_for_the_sim_runs(output_folder, 'Simulation without gene birth/death',
@@ -165,7 +166,8 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     this_ax.legend()
 
     #this_ax.set(ylim=[0, 200])
-    this_ax.set(xlim=[0, SPEC_as_Ks+1])
+    #this_ax.set(xlim=[0, SPEC_as_Ks+1])
+    this_ax.set(xlim=[0, max_Ks + 0.1])
     #plt.xlim([0, max_Ks * (1.1)])
 
     return this_ax
