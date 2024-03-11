@@ -11,12 +11,13 @@ import config
 class MulitRunViewerTests(unittest.TestCase):
     def test_multi_run_viewer(self):
 
+        plot_title='Simulation without gene birth/death'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim1_no_genebirth_or_death"
-        output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_with_genebirth_or_death"
+        #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
         csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
         example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
@@ -37,7 +38,7 @@ class MulitRunViewerTests(unittest.TestCase):
         max_Ks = 4
         for replicate in replicates:
             for alg in algs:
-                plot_histograms_for_the_sim_runs(output_folder, 'Simulation without gene birth/death',
+                plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_rep_by_algorthim,
                                          replicate, alg, params_by_polyploid, max_Ks )
 
@@ -129,6 +130,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
             max_Ks_for_x_axis, "blue")
 
         this_ax.set(ylabel="simulation #" + str(sim_idx))
+        if (sim_idx==3):
+            this_ax.set(xlabel="Ks")
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         #this_ax.text(0.8, 0.8, text_string,
@@ -145,7 +148,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #this_ax.text(0.8, 0.8, text_string,
         #             horizontalalignment='center', verticalalignment='center',
         #             transform=this_ax.transAxes)
-
+        if (sim_idx==3):
+            this_ax.set(xlabel="Ks")
 
 
     plt.savefig(os.path.join(run_folder,"histogram" + "_plot_" + replicate +"_"+ alg+".png"))
@@ -166,8 +170,8 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     this_ax.legend()
 
     #this_ax.set(ylim=[0, 200])
-    #this_ax.set(xlim=[0, SPEC_as_Ks+1])
-    this_ax.set(xlim=[0, max_Ks + 0.1])
+    this_ax.set(xlim=[0, SPEC_as_Ks+1])
+    #this_ax.set(xlim=[0, max_Ks + 0.1])
     #plt.xlim([0, max_Ks * (1.1)])
 
     return this_ax
