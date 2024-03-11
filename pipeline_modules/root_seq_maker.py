@@ -9,15 +9,17 @@ def sequences_to_root_seq_in(sequences, gene_tree_subfolder, gene_tree_name):
         return []
     sequence_names = list(sequences.keys())
     num_replicates = len(sequences[sequence_names[0]])
-    files_written = []
 
-    for i in range(0, num_replicates):
+    child_tree_seq = {}
 
-        for seq_name in sequence_names:
+    for seq_name in sequence_names:
 
-            subtree_path=os.path.join(gene_tree_subfolder, seq_name)
-            if not os.path.exists(subtree_path):
-                os.makedirs(subtree_path)
+        files_written = []
+        subtree_path = os.path.join(gene_tree_subfolder, seq_name)
+        if not os.path.exists(subtree_path):
+            os.makedirs(subtree_path)
+
+        for i in range(0, num_replicates):
 
             out_file_name = gene_tree_name + "_child" + seq_name +".rep" + str(i) + ".txt"
             replicate_out_file = os.path.join(subtree_path, out_file_name)
@@ -26,8 +28,9 @@ def sequences_to_root_seq_in(sequences, gene_tree_subfolder, gene_tree_name):
                 f.writelines(sequences[seq_name][i] + "\n")
 
             files_written.append(replicate_out_file)
+        child_tree_seq[seq_name] = files_written
 
-    return files_written
+    return child_tree_seq
 
 
 def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_gene_tree):
@@ -37,7 +40,7 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    sequence_files_written_by_gene_tree = {}
+    sequence_files_written_by_gene_tree_by_child_tree = {}
     for gene_tree_name, evolver_output_file in evolver_results_by_gene_tree.items():
 
         gene_tree_subfolder = os.path.join(subfolder, gene_tree_name)
@@ -51,9 +54,9 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
                                                                        relaxed_gene_tree_results,species_of_interest)
 
         #replicate_seq_root_file = os.path.join(gene_tree_subfolder, gene_tree_name + ".txt")
-        files_written = sequences_to_root_seq_in(sequences_by_leaf, gene_tree_subfolder, gene_tree_name )
-        sequence_files_written_by_gene_tree[gene_tree_name] = files_written
+        files_written_by_child_tree = sequences_to_root_seq_in(sequences_by_leaf, gene_tree_subfolder, gene_tree_name )
+        sequence_files_written_by_gene_tree_by_child_tree[gene_tree_name] = files_written_by_child_tree
 
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
-    print(str(sequence_files_written_by_gene_tree))
-    return sequence_files_written_by_gene_tree
+    print(str(sequence_files_written_by_gene_tree_by_child_tree))
+    return sequence_files_written_by_gene_tree_by_child_tree

@@ -123,7 +123,8 @@ def get_evolver_version_string(gene_tree_subfolder):
     return version_string, version_number, version_decimals
 
 def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
-                              root_seq_files_written_by_gene_tree, tree_length_for_this_leg, random_seed_odd_integer):
+                              root_seq_files_written_by_gene_tree_by_child_tree,
+                              tree_length_for_this_leg, random_seed_odd_integer):
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:
@@ -138,41 +139,46 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
     template_evolver_control_file = get_evolver_template_file()
     evolver_results_by_gene_tree_by_replicate={}
-    for gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
+    for full_gene_tree_name,gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
+        splat=full_gene_tree_name.split("_child")
+        first_leg_GT_name=splat[0]
+        second_leg_GT_name=splat[1]
         evolver_results_by_replicate= {}
         gene_tree_subfolder=os.path.join(subfolder,gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
-        sequence_replicates=root_seq_files_written_by_gene_tree[gene_tree_name]
+        root_seq_files_written_for_replicates=root_seq_files_written_by_gene_tree_by_child_tree[first_leg_GT_name][second_leg_GT_name]
         evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
 
-        for replicate_i in range(0,(len(sequence_replicates))):
-            replicate_subfolder = os.path.join(gene_tree_subfolder , "rep" + str(replicate_i))
-            replicate_seq_file = sequence_replicates[replicate_i]
-            os.makedirs(replicate_subfolder)
-            dst=os.path.join(replicate_subfolder, "RootSeq.txt")
-            shutil.copyfile(replicate_seq_file, dst)
+        for replicate_i in range(0,(len(root_seq_files_written_for_replicates))):
+                replicate_subfolder = os.path.join(gene_tree_subfolder , "rep" + str(replicate_i))
+                replicate_seq_file = root_seq_files_written_for_replicates[replicate_i]
+                os.makedirs(replicate_subfolder)
+                dst=os.path.join(replicate_subfolder, "RootSeq.txt")
+                shutil.copyfile(replicate_seq_file, dst)
 
-            cmd = write_evolver_commands(replicate_subfolder,template_evolver_control_file,
+                cmd = write_evolver_commands(replicate_subfolder,template_evolver_control_file,
                                          random_seed_odd_integer,
                                          1,
                                          config.num_codons, evolver_tree_length, gene_tree_result)
-            out_string,error_string = process_wrapper.run_and_wait_on_process(cmd, replicate_subfolder)
+                out_string,error_string = process_wrapper.run_and_wait_on_process(cmd, replicate_subfolder)
 
-            evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
-            evolver_result_file_B=os.path.join(replicate_subfolder,"mc.paml")
+                evolver_result_file_A=os.path.join(replicate_subfolder,"mc.txt")
+                evolver_result_file_B=os.path.join(replicate_subfolder,"mc.paml")
 
-            if os.path.exists(evolver_result_file_A):
-                evolver_results_by_replicate[replicate_i] =evolver_result_file_A
-            elif os.path.exists(evolver_result_file_B):
-                evolver_results_by_replicate[replicate_i] =evolver_result_file_B
-            else:
-                error_string="Evolver failed to output a sequence file.  It should be in " + \
+                if os.path.exists(evolver_result_file_A):
+                    evolver_results_by_replicate[replicate_i] =evolver_result_file_A
+                elif os.path.exists(evolver_result_file_B):
+                    evolver_results_by_replicate[replicate_i] =evolver_result_file_B
+                else:
+                    error_string="Evolver failed to output a sequence file.  It should be in " + \
                               gene_tree_subfolder + " but its not. Check the evolver stderr."
-                print("Error: " + error_string)
-                raise ValueError(error_string)
+                    print("Error: " + error_string)
+                    raise ValueError(error_string)
 
-        evolver_results_by_gene_tree_by_replicate[gene_tree_name]=evolver_results_by_replicate
+                # GeneTree05_childG6_1.rep1.txt
+                #combined_gene_tree_name=first_leg_GT_name +"_child"+child_tree
+                evolver_results_by_gene_tree_by_replicate[full_gene_tree_name]=evolver_results_by_replicate
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return evolver_results_by_gene_tree_by_replicate
