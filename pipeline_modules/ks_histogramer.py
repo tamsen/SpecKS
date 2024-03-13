@@ -62,16 +62,17 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
                       max_Ks, max_y, alg_name, color, bin_size):
 
     fig = plt.figure(figsize=(10, 10), dpi=100)
-    #bins = np.arange(0, max_Ks + 0.1, bin_size)
-    nBins=50
     x = Ks_results
-    print(PAML_hist_out_file)
-
-    n, bins, patches = plt.hist(x, bins=nBins, facecolor=color, alpha=0.25, label='histogram data')
+    #print(PAML_hist_out_file)
 
     if max_Ks:
+        bins = np.arange(0, max_Ks + 0.1, bin_size)
+        print(PAML_hist_out_file)
+        n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
         plt.xlim([0, max_Ks * (1.1)])
-
+    else:
+        nBins=50
+        n, bins, patches = plt.hist(x, bins=nBins, facecolor=color, alpha=0.25, label='histogram data')
     if max_y:
         plt.ylim([0, max_y])
 
@@ -120,19 +121,20 @@ def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
                     print("Maybe gene tree had no extant leaves? Codeml result file should be here: "
                           + file)
 
+        bin_size = 0.1
         subgenomes_of_concern=["P1","P2"]
         species_str="between subgenomes " + "and".join(subgenomes_of_concern)
         print("making histograms " + species_str + ", replicate " + replicate_string )
         WGD_as_Ks=polyploid.WGD_time_as_ks()
         SPEC_as_Ks=polyploid.SPEC_time_as_ks()
         outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
-                     config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", 0.1)
+                     config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", bin_size)
         results_files_by_replicate[replicate]=outfiles
 
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return results_files_by_replicate
-def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,color, step):
+def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
 
     outfiles=[]
     for alg_name in ["ML","NG"]:
@@ -143,14 +145,14 @@ def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks
                                       "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
 
-        plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,
-                                                alg_name, color, step)
+        plot_Ks_histogram(paml_hist_file, species_name, ks_results, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y,
+                          alg_name, color, bin_size)
 
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
                                       "_paml_hist" +
                                   "_"+ alg_name + ".png")
-        plot_Ks_histogram(paml_hist_file, species_name, ks_results,WGD_as_Ks, SPEC_as_Ks, False, max_y,
-                                                alg_name, color, step)
+        plot_Ks_histogram(paml_hist_file, species_name, ks_results, WGD_as_Ks, SPEC_as_Ks, False, max_y,
+                          alg_name, color, bin_size)
 
         outfiles.append(csv_file_out)
 

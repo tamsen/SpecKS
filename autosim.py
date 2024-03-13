@@ -80,7 +80,7 @@ def run_autosim(polyploid):
         print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
             polyploid, gene_trees_after_gene_shedding, root_seq_files_written_by_gene_tree_by_child_tree,
-            second_leg_of_sim_time,second_leg_random_seeds[i])
+            second_leg_random_seeds[i])
 
         pooled_gene_tree_results_by_tree[subtree]=gene_tree_results_by_tree_name
         pooled_relaxed_gene_tree_results_by_tree[subtree]=relaxed_gene_tree_results

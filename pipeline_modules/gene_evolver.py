@@ -124,7 +124,7 @@ def get_evolver_version_string(gene_tree_subfolder):
 
 def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
                               root_seq_files_written_by_gene_tree_by_child_tree,
-                              tree_length_for_this_leg, random_seed_odd_integer):
+                              random_seed_odd_integer):
 
     config = polyploid.general_sim_config
     if len(polyploid.subtree_subfolder) > 0:

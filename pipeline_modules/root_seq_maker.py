@@ -32,7 +32,12 @@ def sequences_to_root_seq_in(sequences, gene_tree_subfolder, gene_tree_name):
 
     return child_tree_seq
 
-
+"Some people wanted to specify the sequence at the root rather than letting the program generate a \
+random sequence. This can be achieved by putting a sequence in the file RootSeq.txt. The sequence \
+cannot have ambiguities or gaps or stop codons. In almost all simulations, it is simply wrong to fix \
+the root sequence, so you should resist the temptation of making the mistake. If you want the \
+simulation to reflect your particular gene, you may estimate parameters under a model from that \
+gene and then simulate data sets using the parameter estimates. - PAML manual "
 def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     config = polyploid.general_sim_config
