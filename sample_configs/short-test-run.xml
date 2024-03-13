@@ -5,17 +5,17 @@
           <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
-        <!--
         <polyploid>
-                <name>Allo1_S200W150</name>
-                <SPC_time_MYA>200</SPC_time_MYA>
-                <WGD_time_MYA>150</WGD_time_MYA>
-        </polyploid>-->
+                <name>Allo1_S150W100</name>
+                <SPC_time_MYA>150</SPC_time_MYA>
+                <WGD_time_MYA>100</WGD_time_MYA>
+        </polyploid>
+        <!--
         <polyploid>
                 <name>Auto1_S150W150</name>
                 <SPC_time_MYA>150</SPC_time_MYA>
                 <WGD_time_MYA>150</WGD_time_MYA>
-        </polyploid>
+        </polyploid>-->
         <full_sim_time>500</full_sim_time>
     </SpeciesTree>
     <GeneTree>

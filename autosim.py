@@ -29,7 +29,6 @@ def run_autosim(polyploid):
 
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
-    length_of_time_of_first_leg_of_sim=polyploid.FULL_time_MYA-polyploid.WGD_time_MYA
     first_leg_random_seed=137
     print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results,
@@ -46,7 +45,6 @@ def run_autosim(polyploid):
 
     # For the second leg of the autopolyploid sim, we evolve sequences from
     # the time of WGD (say, 300 MYA) to the present, so
-    second_leg_of_sim_time=polyploid.WGD_time_MYA
     subtrees=["Left","Right"]
     second_leg_random_seeds = [43,99]
     pooled_gene_tree_results_by_tree={}
@@ -57,9 +55,6 @@ def run_autosim(polyploid):
 
         subtree=subtrees[i]
         polyploid.subtree_subfolder=subtree
-        #TODO - the num gene tress needed here should actaully be taken from the
-        # number of terminal leaves after the first leg. Which would be close to the original
-        # number but might be a bit more or less.
         print("\n\n{0}. Make gene trees after WGD (SaGePhy)".format(polyploid.analysis_step_num))
         gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy_with_root_seq(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i],
