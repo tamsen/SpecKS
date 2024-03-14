@@ -1,10 +1,11 @@
 import os
 import unittest
-
+from scipy.optimize import curve_fit
 import numpy as np
 from matplotlib import pyplot as plt
 
 import config
+from results_viewer import curve_fitting
 
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
@@ -20,12 +21,14 @@ class MulitRunViewerTests(unittest.TestCase):
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
+        print("Reading csv files..")
         csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
         example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
         replicates=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim].keys())
         #algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
         algs=["ML"]
 
+        print("Making plots..")
         params_by_polyploid={}
         params_by_polyploid["Allo0"]= config.PolyploidParams(200,150,"Allo0")
         params_by_polyploid["Allo1"]= config.PolyploidParams(150,100,"Allo1")
@@ -132,8 +135,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #plot allo result
         params=params_by_polyploid[allo_result_name]
         this_ax = ax[sim_idx, 0]
-        make_subplot(this_ax, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
-            max_Ks_for_x_axis, "blue")
+        this_ax, ymax_suggestion = make_subplot(this_ax, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
+            max_Ks_for_x_axis, False,"blue")
 
         this_ax.set(ylabel="simulation #" + str(sim_idx))
         if (sim_idx==3):
@@ -147,8 +150,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #plot auto result
         params=params_by_polyploid[auto_result_name]
         this_ax = ax[sim_idx, 1]
-        make_subplot(this_ax, ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
-            max_Ks_for_x_axis, "blue")
+        this_ax, ymax_suggestion = make_subplot(this_ax, ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
+            max_Ks_for_x_axis, ymax_suggestion,"blue")
 
         text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
         #this_ax.text(0.8, 0.8, text_string,
@@ -166,7 +169,7 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     plt.close()
 
 
-def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, plot_color):
+def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, maxY, plot_color):
 
     WGD_as_Ks = WGD_time_MYA * 0.01
     SPEC_as_Ks =SPC_time_MYA * 0.01
@@ -174,22 +177,41 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     x = Ks_results
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
     else:
         bins = np.arange(0, SPEC_as_Ks + 1, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
+
+    hist_maximum=max(n)
+    ymax_suggestion=hist_maximum*1.5
+    fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
 
     this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
     this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
+
+    this_ax.plot(xs_for_wgd,fit_curve_ys1,
+                 color='green', linestyle=':', label="lognorm fit")
+
+    if maxY:
+        yaxis_limit=maxY
+        ymax_suggestion=False
+    else:
+        yaxis_limit= ymax_suggestion
+
+    this_ax.scatter(cm,0.05*yaxis_limit,
+                 color='darkgreen', marker='o', label="cm", s=100)
+
+    this_ax.scatter(mode,0.05*yaxis_limit,
+                 color='cyan', marker='^', label="mode",s=80)
+
+
+
     this_ax.legend()
 
-    #this_ax.set(ylim=[0, 40])
-    #this_ax.set(xlim=[0, SPEC_as_Ks+1])
-
-
+    this_ax.set(ylim=[0, yaxis_limit])
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
     else:
         this_ax.set(xlim=[0, SPEC_as_Ks + 1])
 
-    return this_ax
+    return this_ax,ymax_suggestion
