@@ -11,12 +11,12 @@ import config
 class MulitRunViewerTests(unittest.TestCase):
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation without gene birth/death'
+        plot_title='Simulation with NO gene birth/death'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_with_genebirth_and_death_take2"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim1_redo"
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
@@ -43,6 +43,10 @@ class MulitRunViewerTests(unittest.TestCase):
                 plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_rep_by_algorthim,
                                          replicate, alg, params_by_polyploid, max_Ks )
+
+                plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_rep_by_algorthim,
+                                         replicate, alg, params_by_polyploid, False )
 
         self.assertEqual(True,True)
 
@@ -153,27 +157,39 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         if (sim_idx==3):
             this_ax.set(xlabel="Ks")
 
+    out_file_name=os.path.join(run_folder,"histogram" + "_plot_" + replicate +"_"+ alg+".png")
+    if max_Ks_for_x_axis:
+        out_file_name = out_file_name.replace(".png","_maxKs" +str(max_Ks_for_x_axis)+ ".png")
 
-    plt.savefig(os.path.join(run_folder,"histogram" + "_plot_" + replicate +"_"+ alg+".png"))
+    plt.savefig(out_file_name)
 
     plt.close()
 
 
 def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, plot_color):
 
-    bins = np.arange(0, max_Ks + 0.1, bin_size)
-    x = Ks_results
-    n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
-
     WGD_as_Ks = WGD_time_MYA * 0.01
     SPEC_as_Ks =SPC_time_MYA * 0.01
+
+    x = Ks_results
+    if max_Ks:
+        bins = np.arange(0, max_Ks + 0.1, bin_size)
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
+    else:
+        bins = np.arange(0, SPEC_as_Ks + 1, bin_size)
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='histogram data')
+
     this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
     this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
     this_ax.legend()
 
     #this_ax.set(ylim=[0, 40])
     #this_ax.set(xlim=[0, SPEC_as_Ks+1])
-    this_ax.set(xlim=[0, max_Ks + 0.1])
-    #plt.xlim([0, max_Ks * (1.1)])
+
+
+    if max_Ks:
+        this_ax.set(xlim=[0, max_Ks * 1.1])
+    else:
+        this_ax.set(xlim=[0, SPEC_as_Ks + 1])
 
     return this_ax

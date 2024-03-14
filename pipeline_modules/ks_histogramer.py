@@ -76,8 +76,8 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
     if max_y:
         plt.ylim([0, max_y])
 
-    plt.axvline(x=WGD_as_Ks, color='r', linestyle='--', label="WGD time as Ks")
-    plt.axvline(x=SPEC_as_Ks, color='b', linestyle='--', label="SPEC time as Ks")
+    plt.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time as Ks")
+    plt.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time as Ks")
     plt.legend()
     plt.xlabel("Ks")
     plt.ylabel("Count in Bin")
