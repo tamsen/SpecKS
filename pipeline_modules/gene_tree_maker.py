@@ -21,7 +21,7 @@ def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, l
     #"nox" is for "no auxillary tags" as per the manual
     # If nox is ON you get the simple netwick that evolver wants
     # If nox is OFF you don't get the *.pruned.leafmap
-    # files that help figure out how many sequsences you need
+    # files that help figure out how many sequences you need
     # to propagate through the tree
     return cmd
 
