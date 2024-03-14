@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 
 import allosim
@@ -40,18 +41,22 @@ def setup(arguments):
     date_time = now.strftime("m%md%dy%Y_h%Hm%Ms%S")
     conf = config.SpecKS_config(config_file)
     conf.output_folder = conf.output_folder_root + "_" + date_time
+    cwd=os.getcwd()
 
-
-    print('Conifg file: %s' % config_file)
+    print('Config file: %s' % config_file)
     print("Current environment: %s" + str(os.environ))
-    print("Current Working Directory:\t" + os.getcwd())
-
+    print("Current Working Directory:\t" + cwd)
     if conf.output_folder[0:2]== "./":
         conf.output_folder = os.path.join(os.getcwd(),conf.output_folder.replace("./",""))
 
+    config_file_used=os.path.basename(config_file).replace(".xml",".used.xml")
     print("Output folder:\t" + conf.output_folder)
     if not os.path.exists(conf.output_folder):
         os.makedirs(conf.output_folder)
+
+    #move a copy of the config file into the output folder so we remember what was run
+    dst = os.path.join(conf.output_folder,config_file_used)
+    shutil.copyfile(config_file, dst)
 
     return conf
 

@@ -99,7 +99,7 @@ class SpecKS_config:
 
 def parse_tuple_string(tuple_string):
 
-    if tuple_string=="False":
+    if tuple_string.upper()=="FALSE":
         return False
     else:
         splat=tuple_string.replace("(","").replace(")","").split(",")
@@ -108,7 +108,7 @@ def parse_tuple_string(tuple_string):
 
 def parse_branch_relaxation_string(branch_relaxation_string):
 
-    if branch_relaxation_string=="False":
+    if branch_relaxation_string.upper()=="FALSE":
         return False
     else:
         splat=branch_relaxation_string.split(",")
