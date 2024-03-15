@@ -19,12 +19,20 @@ class MulitRunViewerTests(unittest.TestCase):
         csv_file_base2="outgroup_ML_rep0_Ks_by_GeneTree.csv"
         full_csv_path1=os.path.join(test_out_folder,csv_folder,csv_file_base1)
         full_csv_path2=os.path.join(test_out_folder,csv_folder,csv_file_base2)
-        bin_size = 0.25
-        WGD_time_MYA=100
-        SPC_time_MYA=150
-        max_Ks_for_x_axis = 3
+        #csv_folder="/home/tamsen/Data/SpecKS_output/SpecKS_m03d15y2024_h15m35s38/Allo1_S150W100/8_final_results"
+        csv_folder = "/home/tamsen/Data/SpecKS_output/SpecKS_m03d15y2024_h16m27s56/Allo1_S070W065/8_final_results"
+
+        full_csv_path1=os.path.join(csv_folder,
+                                    'Allo1_S070W065_ML_rep0_Ks_by_GeneTree.csv')
+        full_csv_path2=os.path.join(csv_folder,
+                                    'outgroup_ML_rep0_Ks_by_GeneTree.csv')
+
+        bin_size = 0.01
+        WGD_time_MYA=65
+        SPC_time_MYA=70
+        max_Ks_for_x_axis = 1
         csv_files=[full_csv_path1,full_csv_path2]
-        plot_titles=['polyploid_with_no_gbd_or_branching','outgroup_with_no_gbd_or_branching']
+        plot_titles=['polyploid_with_gene birth and death','outgroup_with_gene birth and death']
         for i in range(0,len(csv_files)):
             csv_file=csv_files[i]
             plot_title=plot_titles[i]

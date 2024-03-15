@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 from scipy.stats import beta
 
+import log
 import process_wrapper
 from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo
@@ -27,13 +28,29 @@ def write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick, dup_rate, l
 
 def get_randomized_dup_and_loss_rates(dup_rate_parameters,loss_rate_parameters,num_values_needed):
 
+    # If two parameters are given, assume user wants a beta distibrution.
+    # If one parameter is given, assume user wants a constant rate
+    # If set to false, turn off gene birth and/or death.
+
     if dup_rate_parameters:
-        dup_values = beta.rvs(dup_rate_parameters[0],dup_rate_parameters[1], size=num_values_needed)
+
+        if len(dup_rate_parameters)==2:
+            dup_values = beta.rvs(dup_rate_parameters[0],dup_rate_parameters[1], size=num_values_needed)
+        elif len(dup_rate_parameters)==1:
+            dup_values = [dup_rate_parameters[0] for x in range(0,num_values_needed)]
+        else:
+            raise Exception('thats not a valid gene duplication rate value')
     else:
         dup_values = [0 for x in range(0,num_values_needed)]
 
     if loss_rate_parameters:
-        loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
+
+        if len(dup_rate_parameters)==2:
+            loss_values = beta.rvs(loss_rate_parameters[0],loss_rate_parameters[1], size=num_values_needed)
+        elif len(dup_rate_parameters)==1:
+            loss_values= [loss_rate_parameters[0] for x in range(0,num_values_needed)]
+        else:
+            raise Exception('thats not a valid gene loss rate value')
     else:
         loss_values = [0 for x in range(0,num_values_needed)]
 
@@ -82,9 +99,13 @@ def read_pruned_trees(subfolder, leg_distance):
 
     return results_by_tree_name
 
+#"Gene family evolution in green plants with emphasis on the origination and evolution of Arabidopsis thaliana genes
+# the rate of gene gains and losses is about 0.001359 per gene every million years
+
 def run_sagephy(polyploid, simulation_leg, species_tree_newick):
 
     config = polyploid.general_sim_config
+    include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
@@ -96,14 +117,14 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
     else:
         subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
 
-    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
     dup_values, loss_values = get_randomized_dup_and_loss_rates(
         dup_rate_parameters, loss_rate_parameters, num_gene_trees_needed)
 
-    visualize_dup_and_loss_rates(dup_values, loss_values, subfolder)
+    if include_visualizations:
+        visualize_dup_and_loss_rates(dup_values, loss_values, subfolder)
 
 
     for i in range(0, num_gene_trees_needed):
@@ -118,33 +139,34 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
 
     gene_tree_data_by_tree_name = read_pruned_trees(subfolder, simulation_leg.leg_length())
     pruned_tree_names=gene_tree_data_by_tree_name.keys()
-    print("pruned_tree_files:\t" + str(pruned_tree_names))
+    log.write_to_log("pruned_tree_files:\t" + str(pruned_tree_names))
 
-    gt_tree_viz_data_by_name={}
-    j=0
-    max_num_gt_to_plot=10
-    for gt_name in pruned_tree_names:
-        if j> max_num_gt_to_plot:
-            break
-        plot_file_name_1= os.path.join(subfolder,gt_name +"_phylo.png")
-        plot_file_name_2= os.path.join(subfolder,gt_name +"_specks.png")
-        plot_file_name_3= os.path.join(subfolder,gt_name +"_tree_phylo.png")
-        gt_tree=gene_tree_data_by_tree_name[gt_name].tree
-        gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
-        leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
-        print("newick to plot:\t" +gt_newick)
-        tree_visuals_by_phylo.save_tree_plot_from_newick(gt_newick, plot_file_name_1)
-        tree_visuals_by_phylo.save_tree_plot_directly_from_tree(gt_tree, plot_file_name_3)
-        gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
-            simulation_leg, leaf_map,gt_newick, gt_name,
-            polyploid.SPC_time_MYA,polyploid.species_name,
-            plot_file_name_2)
-        gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
-        j=j+1
+    if include_visualizations:
+        gt_tree_viz_data_by_name={}
+        j=0
+        max_num_gt_to_plot=10
+        for gt_name in pruned_tree_names:
+            if j> max_num_gt_to_plot:
+                break
+            plot_file_name_1= os.path.join(subfolder,gt_name +"_phylo.png")
+            plot_file_name_2= os.path.join(subfolder,gt_name +"_specks.png")
+            plot_file_name_3= os.path.join(subfolder,gt_name +"_tree_phylo.png")
+            gt_tree=gene_tree_data_by_tree_name[gt_name].tree
+            gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
+            leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
+            log.write_to_log("newick to plot:\t" +gt_newick)
+            tree_visuals_by_phylo.save_tree_plot_from_newick(gt_newick, plot_file_name_1)
+            tree_visuals_by_phylo.save_tree_plot_directly_from_tree(gt_tree, plot_file_name_3)
+            gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
+                simulation_leg, leaf_map,gt_newick, gt_name,
+                polyploid.SPC_time_MYA,polyploid.species_name,
+                plot_file_name_2)
+            gt_tree_viz_data_by_name[gt_name]=gt_tree_viz_data
+            j=j+1
 
-    gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_name,
+        gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_name,
                                                "raw_gene_tree",  subfolder)
-    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid,
+        gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid,
                                                               gt_tree_viz_data_by_name,
                                                               "raw_gene_tree", subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
@@ -154,6 +176,7 @@ def run_sagephy_with_root_seq(polyploid, simulation_leg, species_tree_newick,
                               root_seq_files_written_by_gene_tree_by_child_tree):
 
     config = polyploid.general_sim_config
+    #include_visualizations = config.include_visualizations
     dup_rate_parameters = config.dup_rate_parameters
     loss_rate_parameters = config.loss_rate_parameters
 
@@ -168,7 +191,6 @@ def run_sagephy_with_root_seq(polyploid, simulation_leg, species_tree_newick,
     else:
         subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
 
-    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -195,7 +217,7 @@ def run_sagephy_with_root_seq(polyploid, simulation_leg, species_tree_newick,
 
     gene_tree_data_by_tree_name = read_pruned_trees(subfolder, simulation_leg.leg_length())
     pruned_tree_names=gene_tree_data_by_tree_name.keys()
-    print("pruned_tree_files:\t" + str(pruned_tree_names))
+    log.write_to_log("pruned_tree_files:\t" + str(pruned_tree_names))
 
     gt_tree_viz_data_by_name={}
     j=0
@@ -209,7 +231,7 @@ def run_sagephy_with_root_seq(polyploid, simulation_leg, species_tree_newick,
         gt_tree=gene_tree_data_by_tree_name[gt_name].tree
         gt_newick=gene_tree_data_by_tree_name[gt_name].simple_newick
         leaf_map = gene_tree_data_by_tree_name[gt_name].leaves_by_species
-        print("newick to plot:\t" +gt_newick)
+        log.write_to_log("newick to plot:\t" +gt_newick)
         tree_visuals_by_phylo.save_tree_plot_from_newick(gt_newick, plot_file_name_1)
         tree_visuals_by_phylo.save_tree_plot_directly_from_tree(gt_tree, plot_file_name_3)
         gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
