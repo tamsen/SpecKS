@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <Paths>
-          <output_folder_root>./test_out/test_main/test_run</output_folder_root>
+          <output_folder_root>/home/tamsen/Data/SpecKS_output/SpecKS</output_folder_root>
           <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
@@ -38,4 +38,6 @@
         <maxY>5</maxY>
     </Histogram>
     <StopAtStep>999</StopAtStep>
+    <LogFileName>Boo.txt</LogFileName>
+    <IncludeVisuals>False</IncludeVisuals>
 </metadata>

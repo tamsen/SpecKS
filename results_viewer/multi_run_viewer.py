@@ -13,7 +13,6 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_single_run_viewer(self):
 
-        plot_title='no_gbd_or_branching'
         test_out_folder="/home/tamsen/Git/SpecKS/SpecKS/test_code/test_out/test_main"
         csv_folder="no_gbd_or_branching/Allo1_S150W100/8_final_results"
         csv_file_base1="Allo1_S150W100_ML_rep0_Ks_by_GeneTree.csv"
@@ -24,7 +23,11 @@ class MulitRunViewerTests(unittest.TestCase):
         WGD_time_MYA=100
         SPC_time_MYA=150
         max_Ks_for_x_axis = 3
-        for csv_file in [full_csv_path1,full_csv_path2]:
+        csv_files=[full_csv_path1,full_csv_path2]
+        plot_titles=['polyploid_with_no_gbd_or_branching','outgroup_with_no_gbd_or_branching']
+        for i in range(0,len(csv_files)):
+            csv_file=csv_files[i]
+            plot_title=plot_titles[i]
             self.histogram_a_single_csv_file(SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis,
                                              csv_file, plot_title)
 

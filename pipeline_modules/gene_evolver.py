@@ -275,7 +275,7 @@ def get_evolver_tree_length(config,gene_tree_result):
     ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.6
 
     # (config.Ks_per_Myr  + 0.2 Kn_per_Myr )* 0.5
-    # ratio_of_tree_distance_to_K = config.Ks_per_Myr + 0.65
+    # ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.65
 
     total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
     evolver_tree_length = total_tree_length * ratio_of_tree_distance_to_K

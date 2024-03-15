@@ -7,15 +7,22 @@ import autosim
 import config
 from datetime import datetime
 
+import log
+import version
 from polyploid_setup import make_polyploids
 
 
 def run_sim():
 
     conf = setup(sys.argv)
+    version_info = version.version_info()
 
     if not conf:
         return
+
+    #start the log
+    log.write_start_to_log(conf.output_folder,conf.log_file_name, version_info)
+    log.write_to_log('Command Arguments Given: %s' % sys.argv)
 
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
     list_of_polyploids = make_polyploids(conf)
@@ -27,7 +34,7 @@ def run_sim():
         else:
             autosim.run_autosim(polyploid)
 
-    print("\n\nSpecKS complete")
+    log.write_end_to_log()
 
 def setup(arguments):
 

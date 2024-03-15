@@ -229,11 +229,6 @@ def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_resul
 
                 codeml_results_for_species[r][gene_tree_name]= result
 
-                #if species=='outgroup':
-                #    codeml_results_for_outgroup_by_replicate_num[r][gene_tree_name]= result
-                #else:
-                #    codeml_results_for_polyploid_by_replicate_num[r][gene_tree_name]= result
-
             codeml_results_by_species[species]=codeml_results_for_species
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1

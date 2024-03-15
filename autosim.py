@@ -1,3 +1,4 @@
+import log
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
     species_tree_maker, root_seq_maker, gene_shedder, results_organizer
 
@@ -9,19 +10,19 @@ def run_autosim(polyploid):
     preWGD_simulation_leg=polyploid.simulation_legs[0]
     postWGD_simulation_leg=polyploid.simulation_legs[1]
 
-    print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_tree = species_tree_maker.make_species_trees(polyploid)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Make gene trees up to WGD (SaGePhy)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Make gene trees up to WGD (SaGePhy)".format(polyploid.analysis_step_num))
     first_leg_time_range=(0,polyploid.FULL_time_MYA-polyploid.WGD_time_MYA)
     gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid,preWGD_simulation_leg,
                                                                  species_tree[0])
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
                                                         gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
@@ -30,14 +31,14 @@ def run_autosim(polyploid):
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
     first_leg_random_seed=137
-    print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results,
                                                             first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     #collect sequences right before WGD, and get then ready to evolve through the next set of trees
-    print("\n\n{0}. Collect sequences right before WGD".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Collect sequences right before WGD".format(polyploid.analysis_step_num))
     root_seq_files_written_by_gene_tree_by_child_tree = root_seq_maker.run_root_seq_maker(polyploid,
                                             relaxed_gene_tree_results, evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
@@ -55,16 +56,16 @@ def run_autosim(polyploid):
 
         subtree=subtrees[i]
         polyploid.subtree_subfolder=subtree
-        print("\n\n{0}. Make gene trees after WGD (SaGePhy)".format(polyploid.analysis_step_num))
+        log.write_to_log("\n\n{0}. Make gene trees after WGD (SaGePhy)".format(polyploid.analysis_step_num))
         gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy_with_root_seq(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i],
                                                                      root_seq_files_written_by_gene_tree_by_child_tree)
 
-        print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+        log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
         relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid,  postWGD_simulation_leg,
                                                             gene_tree_results_by_tree_name)
 
-        print("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
+        log.write_to_log("\n\n{0}. Prune trees. ".format(polyploid.analysis_step_num) +
               "At every time step post WGD, cull a certain percent of what remains. (custom code)")
         gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid,relaxed_gene_tree_results)
 
@@ -72,7 +73,7 @@ def run_autosim(polyploid):
         #with the gt names. If some gt split during the first leg, there might
         #be two seq or more coming off a single gt, which is
         #why there is a list of seq in eac h "GeneTree0.RootSeq.rep0.txt" etc.
-        print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
+        log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
         evolver_results_by_gene_tree_by_replicate = gene_evolver.run_evolver_with_root_seq(
             polyploid, gene_trees_after_gene_shedding, root_seq_files_written_by_gene_tree_by_child_tree,
             second_leg_random_seeds[i])
@@ -87,16 +88,15 @@ def run_autosim(polyploid):
 
 
     #note here, there is only one replicate per evolver run
-    print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     codeml_results_by_replicate_num = ks_calculator.run_codeml_on_pooled_results(polyploid,
                                                             pooled_relaxed_gene_tree_results_by_tree,
                                                             pooled_evolver_results_by_tree_by_replicate)
 
-    print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    print(codeml_results_by_replicate_num)
+    log.write_to_log("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
 
-    print("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
     results_organizer.collate_results(polyploid, final_result_files_by_replicate)
 
-    print("\n\n" + polyploid.species_name + " complete")
+    log.write_to_log("\n\n" + polyploid.species_name + " complete")

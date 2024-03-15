@@ -1,3 +1,4 @@
+import log
 from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
     species_tree_maker, gene_shedder, results_organizer
 
@@ -12,36 +13,36 @@ def run_allosim(polyploid):
     polyploid_genomes_of_interest = ['P1', 'P2']
     genomes_of_interest_by_species={"outgroup":['O'],polyploid.species_name:polyploid_genomes_of_interest}
 
-    print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_trees = species_tree_maker.make_species_trees(polyploid)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Make gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Make gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, only_simulation_leg,
                                                                  species_trees[0])
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
                                                     gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Shed genes post WDG. ".format(polyploid.analysis_step_num) +
+    log.write_to_log("\n\n{0}. Shed genes post WDG. ".format(polyploid.analysis_step_num) +
           "At every time step post WGD, cull a certain percent of what remains. (custom code)")
     gene_trees_after_gene_shedding = gene_shedder.shed_genes(polyploid, relaxed_gene_tree_results)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_trees_after_gene_shedding,
                                                             first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     Ks_results_by_species_by_replicate_num = ks_calculator.run_codeml(polyploid,
                                                                genomes_of_interest_by_species,
                                                                gene_tree_results_by_tree_name ,
@@ -49,17 +50,17 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
     final_result_files_by_species_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid,
                                                                         genomes_of_interest_by_species,
                                                                         Ks_results_by_species_by_replicate_num)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    print("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
+    log.write_to_log("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
     results_organizer.collate_results(polyploid, final_result_files_by_species_by_replicate)
 
-    print("\n\n" + polyploid.species_name + " complete.\n\n")
+    log.write_to_log("\n\n" + polyploid.species_name + " complete.\n\n")
 
 
 #deugging code..
