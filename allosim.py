@@ -9,6 +9,8 @@ def run_allosim(polyploid):
     #the allopolyploid has only one simulation leg for the full sim
     only_simulation_leg=polyploid.simulation_legs[0]
     first_leg_random_seed=137
+    polyploid_genomes_of_interest = ['P1', 'P2']
+    genomes_of_interest_by_species={"outgroup":['O'],polyploid.species_name:polyploid_genomes_of_interest}
 
     print("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_trees = species_tree_maker.make_species_trees(polyploid)
@@ -40,18 +42,22 @@ def run_allosim(polyploid):
         return
 
     print("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
-    codeml_results_by_replicate_num = ks_calculator.run_codeml(polyploid,
-                                                               gene_tree_results_by_tree_name , evolver_results_by_gene_tree)
+    Ks_results_by_species_by_replicate_num = ks_calculator.run_codeml(polyploid,
+                                                               genomes_of_interest_by_species,
+                                                               gene_tree_results_by_tree_name ,
+                                                               evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     print("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
+    final_result_files_by_species_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid,
+                                                                        genomes_of_interest_by_species,
+                                                                        Ks_results_by_species_by_replicate_num)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     print("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
-    results_organizer.collate_results(polyploid, final_result_files_by_replicate)
+    results_organizer.collate_results(polyploid, final_result_files_by_species_by_replicate)
 
     print("\n\n" + polyploid.species_name + " complete.\n\n")
 

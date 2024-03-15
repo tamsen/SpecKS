@@ -162,7 +162,7 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return codeml_results_by_replicate_num
-def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree):
+def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     config = polyploid.general_sim_config
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_calcs_by_codeml")
@@ -170,60 +170,74 @@ def run_codeml(polyploid,relaxed_gene_tree_results, evolver_results_by_gene_tree
         os.makedirs(subfolder)
 
     template_codeml_ctl_file = get_codeml_ctl_template()
-    codeml_results_by_replicate_num={}
+    codeml_results_by_species={}
     replicate_index_formater = get_replicate_index_format(config.num_replicates_per_gene_tree)
     replicates = [r for r in range(0,config.num_replicates_per_gene_tree)]
 
-    for gene_tree_name, evolver_output_file in evolver_results_by_gene_tree.items():
+    for species, subgenomes in genomes_of_interest_by_species.items():
 
-        gene_tree_subfolder = os.path.join(subfolder, gene_tree_name)
-        if not os.path.exists(gene_tree_subfolder):
-            os.makedirs(gene_tree_subfolder)
+        species_subfolder = os.path.join(subfolder, species)
+        codeml_results_for_species = {}
 
-        print("calculating Ks for " + gene_tree_name)
+        if not os.path.exists(species_subfolder):
+            os.makedirs(species_subfolder)
 
-        species_of_interest=['P1','P2']
-        sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
-            evolver_output_file, gene_tree_name,relaxed_gene_tree_results,species_of_interest)
-        sequence_files_written=[]
+        for gene_tree_name, evolver_output_file in evolver_results_by_gene_tree.items():
 
-        for r in replicates:
-            rep_string=replicate_index_formater.format(r)
-            print("\t replicate " + rep_string)
-            replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ rep_string)
-            if not os.path.exists(replicates_subfolder):
-                os.makedirs(replicates_subfolder)
+            gene_tree_subfolder = os.path.join(species_subfolder, gene_tree_name)
+            if not os.path.exists(gene_tree_subfolder):
+                os.makedirs(gene_tree_subfolder)
 
-            replicate_fa_file = os.path.join(replicates_subfolder,
+            print("calculating Ks for " + gene_tree_name)
+            genomes_of_interest=subgenomes
+            sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
+                evolver_output_file, gene_tree_name,relaxed_gene_tree_results,genomes_of_interest)
+            sequence_files_written=[]
+
+            for r in replicates:
+                rep_string=replicate_index_formater.format(r)
+                print("\t replicate " + rep_string)
+                replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ rep_string)
+                if not os.path.exists(replicates_subfolder):
+                    os.makedirs(replicates_subfolder)
+
+                replicate_fa_file = os.path.join(replicates_subfolder,
                                              gene_tree_name+".codons.rep" + rep_string + ".fa")
 
-            with open(replicate_fa_file, 'w') as f:
+                with open(replicate_fa_file, 'w') as f:
 
-                for seq_name, seqs in sequences_by_leaf.items():
+                    for seq_name, seqs in sequences_by_leaf.items():
                         f.writelines(">" + seq_name + "\n")
                         f.writelines(seqs[r] + "\n")
 
-            if len(sequences_by_leaf.keys())==0:
-                print("Warning. No gene tree leaves made it into the polyploid for this replicate.")
-                continue
+                if len(sequences_by_leaf.keys())==0:
+                    print("Warning. No gene tree leaves made it into the polyploid for this replicate.")
+                    continue
  
-            sequence_files_written.append(replicate_fa_file )
-            control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
-            cmd = ["codeml",os.path.basename(control_file)]
-            print("\t cmd: " + " ".join(cmd))
-            print("\t cwd: " + replicates_subfolder)
-            print("\t calculating Ks.. ")
-            process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
-            print("\t Ks determined...")
-            result= codeml_result(replicates_subfolder)
+                sequence_files_written.append(replicate_fa_file )
+                control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
+                cmd = ["codeml",os.path.basename(control_file)]
+                print("\t cmd: " + " ".join(cmd))
+                print("\t cwd: " + replicates_subfolder)
+                print("\t calculating Ks.. ")
+                process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
+                print("\t Ks determined...")
+                result= codeml_result(replicates_subfolder)
 
-            if r not in codeml_results_by_replicate_num:
-               codeml_results_by_replicate_num[r]={}
+                if r not in codeml_results_for_species:
+                    codeml_results_for_species[r]={}
 
-            codeml_results_by_replicate_num[r][gene_tree_name]= result
+                codeml_results_for_species[r][gene_tree_name]= result
+
+                #if species=='outgroup':
+                #    codeml_results_for_outgroup_by_replicate_num[r][gene_tree_name]= result
+                #else:
+                #    codeml_results_for_polyploid_by_replicate_num[r][gene_tree_name]= result
+
+            codeml_results_by_species[species]=codeml_results_for_species
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
-    return codeml_results_by_replicate_num
+    return codeml_results_by_species
 
 
 def get_codeml_ctl_template():

@@ -87,53 +87,64 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
     plt.clf()
     plt.close()
 
-def run_Ks_histogramer(polyploid,codeml_results_by_replicate_num):
+def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_species_by_replicate_num):
 
     config = polyploid.general_sim_config
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_histograms")
-    results_files_by_replicate={}
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
     replicate_index_formatter = ks_calculator.get_replicate_index_format(config.num_replicates_per_gene_tree)
-    replicates = list(codeml_results_by_replicate_num.keys())
-    for replicate in replicates:
 
-        replicate_string = replicate_index_formatter.format(replicate)
-        rep_subfolder = os.path.join(subfolder, "replicate_" + replicate_string)
-        if not os.path.exists(rep_subfolder ):
-            os.makedirs(rep_subfolder)
+    results_files_by_species_by_replicate = {}
+    for species, subgenomes in genomes_of_interest_by_species.items():
 
-        ks_result_files=codeml_results_by_replicate_num[replicate]
-        gene_trees=ks_result_files.keys()
-        for gene_tree in gene_trees:
+        codeml_results_by_replicate_num=Ks_results_by_species_by_replicate_num[species]
+        replicates = list(codeml_results_by_replicate_num.keys())
+        species_subfolder = os.path.join(subfolder,species)
+        results_files_for_species_by_replicate = {}
 
-            codeml_result=ks_result_files[gene_tree]
-            files=[codeml_result.ML_file,codeml_result.NG_file]
-            for file in files:
-                base=os.path.basename(file)
-                dst=os.path.join(rep_subfolder, gene_tree + "_" + base)
-                if os.path.exists(file):
-                    shutil.copyfile(file, dst)
-                else:
-                    print("Warning: no codeml result for " + gene_tree + ", replicate " + replicate_string )
-                    print("Maybe gene tree had no extant leaves? Codeml result file should be here: "
+        if not os.path.exists(species_subfolder):
+            os.makedirs(species_subfolder)
+
+        for replicate in replicates:
+
+            replicate_string = replicate_index_formatter.format(replicate)
+            rep_subfolder = os.path.join(species_subfolder, "replicate_" + replicate_string)
+            if not os.path.exists(rep_subfolder ):
+                os.makedirs(rep_subfolder)
+
+            ks_result_files=codeml_results_by_replicate_num[replicate]
+            gene_trees=ks_result_files.keys()
+            for gene_tree in gene_trees:
+
+                codeml_result=ks_result_files[gene_tree]
+                files=[codeml_result.ML_file,codeml_result.NG_file]
+                for file in files:
+                    base=os.path.basename(file)
+                    dst=os.path.join(rep_subfolder, gene_tree + "_" + base)
+                    if os.path.exists(file):
+                        shutil.copyfile(file, dst)
+                    else:
+                        print("Warning: no codeml result for " + gene_tree + ", replicate " + replicate_string )
+                        print("Maybe gene tree had no extant leaves? Codeml result file should be here: "
                           + file)
 
-        bin_size = 0.1
-        subgenomes_of_concern=["P1","P2"]
-        species_str="between subgenomes " + "and".join(subgenomes_of_concern)
-        print("making histograms " + species_str + ", replicate " + replicate_string )
-        WGD_as_Ks=polyploid.WGD_time_as_ks()
-        SPEC_as_Ks=polyploid.SPEC_time_as_ks()
-        outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
+            bin_size = 0.1
+            subgenomes_of_concern=["P1","P2"]
+            species_str="between subgenomes " + "and".join(subgenomes_of_concern)
+            print("making histograms " + species_str + ", replicate " + replicate_string )
+            WGD_as_Ks=polyploid.WGD_time_as_ks()
+            SPEC_as_Ks=polyploid.SPEC_time_as_ks()
+            outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", bin_size)
-        results_files_by_replicate[replicate]=outfiles
+            results_files_for_species_by_replicate[replicate]=outfiles
 
+        results_files_by_species_by_replicate[species] =results_files_for_species_by_replicate
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
-    return results_files_by_replicate
+    return results_files_by_species_by_replicate
 def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
 
     outfiles=[]
