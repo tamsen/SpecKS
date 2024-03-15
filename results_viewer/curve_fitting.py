@@ -30,8 +30,14 @@ def fit_curve_to_hist(bins, n):
     [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
 
 
+    try:
+        popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
+    except Exception as inst:
+        print(type(inst))  # the exception type
+        print(inst.args)  # arguments stored in .args
+        print(inst)  # __str__ allows args to be printed directly,
+        return False, xs_for_wgd, 0,0
 
-    popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
     fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
 
     #get mode & center of mass

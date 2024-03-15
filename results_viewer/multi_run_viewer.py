@@ -10,21 +10,57 @@ from results_viewer import curve_fitting
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
 class MulitRunViewerTests(unittest.TestCase):
+
+    def test_single_run_viewer(self):
+
+        plot_title='no_gbd_or_branching'
+        test_out_folder="/home/tamsen/Git/SpecKS/SpecKS/test_code/test_out/test_main"
+        csv_folder="no_gbd_or_branching/Allo1_S150W100/8_final_results"
+        csv_file_base1="Allo1_S150W100_ML_rep0_Ks_by_GeneTree.csv"
+        csv_file_base2="outgroup_ML_rep0_Ks_by_GeneTree.csv"
+        full_csv_path1=os.path.join(test_out_folder,csv_folder,csv_file_base1)
+        full_csv_path2=os.path.join(test_out_folder,csv_folder,csv_file_base2)
+        bin_size = 0.25
+        WGD_time_MYA=100
+        SPC_time_MYA=150
+        max_Ks_for_x_axis = 3
+        for csv_file in [full_csv_path1,full_csv_path2]:
+            self.histogram_a_single_csv_file(SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis,
+                                             csv_file, plot_title)
+
+    def histogram_a_single_csv_file(self, SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis, full_csv_path, plot_title):
+        ks_result_for_file = read_Ks_csv(full_csv_path)
+        # making subplots
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+        fig.suptitle(plot_title)
+        # ax[0, 0].set_title("Allopolyploid\n", fontsize=20)
+        #max_Ks_for_x_axis = 8
+        this_ax = ax
+        this_ax, ymax_suggestion = make_subplot(this_ax, ks_result_for_file, bin_size, WGD_time_MYA,
+                                                SPC_time_MYA,
+                                                max_Ks_for_x_axis, False, "blue")
+        this_ax.set(xlabel="Ks")
+        out_file_name = full_csv_path.replace(".csv", ".hist.png")
+        if max_Ks_for_x_axis:
+            out_file_name = out_file_name.replace(".png", "_maxKs" + str(max_Ks_for_x_axis) + ".png")
+        plt.savefig(out_file_name)
+        plt.close()
+
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation with NO gene birth/death'
+        plot_title='Simulation with NO branch relaxing'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim1_redo"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim1p5_no_relaxing"
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
         print("Reading csv files..")
-        csvfiles_by_polyploid_by_rep_by_algorthim = self.get_ks_data_from_folders(output_folder)
-        example_sim=list(csvfiles_by_polyploid_by_rep_by_algorthim.keys())[0]
-        replicates=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim].keys())
+        csvfiles_by_polyploid_by_rep_by_algorithm = self.get_ks_data_from_folders(output_folder)
+        example_sim=list(csvfiles_by_polyploid_by_rep_by_algorithm.keys())[0]
+        replicates=list(csvfiles_by_polyploid_by_rep_by_algorithm[example_sim].keys())
         #algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
         algs=["ML"]
 
@@ -44,11 +80,11 @@ class MulitRunViewerTests(unittest.TestCase):
         for replicate in replicates:
             for alg in algs:
                 plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                                         csvfiles_by_polyploid_by_rep_by_algorthim,
+                                         csvfiles_by_polyploid_by_rep_by_algorithm,
                                          replicate, alg, params_by_polyploid, max_Ks )
 
                 plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                                         csvfiles_by_polyploid_by_rep_by_algorthim,
+                                         csvfiles_by_polyploid_by_rep_by_algorithm,
                                          replicate, alg, params_by_polyploid, False )
 
         self.assertEqual(True,True)
@@ -189,7 +225,8 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
     this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
 
-    this_ax.plot(xs_for_wgd,fit_curve_ys1,
+    if fit_curve_ys1:
+        this_ax.plot(xs_for_wgd,fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit")
 
     if maxY:
@@ -198,10 +235,11 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     else:
         yaxis_limit= ymax_suggestion
 
-    this_ax.scatter(cm,0.05*yaxis_limit,
+    if fit_curve_ys1:
+        this_ax.scatter(cm,0.05*yaxis_limit,
                  color='darkgreen', marker='o', label="cm", s=100)
 
-    this_ax.scatter(mode,0.05*yaxis_limit,
+        this_ax.scatter(mode,0.05*yaxis_limit,
                  color='cyan', marker='^', label="mode",s=80)
 
 

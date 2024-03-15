@@ -22,7 +22,7 @@
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
        <branch_relaxer_parameters>ACRY07,1,0.000001</branch_relaxer_parameters>-->
 
-        <dup_rate_parameters>(4,2460)</dup_rate_parameters>
+        <dup_rate_parameters>False</dup_rate_parameters>
         <loss_rate_parameters>False</loss_rate_parameters>
         <branch_relaxer_parameters>False</branch_relaxer_parameters>
         <num_gene_trees_per_species_tree>100</num_gene_trees_per_species_tree>

@@ -148,7 +148,8 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
 def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
 
     outfiles=[]
-    for alg_name in ["ML","NG"]:
+    #for alg_name in ["ML","NG"]:
+    for alg_name in ["ML"]:
 
         print("getting results for PAML alg name " + alg_name)
         ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
