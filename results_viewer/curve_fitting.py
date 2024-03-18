@@ -1,8 +1,8 @@
 from scipy.optimize import curve_fit
 from scipy.stats import lognorm, norm
 
-def wgd_gaussian(x, amp, mu, sig):
-    return amp * norm.pdf(x, mu, sig)
+#def wgd_gaussian(x, amp, mu, sig):
+#    return amp * norm.pdf(x, mu, sig)
 
 def wgd_lognorm(x, amp, scale, x_shift,skew):
     return amp * lognorm.pdf(scale * x + x_shift, skew)
@@ -26,7 +26,7 @@ def get_xs_from_histogram(Bins,N):
     return [xs,ys]
 
 def fit_curve_to_hist(bins, n):
-    fit_fxn = wgd_gaussian  # wgd_skewnorm
+    fit_fxn = wgd_lognorm  # wgd_skewnorm
     [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
 
 

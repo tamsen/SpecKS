@@ -115,7 +115,7 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
         subfolder = os.path.join(polyploid.species_subfolder,
                                  str(polyploid.analysis_step_num) + "_gene_trees_" + polyploid.subtree_subfolder)
     else:
-        subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
+        subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees_with_GBD")
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)

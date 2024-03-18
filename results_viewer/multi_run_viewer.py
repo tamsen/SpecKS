@@ -64,7 +64,8 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim1_redo_magic_number_0p6_again"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim4_gbd_gb_gt_gd"
+
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
@@ -77,31 +78,46 @@ class MulitRunViewerTests(unittest.TestCase):
         algs=["ML"]
 
         print("Making plots..")
-        params_by_polyploid={}
-        params_by_polyploid["Allo0"]= config.PolyploidParams(200,150,"Allo0")
-        params_by_polyploid["Allo1"]= config.PolyploidParams(150,100,"Allo1")
-        params_by_polyploid["Allo2"]= config.PolyploidParams(50, 25,"Allo2")
-        params_by_polyploid["Allo3"]= config.PolyploidParams( 25, 20,"Allo3")
+        params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
 
-        params_by_polyploid["Auto0"]= config.PolyploidParams(200,200,"Auto0")
-        params_by_polyploid["Auto1"]= config.PolyploidParams(150,150,"Auto1")
-        params_by_polyploid["Auto2"]= config.PolyploidParams( 50, 50,"Auto2")
-        params_by_polyploid["Auto3"]= config.PolyploidParams( 25, 25,"Auto3")
-
-        max_Ks = 8
+        max_Ks = 1.0
+        bin_size = 0.01
         for spec in species: #['outgroup']:#species:
             print(spec)
             for replicate in replicates:
                 for alg in algs:
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid, max_Ks )
+                                         replicate, alg, params_by_polyploid, max_Ks, bin_size )
 
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid, False )
+                                         replicate, alg, params_by_polyploid, False, bin_size)
 
         self.assertEqual(True,True)
+
+    def get_truth_for_1MY_sim(self):
+        params_by_polyploid = {}
+        params_by_polyploid["Allo0"] = config.PolyploidParams(20, 15, "Allo0")
+        params_by_polyploid["Allo1"] = config.PolyploidParams(40, 30, "Allo1")
+        params_by_polyploid["Allo2"] = config.PolyploidParams(60, 50, "Allo2")
+        params_by_polyploid["Allo3"] = config.PolyploidParams(80, 70, "Allo3")
+        params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
+        params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
+        params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
+        params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
+        return params_by_polyploid
+    def get_truth_for_5MY_sim(self):
+        params_by_polyploid = {}
+        params_by_polyploid["Allo0"] = config.PolyploidParams(200, 150, "Allo0")
+        params_by_polyploid["Allo1"] = config.PolyploidParams(150, 100, "Allo1")
+        params_by_polyploid["Allo2"] = config.PolyploidParams(50, 25, "Allo2")
+        params_by_polyploid["Allo3"] = config.PolyploidParams(25, 20, "Allo3")
+        params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
+        params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
+        params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
+        params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
+        return params_by_polyploid
 
     def get_ks_data_from_folders(self, output_folder):
         polyploid_data_folders = os.listdir(output_folder)
@@ -171,14 +187,14 @@ def read_Ks_csv(csv_file):
     return ks_results
 
 def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
-                                     spec,replicate, alg, params_by_polyploid, max_Ks_for_x_axis):
+                                     spec,replicate, alg, params_by_polyploid, max_Ks_for_x_axis, bin_size):
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
     ordered_allo_results=[n for n in result_names if "Allo" in n]
     ordered_auto_results=[n for n in result_names if "Auto" in n]
 
-    bin_size = 0.01
+    #bin_size = 0.01
     #f, a = plt.subplots(4, 2)
 
     # making subplots
