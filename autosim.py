@@ -9,6 +9,7 @@ def run_autosim(polyploid):
     #the autopolyploid has two simulation legs, one before speciation/wgd, and one after,
     preWGD_simulation_leg=polyploid.simulation_legs[0]
     postWGD_simulation_leg=polyploid.simulation_legs[1]
+    polyploid_genomes_of_interest = ['P1', 'P2']
 
     log.write_to_log("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_tree = species_tree_maker.make_species_trees(polyploid)
@@ -17,8 +18,9 @@ def run_autosim(polyploid):
 
     log.write_to_log("\n\n{0}. Make gene trees up to WGD (SaGePhy)".format(polyploid.analysis_step_num))
     first_leg_time_range=(0,polyploid.FULL_time_MYA-polyploid.WGD_time_MYA)
+    species_trees = {"all":species_tree[0]} #for tha autopolyploid, all gene trees are based ont he same species tree.
     gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid,preWGD_simulation_leg,
-                                                                 species_tree[0])
+                                                                 species_trees)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -93,8 +95,16 @@ def run_autosim(polyploid):
                                                             pooled_relaxed_gene_tree_results_by_tree,
                                                             pooled_evolver_results_by_tree_by_replicate)
 
+    genomes_of_interest_by_species = {polyploid.species_name: polyploid_genomes_of_interest}
+    Ks_results_by_species_by_replicate_num = {polyploid.species_name: codeml_results_by_replicate_num}
+    #note, we dont have the outgroup sorted out for the autopolyploid yet.
+
     log.write_to_log("\n\n{0}. Plot histograms (matplotlib)".format(polyploid.analysis_step_num))
-    final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid, codeml_results_by_replicate_num)
+    final_result_files_by_replicate = ks_histogramer.run_Ks_histogramer(polyploid,
+                                                                        genomes_of_interest_by_species,
+                                                                        Ks_results_by_species_by_replicate_num)
+
+    #Ks_results_by_species_by_replicate_num)
 
     log.write_to_log("\n\n{0}. Collate results".format(polyploid.analysis_step_num))
     results_organizer.collate_results(polyploid, final_result_files_by_replicate)

@@ -102,8 +102,9 @@ def read_pruned_trees(subfolder, leg_distance):
 #"Gene family evolution in green plants with emphasis on the origination and evolution of Arabidopsis thaliana genes
 # the rate of gene gains and losses is about 0.001359 per gene every million years
 
-def run_sagephy(polyploid, simulation_leg, species_tree_newick):
+def run_sagephy(polyploid, simulation_leg, base_gene_tree_newicks_by_tree_name):
 
+    #base_gene_tree_newicks_by_tree_name
     config = polyploid.general_sim_config
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
@@ -128,12 +129,18 @@ def run_sagephy(polyploid, simulation_leg, species_tree_newick):
 
 
     for i in range(0, num_gene_trees_needed):
-        out_file_name = "GeneTree" +  gt_index_formatter.format(i)
+        gene_tree_name = "GeneTree" +  gt_index_formatter.format(i)
         random_seed = i #to make the results repeatable, run to run, but different between GT
+
+        if gene_tree_name in base_gene_tree_newicks_by_tree_name:
+            species_tree_newick=base_gene_tree_newicks_by_tree_name[gene_tree_name]
+        else: #else, all gt use the same base species tree
+            species_tree_newick = base_gene_tree_newicks_by_tree_name["all"]
+
         cmd = write_SaGePhy_GuestTreeGen_commands(config, species_tree_newick,
                                                   dup_values[i], loss_values[i],
                                                   random_seed,
-                                                  os.path.join(subfolder,out_file_name))
+                                                  os.path.join(subfolder,gene_tree_name))
         process_wrapper.run_and_wait_on_process(cmd, subfolder)
 
 

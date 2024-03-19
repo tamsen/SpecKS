@@ -99,7 +99,5 @@ def make_randomized_gene_trees(polyploid, simulation_leg, species_tree_newick):
 
 
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
-    return species_trees
-    polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gene_tree_newicks_by_tree_name
 

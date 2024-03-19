@@ -19,14 +19,14 @@ def run_allosim(polyploid):
         return
 
     log.write_to_log("\n\n{0}. Make gene trees given gradual speciation".format(polyploid.analysis_step_num))
-    gene_tree_results_foo = gradual_speciation.make_randomized_gene_trees(polyploid, only_simulation_leg,
+    base_gene_tree_newicks_by_tree_name = gradual_speciation.make_randomized_gene_trees(polyploid, only_simulation_leg,
                                                                  species_trees[0])
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid, only_simulation_leg,
-                                                                 species_trees[0])
+                                                                 base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
