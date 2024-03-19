@@ -23,7 +23,7 @@ def get_example_allopolyploid_tree(time_span, speciation_MYA):
     #speciation happened 100MYA. We'd expect Ks ~2. to have build up between P1 and P2.
     time_before_speciation = time_span - speciation_MYA
     nstring="(O:{0}, (P1:{1}, P2:{1}):{2});".format(time_span,speciation_MYA, time_before_speciation)
-    log.write_to_log("species_tree:\t" + nstring)
+    log.write_to_log("tree generated:\t" + nstring)
 
 
     return [nstring]
@@ -34,6 +34,7 @@ def make_species_trees(polyploid):
     time_span=polyploid.FULL_time_MYA
     subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_species_trees")
     include_visualizations = polyploid.general_sim_config.include_visualizations
+    log.write_to_log("making species tree for " + polyploid.species_name)
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)

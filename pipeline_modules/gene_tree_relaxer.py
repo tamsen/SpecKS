@@ -1,4 +1,6 @@
 import os
+
+import log
 import pipeline_modules.gene_tree_GBD_maker as gene_tree_maker
 import process_wrapper
 from pipeline_modules import gene_tree_data
@@ -7,6 +9,7 @@ from visualization import tree_visuals_by_phylo, gene_tree_visuals
 def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
 
     config = polyploid.general_sim_config
+    include_visualizations = config.include_visualizations
 
     if len(polyploid.subtree_subfolder) > 0:
         subfolder = os.path.join(polyploid.species_subfolder,
@@ -14,7 +17,6 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
     else:
         subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_relaxed_gene_trees")
 
-    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -46,12 +48,13 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
         relaxed_gene_tree_results = gene_tree_data.read_gene_tree_result_from_tree_and_leaf_map_files(
             full_path_to_relaxed_tree_file, gene_tree_results.leaf_map_file_name)
         #relaxed_gene_tree_results.add_back_outgroup(simulation_leg.leg_length())
+        log.write_to_log("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
         relaxed_gene_tree_results_by_gene_tree[gene_tree] =relaxed_gene_tree_results
 
-        plot_file_name_1= full_path_to_relaxed_tree_file +"_phylo.png"
-        plot_file_name_2= os.path.join(subfolder,gene_tree +"_specks.png")
-        print("newick to plot:\t" +relaxed_gene_tree_results.simple_newick)
-        tree_visuals_by_phylo.save_tree_plot_from_newick(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
+        if include_visualizations:
+            plot_file_name_1= full_path_to_relaxed_tree_file +"_phylo.png"
+            plot_file_name_2= os.path.join(subfolder,gene_tree +"_specks.png")
+            tree_visuals_by_phylo.save_tree_plot_from_newick(relaxed_gene_tree_results.simple_newick, plot_file_name_1)
 
         new_tree_file=full_path_to_relaxed_tree_file.replace(".tree",".updated.tree")
         with open(new_tree_file, 'w') as f:
@@ -59,14 +62,17 @@ def relax(polyploid, simulation_leg, gene_tree_results_by_tree_name):
 
         gt_newick=relaxed_gene_tree_results.simple_newick
         leaf_map = relaxed_gene_tree_results.leaves_by_species
-        gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
-            simulation_leg, leaf_map,gt_newick, gene_tree, polyploid.SPC_time_MYA,
-            polyploid.species_name, plot_file_name_2)
-        gt_tree_viz_data_by_gene_tree[gene_tree]=gt_tree_viz_data
 
-    gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,
-                                               "relaxed",  subfolder)
-    gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, gt_tree_viz_data_by_gene_tree,
+        if include_visualizations:
+            gt_tree_viz_data=gene_tree_visuals.plot_polyploid_gene_tree_alone(
+                simulation_leg, leaf_map,gt_newick, gene_tree, polyploid.SPC_time_MYA,
+                polyploid.species_name, plot_file_name_2)
+            gt_tree_viz_data_by_gene_tree[gene_tree]=gt_tree_viz_data
+
+    if include_visualizations:
+        gene_tree_visuals.histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,
+                                                   "relaxed",  subfolder)
+        gene_tree_visuals.plot_gene_trees_on_top_of_species_trees(polyploid, gt_tree_viz_data_by_gene_tree,
                                                               "relaxed",  subfolder)
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return relaxed_gene_tree_results_by_gene_tree

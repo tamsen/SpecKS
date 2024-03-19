@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import glob
 import shutil
 
+import log
 from pipeline_modules import ks_calculator
 
 
@@ -45,7 +46,7 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
 
         f.writelines("GeneTree,Ks,full_path\n")
         for paml_out_file in res_files:
-            print(paml_out_file)
+            log.write_to_log(paml_out_file)
             base_name=os.path.basename(paml_out_file)
             Ks_for_og = get_Ks_from_file(paml_out_file)
             for Ks_data in Ks_for_og:
@@ -67,7 +68,7 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
 
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
-        print(PAML_hist_out_file)
+        log.write_to_log(PAML_hist_out_file)
         n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
         plt.xlim([0, max_Ks * (1.1)])
     else:
@@ -127,14 +128,14 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
                     if os.path.exists(file):
                         shutil.copyfile(file, dst)
                     else:
-                        print("Warning: no codeml result for " + gene_tree + ", replicate " + replicate_string )
-                        print("Maybe gene tree had no extant leaves? Codeml result file should be here: "
+                        log.write_to_log("Warning: no codeml result for " + gene_tree + ", replicate " + replicate_string )
+                        log.write_to_log("Maybe gene tree had no extant leaves? Codeml result file should be here: "
                           + file)
 
             bin_size = 0.1
             subgenomes_of_concern=["P1","P2"]
             species_str="between subgenomes " + "and".join(subgenomes_of_concern)
-            print("making histograms " + species_str + ", replicate " + replicate_string )
+            log.write_to_log("making histograms " + species_str + ", replicate " + replicate_string )
             WGD_as_Ks=polyploid.WGD_time_as_ks()
             SPEC_as_Ks=polyploid.SPEC_time_as_ks()
             outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
@@ -151,7 +152,7 @@ def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks
     #for alg_name in ["ML","NG"]:
     for alg_name in ["ML"]:
 
-        print("getting results for PAML alg name " + alg_name)
+        log.write_to_log("getting results for PAML alg name " + alg_name)
         ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
                                       "_paml_hist_maxKS" + str(max_ks) +

@@ -1,6 +1,10 @@
 import os
 from Bio import Phylo
 from io import StringIO
+
+import log
+
+
 class gene_tree_result():
 
     original_newick=""
@@ -77,6 +81,7 @@ class gene_tree_result():
 
         #if this is thrown off, then there is a disconnect..
         if num_extant_leaves != self.num_terminal_leaves:
+            log.write_to_log('leafmap data is out of sync with the gene tree')
             raise Exception('leafmap data is out of sync with the gene tree')
 
         return self

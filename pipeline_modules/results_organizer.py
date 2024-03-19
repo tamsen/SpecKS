@@ -1,10 +1,13 @@
 import os
 import shutil
 
+import log
+
 
 def collate_results(polyploid, ks_results_files_by_species_by_replicate_num):
 
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_final_results")
+    log.write_to_log("organizing final results...")
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)

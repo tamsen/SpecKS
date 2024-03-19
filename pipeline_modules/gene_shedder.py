@@ -4,6 +4,7 @@ from io import StringIO
 import numpy as np
 from Bio import Phylo
 
+import log
 from visualization import tree_visuals_by_phylo
 
 
@@ -16,7 +17,6 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
     else:
         subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_shedder")
 
-    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
@@ -43,7 +43,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
     unprunable_leaves = ['O', 'O1', 'O2'] #no pruning the outgroup
     time_slice = time_slices[-10]
     num_genes_to_remove_per_gene_tree = 1
-    print("time slice:\t" + str(time_slice))
+    log.write_to_log("time slice:\t" + str(time_slice))
 
     for gt_name in gene_trees_to_loose_a_gene:
 
@@ -56,14 +56,14 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
             out_file=os.path.join(subfolder ,gt_name + "_newick_pre_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
 
-            print("newick before gene shedding:" + gt_data_to_edit.simple_newick)
+            log.write_to_log("newick before gene shedding:" + gt_data_to_edit.simple_newick)
             tree_visuals_by_phylo.save_tree_plot_from_newick(gt_data_to_edit.simple_newick,
                                                              out_file.replace("txt","png"))
 
             list_of_terminal_leaves_to_remove = chose_leaves_to_remove(
                 nodes_on_edges_that_cross_this_time, num_genes_to_remove_per_gene_tree, unprunable_leaves)
 
-            print("gt before pruning:" + gt_data_to_edit.simple_newick)
+            log.write_to_log("gt before pruning:" + gt_data_to_edit.simple_newick)
             for leaf in list_of_terminal_leaves_to_remove:
                 gt_tree.prune(leaf)
 
@@ -72,7 +72,7 @@ def shed_genes(polyploid, relaxed_gene_tree_results):
             # just to visualize what is going on after shedding..
             out_file = os.path.join(subfolder, gt_name + "_newick_post_gene_shedding.txt")
             Phylo.write(gt_tree, out_file, "newick")
-            print("newick after gene shedding:" + gt_data_to_edit.simple_newick)
+            log.write_to_log("newick after gene shedding:" + gt_data_to_edit.simple_newick)
             tree_visuals_by_phylo.save_tree_plot_from_newick(gt_data_to_edit.simple_newick,
                                                              out_file.replace("txt", "png"))
 

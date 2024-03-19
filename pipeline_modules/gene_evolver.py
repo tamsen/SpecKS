@@ -10,7 +10,7 @@ from io import StringIO
 from visualization import tree_visuals_by_phylo
 
 
-def write_evolver_control_file(template_dat_file, out_dir, random_seed_odd_integer,
+def write_evolver_control_file(template_dat_file, out_dir, evolver_version_is_old, random_seed_odd_integer,
                                num_seq, num_codons, num_replicates, tree_length, newick_tree_string):
     lines_to_write = []
     specs_flags = "NUMSEQ NUMCODONS NUMREPLICATES"
@@ -22,14 +22,8 @@ def write_evolver_control_file(template_dat_file, out_dir, random_seed_odd_integ
     # Handle an evolver bug we dont seem to need for later versions.
     # Dont seem to need this for EVOLVER in paml version 4.10.7, June 2023
     # *but* do need it for EVOLVER 4.9, March 2015
-
-    evolver_version=get_evolver_version_string(out_dir)
-    if evolver_version.is_old_version():
+    if evolver_version_is_old:
         newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
-
-    #s, vn, vd = get_evolver_version_string(out_dir)
-    #if (vd[0] < 4.0) or ((vd[0] == 4.0) and (vd[1] < 10.0)):
-    #    newick_tree_string = work_around_for_evolver_bug(newick_tree_string)
 
     with open(template_dat_file, 'r') as f:
 
@@ -45,7 +39,7 @@ def write_evolver_control_file(template_dat_file, out_dir, random_seed_odd_integ
 
             if "TREE" in line:
                 new_line = line.replace("TREE", newick_tree_string)
-                print("using newick " + newick_tree_string)
+                log.write_to_log("using newick " + newick_tree_string)
 
             if "LENGTH" in line:
                 new_line = line.replace("LENGTH", str(tree_length))
@@ -81,13 +75,12 @@ def work_around_for_no_parenthesis_in_newick(newick_tree_string):
     return newick_tree_string
 
 
-def write_evolver_commands(out_dir, template_evolver_control_file, evolver_version, random_seed_odd_integer,
+def write_evolver_commands(out_dir, template_evolver_control_file, evolver_version_is_old, random_seed_odd_integer,
                            num_replicates, num_codons, tree_length, gene_tree_result):
 
     # test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
 
-    #evolver_version=get_evolver_version_string(out_dir)
-    if evolver_version.is_old_version():
+    if evolver_version_is_old:
 
         X1 = Phylo.to_networkx(gene_tree_result.tree)
         # X2 = Phylo.to_networkx(test_tree)
@@ -109,7 +102,8 @@ def write_evolver_commands(out_dir, template_evolver_control_file, evolver_versi
         # print("num seq = num_extant_leaves:\t" + str(num_seq))
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
-                                                      out_dir, random_seed_odd_integer,
+                                                      out_dir,evolver_version_is_old,
+                                                      random_seed_odd_integer,
                                                       num_seq, num_codons,
                                                       num_replicates, tree_length,
                                                       gene_tree_result.simple_newick)
@@ -146,7 +140,8 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
     template_evolver_control_file = get_evolver_template_file()
     evolver_results_by_gene_tree_by_replicate = {}
-    evolver_version = get_evolver_version_string(subfolder)
+    evolver_version_is_old = get_evolver_version_string(subfolder).is_old_version()
+
     for full_gene_tree_name, gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
         splat = full_gene_tree_name.split("_child")
@@ -166,9 +161,9 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
             os.makedirs(replicate_subfolder)
             dst = os.path.join(replicate_subfolder, "RootSeq.txt")
             shutil.copyfile(replicate_seq_file, dst)
-            #evolver_version = get_evolver_version_string(out_dir)
+
             cmd = write_evolver_commands(replicate_subfolder, template_evolver_control_file,
-                                         evolver_version,
+                                         evolver_version_is_old,
                                          random_seed_odd_integer,
                                          1,
                                          config.num_codons, evolver_tree_length, gene_tree_result)
@@ -204,24 +199,23 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
     else:
         subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_sequence_evolver")
 
-    print(subfolder)
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
     evolver_results_by_gene_tree = {}
     random_seed = random_seed_odd_integer
     template_evolver_control_file = get_evolver_template_file()
-    evolver_version = get_evolver_version_string(subfolder)
+    evolver_version_is_old = get_evolver_version_string(subfolder).is_old_version()
     for gene_tree_name, gene_tree_result in gene_tree_results_by_gene_tree_name.items():
 
         random_seed = random_seed + 2
         gene_tree_subfolder = os.path.join(subfolder, gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
         evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
-        print("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
-        print("\t\tnewick:\t " + gene_tree_result.simple_newick)
-        print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
-        print("\t\tevolver tree length:\t " + str(evolver_tree_length))
+        log.write_to_log("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
+        #print("\t\tnewick:\t " + gene_tree_result.simple_newick)
+        #print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
+        #print("\t\tevolver tree length:\t " + str(evolver_tree_length))
 
         plot_file_name_1 = os.path.join(gene_tree_subfolder, "gt_used_by_evolver_phylo.png")
         tree_visuals_by_phylo.save_tree_plot_from_newick(gene_tree_result.simple_newick, plot_file_name_1)
@@ -229,9 +223,9 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
         if gene_tree_result.num_terminal_leaves < 2:
             # Then all we have left is the outgroup. No point in running evolver.
             continue
-        #evolver_version = get_evolver_version_string(subfolder)
+
         cmd = write_evolver_commands(gene_tree_subfolder, template_evolver_control_file,
-                                     evolver_version,
+                                     evolver_version_is_old,
                                      random_seed,
                                      config.num_replicates_per_gene_tree,
                                      config.num_codons, evolver_tree_length, gene_tree_result)
@@ -301,6 +295,9 @@ class evolver_version_string():
         self.version_decimals = vd
 
     def is_old_version(self):
+
+        log.write_to_log("Evolver version:")
+        log.write_to_log(self.version_string)
 
         if (self.version_decimals[0] < 4.0) or ((self.version_decimals[0] == 4.0)
                                                 and (self.version_decimals[1] < 10.0)):

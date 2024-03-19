@@ -1,6 +1,8 @@
 import os
 import shutil
 from pathlib import Path
+
+import log
 import process_wrapper
 
 
@@ -120,7 +122,7 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
 
             sequence_files_written=[]
             for r in replicates:
-                print("\t replicate " + str(r))
+                log.write_to_log("\t replicate " + str(r))
                 replicates_subfolder = os.path.join(gene_tree_subfolder, "replicate_" + str(r))
                 if not os.path.exists(replicates_subfolder):
                     os.makedirs(replicates_subfolder)
@@ -152,11 +154,11 @@ def run_codeml_on_pooled_results(polyploid, pooled_relaxed_gene_tree_results,
                     sequence_files_written.append(replicate_fa_file )
                     control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
                     cmd = ["codeml",os.path.basename(control_file)]
-                    print("\t cmd: " + " ".join(cmd))
-                    print("\t cwd: " + replicates_subfolder)
-                    print("\t calculating Ks.. ")
+                    log.write_to_log("\t cmd: " + " ".join(cmd))
+                    log.write_to_log("\t cwd: " + replicates_subfolder)
+                    log.write_to_log("\t calculating Ks.. ")
                     process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
-                    print("\t Ks determined...")
+                    log.write_to_log("\t Ks determined...")
                     result= codeml_result(replicates_subfolder)
                     codeml_results_by_replicate_num[r][gene_tree_name] = result
 
@@ -188,7 +190,7 @@ def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_resul
             if not os.path.exists(gene_tree_subfolder):
                 os.makedirs(gene_tree_subfolder)
 
-            print("calculating Ks for " + gene_tree_name)
+            log.write_to_log("calculating Ks for " + gene_tree_name)
             genomes_of_interest=subgenomes
             sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(
                 evolver_output_file, gene_tree_name,relaxed_gene_tree_results,genomes_of_interest)
@@ -196,7 +198,7 @@ def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_resul
 
             for r in replicates:
                 rep_string=replicate_index_formater.format(r)
-                print("\t replicate " + rep_string)
+                log.write_to_log("\t replicate " + rep_string)
                 replicates_subfolder = os.path.join(gene_tree_subfolder,"replicate_"+ rep_string)
                 if not os.path.exists(replicates_subfolder):
                     os.makedirs(replicates_subfolder)
@@ -211,17 +213,17 @@ def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_resul
                         f.writelines(seqs[r] + "\n")
 
                 if len(sequences_by_leaf.keys())==0:
-                    print("Warning. No gene tree leaves made it into the polyploid for this replicate.")
+                    log.write_to_log("Warning. No gene tree leaves made it into the polyploid for this replicate.")
                     continue
  
                 sequence_files_written.append(replicate_fa_file )
                 control_file = write_codeml_control_file(template_codeml_ctl_file, replicate_fa_file)
                 cmd = ["codeml",os.path.basename(control_file)]
-                print("\t cmd: " + " ".join(cmd))
-                print("\t cwd: " + replicates_subfolder)
-                print("\t calculating Ks.. ")
+                log.write_to_log("\t cmd: " + " ".join(cmd))
+                log.write_to_log("\t cwd: " + replicates_subfolder)
+                log.write_to_log("\t calculating Ks.. ")
                 process_wrapper.run_and_wait_on_process(cmd, replicates_subfolder)
-                print("\t Ks determined...")
+                log.write_to_log("\t Ks determined...")
                 result= codeml_result(replicates_subfolder)
 
                 if r not in codeml_results_for_species:

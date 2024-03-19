@@ -28,8 +28,8 @@ def get_mode_and_cm(xs, pdfs):
     center_of_mass = weighted_mass / weights
     return center_of_mass, x_value_of_ymax
 
-def get_per_gene_tree_variation_on_speciation_time(out_folder,
-                                                   num_gt_needed, include_vis):
+def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
+                                                   distribution_parameters, include_vis):
     # for 90% < 0.55MY
     # shape_parameter = 0.8
     # xscale = 0.2
@@ -38,12 +38,14 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,
     #for 10 MY spread
     # for 90% < 10MY
     time_span_MY = 10 * 1.1
-    shape_parameter=0.5
-    xscale = 5.27
+    #shape_parameter=0.5
+    #xscale = 5.27
     #start = -4.1
     #loc=start
     start=0
     loc=0
+    shape_parameter = distribution_parameters[0]
+    xscale = distribution_parameters[1]
 
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
     random_draws_from_distribution = lognorm.rvs(shape_parameter, size=num_gt_needed, scale=xscale, loc=loc)
@@ -95,49 +97,50 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     config = polyploid.general_sim_config
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
-    gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
+    gene_divergence_distribution_parameters = config.divergence_distribution_parameters
     base_speciation_time=polyploid.SPC_time_MYA
     time_span=polyploid.FULL_time_MYA
-
+    gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
     subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_randomized_gene_trees")
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-
-
-
-
     if polyploid.is_auto():
         log.write_to_log("All gene trees diverge at the same instant for an autopolyploid. Nothing to do here.")
-        r = [0 for i in range(0,num_gene_trees_needed)]
+        variations_in_gene_div_time = [0 for i in range(0,num_gene_trees_needed)]
+    elif not gene_divergence_distribution_parameters:
+        log.write_to_log("Config specifies no variation in divergence time for orthologs.")
+        variations_in_gene_div_time = [0 for i in range(0,num_gene_trees_needed)]
     else:
         log.write_to_log("Calculating randomized divergence times for gene trees within allopolyploid species tree")
-        r = get_per_gene_tree_variation_on_speciation_time(subfolder,num_gene_trees_needed,include_visualizations)
+        variations_in_gene_div_time = get_per_gene_tree_variation_on_speciation_time(
+            subfolder,num_gene_trees_needed,gene_divergence_distribution_parameters, include_visualizations)
 
     gene_tree_newicks_by_tree_name={}
     for i in range(0, num_gene_trees_needed):
 
         gt_name = "GeneTree" +  gt_index_formatter.format(i)
-        if polyploid.is_auto():
+        if polyploid.is_auto() or (not gene_divergence_distribution_parameters):
+            #In this case, the gene trees will be identical to the species tree.
             gene_tree_newicks_by_tree_name[gt_name] = species_tree_newick
             continue
 
-        #else, for an allopolyploid...
+        #else, for an allopolyploid...we do something more fancy.
 
         #perturb parent species tree
-        variation=round(r[i],3)
-        gene_bifurcation_time=base_speciation_time+variation
-        [new_newick_string]= species_tree_maker.get_example_allopolyploid_tree(time_span,gene_bifurcation_time)
+        variation=round(variations_in_gene_div_time[i],3)
+        gene_div_time=base_speciation_time+variation
+        [new_newick_string]= species_tree_maker.get_example_allopolyploid_tree(time_span,gene_div_time)
 
 
         gene_tree_newicks_by_tree_name[gt_name ]=new_newick_string
 
-        delta_path = os.path.join(subfolder, "variations_in_bifurtaion_time.txt")
+        delta_path = os.path.join(subfolder, "variations_in_div_time.txt")
         with open(delta_path, 'a') as f:
             f.writelines(str(variation) + "\n")
 
-        tree_path = os.path.join(subfolder, "gene_trees_with_lognorm_distributed_bifurcation.txt")
+        tree_path = os.path.join(subfolder, "gene_trees_with_lognorm_distributed_div_time.txt")
         with open(tree_path, 'a') as f:
             f.writelines(new_newick_string + "\n")
 

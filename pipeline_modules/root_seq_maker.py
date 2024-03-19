@@ -1,5 +1,6 @@
 import os
 
+import log
 from pipeline_modules.ks_calculator import get_sequences_for_leaves_within_the_polyploid
 
 
@@ -52,7 +53,7 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
         if not os.path.exists(gene_tree_subfolder):
             os.makedirs(gene_tree_subfolder)
 
-        print("sorting out post-WGD root sequences for " + gene_tree_name)
+        log.write_to_log("sorting out post-WGD root sequences for " + gene_tree_name)
 
         species_of_interest=["P"]
         sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
@@ -63,5 +64,5 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
         sequence_files_written_by_gene_tree_by_child_tree[gene_tree_name] = files_written_by_child_tree
 
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
-    print(str(sequence_files_written_by_gene_tree_by_child_tree))
+    #print(str(sequence_files_written_by_gene_tree_by_child_tree))
     return sequence_files_written_by_gene_tree_by_child_tree
