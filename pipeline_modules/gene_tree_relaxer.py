@@ -1,5 +1,5 @@
 import os
-import pipeline_modules.gene_tree_maker as gene_tree_maker
+import pipeline_modules.gene_tree_GBD_maker as gene_tree_maker
 import process_wrapper
 from pipeline_modules import gene_tree_data
 from visualization import tree_visuals_by_phylo, gene_tree_visuals

@@ -5,7 +5,7 @@ from pathlib import Path
 from io import StringIO
 
 import polyploid_setup
-from pipeline_modules import gene_tree_maker, species_tree_maker, gene_tree_data
+from pipeline_modules import gene_tree_GBD_maker, species_tree_maker, gene_tree_data
 from visualization import gene_tree_visuals, tree_visuals_by_phylo
 import config
 from visualization.combined_tree_view import plot_combined_tree_view

@@ -59,7 +59,7 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation with NO branch relaxing'
+        plot_title='Simulation with NO GBD model, \nbut model gradual (~0.5MY)allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 

@@ -1,6 +1,6 @@
 import log
-from pipeline_modules import gene_tree_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, root_seq_maker, gene_shedder, results_organizer
+from pipeline_modules import gene_tree_GBD_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
+    species_tree_maker, root_seq_maker, gene_shedder, results_organizer, gene_tree_maker
 
 
 def run_autosim(polyploid):
@@ -16,11 +16,16 @@ def run_autosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    log.write_to_log("\n\n{0}. Make gene trees up to WGD (SaGePhy)".format(polyploid.analysis_step_num))
-    first_leg_time_range=(0,polyploid.FULL_time_MYA-polyploid.WGD_time_MYA)
-    species_trees = {"all":species_tree[0]} #for tha autopolyploid, all gene trees are based ont he same species tree.
-    gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy(polyploid,preWGD_simulation_leg,
-                                                                 species_trees)
+    log.write_to_log("\n\n{0}. Make gene trees given abrupt speciation".format(polyploid.analysis_step_num))
+    base_gene_tree_newicks_by_tree_name = gene_tree_maker.make_randomized_gene_trees(polyploid,species_tree[0])
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
+    log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    #first_leg_time_range=(0,polyploid.FULL_time_MYA-polyploid.WGD_time_MYA)
+    #species_trees = {"all":species_tree[0]} #for tha autopolyploid, all gene trees are based ont he same species tree.
+    gene_tree_results_by_tree_name = gene_tree_GBD_maker.run_sagephy(polyploid,preWGD_simulation_leg,
+                                                                 base_gene_tree_newicks_by_tree_name )
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -58,8 +63,8 @@ def run_autosim(polyploid):
 
         subtree=subtrees[i]
         polyploid.subtree_subfolder=subtree
-        log.write_to_log("\n\n{0}. Make gene trees after WGD (SaGePhy)".format(polyploid.analysis_step_num))
-        gene_tree_results_by_tree_name = gene_tree_maker.run_sagephy_with_root_seq(polyploid, postWGD_simulation_leg,
+        log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+        gene_tree_results_by_tree_name = gene_tree_GBD_maker.run_sagephy_with_root_seq(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i],
                                                                      root_seq_files_written_by_gene_tree_by_child_tree)
 

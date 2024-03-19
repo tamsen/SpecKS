@@ -72,6 +72,9 @@ class polyploid_data():
         else:
             return False
 
+    def is_auto(self):
+        return not self.is_allo()
+
     def WGD_time_as_ks(self):
 
         if self.general_sim_config:
