@@ -64,7 +64,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim4_gbd_gb_gt_gd"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim5_spec_tree_dist"
 
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
@@ -102,10 +102,10 @@ class MulitRunViewerTests(unittest.TestCase):
         params_by_polyploid["Allo1"] = config.PolyploidParams(40, 30, "Allo1")
         params_by_polyploid["Allo2"] = config.PolyploidParams(60, 50, "Allo2")
         params_by_polyploid["Allo3"] = config.PolyploidParams(80, 70, "Allo3")
-        params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
-        params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
-        params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
-        params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
+        params_by_polyploid["Auto0"] = config.PolyploidParams(20, 20, "Auto0")
+        params_by_polyploid["Auto1"] = config.PolyploidParams(40, 40, "Auto1")
+        params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
+        params_by_polyploid["Auto3"] = config.PolyploidParams(80, 80, "Auto3")
         return params_by_polyploid
     def get_truth_for_5MY_sim(self):
         params_by_polyploid = {}
@@ -254,15 +254,15 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
 
 def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, maxY, plot_color):
 
-    WGD_as_Ks = WGD_time_MYA * 0.01
-    SPEC_as_Ks =SPC_time_MYA * 0.01
-
+    WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
+    SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
+    default_xaxis_limit =SPEC_as_Ks + 0.1
     x = Ks_results
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
         n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
     else:
-        bins = np.arange(0, SPEC_as_Ks + 1, bin_size)
+        bins = np.arange(0, default_xaxis_limit, bin_size)
         n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
 
     hist_maximum=max(n)
@@ -299,6 +299,6 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
     else:
-        this_ax.set(xlim=[0, SPEC_as_Ks + 1])
+        this_ax.set(xlim=[0, default_xaxis_limit])
 
     return this_ax,ymax_suggestion
