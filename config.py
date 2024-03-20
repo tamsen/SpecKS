@@ -9,7 +9,7 @@ class SpecKS_config:
     # path_to_sagephy = "/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar"
 
     full_sim_time = 500
-    divergence_distribution_parameters=(0.5, 5.27)
+    divergence_distribution_parameters=['logrorm',0.5, 5.27]
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
     branch_relaxation_parameters = ["ACRY07", "1", "0.000001"]
@@ -98,11 +98,11 @@ class SpecKS_config:
                     if (incoming_tag == "loss_rate_parameters"):
                         self.loss_rate_parameters = parse_tuple_string(incoming_txt)
                     if (incoming_tag == "branch_relaxer_parameters"):
-                        self.branch_relaxation_parameters = parse_branch_relaxation_string(incoming_txt)
+                        self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
                         self.num_gene_trees_per_species_tree = int(incoming_txt)
                     if (incoming_tag == "gene_div_time_distribution_parameters"):
-                        self.divergence_distribution_parameters = parse_tuple_string(incoming_txt)
+                        self.divergence_distribution_parameters = parse_comma_separated_values(incoming_txt)
 
             if (incoming_tag == "SequenceEvolution"):
                 for inner_layer in top_layer:
@@ -116,6 +116,7 @@ class SpecKS_config:
                         self.Ks_per_Myr = float(incoming_txt)
 
 
+
 def parse_tuple_string(tuple_string):
     if tuple_string.upper() == "FALSE":
         return False
@@ -125,11 +126,12 @@ def parse_tuple_string(tuple_string):
         return data
 
 
-def parse_branch_relaxation_string(branch_relaxation_string):
-    if branch_relaxation_string.upper() == "FALSE":
+def parse_comma_separated_values(input_string):
+    if input_string.upper() == "FALSE":
         return False
     else:
-        splat = branch_relaxation_string.split(",")
+        cleaned_string=input_string.replace("(", "").replace(")", "")
+        splat = cleaned_string.split(",")
         return splat
 
 

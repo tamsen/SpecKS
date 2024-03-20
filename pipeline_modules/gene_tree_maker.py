@@ -1,5 +1,5 @@
 import os
-from scipy.stats import norm,lognorm
+from scipy.stats import norm,lognorm, expon
 import numpy as np
 from matplotlib import pyplot as plt
 from Bio import Phylo
@@ -44,11 +44,21 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     #loc=start
     start=0
     loc=0
-    shape_parameter = distribution_parameters[0]
-    xscale = distribution_parameters[1]
+    distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
+    shape_parameter = float(distribution_parameters[1])
+    xscale = float(distribution_parameters[2])
+
+    if distribution_name=="LOGNORM":
+        distribution_fxn=lognorm
+    elif (distribution_name=="EXPONENTIAL") or (distribution_name=="EXPON") :
+        distribution_fxn=expon
+    else:
+        message="The distributioon requested is not supported"
+        log.write_to_log(message)
+        raise ValueError(message)
 
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
-    random_draws_from_distribution = lognorm.rvs(shape_parameter, size=num_gt_needed, scale=xscale, loc=loc)
+    random_draws_from_distribution = distribution_fxn.rvs(shape_parameter, size=num_gt_needed, scale=xscale, loc=loc)
 
     #if include_vis:
     time_span_MY = time_span_MY
@@ -56,7 +66,7 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     xaxis_limit = time_span_MY + 0.1
 
     xs = np.arange(start, time_span_MY+ 0.01, bin_size)
-    ys = [lognorm.pdf(x,shape_parameter, scale=xscale,loc=loc ) for x in xs]
+    ys = [distribution_fxn.pdf(x,shape_parameter, scale=xscale,loc=loc ) for x in xs]
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))

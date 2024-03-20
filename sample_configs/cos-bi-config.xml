@@ -5,19 +5,24 @@
           <path_to_sagephy>/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
+       <polyploid>
+                <name>Allo1_S070W065</name>
+                <SPC_time_MYA>70</SPC_time_MYA>
+                <WGD_time_MYA>65</WGD_time_MYA>
+         </polyploid>
         <polyploid>
-                <SPC_time_MYA>300</SPC_time_MYA>
-                <WGD_time_MYA>200</WGD_time_MYA>
+                <name>Auto1_S070W070</name>
+                <SPC_time_MYA>070</SPC_time_MYA>
+                <WGD_time_MYA>070</WGD_time_MYA>
         </polyploid>
-        <!--<polyploid>
-                <SPC_time_MYA>200</SPC_time_MYA>
-                <WGD_time_MYA>200</WGD_time_MYA>
-        </polyploid>-->
-        <full_sim_time>500</full_sim_time>
+        <full_sim_time>100</full_sim_time>
     </SpeciesTree>
     <GeneTree>
         <dup_rate_parameters>(4,2460)</dup_rate_parameters>
         <loss_rate_parameters>(4,2053)</loss_rate_parameters>
+        <branch_relaxer_parameters>ACRY07,1,0.000001</branch_relaxer_parameters>
+        <!--<gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>-->
+        <gene_div_time_distribution_parameters>expon,0.5,5.27</gene_div_time_distribution_parameters>
         <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>
@@ -30,5 +35,5 @@
         <maxKs>5</maxKs>
         <maxY>False</maxY>
     </Histogram>
-    <StopAtStep>999</StopAtStep>
+    <StopAtStep>3</StopAtStep>
 </metadata>
