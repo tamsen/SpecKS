@@ -59,12 +59,12 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation with NO GBD model, \nbut model gradual (~0.5MY)allopolyploid ortholog divergence'
+        plot_title='Simulation with NO GBD model, \nbut model gradual (~10MY)allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim5_spec_tree_dist"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim5_spec_tree_5MY"
 
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
@@ -256,17 +256,21 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
 
     WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
     SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
-    default_xaxis_limit =SPEC_as_Ks + 0.1
+    default_xaxis_limit =SPEC_as_Ks + 0.2
     x = Ks_results
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25)#, label='ks hist. data')
     else:
         bins = np.arange(0, default_xaxis_limit, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25, label='ks hist. data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25)#, label='ks hist. data')
 
     hist_maximum=max(n)
-    ymax_suggestion=hist_maximum*1.5
+    ymax_suggestion=hist_maximum*1.6
+
+    if SPC_time_MYA == 20:
+        ymax_suggestion=400
+
     fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
     print("hist_maximum " + str(hist_maximum))
     print("mode " + str(mode))
@@ -286,10 +290,10 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
 
     if fit_curve_ys1 and (hist_maximum>0):
         this_ax.scatter(cm,0.05*yaxis_limit,
-                 color='darkgreen', marker='o', label="cm", s=100)
+                 color='darkgreen', marker='o', s=100)# label="cm",)
 
         this_ax.scatter(mode,0.05*yaxis_limit,
-                 color='cyan', marker='^', label="mode",s=80)
+                 color='cyan', marker='^', s=80)# label="mode")
 
 
 
