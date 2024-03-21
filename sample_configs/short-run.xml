@@ -25,6 +25,8 @@
         <branch_relaxer_parameters>False</branch_relaxer_parameters>
         <num_gene_trees_per_species_tree>50</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
+        <gene_div_time_distribution_parameters>FALSE</gene_div_time_distribution_parameters>
+        <!--<gene_div_time_distribution_parameters>expon,0.5,5.27</gene_div_time_distribution_parameters>-->
     </GeneTree>
     <SequenceEvolution>
         <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
@@ -34,7 +36,7 @@
     <Histogram>
         <maxKs>1</maxKs>
     </Histogram>
-    <StopAtStep>999</StopAtStep>
+    <StopAtStep>3</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>
     <IncludeVisuals>True</IncludeVisuals>
 </metadata>

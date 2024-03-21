@@ -1,5 +1,5 @@
 import os
-from scipy.stats import norm,lognorm, expon
+from scipy.stats import lognorm, expon
 import numpy as np
 from matplotlib import pyplot as plt
 from Bio import Phylo
@@ -28,6 +28,7 @@ def get_mode_and_cm(xs, pdfs):
     center_of_mass = weighted_mass / weights
     return center_of_mass, x_value_of_ymax
 
+
 def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
                                                    distribution_parameters, include_vis):
     # for 90% < 0.55MY
@@ -43,7 +44,13 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     #start = -4.1
     #loc=start
     start=0
-    loc=0
+
+    time_span_MY = time_span_MY
+    bin_size = 0.1
+    xaxis_limit = time_span_MY + 0.1
+
+    xs = np.arange(start, time_span_MY+ 0.01, bin_size)
+
     distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
     shape_parameter = float(distribution_parameters[1])
     xscale = float(distribution_parameters[2])
@@ -52,21 +59,21 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
         distribution_fxn=lognorm
     elif (distribution_name=="EXPONENTIAL") or (distribution_name=="EXPON") :
         distribution_fxn=expon
+    elif (distribution_name == "IMPULSE"):
+        distribution_fxn = "IMPULSE"
     else:
-        message="The distributioon requested is not supported"
+        message="The distribution requested is not supported"
         log.write_to_log(message)
         raise ValueError(message)
 
-    #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
-    random_draws_from_distribution = distribution_fxn.rvs(shape_parameter, size=num_gt_needed, scale=xscale, loc=loc)
+    if distribution_fxn == "IMPULSE":
+        random_draws_from_distribution = [0 for i in range(0, num_gt_needed)]
+        ys = [1 if x == 0 else 0 for x in xs]
+    else:
+        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+        random_draws_from_distribution = distribution_fxn.rvs(shape_parameter, size=num_gt_needed, scale=xscale)
+        ys = [distribution_fxn.pdf(x, shape_parameter, scale=xscale) for x in xs]
 
-    #if include_vis:
-    time_span_MY = time_span_MY
-    bin_size = 0.1
-    xaxis_limit = time_span_MY + 0.1
-
-    xs = np.arange(start, time_span_MY+ 0.01, bin_size)
-    ys = [distribution_fxn.pdf(x,shape_parameter, scale=xscale,loc=loc ) for x in xs]
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -76,8 +83,8 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     ax.scatter(x_value_of_ymax, 0.01,
                             color='darkgreen', marker='^', label="mode="+str(round(x_value_of_ymax,2)), s=100)
 
-    out_file_name = os.path.join(out_folder, "Distribution in bifurcation time of gene trees for orthologs.png")
-    title='Distribution in bifurcation time of gene trees for orthologs'
+    out_file_name = os.path.join(out_folder, distribution_name + " Distribution in bifurcation time of gene trees for orthologs.png")
+    title= distribution_name + ' Distribution in bifurcation time of gene trees for orthologs'
     fig.suptitle(title)
     ax.set(xlabel="MYA")
     ax.set(xlim=[start, xaxis_limit])
@@ -90,9 +97,9 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     if include_vis:
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
         bins = np.arange(start-x_value_of_ymax, xaxis_limit-x_value_of_ymax, bin_size)
-        ax.hist(bifurcaton_variations, density=True, bins=bins, alpha=0.2, label='re-centered distribution of simulated data')
-        out_file_name = os.path.join(out_folder, "Re-centered Distribution in bifurcation time of gene trees for orthologs.png")
-        title='Distribution in bifurcation time of gene trees for orthologs'
+        ax.hist(bifurcaton_variations, density=True, bins=bins, alpha=0.2, label='distribution centered at mode')
+        out_file_name = os.path.join(out_folder, "Distribution " + distribution_name + " of bifurcation time of gene trees for orthologs.png")
+        title= distribution_name + ' Distribution in bifurcation time of gene trees for orthologs'
         fig.suptitle(title)
         ax.set(xlabel="MYA")
         ax.set(xlim=[start-x_value_of_ymax, xaxis_limit-x_value_of_ymax])
@@ -101,6 +108,8 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
         plt.close()
 
     return bifurcaton_variations
+
+
 
 def make_randomized_gene_trees(polyploid, species_tree_newick):
 
@@ -118,34 +127,32 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
 
     if polyploid.is_auto():
         log.write_to_log("All gene trees diverge at the same instant for an autopolyploid. Nothing to do here.")
-        variations_in_gene_div_time = [0 for i in range(0,num_gene_trees_needed)]
+        gene_divergence_distribution_parameters = ["impulse",1,1]
     elif not gene_divergence_distribution_parameters:
         log.write_to_log("Config specifies no variation in divergence time for orthologs.")
-        variations_in_gene_div_time = [0 for i in range(0,num_gene_trees_needed)]
+        gene_divergence_distribution_parameters = ["impulse",1,1]
     else:
         log.write_to_log("Calculating randomized divergence times for gene trees within allopolyploid species tree")
-        variations_in_gene_div_time = get_per_gene_tree_variation_on_speciation_time(
+
+    variations_in_gene_div_time = get_per_gene_tree_variation_on_speciation_time(
             subfolder,num_gene_trees_needed,gene_divergence_distribution_parameters, include_visualizations)
 
     gene_tree_newicks_by_tree_name={}
     for i in range(0, num_gene_trees_needed):
 
         gt_name = "GeneTree" +  gt_index_formatter.format(i)
-        if polyploid.is_auto() or (not gene_divergence_distribution_parameters):
-            #In this case, the gene trees will be identical to the species tree.
-            gene_tree_newicks_by_tree_name[gt_name] = species_tree_newick
-            continue
-
-        #else, for an allopolyploid...we do something more fancy.
-
-        #perturb parent species tree
         variation=round(variations_in_gene_div_time[i],3)
-        gene_div_time=base_speciation_time+variation
-        [new_newick_string]= species_tree_maker.get_example_allopolyploid_tree(time_span,gene_div_time)
 
+        if gene_divergence_distribution_parameters[0] == "impulse":
+            #In this case, the gene trees will be identical to the species tree.
+            new_newick_string = species_tree_newick
 
-        gene_tree_newicks_by_tree_name[gt_name ]=new_newick_string
+        else:    #else, for an allopolyploid...we do something more fancy.
+            #perturb parent species tree
+            gene_div_time=base_speciation_time+variation
+            [new_newick_string] = species_tree_maker.get_example_allopolyploid_tree(time_span,gene_div_time)
 
+        gene_tree_newicks_by_tree_name[gt_name]=new_newick_string
         delta_path = os.path.join(subfolder, "variations_in_div_time.txt")
         with open(delta_path, 'a') as f:
             f.writelines(str(variation) + "\n")

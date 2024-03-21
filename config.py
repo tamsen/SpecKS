@@ -9,7 +9,7 @@ class SpecKS_config:
     # path_to_sagephy = "/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar"
 
     full_sim_time = 500
-    divergence_distribution_parameters=['logrorm',0.5, 5.27]
+    divergence_distribution_parameters=['lognorm',0.5, 5.27]
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
     branch_relaxation_parameters = ["ACRY07", "1", "0.000001"]

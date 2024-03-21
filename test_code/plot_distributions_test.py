@@ -2,7 +2,7 @@ import math
 import os
 import statistics
 import unittest
-from scipy.stats import norm,lognorm
+from scipy.stats import norm,lognorm,expon
 from matplotlib import pyplot as plt
 from scipy import stats
 
@@ -10,10 +10,17 @@ from results_viewer import curve_fitting
 import numpy as np
 
 
-class LognormTestCase(unittest.TestCase):
+class DistributionsTestCase(unittest.TestCase):
+
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+    def test_distributions(self):
+
+        fxns_to_try=[lognorm,expon]
+        for fxn in fxns_to_try:
+            self.test_a_distribution(fxn)
 
     #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
-    def test_a_lognorm(self):
+    def test_a_distribution(self,distribution_fxn):
         test_out = "test_out"
         if not os.path.exists(test_out):
             os.makedirs(test_out)
@@ -23,7 +30,7 @@ class LognormTestCase(unittest.TestCase):
         xs = np.arange(0, max_X + 0.01, bin_size)
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 
-        title='lognorm'
+        title=str(type(distribution_fxn))
         fig.suptitle(title)
 
         #for ~0.5 MY spread
@@ -36,8 +43,8 @@ class LognormTestCase(unittest.TestCase):
         shape_parameter=0.5
         xscale = 5.27
         #cdfs = [lognorm.cdf(xscale*x,shape_parameter) for x in xs]
-        ys = [lognorm.pdf(x,shape_parameter, scale=xscale ) for x in xs]
-        cdfs = [lognorm.cdf(x,shape_parameter, scale=xscale ) for x in xs]
+        ys = [distribution_fxn.pdf(x,shape_parameter, scale=xscale ) for x in xs]
+        cdfs = [distribution_fxn.cdf(x,shape_parameter, scale=xscale ) for x in xs]
         ax.set(xlabel="MYA")
 
         center_of_mass, x_value_of_ymax, xs_lt_90, ys_lt_90 = self.get_mode_and_cm(cdfs, xs, ys)
@@ -65,19 +72,19 @@ class LognormTestCase(unittest.TestCase):
         #         transform=ax.transAxes)
 
         ax.legend()
-        out_file_name = os.path.join(test_out, title+"_s" + str(shape_parameter) + ".png")
+        out_file_name = os.path.join(test_out, title+"_distribution_s" + str(shape_parameter) + ".png")
         plt.savefig(out_file_name)
         plt.close()
 
         xaxis_limit=max_X + 0.1
-        r = lognorm.rvs(shape_parameter, size=1000, scale=xscale)
+        r = distribution_fxn.rvs(shape_parameter, size=1000, scale=xscale)
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
         bins = np.arange(0, xaxis_limit, bin_size)
         ax.hist(r, density=True, bins=bins, alpha=0.2, label='simulated draws')
         plt.plot(xs,ys,label='original pdf')
         #ax.set_xlim([x[0], x[-1]])
         #ax.legend(loc='best', frameon=False)
-        out_file_name = os.path.join(test_out,"Testing"+"_s" + str(shape_parameter) + ".png")
+        out_file_name = os.path.join(test_out,title+"_simulation_s" + str(shape_parameter) + ".png")
         ax.set(xlim=[0, xaxis_limit])
         ax.legend()
         plt.savefig(out_file_name)
