@@ -1,6 +1,6 @@
 import log
 from pipeline_modules import gene_tree_GBD_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
-    species_tree_maker, gene_shedder, results_organizer, gene_tree_maker
+    species_tree_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_maker
 
 from Bio import Phylo
 from io import StringIO
@@ -20,6 +20,12 @@ def run_allosim(polyploid):
 
     log.write_to_log("\n\n{0}. Make gene trees given gradual speciation".format(polyploid.analysis_step_num))
     base_gene_tree_newicks_by_tree_name = gene_tree_maker.make_randomized_gene_trees(polyploid,species_trees[0])
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
+    log.write_to_log("\n\n{0}. Test custom GBD model".format(polyploid.analysis_step_num))
+    foo = custom_GBD_maker.run_custom_GBD_model(polyploid, only_simulation_leg,
+                                                                     base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
