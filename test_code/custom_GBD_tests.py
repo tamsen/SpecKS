@@ -19,12 +19,10 @@ class TestCustomGBD(unittest.TestCase):
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
         duplicate_idx = 0
-        self.iterate_though_clades(tree.clade, nodes_to_add_by_branch_name, internal_node_idx, duplicate_idx)
 
-
-        new_branch_inx=0
-        #tree.prune("P1")
-        duplicate_idx=0
+        end_of_sim=100
+        self.recursively_get_new_branches_to_add(tree.clade, nodes_to_add_by_branch_name, internal_node_idx, duplicate_idx)
+        self.prune_any_branches_that_would_be_dead_before_the_end_of_the_sim(nodes_to_add_by_branch_name, end_of_sim)
 
         for branch_name, branches_to_add in nodes_to_add_by_branch_name.items():
 
@@ -34,10 +32,6 @@ class TestCustomGBD(unittest.TestCase):
             for new_branch_data in branches_to_add:
                 self.split_branch_with_this_name(branch_name, internal_node_idx,
                                                  new_branch_data, tree.clade.clades)
-
-            #new_n=self.write_new_newick(tree)
-            #print("branch:\t" +  branch_name)
-            #print("new_newick:\t" + new_n)
 
         print("new tree")
         Phylo.draw_ascii(tree)
@@ -94,7 +88,7 @@ class TestCustomGBD(unittest.TestCase):
             distance_traveled_along_branch = distance_traveled_along_branch + relative_start_pos
             duplicate_idx= duplicate_idx+1
 
-        return list_of_nodes_to_add
+        return list_of_nodes_to_add, duplicate_idx
 
     def write_new_newick(self, tree):
         handle = StringIO()
@@ -102,7 +96,30 @@ class TestCustomGBD(unittest.TestCase):
         new_newick = handle.getvalue()
         return new_newick
 
-    def iterate_though_clades(self, clade, nodes_to_add_by_branch_name, internal_node_idx, duplicate_idx):
+    def prune_any_branches_that_would_be_dead_before_the_end_of_the_sim(self, nodes_to_add_by_branch_name, end_of_sim):
+
+        print("pruning duplicates")
+        pruned_nodes_to_add_by_branch_name={}
+        branches=nodes_to_add_by_branch_name.keys()
+        for parent_branch, list_of_nodes_to_add_by_branch in nodes_to_add_by_branch_name.items():
+
+            for duplicate_branch in list_of_nodes_to_add_by_branch:
+                print("duplicate_branch_name:\t" + duplicate_branch.new_branch_name)
+                print("relative_start_time:\t" + str(duplicate_branch.relative_start_time))
+                print("absolute_end_time:\t" + str(duplicate_branch.absolute_end_time))
+                print("sim_end_time:\t" + str(end_of_sim))
+                print("\t")
+
+                if end_of_sim > duplicate_branch.absolute_end_time:
+                    print("killing branch.\t")
+                else:
+                    print("keeping branch.\t")
+                    if parent_branch not in pruned_nodes_to_add_by_branch_name:
+                        pruned_nodes_to_add_by_branch_name[parent_branch]=[]
+                    pruned_nodes_to_add_by_branch_name[parent_branch].append(duplicate_branch))
+
+
+    def recursively_get_new_branches_to_add(self, clade, nodes_to_add_by_branch_name, internal_node_idx, duplicate_idx):
 
         for c in clade.clades:
 
@@ -113,10 +130,10 @@ class TestCustomGBD(unittest.TestCase):
 
 
             print(c.name + ":\t" + str(c.branch_length))
-            nodes_to_add_to_branch = self.get_nodes_to_add_to_branch(c,duplicate_idx)
+            nodes_to_add_to_branch, duplicate_idx = self.get_nodes_to_add_to_branch(c,duplicate_idx)
             print("nodes_to_add_to_branch:" + str(nodes_to_add_to_branch))
             nodes_to_add_by_branch_name[c.name] = nodes_to_add_to_branch
-            self.iterate_though_clades(c, nodes_to_add_by_branch_name, internal_node_idx,duplicate_idx)
+            self.recursively_get_new_branches_to_add(c, nodes_to_add_by_branch_name, internal_node_idx, duplicate_idx)
 
 
 if __name__ == '__main__':
@@ -127,10 +144,10 @@ class node_to_add():
     parent_branch_name = ""
     new_branch_name = ""
     relative_start_time = 0
-    relative_end_time = 0
+    absolute_end_time = 0
 
-    def __init__(self, parent_branch_name, new_branch_name, relative_start_time, relative_end_time):
+    def __init__(self, parent_branch_name, new_branch_name, relative_start_time, absolute_end_time):
         self.parent_branch_name = parent_branch_name
         self.relative_start_time = relative_start_time
-        self.relative_end_time = relative_end_time
+        self.absolute_end_time = absolute_end_time
         self.new_branch_name = new_branch_name
