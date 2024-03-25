@@ -44,8 +44,11 @@ class TestCustomGBD(unittest.TestCase):
         #so, expon shape_factor= 0.6731
         #SSD_life_spans=expon.rvs(0.6731,size=max_number_gene_births,random_state=4)
         SSD_life_spans = expon.rvs(10, size=max_number_gene_births, random_state=4)
-        SSD_time_between_gene_birth_events=expon.rvs(mean_time_between_gene_births,
-                                                     size=max_number_gene_births,random_state=4)
+        #SSD_time_between_gene_birth_events=expon.rvs(mean_time_between_gene_births,
+        #                                             size=max_number_gene_births,random_state=4)
+
+        SSD_life_spans=[30 for r in range(0,max_number_gene_births)]
+        SSD_time_between_gene_birth_events=[10 for r in range(0,max_number_gene_births)]
 
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
@@ -70,6 +73,9 @@ class TestCustomGBD(unittest.TestCase):
         print("adding the new genes.. ")
         for branch_name, branches_to_add in retained_nodes_by_branch_name.items():
 
+            if branch_name=='O':
+                branches_to_add= []
+
             print("\nFor branch "  + branch_name)
             for new_branch_data in branches_to_add:
                 self.split_branch_with_this_name(branch_name, internal_node_idx,
@@ -77,8 +83,14 @@ class TestCustomGBD(unittest.TestCase):
 
         print("new tree")
         Phylo.draw_ascii(tree)
-        self.assertEqual(True, False)  # add assertion here
+        #self.assertEqual(True, False)  # add assertion here
 
+        clades=tree.clade.clades
+        for c in clades:
+                if c.name == "O":
+                    print("length of O = " + str(tree.distance(c)))
+
+                    self.assertEqual(100, tree.distance(c))  # add assertion here
     def split_branch_with_this_name(self, branch_name, internal_node_idx, new_branch_data, clades):
 
         for c in clades:
@@ -134,7 +146,8 @@ class TestCustomGBD(unittest.TestCase):
         list_of_nodes_to_add = []
 
         #how long since the last gene birth for this gene family
-        distance_traveled_along_branch = random.randint(0, int(SSD_time_between_gene_birth_events[randomness_idx]))
+        #distance_traveled_along_branch = random.randint(0, int(SSD_time_between_gene_birth_events[randomness_idx]))
+        distance_traveled_along_branch = 15
         print("random start:\t" + str( distance_traveled_along_branch))
 
         while distance_traveled_along_branch < child_branch_length:
