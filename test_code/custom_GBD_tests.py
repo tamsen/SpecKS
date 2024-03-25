@@ -73,10 +73,6 @@ class TestCustomGBD(unittest.TestCase):
         print("adding the new genes.. ")
         for branch_name, branches_to_add in retained_nodes_by_branch_name.items():
 
-            if branch_name=='O':
-                branches_to_add= []
-            else:
-                branches_to_add= [branches_to_add[0],branches_to_add[1]]
             print("\nFor branch "  + branch_name)
             for new_branch_data in branches_to_add:
                 self.recursively_split_branch_with_this_name(tree, branch_name, internal_node_idx,
