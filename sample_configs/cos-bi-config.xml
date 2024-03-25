@@ -10,11 +10,12 @@
                 <SPC_time_MYA>70</SPC_time_MYA>
                 <WGD_time_MYA>65</WGD_time_MYA>
          </polyploid>
+        <!--
         <polyploid>
                 <name>Auto1_S070W070</name>
                 <SPC_time_MYA>070</SPC_time_MYA>
                 <WGD_time_MYA>070</WGD_time_MYA>
-        </polyploid>
+        </polyploid>-->
         <full_sim_time>100</full_sim_time>
     </SpeciesTree>
     <GeneTree>
