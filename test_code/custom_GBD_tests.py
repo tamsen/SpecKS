@@ -75,11 +75,12 @@ class TestCustomGBD(unittest.TestCase):
 
             if branch_name=='O':
                 branches_to_add= []
-
+            else:
+                branches_to_add= [branches_to_add[0],branches_to_add[1]]
             print("\nFor branch "  + branch_name)
             for new_branch_data in branches_to_add:
-                self.split_branch_with_this_name(branch_name, internal_node_idx,
-                                                 new_branch_data, tree.clade.clades)
+                self.recursively_split_branch_with_this_name(tree, branch_name, internal_node_idx,
+                                                             new_branch_data, tree.clade.clades)
 
         print("new tree")
         Phylo.draw_ascii(tree)
@@ -91,21 +92,36 @@ class TestCustomGBD(unittest.TestCase):
                     print("length of O = " + str(tree.distance(c)))
 
                     self.assertEqual(100, tree.distance(c))  # add assertion here
-    def split_branch_with_this_name(self, branch_name, internal_node_idx, new_branch_data, clades):
+    def recursively_split_branch_with_this_name(self, full_tree, branch_name, internal_node_idx, new_branch_data, clades):
 
         for c in clades:
 
             if c.name == branch_name:
 
-                print("found "+ branch_name)
-
+                print("\n\nfound "+ branch_name)
+                print("new branch data: ")
+                new_branch_data.print_data()
                 original_branch_length=c.branch_length
-                abs_distance_since_the_last_split_on_this_branch=new_branch_data.time_between_splits
-                print("original branch length " + str(c.branch_length))
+                original_parent_branch_end=full_tree.distance(c)
+                original_parent_branch_start=full_tree.distance(c)-original_branch_length
+
+                new_branch_starts_here=new_branch_data.absolute_start_time
+                relative_new_branch_start=new_branch_starts_here-original_parent_branch_start
+
+
+                print("original parent branch length " + str(original_branch_length))
+                print("abs original parent branch start " + str(original_parent_branch_start)) #shoudl be ~26 for P2
+                print("relative start to new child branch " + str(new_branch_data.relative_start_time))
+                print("abs new child branch start (calculated)" + str(original_parent_branch_start+new_branch_data.relative_start_time))
+                print("abs new child branch start (saved)" + str(new_branch_data.absolute_start_time))
+
+                child_branch_length=original_parent_branch_end-new_branch_data.absolute_start_time
+                print("child branch length (calculated from abs) " + str(child_branch_length))
+                print("abs new child branch start (saved)" + str(new_branch_data.absolute_start_time))
+
                 #https://biopython.org/docs/1.75/api/Bio.Phylo.BaseTree.html
-                where_to_place_split= new_branch_data.relative_start_time-abs_distance_since_the_last_split_on_this_branch
-                new_branch_length_after_split = (original_branch_length-
-                                                 where_to_place_split)
+                #print("where_to_place_split (abs coords) " + str(new_branch_starts_here))
+
 
                 #c.split:
                 #New clades have the given branch_length and the same name as this clade’s
@@ -113,9 +129,9 @@ class TestCustomGBD(unittest.TestCase):
                 # a clade named “A” produces sub-clades named “A0” and “A1”.
                 # If the clade has no name, the prefix “n” is used for child nodes, e.g. “n0” and “n1”.
 
-                c.split(n=2, branch_length=new_branch_length_after_split)
-                c.branch_length=where_to_place_split
-                print("branch length after splitting makes internal node at " + str(c.branch_length))
+                c.split(n=2, branch_length=child_branch_length) #new_branch_data.relative_start_time)
+                c.branch_length=original_branch_length-child_branch_length
+
                 c.name="internal_branch_" + str(internal_node_idx)
                 c.clades[0].name=branch_name
                 c.clades[1].name = new_branch_data.new_branch_name
@@ -129,7 +145,7 @@ class TestCustomGBD(unittest.TestCase):
                 #add distave since last duplication gene to new_branch_data
                 return internal_node_idx
 
-            self.split_branch_with_this_name(branch_name, internal_node_idx,  new_branch_data, c.clades)
+            self.recursively_split_branch_with_this_name(full_tree, branch_name, internal_node_idx, new_branch_data, c.clades)
 
 
 
@@ -155,9 +171,10 @@ class TestCustomGBD(unittest.TestCase):
             relative_start_pos = distance_traveled_along_branch
             relative_end_pos = relative_start_pos + SSD_life_spans[randomness_idx]
             absolute_end_time = parents_distance_from_root + relative_end_pos
+            absolute_start_time = parents_distance_from_root + relative_start_pos
             new_branch_name=child_branch_name+ "_duplicate_" + str(duplicate_idx)
             new_node = node_to_add(child_branch_name, new_branch_name,
-                                   relative_start_pos, absolute_end_time, jump_to_next_event)
+                                   relative_start_pos, absolute_end_time, absolute_start_time, jump_to_next_event)
             list_of_nodes_to_add.append(new_node)
             new_node.print_data()
             jump_to_next_event=SSD_time_between_gene_birth_events[randomness_idx]
@@ -242,12 +259,14 @@ class node_to_add():
     relative_start_time = 0
     absolute_end_time = 0
     time_between_splits = 0
-
+    absolute_start_time = 0
     def __init__(self, parent_branch_name, new_branch_name,
-                 relative_start_time, absolute_end_time, time_between_splits):
+                 relative_start_time, absolute_end_time,
+                 absolute_start_time,time_between_splits):
         self.parent_branch_name = parent_branch_name
         self.relative_start_time = relative_start_time
         self.absolute_end_time = absolute_end_time
+        self.absolute_start_time = absolute_start_time
         self.new_branch_name = new_branch_name
         self.time_between_splits = time_between_splits
 
