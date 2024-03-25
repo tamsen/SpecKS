@@ -44,11 +44,11 @@ class TestCustomGBD(unittest.TestCase):
         #so, expon shape_factor= 0.6731
         #SSD_life_spans=expon.rvs(0.6731,size=max_number_gene_births,random_state=4)
         SSD_life_spans = expon.rvs(10, size=max_number_gene_births, random_state=4)
-        #SSD_time_between_gene_birth_events=expon.rvs(mean_time_between_gene_births,
-        #                                             size=max_number_gene_births,random_state=4)
+        SSD_time_between_gene_birth_events=expon.rvs(mean_time_between_gene_births,
+                                                     size=max_number_gene_births,random_state=4)
 
-        SSD_life_spans=[30 for r in range(0,max_number_gene_births)]
-        SSD_time_between_gene_birth_events=[10 for r in range(0,max_number_gene_births)]
+        #SSD_life_spans=[30 for r in range(0,max_number_gene_births)]
+        #SSD_time_between_gene_birth_events=[10 for r in range(0,max_number_gene_births)]
 
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
