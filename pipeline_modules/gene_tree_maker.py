@@ -7,7 +7,7 @@ from io import StringIO
 
 import log
 from pipeline_modules import species_tree_maker
-from pipeline_modules.gene_tree_GBD_maker import get_gt_index_format
+from pipeline_modules.sagephy_GBD_model import get_gt_index_format
 
 def get_mode_and_cm(xs, pdfs):
 

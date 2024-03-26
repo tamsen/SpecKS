@@ -1,6 +1,6 @@
 import unittest
 
-from pipeline_modules import gene_tree_GBD_maker
+from pipeline_modules import sagephy_GBD_model
 
 
 class GeneTreeMakerTests(unittest.TestCase):

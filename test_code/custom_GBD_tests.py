@@ -82,9 +82,11 @@ class TestCustomGBD(unittest.TestCase):
         Phylo.draw_ascii(tree)
         #self.assertEqual(True, False)  # add assertion here
 
+        print(tree_to_newick(tree))
+
         clades=tree.clade.clades
         for c in clades:
-                if c.name == "O":
+                if c.name in["O","P1","P2"]:
                     print("length of O = " + str(tree.distance(c)))
 
                     self.assertEqual(100, tree.distance(c))  # add assertion here
@@ -248,6 +250,12 @@ class TestCustomGBD(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
+
+def tree_to_newick(tree):
+        handle = StringIO()
+        Phylo.write(tree, handle, "newick")
+        newick = handle.getvalue()
+        return newick
 
 class node_to_add():
     parent_branch_name = ""

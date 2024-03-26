@@ -23,7 +23,7 @@
      <!--   <dup_rate_parameters>0.001359</dup_rate_parameters>
         <loss_rate_parameters>0.001359</loss_rate_parameters>-->
         <branch_relaxer_parameters>False</branch_relaxer_parameters>
-        <num_gene_trees_per_species_tree>50</num_gene_trees_per_species_tree>
+        <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
         <gene_div_time_distribution_parameters>expon,0.5,5.27</gene_div_time_distribution_parameters>
         <!--<gene_div_time_distribution_parameters>expon,0.5,5.27</gene_div_time_distribution_parameters>-->

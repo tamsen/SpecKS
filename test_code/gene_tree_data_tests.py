@@ -3,7 +3,7 @@ import unittest
 from io import StringIO
 from Bio import Phylo
 
-from pipeline_modules import gene_tree_GBD_maker, gene_tree_data
+from pipeline_modules import sagephy_GBD_model, gene_tree_data
 #from pipeline_modules.gene_tree_maker import unprune_outgroup_2
 from pipeline_modules.gene_tree_data import unprune_outgroup
 

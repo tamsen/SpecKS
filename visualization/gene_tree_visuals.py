@@ -5,7 +5,7 @@ from io import StringIO
 from Bio import Phylo
 from matplotlib import pyplot as plt
 import matplotlib.colors as mcolors
-from pipeline_modules import gene_tree_GBD_maker, species_tree_maker
+from pipeline_modules import sagephy_GBD_model, species_tree_maker
 from visualization import tree_utils, tree_visuals_by_phylo, combined_tree_view
 from visualization.combined_tree_view import tree_viz_data, plot_combined_tree_view
 

@@ -1,5 +1,5 @@
 import log
-from pipeline_modules import gene_tree_GBD_maker, ks_histogramer, ks_calculator, gene_tree_relaxer, gene_evolver, \
+from pipeline_modules import sagephy_GBD_model, ks_histogramer, ks_calculator, sagephy_tree_relaxer, gene_evolver, \
     species_tree_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_maker
 
 from Bio import Phylo
