@@ -1,13 +1,21 @@
 import random
 import unittest
+import os
+from matplotlib import pyplot as plt
+import numpy as np
 from io import StringIO
 from Bio import Phylo
 from scipy.stats import lognorm, expon, poisson
-from pipeline_modules import custom_GBD_maker
+from pipeline_modules import custom_GBD_model
 
 
 class TestCustomGBD(unittest.TestCase):
     def test_custom_GBD_model(self):
+
+        test_out="./test_out"
+        if not os.path.exists(test_out):
+            os.makedirs(test_out)
+
         base_gene_tree_newick = '(O:100, (P1:73.36, P2:73.36): 26.64);'
         
         #Gene family evolution in green plants with emphasis on the origination and evolution of Arabidopsis thaliana genes
@@ -34,21 +42,24 @@ class TestCustomGBD(unittest.TestCase):
 
         total_tree_length=tree.total_branch_length()
         max_number_gene_births=int(total_tree_length*gene_birth_rate*1.5)+10 # the one x1.5 is just to make sure
+        max_number_gene_births=100
 
-        #TODO, print out these distributions and make sure they really do what I want
 
-        #SSD_life_span_halflife = 1 #MY
-        # => 0.5A=Ae^kt, at t=1MY
-        # kt=ln(1/2), set t=1
-        #=k = ln(0.5)t = -0.6931
-        #so, expon shape_factor= 0.6731
-        #SSD_life_spans=expon.rvs(0.6731,size=max_number_gene_births,random_state=4)
-        SSD_life_spans = expon.rvs(10, size=max_number_gene_births, random_state=4)
-        SSD_time_between_gene_birth_events=expon.rvs(mean_time_between_gene_births,
-                                                     size=max_number_gene_births,random_state=4)
+        #In the expon fxn, scale=1/k, k being the rate parameter.
+        SSD_life_span= 1 #MY
+        #loc=mode of data (location of peak of distribution), scale=location of average of data (cm of distribution)
+        SSD_life_spans = expon.rvs(loc=0, scale=SSD_life_span,size=max_number_gene_births, random_state=4)
+        mu_MY=mean_time_between_gene_births
+        #mu_KY=mean_time_between_gene_births*1000.0
+        #SSD_time_between_gene_birth_events=[x/1000.0 for x in poisson.rvs(mu_KY,size=max_number_gene_births,random_state=4)]
+        SSD_time_between_gene_birth_events = poisson.rvs(mu_MY, size=max_number_gene_births, random_state=4)
 
         #SSD_life_spans=[30 for r in range(0,max_number_gene_births)]
         #SSD_time_between_gene_birth_events=[10 for r in range(0,max_number_gene_births)]
+
+        visualize_distribution(SSD_life_spans,"SSD_life_spans", SSD_life_span, test_out)
+        visualize_distribution(SSD_time_between_gene_birth_events,
+                               "SSD_time_between_gene_birth_events", mean_time_between_gene_births,test_out)
 
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
@@ -245,6 +256,43 @@ class TestCustomGBD(unittest.TestCase):
             self.recursively_get_new_branches_to_add(tree,child_clade, nodes_to_add_by_branch_name,
                                                      SSD_time_between_gene_birth_events,
                                                      SSD_life_spans,internal_node_idx, duplicate_idx,randomness_idx)
+
+def visualize_distribution(data, title, theoretical_mean, out_folder):
+
+    data_sum=sum(data)
+    mean=data_sum/len(data)
+    raw_data_plot_title=title +"_raw_data"
+    hist_data_plot_title=title +"_hist_data"
+    xs = [i for i in range(0, len(data))]
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    plt.scatter(xs, data, label=raw_data_plot_title, marker="o", color='r')
+    plt.axhline(y=mean, color='b', linestyle='-', label="sim avg at " + str(mean))
+    plt.axhline(y=mean, color='y', linestyle='--', label="expected avg at " + str(theoretical_mean))
+    plt.title(raw_data_plot_title)
+    plt.legend()
+    ax.set(ylabel="MY")
+    ax.set(xlabel="datapoints")
+    file_to_save = os.path.join(out_folder, raw_data_plot_title+".png")
+    plt.savefig(file_to_save)
+    plt.cla()
+    plt.close()
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    bin_size=1
+    bins = np.arange(0, max(data), bin_size)
+    ax.hist(data, density=True, bins=bins, alpha=0.2, label=hist_data_plot_title)
+    ax.set(ylabel="density")
+    ax.set(xlabel="MY (bins)")
+    plt.axvline(x=mean, color='b', linestyle='-', label="sim avg at " + str(mean))
+    plt.axvline(x=mean, color='y', linestyle='--', label="expected avg at " + str(theoretical_mean))
+    plt.title(raw_data_plot_title)
+    plt.legend()
+    file_to_save = os.path.join(out_folder,hist_data_plot_title+".png")
+    plt.savefig(file_to_save)
+    plt.cla()
+    plt.close()
+
 
 
 if __name__ == '__main__':

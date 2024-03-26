@@ -1,6 +1,6 @@
 import log
 from pipeline_modules import sagephy_GBD_model, ks_histogramer, ks_calculator, sagephy_tree_relaxer, gene_evolver, \
-    species_tree_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_maker
+    species_tree_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_model
 
 from Bio import Phylo
 from io import StringIO
@@ -24,19 +24,19 @@ def run_allosim(polyploid):
         return
 
     log.write_to_log("\n\n{0}. Test custom GBD model".format(polyploid.analysis_step_num))
-    foo = custom_GBD_maker.run_custom_GBD_model(polyploid, only_simulation_leg,
+    foo = custom_GBD_model.run_custom_GBD_model(polyploid, only_simulation_leg,
                                                                      base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    gene_tree_results_by_tree_name = gene_tree_GBD_maker.run_sagephy(polyploid, only_simulation_leg,
+    gene_tree_results_by_tree_name = sagephy_GBD_model.run_sagephy(polyploid, only_simulation_leg,
                                                                  base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, only_simulation_leg,
+    relaxed_gene_tree_results = sagephy_tree_relaxer.relax(polyploid, only_simulation_leg,
                                                     gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
