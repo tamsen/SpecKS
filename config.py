@@ -13,6 +13,8 @@ class SpecKS_config:
     dup_rate_parameters = (4, 2460)
     loss_rate_parameters = (4, 2053)
     branch_relaxation_parameters = ["ACRY07", "1", "0.000001"]
+    mean_gene_birth_rate = 0.001359
+    mean_SSD_life_span= 1 #MY
     num_gene_trees_per_species_tree = 4  # 10
     num_replicates_per_gene_tree = 3  # 10
     num_codons = 10  # 1000
@@ -97,6 +99,10 @@ class SpecKS_config:
                         self.dup_rate_parameters = parse_tuple_string(incoming_txt)
                     if (incoming_tag == "loss_rate_parameters"):
                         self.loss_rate_parameters = parse_tuple_string(incoming_txt)
+                    if (incoming_tag == "mean_gene_birth_rate_GpMY"):
+                        self.mean_gene_birth_rate = parse_float_or_false(incoming_txt)
+                    if (incoming_tag == "mean_SSD_life_span_MY"):
+                        self.mean_SSD_life_span = parse_float_or_false(incoming_txt)
                     if (incoming_tag == "branch_relaxer_parameters"):
                         self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
@@ -125,7 +131,11 @@ def parse_tuple_string(tuple_string):
         data = [float(s) for s in splat]
         return data
 
-
+def parse_float_or_false(input_string):
+    if input_string.upper() == "FALSE":
+        return False
+    else:
+        return float(input_string)
 def parse_comma_separated_values(input_string):
     if input_string.upper() == "FALSE":
         return False

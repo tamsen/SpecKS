@@ -30,7 +30,7 @@ def run_autosim(polyploid):
         return
 
     log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    relaxed_gene_tree_results = gene_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
+    relaxed_gene_tree_results = sagephy_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
                                                         gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return

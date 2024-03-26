@@ -329,6 +329,15 @@ class node_to_add():
         print("abs end time:\t" + str(self.absolute_end_time))
         print("jump:\t" + str(self.time_between_splits))
 
+    def data_to_string(self):
+        s1="~ data for new node " + self.new_branch_name + " ~"
+        s2="rel start pos:\t" + str(self.relative_start_time)
+        s3="abs end time:\t" + str(self.absolute_end_time)
+        s4="jump:\t" + str(self.time_between_splits)
+        s="\n".join([s1,s2,s3,s4])
+        return s
+
+
 def print_dict_of_node_to_add(dict_of_node_to_add):
 
     for branch_name, nodes_to_add in dict_of_node_to_add.items():

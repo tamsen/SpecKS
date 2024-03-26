@@ -4,6 +4,7 @@ import sys
 
 import allosim
 import autosim
+import allosim_old
 import config
 from datetime import datetime
 
@@ -30,6 +31,7 @@ def run_sim():
     for polyploid in list_of_polyploids:
 
         if polyploid.is_allo():
+            #allosim_old.run_allosim(polyploid)
             allosim.run_allosim(polyploid)
         else:
             autosim.run_autosim(polyploid)

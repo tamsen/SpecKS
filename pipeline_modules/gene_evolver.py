@@ -82,11 +82,12 @@ def write_evolver_commands(out_dir, template_evolver_control_file, evolver_versi
 
     if evolver_version_is_old:
 
-        X1 = Phylo.to_networkx(gene_tree_result.tree)
+        #X1 = Phylo.to_networkx(gene_tree_result.tree)
         # X2 = Phylo.to_networkx(test_tree)
-        nodes1 = list(X1.nodes)
+        #nodes1 = list(X1.nodes)
         # nodes2 = list(X2.nodes)
-        num_seq = len(nodes1)
+        #num_seq = len(nodes1)
+        num_seq = len(gene_tree_result.get_named_modes())
 
         # use len(nodes1) -1) for the species tree,
         # because the root counts as a clade, but we are not going to evolve it
@@ -212,7 +213,7 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
         gene_tree_subfolder = os.path.join(subfolder, gene_tree_result.gene_tree_name)
         os.makedirs(gene_tree_subfolder)
         evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
-        log.write_to_log("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
+        #log.write_to_log("gene tree file:\t " + gene_tree_result.gene_tree_file_name)
         #print("\t\tnewick:\t " + gene_tree_result.simple_newick)
         #print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
         #print("\t\tevolver tree length:\t " + str(evolver_tree_length))

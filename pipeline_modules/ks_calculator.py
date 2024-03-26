@@ -27,7 +27,7 @@ def evolver_out_to_sequences(evolver_out_file):
             if len(splat) < 1:
                 continue
 
-            if "_" not in line:
+            if len(line) < 10:
                 continue
 
             seq_name_aka_leaf_name = splat[0]
