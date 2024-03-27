@@ -46,15 +46,18 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     start=0
 
     time_span_MY = time_span_MY
-    bin_size = 0.1
-    xaxis_limit = time_span_MY + 0.1
 
-    xs = np.arange(start, time_span_MY+ 0.01, bin_size)
+    #xaxis_limit = time_span_MY + 0.1
 
     distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
     shape_parameter = float(distribution_parameters[1])
+    loc=float(distribution_parameters[1])
     xscale = float(distribution_parameters[2])
-
+    bin_size = min(0.1,xscale*.1)
+    xs = np.arange(start, bin_size*50+ 0.01, bin_size)
+    xaxis_limit = max(xs)
+    #for expon
+    #loc = 0, scale = mean_SSD_life_span
     if distribution_name=="LOGNORM":
         distribution_fxn=lognorm
     elif (distribution_name=="EXPONENTIAL") or (distribution_name=="EXPON") :
@@ -71,8 +74,8 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
         ys = [1 if x == 0 else 0 for x in xs]
     else:
         #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
-        random_draws_from_distribution = distribution_fxn.rvs(shape_parameter, size=num_gt_needed, scale=xscale)
-        ys = [distribution_fxn.pdf(x, shape_parameter, scale=xscale) for x in xs]
+        random_draws_from_distribution = distribution_fxn.rvs(loc=loc, size=num_gt_needed, scale=xscale)
+        ys = [distribution_fxn.pdf(x, loc=loc, scale=xscale) for x in xs]
 
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
@@ -82,12 +85,15 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     plt.plot(xs, ys, label='underlying distribution')
     ax.scatter(x_value_of_ymax, 0.01,
                             color='darkgreen', marker='^', label="mode="+str(round(x_value_of_ymax,2)), s=100)
+    ax.scatter(center_of_mass, 0.01,
+                            color='lightgreen', marker='^', label="mean="+str(round(center_of_mass,2)), s=100)
 
-    out_file_name = os.path.join(out_folder, distribution_name + " Distribution in bifurcation time of gene trees for orthologs.png")
+    out_file_name = os.path.join(out_folder, "Raw data " + distribution_name +
+                                 " Distribution in bifurcation time of gene trees for orthologs.png")
     title= distribution_name + ' Distribution in bifurcation time of gene trees for orthologs'
     fig.suptitle(title)
     ax.set(xlabel="MYA")
-    ax.set(xlim=[start, xaxis_limit])
+    ax.set(xlim=[start,xaxis_limit])
     ax.legend()
     plt.savefig(out_file_name)
     plt.close()
@@ -98,11 +104,14 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
         bins = np.arange(start-x_value_of_ymax, xaxis_limit-x_value_of_ymax, bin_size)
         ax.hist(bifurcaton_variations, density=True, bins=bins, alpha=0.2, label='distribution centered at mode')
-        out_file_name = os.path.join(out_folder, "Distribution " + distribution_name + " of bifurcation time of gene trees for orthologs.png")
-        title= distribution_name + ' Distribution in bifurcation time of gene trees for orthologs'
+        out_file_name = os.path.join(out_folder,
+                                     "Shifted distribution " + distribution_name + " of bifurcation time of gene trees for orthologs.png")
+        title= (distribution_name + ' Distribution in bifurcation time of gene trees for orthologs, subtracted '
+                +str(x_value_of_ymax))
         fig.suptitle(title)
         ax.set(xlabel="MYA")
         ax.set(xlim=[start-x_value_of_ymax, xaxis_limit-x_value_of_ymax])
+        #ax.set(xlim=[start - x_value_of_ymax, center_of_mass*2 - x_value_of_ymax])
         ax.legend()
         plt.savefig(out_file_name)
         plt.close()
