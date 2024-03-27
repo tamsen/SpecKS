@@ -59,12 +59,12 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation with NO GBD model, \nbut model gradual (~10MY)allopolyploid ortholog divergence'
+        plot_title='Simulation with custom GBD model, \nbut model gradual (~10MY) allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim5_spec_tree_5MY"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim6_spec_tree_5MY"
 
         #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
         #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
@@ -82,7 +82,7 @@ class MulitRunViewerTests(unittest.TestCase):
 
         max_Ks = 1.0
         bin_size = 0.01
-        for spec in species: #['outgroup']:#species:
+        for spec in species:#['outgroup']:#species:
             print(spec)
             for replicate in replicates:
                 for alg in algs:
@@ -93,6 +93,10 @@ class MulitRunViewerTests(unittest.TestCase):
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
                                          replicate, alg, params_by_polyploid, False, bin_size)
+
+                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                                         replicate, alg, params_by_polyploid,0.1, 0.001 )
 
         self.assertEqual(True,True)
 
