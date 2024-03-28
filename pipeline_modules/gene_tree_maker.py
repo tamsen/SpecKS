@@ -45,17 +45,13 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     #loc=start
     start=0
 
-    time_span_MY = time_span_MY
-
-    #xaxis_limit = time_span_MY + 0.1
-
     distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
-    shape_parameter = float(distribution_parameters[1])
     loc=float(distribution_parameters[1])
     xscale = float(distribution_parameters[2])
     bin_size = min(0.1,xscale*.1)
     xs = np.arange(start, bin_size*50+ 0.01, bin_size)
     xaxis_limit = max(xs)
+
     #for expon
     #loc = 0, scale = mean_SSD_life_span
     if distribution_name=="LOGNORM":
@@ -71,11 +67,24 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
 
     if distribution_fxn == "IMPULSE":
         random_draws_from_distribution = [0 for i in range(0, num_gt_needed)]
+        xs = np.arange(start, xaxis_limit + bin_size, bin_size)
         ys = [1 if x == 0 else 0 for x in xs]
-    else:
-        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+    elif distribution_fxn == expon:
         random_draws_from_distribution = distribution_fxn.rvs(loc=loc, size=num_gt_needed, scale=xscale)
+        xs = np.arange(start, xaxis_limit + bin_size, bin_size)
         ys = [distribution_fxn.pdf(x, loc=loc, scale=xscale) for x in xs]
+
+    else: #lognorm
+        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+        loc = 0
+        xaxis_limit = 10
+        bin_size = 0.1
+        shape_parameter = float(distribution_parameters[1])
+        xscale = float(distribution_parameters[2])
+        random_draws_from_distribution = lognorm.rvs(shape_parameter, size=num_gt_needed, scale=xscale, loc=loc)
+
+        xs = np.arange(start, xaxis_limit + bin_size, bin_size)
+        ys = [distribution_fxn.pdf(x, shape_parameter, scale=xscale, loc=0) for x in xs]
 
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
