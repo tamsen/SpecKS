@@ -88,24 +88,8 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
 
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-    bins = np.arange(start, xaxis_limit, bin_size)
-    ax.hist(random_draws_from_distribution, density=True, bins=bins, alpha=0.2, label='distribution of simulated data')
-    plt.plot(xs, ys, label='underlying distribution')
-    ax.scatter(x_value_of_ymax, 0.01,
-                            color='darkgreen', marker='^', label="mode="+str(round(x_value_of_ymax,2)), s=100)
-    ax.scatter(center_of_mass, 0.01,
-                            color='lightgreen', marker='^', label="mean="+str(round(center_of_mass,2)), s=100)
-
-    out_file_name = os.path.join(out_folder, "Raw data " + distribution_name +
-                                 " Distribution in bifurcation time of gene trees for orthologs.png")
-    title= distribution_name + ' Distribution in bifurcation time of gene trees for orthologs'
-    fig.suptitle(title)
-    ax.set(xlabel="MYA")
-    ax.set(xlim=[start,xaxis_limit])
-    ax.legend()
-    plt.savefig(out_file_name)
-    plt.close()
+    plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, random_draws_from_distribution, start,
+                      x_value_of_ymax, xaxis_limit, xs, ys, "Distribution in bifurcation time of gene trees for orthologs.png")
 
     bifurcaton_variations=[ri-x_value_of_ymax for  ri in random_draws_from_distribution ]
 
@@ -127,6 +111,26 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
 
     return bifurcaton_variations
 
+
+def plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, random_draws_from_distribution, start,
+                      x_value_of_ymax, xaxis_limit, xs, ys, title):
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    bins = np.arange(start, xaxis_limit, bin_size)
+    ax.hist(random_draws_from_distribution, density=True, bins=bins, alpha=0.2, label='distribution of simulated data')
+    plt.plot(xs, ys, label='underlying distribution')
+    ax.scatter(x_value_of_ymax, 0.01,
+               color='darkgreen', marker='^', label="mode=" + str(round(x_value_of_ymax, 2)), s=100)
+    ax.scatter(center_of_mass, 0.01,
+               color='lightgreen', marker='^', label="mean=" + str(round(center_of_mass, 2)), s=100)
+    out_file_name = os.path.join(out_folder, "Raw data " + distribution_name +title+ ".png")
+                                # " Distribution in bifurcation time of gene trees for orthologs.png")
+    title = distribution_name + title #' Distribution in bifurcation time of gene trees for orthologs'
+    fig.suptitle(title)
+    ax.set(xlabel="MYA")
+    ax.set(xlim=[start, xaxis_limit])
+    ax.legend()
+    plt.savefig(out_file_name)
+    plt.close()
 
 
 def make_randomized_gene_trees(polyploid, species_tree_newick):

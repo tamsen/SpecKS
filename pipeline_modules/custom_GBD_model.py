@@ -191,6 +191,7 @@ def recursively_split_branch_with_this_name(full_tree, branch_name, internal_nod
                 c.split(n=2, branch_length=child_branch_length)  # new_branch_data.relative_start_time)
                 c.branch_length = original_branch_length - child_branch_length
                 c.name = "internal_branch_" + str(internal_node_idx)
+                c.name = None
                 c.clades[0].name = branch_name
                 c.clades[1].name = new_branch_data.new_branch_name
                 internal_node_idx = internal_node_idx + 1

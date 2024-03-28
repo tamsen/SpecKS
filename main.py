@@ -3,7 +3,6 @@ import shutil
 import sys
 import allosim
 import autosim
-import autosim_old
 import config
 from datetime import datetime
 

@@ -5,14 +5,9 @@ import xml.etree.ElementTree as ET
 class SpecKS_config:
     output_folder_root = "/home/tamsen/Data/SpecKS_output"
     # output_folder_root="/Users/tamsen/Data/SpecKS_output"
-    path_to_sagephy = "/home/tamsen/Apps/sagephy/sagephy-1.0.0.jar"
-    # path_to_sagephy = "/Users/tamsen/Apps/sagephy/sagephy-1.0.0.jar"
 
     full_sim_time = 500
     divergence_distribution_parameters=['lognorm',0.5, 5.27]
-    dup_rate_parameters = (4, 2460)
-    loss_rate_parameters = (4, 2053)
-    branch_relaxation_parameters = ["ACRY07", "1", "0.000001"]
     mean_gene_birth_rate = 0.001359
     mean_SSD_life_span= 1 #MY
     num_gene_trees_per_species_tree = 4  # 10
@@ -69,8 +64,6 @@ class SpecKS_config:
                     incoming_tag = inner_layer.tag.strip()
                     if (incoming_tag == "output_folder_root"):
                         self.output_folder_root = incoming_txt
-                    elif (incoming_tag == "path_to_sagephy"):
-                        self.path_to_sagephy = incoming_txt
 
             if (incoming_tag == "SpeciesTree"):
                 for inner_layer in top_layer:
@@ -95,10 +88,7 @@ class SpecKS_config:
                 for inner_layer in top_layer:
                     incoming_txt = inner_layer.text.strip()
                     incoming_tag = inner_layer.tag.strip()
-                    if (incoming_tag == "dup_rate_parameters"):
-                        self.dup_rate_parameters = parse_tuple_string(incoming_txt)
-                    if (incoming_tag == "loss_rate_parameters"):
-                        self.loss_rate_parameters = parse_tuple_string(incoming_txt)
+
                     if (incoming_tag == "mean_gene_birth_rate_GpMY"):
                         self.mean_gene_birth_rate = parse_float_or_false(incoming_txt)
                     if (incoming_tag == "mean_SSD_life_span_MY"):

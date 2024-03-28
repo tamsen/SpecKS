@@ -1,6 +1,6 @@
 import log
-from pipeline_modules import sagephy_GBD_model, ks_histogramer, ks_calculator, sagephy_tree_relaxer, gene_evolver, \
-    species_tree_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_model
+from pipeline_modules import ks_histogramer, ks_calculator, gene_evolver, \
+    species_tree_maker, results_organizer, gene_tree_maker, custom_GBD_model, gene_shedder
 
 from Bio import Phylo
 from io import StringIO
@@ -21,6 +21,11 @@ def run_allosim(polyploid):
 
     log.write_to_log("\n\n{0}. Make gene trees given gradual speciation".format(polyploid.analysis_step_num))
     base_gene_tree_newicks_by_tree_name = gene_tree_maker.make_randomized_gene_trees(polyploid,species_trees[0])
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
+    log.write_to_log("\n\n{0}. Prune WGD genes that will be dead before the end of the sim".format(polyploid.analysis_step_num))
+    foo = gene_shedder.shed_genes(polyploid,base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
