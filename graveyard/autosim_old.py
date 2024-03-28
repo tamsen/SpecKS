@@ -1,6 +1,6 @@
 import log
 from pipeline_modules import sagephy_GBD_model, ks_histogramer, ks_calculator, sagephy_tree_relaxer, gene_evolver, \
-    species_tree_maker, root_seq_maker, gene_shedder, results_organizer, gene_tree_maker, custom_GBD_model
+    species_tree_maker, root_seq_maker, gene_shedder, results_organizer, gene_tree_maker
 
 
 def run_autosim(polyploid):
@@ -21,18 +21,25 @@ def run_autosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    log.write_to_log("\n\n{0}. Custom GBD model".format(polyploid.analysis_step_num))
-    gene_data_by_gt_name = custom_GBD_model.run_custom_GBD_model(polyploid,preWGD_simulation_leg,
-                                                                 base_gene_tree_newicks_by_tree_name)
+    log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    #first_leg_time_range=(0,polyploid.FULL_time_MYA-polyploid.WGD_time_MYA)
+    #species_trees = {"all":species_tree[0]} #for tha autopolyploid, all gene trees are based ont he same species tree.
+    gene_tree_results_by_tree_name = sagephy_GBD_model.run_sagephy(polyploid,preWGD_simulation_leg,
+                                                                 base_gene_tree_newicks_by_tree_name )
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
+    log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    relaxed_gene_tree_results = sagephy_tree_relaxer.relax(polyploid, preWGD_simulation_leg,
+                                                        gene_tree_results_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     # For the first leg of the autopolyploid sim, we evolve sequences from
     # what ever the start time was (say, 500 MYA) to the time of WGD (say, 300 MYA)
-
     first_leg_random_seed=137
     log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
-    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_data_by_gt_name,
+    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, relaxed_gene_tree_results,
                                                             first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
@@ -40,7 +47,7 @@ def run_autosim(polyploid):
     #collect sequences right before WGD, and get then ready to evolve through the next set of trees
     log.write_to_log("\n\n{0}. Collect sequences right before WGD".format(polyploid.analysis_step_num))
     root_seq_files_written_by_gene_tree_by_child_tree = root_seq_maker.run_root_seq_maker(polyploid,
-                                            gene_data_by_gt_name, evolver_results_by_gene_tree)
+                                            relaxed_gene_tree_results, evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
@@ -56,15 +63,6 @@ def run_autosim(polyploid):
 
         subtree=subtrees[i]
         polyploid.subtree_subfolder=subtree
-
-        log.write_to_log("\n\n{0}. testing Custom GBD model".format(polyploid.analysis_step_num))
-        foo = custom_GBD_model.run_run_custom_GBD_model_with_root(
-            polyploid, species_tree[1+i],postWGD_simulation_leg, root_seq_files_written_by_gene_tree_by_child_tree)
-        if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-            return
-        print(foo)
-        #TODO ~ need to write "run_sagephy_with_root_seq" with the new GBD model
-
         log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
         gene_tree_results_by_tree_name = sagephy_GBD_model.run_sagephy_with_root_seq(polyploid, postWGD_simulation_leg,
                                                                      species_tree[1+i],

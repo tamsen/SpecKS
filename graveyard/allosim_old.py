@@ -29,11 +29,11 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
-    gene_tree_results_by_tree_name = sagephy_GBD_model.run_sagephy(polyploid, only_simulation_leg,
-                                                                 base_gene_tree_newicks_by_tree_name)
-    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-        return
+    #log.write_to_log("\n\n{0}. Add GBD model to gene trees (SaGePhy)".format(polyploid.analysis_step_num))
+    #gene_tree_results_by_tree_name = sagephy_GBD_model.run_sagephy(polyploid, only_simulation_leg,
+    #                                                             base_gene_tree_newicks_by_tree_name)
+    #if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+    #    return
 
     #log.write_to_log("\n\n{0}. Relax gene trees (SaGePhy)".format(polyploid.analysis_step_num))
     #relaxed_gene_tree_results = sagephy_tree_relaxer.relax(polyploid, only_simulation_leg,
@@ -56,7 +56,7 @@ def run_allosim(polyploid):
     log.write_to_log("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     Ks_results_by_species_by_replicate_num = ks_calculator.run_codeml(polyploid,
                                                                genomes_of_interest_by_species,
-                                                               gene_tree_results_by_tree_name ,
+                                                               foo ,
                                                                evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return

@@ -12,7 +12,7 @@ class custom_gene_tree_result():
     leaves_by_species={}
     tree=False
 
-    def __init__(self, gene_tree_name,original_newick):
+    def __init__(self, gene_tree_name,original_newick,genomes):
 
         self.original_newick=original_newick
         self.simple_newick=original_newick
@@ -22,7 +22,6 @@ class custom_gene_tree_result():
         self.gene_tree_name = gene_tree_name
 
         leaves_by_species={}
-        genomes=["O","P1","P2"]
         for g in genomes:
             leaves_by_species[g]=[]
             for leaf in self.terminal_leaf_names:

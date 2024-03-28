@@ -81,26 +81,9 @@ def write_evolver_commands(out_dir, template_evolver_control_file, evolver_versi
     # test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
 
     if evolver_version_is_old:
-
-        #X1 = Phylo.to_networkx(gene_tree_result.tree)
-        # X2 = Phylo.to_networkx(test_tree)
-        #nodes1 = list(X1.nodes)
-        # nodes2 = list(X2.nodes)
-        #num_seq = len(nodes1)
         num_seq = len(gene_tree_result.get_named_modes())
-
-        # use len(nodes1) -1) for the species tree,
-        # because the root counts as a clade, but we are not going to evolve it
-        # maybe it just wants the named nodes here?
-        # print("nodes1=\t" + str(len(nodes1)))
-        # print("nodes2=\t" + str(len(nodes2)))
-        # print("num seq = num nodes:\t" + str(num_seq))
-        # num_seq = gene_tree_result.num_terminal_leaves
-        # print("num seq = num_extant_leaves:\t" + str(num_seq))
     else:
-        # for recent versions of PAML
         num_seq = gene_tree_result.num_terminal_leaves
-        # print("num seq = num_extant_leaves:\t" + str(num_seq))
 
     evolver_control_file = write_evolver_control_file(template_evolver_control_file,
                                                       out_dir,evolver_version_is_old,
