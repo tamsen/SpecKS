@@ -12,6 +12,7 @@ def run_allosim(polyploid):
     first_leg_random_seed=137
     polyploid_genomes_of_interest = ['P1', 'P2']
     genomes_of_interest_by_species={"outgroup":['O'],polyploid.species_name:polyploid_genomes_of_interest}
+    all_genomes_of_interest= polyploid_genomes_of_interest + ['O']
 
     log.write_to_log("\n\n{0}. Make species trees (custom code)".format(polyploid.analysis_step_num))
     species_trees = species_tree_maker.make_species_trees(polyploid)
@@ -24,7 +25,8 @@ def run_allosim(polyploid):
         return
 
     log.write_to_log("\n\n{0}. Custom GBD model".format(polyploid.analysis_step_num))
-    gene_data_by_gt_name = custom_GBD_model.run_custom_GBD_model(polyploid,
+    gene_data_by_gt_name = custom_GBD_model.run_custom_GBD_model(polyploid,all_genomes_of_interest,
+                                                                 only_simulation_leg,
                                                                  base_gene_tree_newicks_by_tree_name)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return

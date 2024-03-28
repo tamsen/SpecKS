@@ -20,12 +20,12 @@
     <GeneTree>
       <dup_rate_parameters>0</dup_rate_parameters>
         <loss_rate_parameters>0</loss_rate_parameters>
+        <mean_gene_birth_rate_GpMY>1</mean_gene_birth_rate_GpMY>
+        <mean_SSD_life_span_MY>5</mean_SSD_life_span_MY>
      <!--   <dup_rate_parameters>0.001359</dup_rate_parameters>
         <loss_rate_parameters>0.001359</loss_rate_parameters>-->
-        <mean_gene_birth_rate_GpMY>False</mean_gene_birth_rate_GpMY>
-        <mean_SSD_life_span_MY>False</mean_SSD_life_span_MY>
         <branch_relaxer_parameters>False</branch_relaxer_parameters>
-        <num_gene_trees_per_species_tree>100</num_gene_trees_per_species_tree>
+        <num_gene_trees_per_species_tree>3</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
         <gene_div_time_distribution_parameters>expon,0,0.1</gene_div_time_distribution_parameters>
         <!--<gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>-->
@@ -38,7 +38,7 @@
     <Histogram>
         <maxKs>1</maxKs>
     </Histogram>
-    <StopAtStep>2</StopAtStep>
+    <StopAtStep>999</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>
     <IncludeVisuals>True</IncludeVisuals>
 </metadata>

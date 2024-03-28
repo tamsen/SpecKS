@@ -36,7 +36,7 @@ class custom_gene_tree_result():
         total_branch_length = self.tree.total_branch_length()
         return total_branch_length
 
-    def get_named_modes(self):
+    def get_named_nodes(self):
         X1 = Phylo.to_networkx(self.tree)
         nodes = list(X1.nodes)
         named_nodes=[]

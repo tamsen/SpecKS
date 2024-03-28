@@ -81,7 +81,7 @@ def write_evolver_commands(out_dir, template_evolver_control_file, evolver_versi
     # test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
 
     if evolver_version_is_old:
-        num_seq = len(gene_tree_result.get_named_modes())
+        num_seq = len(gene_tree_result.get_named_nodes())
     else:
         num_seq = gene_tree_result.num_terminal_leaves
 

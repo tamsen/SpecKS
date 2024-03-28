@@ -178,6 +178,9 @@ def run_codeml(polyploid,genomes_of_interest_by_species, relaxed_gene_tree_resul
 
     for species, subgenomes in genomes_of_interest_by_species.items():
 
+        log.write_to_log("working on species " + species)
+        log.write_to_log("with subgenomes " + str(subgenomes))
+
         species_subfolder = os.path.join(subfolder, species)
         codeml_results_for_species = {}
 

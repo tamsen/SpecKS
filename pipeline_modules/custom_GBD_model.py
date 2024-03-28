@@ -13,7 +13,6 @@ from pipeline_modules.custom_gene_tree_result import custom_gene_tree_result
 def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation_leg,
                               root_seq_files_written_by_gene_tree_by_child_tree):
     config = polyploid.general_sim_config
-    original_gene_trees = root_seq_files_written_by_gene_tree_by_child_tree.keys()
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     subgenomes=simulation_leg.subgenomes_during_this_interval
 
@@ -26,15 +25,20 @@ def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config, subfolder)
+    num_gene_trees_needed=sum([ len([root_seq_files_written_by_gene_tree_by_child_tree[gt][ct]
+                             for ct in  root_seq_files_written_by_gene_tree_by_child_tree[gt].keys() ])
+                            for gt in root_seq_files_written_by_gene_tree_by_child_tree.keys()])
+    print(num_gene_trees_needed)
+    SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config, subfolder,num_gene_trees_needed)
     gene_tree_data_by_tree_name={}
     idx_for_new_tree_generated = 0
     total_num_dup_added=0
-    randomness_idx=0
+    randomness_idx=idx_by_reference(0)
     for original_GT_name, sequence_data_file_by_child_for_leaves in root_seq_files_written_by_gene_tree_by_child_tree.items():
 
         for child_GT_name in sequence_data_file_by_child_for_leaves:
             # GeneTree05_childG6_1.rep1.txt
+            composite_GT_name = original_GT_name + "_child" + child_GT_name
             idx_for_new_tree_generated = idx_for_new_tree_generated + 1
 
             if skip_GBD_model:
@@ -46,29 +50,31 @@ def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation
                                                 length_of_leg, subfolder)
                 total_num_dup_added = total_num_dup_added + num_dup_added
 
-            gene_tree_data = custom_gene_tree_result(child_GT_name, gene_tree_newick_with_GBD,subgenomes)
-            gene_tree_data_by_tree_name[child_GT_name]=gene_tree_data
+            gene_tree_data = custom_gene_tree_result(composite_GT_name, gene_tree_newick_with_GBD,subgenomes)
+            gene_tree_data_by_tree_name[composite_GT_name]=gene_tree_data
 
     log.write_to_log("total num duplicates added:\t" + str(total_num_dup_added))
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
     return gene_tree_data_by_tree_name
 
-def run_custom_GBD_model(polyploid, simulation_leg, base_gene_tree_newicks_by_tree_name):
+def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, base_gene_tree_newicks_by_tree_name):
 
     config = polyploid.general_sim_config
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
-    subgenomes=simulation_leg.subgenomes_during_this_interval
     gt_index_formatter = sagephy_GBD_model.get_gt_index_format(num_gene_trees_needed)
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_custom_GBD")
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config, subfolder)
+
+    num_values_needed=config.num_gene_trees_per_species_tree * config.num_replicates_per_gene_tree
+    SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config,subfolder,
+                                                                                num_values_needed)
     gene_tree_data_by_tree_name = {}
     total_num_dup_added=0
-    randomness_idx=0
+    randomness_idx=idx_by_reference(0)
     for gt_idx in range(0, num_gene_trees_needed):
 
 
@@ -83,7 +89,7 @@ def run_custom_GBD_model(polyploid, simulation_leg, base_gene_tree_newicks_by_tr
                                                       SSD_life_spans,SSD_time_between_gene_birth_events,
                                                       length_of_leg,subfolder)
             total_num_dup_added=total_num_dup_added+num_dup_added
-        gene_tree_data=custom_gene_tree_result(gene_tree_name,gene_tree_newick_with_GBD,subgenomes)
+        gene_tree_data=custom_gene_tree_result(gene_tree_name,gene_tree_newick_with_GBD,all_genomes_of_interest)
         gene_tree_data_by_tree_name[gene_tree_name] = gene_tree_data
 
     log.write_to_log("total num duplicates added:\t" + str(total_num_dup_added))
@@ -91,10 +97,9 @@ def run_custom_GBD_model(polyploid, simulation_leg, base_gene_tree_newicks_by_tr
     return gene_tree_data_by_tree_name
 
 
-def set_up(config, subfolder):
+def set_up(config, subfolder,num_gene_trees_needed):
 
     include_visualizations = config.include_visualizations
-    num_gene_trees_needed = config.num_gene_trees_per_species_tree
     mean_gene_birth_rate  = config.mean_gene_birth_rate #0.001359
     mean_SSD_life_span = config.mean_SSD_life_span #1 #
     skip_GBD_model=False
@@ -102,11 +107,13 @@ def set_up(config, subfolder):
     if (not mean_gene_birth_rate) or (not mean_SSD_life_span):
         skip_GBD_model = True
         log.write_to_log("skipping GBD model")
+        return [], [], skip_GBD_model
     else:
         log.write_to_log("running GBD model")
         max_possible_base_tree_length = config.full_sim_time * 2
+        multiplier=max(1,mean_gene_birth_rate)
         max_number_gene_births = int(
-            max_possible_base_tree_length * 1.5 * num_gene_trees_needed) + 10  # the one x1.5 is just to make sure
+            max_possible_base_tree_length * multiplier * 2 * num_gene_trees_needed) + 10  # the one x1.5 is just to make sure
         mean_time_between_gene_births = int(1.0 / mean_gene_birth_rate)
 
         # loc=mode of data (location of peak of distribution), scale=location of average of data (cm of distribution)
@@ -128,7 +135,6 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
 
         tree = Phylo.read(StringIO(base_gene_tree_newick), "newick")
         save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, "_before_GBD.txt", tree)
-
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
         duplicate_idx = 0
@@ -136,7 +142,6 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
         recursively_get_new_branches_to_add(tree, tree.clade,
                                                  nodes_to_add_by_branch_name, SSD_time_between_gene_birth_events,
                                                  SSD_life_spans, internal_node_idx, duplicate_idx, randomness_idx)
-
 
         retained_nodes_by_branch_name, deleted_nodes_by_branch_name = (
             prune_any_branches_that_would_be_dead_before_the_end_of_the_sim(nodes_to_add_by_branch_name,
@@ -204,27 +209,26 @@ def get_nodes_to_add_to_branch(parents_distance_from_root, child_clade,
 
     child_branch_length = child_clade.branch_length
     child_branch_name = child_clade.name
-    jump_to_next_event = 0
     list_of_nodes_to_add = []
 
     # how long since the last gene birth for this gene family
-    distance_traveled_along_branch = random.randint(0, int(SSD_time_between_gene_birth_events[randomness_idx]))
+    distance_traveled_along_branch = random.randint(0, int(SSD_time_between_gene_birth_events[randomness_idx.value]))
 
     while distance_traveled_along_branch < child_branch_length:
 
 
         absolute_start_time = parents_distance_from_root + distance_traveled_along_branch
-        absolute_end_time = absolute_start_time + SSD_life_spans[randomness_idx]
+        absolute_end_time = absolute_start_time + SSD_life_spans[randomness_idx.value]
 
 
         new_branch_name = child_branch_name + "_duplicate_" + str(duplicate_idx)
         new_node = node_to_add(child_branch_name, new_branch_name, absolute_end_time, absolute_start_time)
         list_of_nodes_to_add.append(new_node)
 
-        jump_to_next_event = SSD_time_between_gene_birth_events[randomness_idx]
+        jump_to_next_event = SSD_time_between_gene_birth_events[randomness_idx.value]
         distance_traveled_along_branch = distance_traveled_along_branch + jump_to_next_event
         duplicate_idx = duplicate_idx + 1
-        randomness_idx = randomness_idx + 1
+        randomness_idx.increment()
 
     return list_of_nodes_to_add, duplicate_idx, randomness_idx
 
@@ -273,9 +277,11 @@ def recursively_get_new_branches_to_add(tree, parent_clade, nodes_to_add_by_bran
             duplicate_idx, randomness_idx)
 
         nodes_to_add_by_branch_name[child_clade.name] = nodes_to_add_to_branch
+
         recursively_get_new_branches_to_add(tree, child_clade, nodes_to_add_by_branch_name,
                                                  SSD_time_between_gene_birth_events,
                                                  SSD_life_spans, internal_node_idx, duplicate_idx, randomness_idx)
+
 
 
 def tree_to_newick(tree):
@@ -333,6 +339,17 @@ def visualize_distribution(data, title, theoretical_mean, out_folder):
     plt.savefig(file_to_save)
     plt.cla()
     plt.close()
+
+class idx_by_reference():
+    value=0
+    def __init__(self,value):
+        self.value=value
+
+    def increment(self):
+        self.value = self.value+1
+
+    def __str__(self):
+        return str(self.value)
 
 class node_to_add():
     parent_branch_name = ""
