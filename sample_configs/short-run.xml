@@ -21,6 +21,7 @@
         <!--<mean_gene_birth_rate_GpMY>0.00162</mean_gene_birth_rate_GpMY>-->
         <mean_gene_birth_rate_GpMY>0.1</mean_gene_birth_rate_GpMY>
         <mean_SSD_life_span_MY>5</mean_SSD_life_span_MY>
+        <mean_WGD_life_span_MY>100</mean_WGD_life_span_MY>
         <branch_relaxer_parameters>False</branch_relaxer_parameters>
         <num_gene_trees_per_species_tree>20</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>

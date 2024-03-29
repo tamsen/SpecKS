@@ -8,7 +8,7 @@ from Bio import Phylo
 from io import StringIO
 import log
 from pipeline_modules import sagephy_GBD_model
-from pipeline_modules.custom_gene_tree_result import custom_gene_tree_result
+from pipeline_modules.gene_tree_info import custom_gene_tree_result
 
 
 def run_custom_GBD_model(polyploid, simulation_leg, base_gene_tree_newicks_by_tree_name):

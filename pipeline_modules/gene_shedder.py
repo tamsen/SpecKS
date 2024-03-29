@@ -8,7 +8,7 @@ from Bio import Phylo
 
 import config
 import log
-from pipeline_modules import custom_gene_tree_result, custom_GBD_model
+from pipeline_modules import gene_tree_info, custom_GBD_model
 from pipeline_modules.gene_tree_maker import plot_distribution
 
 
@@ -42,8 +42,8 @@ def shed_genes_only_for_one_branch(polyploid, gene_data_by_gt_name,polyploid_gen
         return pruned_gene_data_by_gt_name
 
     else:
-        log.write_to_log("No WGD duplicates were shed from side " + str(polyploid_genome_of_interest))
 
+        log.write_to_log("No WGD duplicates were shed from side " + str(polyploid_genome_of_interest))
         polyploid.analysis_step_num = polyploid.analysis_step_num + 1
         return gene_data_by_gt_name
 def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
@@ -60,10 +60,6 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
 
     gene_trees_to_loose_a_duplicate_gene = choose_trees_to_loose_duplicate(gene_data_by_gt_name,
                                                                                            polyploid, subfolder)
-
-    # For each gene to be shed, a GT is randomly selected without replacement,
-    # and a vertex from that GT which crosses the time-slice is removed.
-    #   This process is repeated until the desired number of genes are shed.
 
     gt_after_everyone_that_needed_pruning_is_pruned={}
     pruned_gt=[]
@@ -88,6 +84,7 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
 
 
 def choose_trees_to_loose_duplicate(gene_data_by_gt_name, polyploid, subfolder):
+
     # Genes dupicated by WGD live hundreds of MY. 100 MY
     # so, to get the number remaining after t MY, we need an exponential decay fxn, with avg at 500MY
     time_since_WGD = polyploid.WGD_time_MYA
@@ -140,7 +137,7 @@ def new_tree_with_a_branch_renamed(original_newick, original_name,
     handle = StringIO()
     Phylo.write(tree_copy, handle, "newick")
     new_newick = handle.getvalue()
-    new_gt_result=custom_gene_tree_result.custom_gene_tree_result(original_name,new_newick,genomes)
+    new_gt_result=gene_tree_info.custom_gene_tree_result(original_name,new_newick,genomes)
     return new_gt_result
 
 

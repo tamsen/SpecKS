@@ -94,6 +94,8 @@ class SpecKS_config:
                         self.mean_gene_birth_rate = parse_float_or_false(incoming_txt)
                     if (incoming_tag == "mean_SSD_life_span_MY"):
                         self.mean_SSD_life_span = parse_float_or_false(incoming_txt)
+                    if (incoming_tag == "mean_WGD_life_span_MY"):
+                        self.mean_WGD_life_span = parse_float_or_false(incoming_txt)
                     if (incoming_tag == "branch_relaxer_parameters"):
                         self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
