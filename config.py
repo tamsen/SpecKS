@@ -9,7 +9,8 @@ class SpecKS_config:
     full_sim_time = 500
     divergence_distribution_parameters=['lognorm',0.5, 5.27]
     mean_gene_birth_rate = 0.001359
-    mean_SSD_life_span= 1 #MY
+    mean_SSD_life_span= 5 #MY
+    mean_WGD_life_span= 500 #MY
     num_gene_trees_per_species_tree = 4  # 10
     num_replicates_per_gene_tree = 3  # 10
     num_codons = 10  # 1000

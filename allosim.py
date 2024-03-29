@@ -32,13 +32,12 @@ def run_allosim(polyploid):
         return
 
     log.write_to_log("\n\n{0}. Prune WGD genes that will be dead before the end of the sim".format(polyploid.analysis_step_num))
-    foo = gene_shedder.shed_genes(polyploid,gene_data_by_gt_name,
-                                  "P1",all_genomes_of_interest)
+    pruned_gene_data_by_gt_name = gene_shedder.shed_genes(polyploid,gene_data_by_gt_name,"P1")
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
     log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
-    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, gene_data_by_gt_name,
+    evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, pruned_gene_data_by_gt_name,
                                                             first_leg_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
@@ -46,7 +45,7 @@ def run_allosim(polyploid):
     log.write_to_log("\n\n{0}. Get Ks for trees (Codeml)".format(polyploid.analysis_step_num))
     Ks_results_by_species_by_replicate_num = ks_calculator.run_codeml(polyploid,
                                                                genomes_of_interest_by_species,
-                                                               gene_data_by_gt_name ,
+                                                               pruned_gene_data_by_gt_name,
                                                                evolver_results_by_gene_tree)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return

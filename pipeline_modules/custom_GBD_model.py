@@ -11,7 +11,7 @@ from pipeline_modules import sagephy_GBD_model
 from pipeline_modules.custom_gene_tree_result import custom_gene_tree_result
 
 def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation_leg,
-                              root_seq_files_written_by_gene_tree_by_child_tree):
+                              new_genome_name,root_seq_files_written_by_gene_tree_by_child_tree):
     config = polyploid.general_sim_config
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     subgenomes=simulation_leg.subgenomes_during_this_interval
@@ -33,27 +33,36 @@ def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation
     gene_tree_data_by_tree_name={}
     idx_for_new_tree_generated = 0
     total_num_dup_added=0
+    total_num_dup_shed=0
     randomness_idx=idx_by_reference(0)
     for original_GT_name, sequence_data_file_by_child_for_leaves in root_seq_files_written_by_gene_tree_by_child_tree.items():
 
         for child_GT_name in sequence_data_file_by_child_for_leaves:
             # GeneTree05_childG6_1.rep1.txt
-            composite_GT_name = original_GT_name + "_child" + child_GT_name
+            #'GeneTree00_childP_duplicate_6'
+
             idx_for_new_tree_generated = idx_for_new_tree_generated + 1
 
             if skip_GBD_model:
                 gene_tree_newick_with_GBD = species_tree_newick
             else:
-                gene_tree_newick_with_GBD, num_dup_added, randomness_idx = add_GBD_to_newick(species_tree_newick,
+                gene_tree_newick_with_GBD, num_dup_added, num_dup_shed, randomness_idx = add_GBD_to_newick(species_tree_newick,
                                                 child_GT_name,idx_for_new_tree_generated, randomness_idx,
                                                 SSD_life_spans,SSD_time_between_gene_birth_events,
                                                 length_of_leg, subfolder)
                 total_num_dup_added = total_num_dup_added + num_dup_added
+                total_num_dup_shed = total_num_dup_shed + num_dup_shed
 
+            composite_GT_name = original_GT_name + "_child" + child_GT_name
             gene_tree_data = custom_gene_tree_result(composite_GT_name, gene_tree_newick_with_GBD,subgenomes)
             gene_tree_data_by_tree_name[composite_GT_name]=gene_tree_data
 
-    log.write_to_log("total num duplicates added:\t" + str(total_num_dup_added))
+    log.write_to_log("Overall, " +
+                     str(total_num_dup_added+total_num_dup_shed) +
+                     " total num SSD duplicates occurred over time ")
+    log.write_to_log(str(total_num_dup_shed) + " were shed ")
+    log.write_to_log(str(total_num_dup_added) + " were retained (not yet shed) ")
+
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
     return gene_tree_data_by_tree_name
 
@@ -74,6 +83,7 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
                                                                                 num_values_needed)
     gene_tree_data_by_tree_name = {}
     total_num_dup_added=0
+    total_num_dup_shed=0
     randomness_idx=idx_by_reference(0)
     for gt_idx in range(0, num_gene_trees_needed):
 
@@ -83,16 +93,22 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
         if skip_GBD_model:
             gene_tree_newick_with_GBD = base_gene_tree_newick
         else:
-            gene_tree_newick_with_GBD, num_dup_added, randomness_idx = add_GBD_to_newick(base_gene_tree_newick,
+            gene_tree_newick_with_GBD, num_dup_added, num_dup_shed, randomness_idx = add_GBD_to_newick(base_gene_tree_newick,
                                                       gene_tree_name,
                                                       gt_idx,randomness_idx,
                                                       SSD_life_spans,SSD_time_between_gene_birth_events,
                                                       length_of_leg,subfolder)
             total_num_dup_added=total_num_dup_added+num_dup_added
+            total_num_dup_shed=total_num_dup_shed+num_dup_shed
         gene_tree_data=custom_gene_tree_result(gene_tree_name,gene_tree_newick_with_GBD,all_genomes_of_interest)
         gene_tree_data_by_tree_name[gene_tree_name] = gene_tree_data
 
-    log.write_to_log("total num duplicates added:\t" + str(total_num_dup_added))
+    log.write_to_log("Overall, " +
+                     str(total_num_dup_added + total_num_dup_shed) +
+                     " total num SSD duplicates occurred over time ")
+    log.write_to_log(str(total_num_dup_shed) + " were shed ")
+    log.write_to_log(str(total_num_dup_added) + " were retained (not yet shed) ")
+
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
     return gene_tree_data_by_tree_name
 
@@ -147,8 +163,10 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
             prune_any_branches_that_would_be_dead_before_the_end_of_the_sim(nodes_to_add_by_branch_name,
                                                                             end_of_leg))
 
-        num_dup_to_add=num_genes_in_dict(retained_nodes_by_branch_name)
-        log.write_to_log("adding " + str(num_dup_to_add)+ " new genes.. ")
+
+        num_dup_shed=num_genes_in_dict(deleted_nodes_by_branch_name)
+        num_dup_retained=num_genes_in_dict(retained_nodes_by_branch_name)
+        log.write_to_log(str(num_dup_retained)+ " were retained (not yet shed) ")
 
         for branch_name, branches_to_add in retained_nodes_by_branch_name.items():
 
@@ -159,14 +177,19 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
 
         gene_tree_newick_with_GBD=tree_to_newick(tree)
         save_ascii_tree(gene_tree_newick_with_GBD, gene_tree_name, outfolder, "_after_GBD.txt", tree)
-        return gene_tree_newick_with_GBD, num_dup_to_add, randomness_idx
+        return gene_tree_newick_with_GBD, num_dup_retained, num_dup_shed,randomness_idx
 
 
 def save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, suffix, tree):
     tree_file_path = os.path.join(outfolder, gene_tree_name + suffix)
     with open(tree_file_path, 'w') as f:
+
         f.writelines("newick:" + str(base_gene_tree_newick) + "\n")
-        Phylo.draw_ascii(tree, f)
+
+        if len(tree.get_terminals()) < 2:
+            f.writelines("The tree has less than two branches, so nothing to draw.")
+        else:
+            Phylo.draw_ascii(tree, f)
 
 
 def recursively_split_branch_with_this_name(full_tree, branch_name, internal_node_idx, new_branch_data,

@@ -48,6 +48,7 @@ def setup(arguments):
     date_time = now.strftime("m%md%dy%Y_h%Hm%Ms%S")
     conf = config.SpecKS_config(config_file)
     conf.output_folder = conf.output_folder_root + "_" + date_time
+    conf.log_file_name = date_time + "_" + conf.log_file_name
     cwd=os.getcwd()
 
     print('Config file: %s' % config_file)

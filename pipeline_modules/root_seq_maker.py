@@ -39,7 +39,7 @@ cannot have ambiguities or gaps or stop codons. In almost all simulations, it is
 the root sequence, so you should resist the temptation of making the mistake. If you want the \
 simulation to reflect your particular gene, you may estimate parameters under a model from that \
 gene and then simulate data sets using the parameter estimates. - PAML manual "
-def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_gene_tree):
+def run_root_seq_maker(polyploid, polyploid_genomes_of_interest, relaxed_gene_tree_results, evolver_results_by_gene_tree):
 
     config = polyploid.general_sim_config
     subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_wgd_root_sequences")
@@ -59,7 +59,6 @@ def run_root_seq_maker(polyploid, relaxed_gene_tree_results, evolver_results_by_
         sequences_by_leaf = get_sequences_for_leaves_within_the_polyploid(evolver_output_file, gene_tree_name,
                                                                        relaxed_gene_tree_results,species_of_interest)
 
-        #replicate_seq_root_file = os.path.join(gene_tree_subfolder, gene_tree_name + ".txt")
         files_written_by_child_tree = sequences_to_root_seq_in(sequences_by_leaf, gene_tree_subfolder, gene_tree_name )
         sequence_files_written_by_gene_tree_by_child_tree[gene_tree_name] = files_written_by_child_tree
 

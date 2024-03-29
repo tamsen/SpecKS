@@ -66,15 +66,6 @@ def work_around_for_evolver_bug(newick_tree_string):
         fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
     return fixed_newick_tree_string
 
-
-#def work_around_for_no_parenthesis_in_newick(newick_tree_string):
-#    open_parenthesis = [i for i in range(0, len(newick_tree_string)) if newick_tree_string[i] == "("]
-#    if len(open_parenthesis) == 0:
-#        fixed_newick_tree_string = "(" + newick_tree_string.replace(";", ");")
-#        newick_tree_string = fixed_newick_tree_string
-#    return newick_tree_string
-
-
 def write_evolver_commands(out_dir, template_evolver_control_file, evolver_version_is_old, random_seed_odd_integer,
                            num_replicates, num_codons, tree_length, gene_tree_result):
 
@@ -102,10 +93,6 @@ def get_evolver_version_string(process_folder):
     version_string = out_string.split("\n")[0]
     version_number = version_string.split()[4][0:-1]
     version_decimals = [int(v) for v in version_number.split(".")]
-    # print(version_string)
-    # print("v"+ version_number)
-    # print("v:" + str(version_decimals))
-    # return version_string, version_number, version_decimals
     return evolver_version_string(version_string, version_number, version_decimals)
 
 

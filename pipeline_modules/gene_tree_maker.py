@@ -174,6 +174,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
             gene_div_time=base_speciation_time+variation
             [new_newick_string] = species_tree_maker.get_example_allopolyploid_tree(time_span,gene_div_time)
 
+
         gene_tree_newicks_by_tree_name[gt_name]=new_newick_string
         delta_path = os.path.join(subfolder, "variations_in_div_time.txt")
         with open(delta_path, 'a') as f:
