@@ -7,11 +7,11 @@ from scipy.stats import lognorm, expon, poisson
 from Bio import Phylo
 from io import StringIO
 import log
-from pipeline_modules import sagephy_GBD_model
+from pipeline_modules import gene_tree_maker
 from pipeline_modules.gene_tree_info import custom_gene_tree_result
 
 def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation_leg,
-                              new_genome_name,root_seq_files_written_by_gene_tree_by_child_tree):
+                              root_seq_files_written_by_gene_tree_by_child_tree):
     config = polyploid.general_sim_config
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     subgenomes=simulation_leg.subgenomes_during_this_interval
@@ -71,7 +71,7 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
     config = polyploid.general_sim_config
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
-    gt_index_formatter = sagephy_GBD_model.get_gt_index_format(num_gene_trees_needed)
+    gt_index_formatter = gene_tree_maker.get_gt_index_format(num_gene_trees_needed)
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_custom_GBD")
 
     if not os.path.exists(subfolder):

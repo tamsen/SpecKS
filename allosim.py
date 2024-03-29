@@ -63,7 +63,7 @@ def run_allosim(polyploid):
     log.write_to_log("\n\n" + polyploid.species_name + " complete.\n\n")
 
 
-#deugging code..
+#debugging code..
 def check_for_gt_disparity(gene_tree_results_by_tree_name):
     for gt_name, gene_tree_result in gene_tree_results_by_tree_name.items():
         test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")

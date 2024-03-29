@@ -61,7 +61,7 @@ def run_autosim(polyploid):
 
         log.write_to_log("\n\n{0}. Custom GBD model".format(polyploid.analysis_step_num))
         second_leg_gene_tree_results_by_tree_name = custom_GBD_model.run_run_custom_GBD_model_with_root(
-            polyploid, species_tree[1+i],postWGD_simulation_leg,polyploid_genome_of_interest,
+            polyploid, species_tree[1+i],postWGD_simulation_leg,
             root_seq_files_written_by_gene_tree_by_child_tree)
         if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
             return

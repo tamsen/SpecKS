@@ -2,12 +2,8 @@ import os
 from scipy.stats import lognorm, expon
 import numpy as np
 from matplotlib import pyplot as plt
-from Bio import Phylo
-from io import StringIO
-
 import log
 from pipeline_modules import species_tree_maker
-from pipeline_modules.sagephy_GBD_model import get_gt_index_format
 
 def get_mode_and_cm(xs, pdfs):
 
@@ -188,3 +184,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     polyploid.analysis_step_num = polyploid.analysis_step_num + 1
     return gene_tree_newicks_by_tree_name
 
+def get_gt_index_format(num_gene_trees_needed):
+    decimals_needed = len(str(num_gene_trees_needed))
+    formatter = "{:0" + str(decimals_needed) + "d}"
+    return formatter
