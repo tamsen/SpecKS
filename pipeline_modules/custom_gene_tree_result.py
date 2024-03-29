@@ -7,8 +7,6 @@ class custom_gene_tree_result():
     simple_newick=""
     terminal_leaf_names=0
     gene_tree_name=""
-    #gene_tree_file_name=""
-    #leaf_map_file_name=""
     leaves_by_species={}
     tree=False
 
@@ -44,3 +42,4 @@ class custom_gene_tree_result():
             if n.name:
                 named_nodes.append(n.name)
         return named_nodes
+

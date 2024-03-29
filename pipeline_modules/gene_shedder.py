@@ -1,6 +1,6 @@
 import os
 from random import sample
-
+from io import StringIO
 from matplotlib import pyplot as plt
 from scipy.stats import expon
 import numpy as np
@@ -8,11 +8,10 @@ from Bio import Phylo
 
 import config
 import log
+from pipeline_modules import custom_gene_tree_result, custom_GBD_model
 from pipeline_modules.gene_tree_maker import plot_distribution
-from visualization import tree_visuals_by_phylo
 
-
-def shed_genes(polyploid, gene_tree_results, leaf_to_prune):
+def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune, genomes):
 
 
     if len(polyploid.subtree_subfolder) > 0:
@@ -39,37 +38,63 @@ def shed_genes(polyploid, gene_tree_results, leaf_to_prune):
     plot_distribution(avg_WGD_gene_lifespan,time_since_WGD, "exponential", subfolder, 0,
                       config.SpecKS_config.full_sim_time, xs, ys, " decay for genes duplicated by WGD")
 
-    all_gene_trees=list(gene_tree_results.keys())
-    num_genes_to_shed = len(all_gene_trees)*(1.0-fraction_WGD_genes_remaining_at_time_since_WGD)
-    gene_trees_to_loose_a_duplicate_gene = sample(all_gene_trees, num_genes_to_shed)
+    all_gt_newicks=list(gene_data_by_gt_name.keys())
+    num_original_gt=float(len(all_gt_newicks))
+    num_genes_to_shed = int(num_original_gt*(1.0-fraction_WGD_genes_remaining_at_time_since_WGD))
+    gene_trees_to_loose_a_duplicate_gene = sample(all_gt_newicks, num_genes_to_shed)
 
     # For each gene to be shed, a GT is randomly selected without replacement,
     # and a vertex from that GT which crosses the time-slice is removed.
     #   This process is repeated until the desired number of genes are shed.
 
-    unprunable_leaves = ['O', 'O1', 'O2'] #no pruning the outgroup
     gt_after_everyone_that_needed_pruning_is_pruned={}
-
-    for gt in all_gene_trees:
+    pruned_gt=[]
+    for gt in all_gt_newicks:
             if gt in gene_trees_to_loose_a_duplicate_gene:
-                original_gt=gene_tree_results[gt]
+                original_gt_newick=gene_data_by_gt_name[gt]
                 print("pruning time!")
-                new_gt_data=remove_a_duplicate(original_gt,leaf_to_prune)
+                new_gt_data =remove_a_duplicate(original_gt_newick, leaf_to_prune, genomes)
+                gt_after_everyone_that_needed_pruning_is_pruned[gt] = new_gt_data
+                pruned_gt.append(new_gt_data.gene_tree_name)
             else:
-               gt_after_everyone_that_needed_pruning_is_pruned[gt]=gene_tree_results[gt]
+               new_gt_data =gene_data_by_gt_name[gt]
 
+            gt_after_everyone_that_needed_pruning_is_pruned[gt] = new_gt_data
+            custom_GBD_model.save_ascii_tree(new_gt_data.original_newick, new_gt_data.gene_tree_name, subfolder,
+                            "_after_WGD_shedding.txt", new_gt_data.tree)
+
+    log.write_to_log("total num WGD duplicates shedded:\t" + str(len(pruned_gt)))
+    log.write_to_log("GT loosing WGD duplicates:\t" + str(pruned_gt))
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return gt_after_everyone_that_needed_pruning_is_pruned
 
 
 
-def remove_a_duplicate(gt_data,leaf_to_prune):
+def remove_a_duplicate(gt_data, name_of_branch_to_prune, genomes_to_have_in_leaf_dict):
 
         #if this is the alloployploid, there are two choices: P1 or P2.
         #since left and right are totaly random, we will prune left,
-        # and the result is still
-        return gt_data
+        # and the result is still random
+        new_gt_data= new_tree_with_a_branch_renamed(
+            gt_data.original_newick, gt_data.gene_tree_name, name_of_branch_to_prune,genomes_to_have_in_leaf_dict)
+        return new_gt_data
 
+def new_tree_with_a_branch_renamed(original_newick, original_name,
+                                   name_of_branch_to_prune, genomes):
+
+    tree_copy = Phylo.read(StringIO(original_newick), "newick")
+    terminal_clades = tree_copy.get_terminals()
+    for c in terminal_clades:
+
+        #this removes "P" and all duplicated with "P" in the name
+        if name_of_branch_to_prune in c.name:
+            tree_copy.prune(c)
+
+    handle = StringIO()
+    Phylo.write(tree_copy, handle, "newick")
+    new_newick = handle.getvalue()
+    new_gt_result=custom_gene_tree_result.custom_gene_tree_result(original_name,new_newick,genomes)
+    return new_gt_result
 
 
 

@@ -24,15 +24,16 @@ def run_allosim(polyploid):
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
-    log.write_to_log("\n\n{0}. Prune WGD genes that will be dead before the end of the sim".format(polyploid.analysis_step_num))
-    foo = gene_shedder.shed_genes(polyploid,base_gene_tree_newicks_by_tree_name)
-    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
-        return
-
     log.write_to_log("\n\n{0}. Custom GBD model".format(polyploid.analysis_step_num))
     gene_data_by_gt_name = custom_GBD_model.run_custom_GBD_model(polyploid,all_genomes_of_interest,
                                                                  only_simulation_leg,
                                                                  base_gene_tree_newicks_by_tree_name)
+    if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
+        return
+
+    log.write_to_log("\n\n{0}. Prune WGD genes that will be dead before the end of the sim".format(polyploid.analysis_step_num))
+    foo = gene_shedder.shed_genes(polyploid,gene_data_by_gt_name,
+                                  "P1",all_genomes_of_interest)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 
