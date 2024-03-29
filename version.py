@@ -2,7 +2,8 @@
 
 GLOBAL_git_URL = "https://github.com/tamsen/SpecKS"
 GLOBAL_public_version_info = [
-    ["Initiated. ", "March 15, 2024", "v1.0.0.0"]
+    ["Initiated. ", "March 15, 2024", "v1.0.0.0"],
+    ["Dev complete, added final shedding module. ", "March 29, 2024", "v1.1.0.0"]
 ]
 
 

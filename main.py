@@ -14,13 +14,11 @@ from polyploid_setup import make_polyploids
 def run_sim():
 
     conf = setup(sys.argv)
-    version_info = version.version_info()
-
     if not conf:
         return
 
     #start the log
-    log.write_start_to_log(conf.output_folder,conf.log_file_name, version_info)
+    log.write_start_to_log(conf.output_folder,conf.log_file_name, conf.version_info)
     log.write_to_log('Command Arguments Given: %s' % sys.argv)
 
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
@@ -31,7 +29,6 @@ def run_sim():
         if polyploid.is_allo():
             allosim.run_allosim(polyploid)
         else:
-            #autosim_old.run_autosim(polyploid)
             autosim.run_autosim(polyploid)
 
     log.write_end_to_log()
@@ -49,6 +46,7 @@ def setup(arguments):
     conf = config.SpecKS_config(config_file)
     conf.output_folder = conf.output_folder_root + "_" + date_time
     conf.log_file_name = date_time + "_" + conf.log_file_name
+    conf.version_info = version.version_info()
     cwd=os.getcwd()
 
     print('Config file: %s' % config_file)

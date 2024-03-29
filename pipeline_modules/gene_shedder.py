@@ -12,7 +12,7 @@ from pipeline_modules import gene_tree_info, custom_GBD_model
 from pipeline_modules.gene_tree_maker import plot_distribution
 
 
-def shed_genes_only_for_one_branch(polyploid, gene_data_by_gt_name,polyploid_genome_of_interest,side_to_shed):
+def shed_genes_for_autopolyploid(polyploid, gene_data_by_gt_name, polyploid_genome_of_interest, side_to_shed):
 
     if len(polyploid.subtree_subfolder) > 0:
         subfolder = os.path.join(polyploid.species_subfolder,
@@ -48,7 +48,7 @@ def shed_genes_only_for_one_branch(polyploid, gene_data_by_gt_name,polyploid_gen
         return gene_data_by_gt_name
 def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
 
-
+    include_visualizations = polyploid.general_sim_config.include_visualizations
     if len(polyploid.subtree_subfolder) > 0:
         subfolder = os.path.join(polyploid.species_subfolder,
                                  str(polyploid.analysis_step_num) + "_WGD_gene_shedder_" + polyploid.subtree_subfolder)
@@ -74,7 +74,9 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
                new_gt_data =gene_data_by_gt_name[gt]
 
             gt_after_everyone_that_needed_pruning_is_pruned[gt] = new_gt_data
-            custom_GBD_model.save_ascii_tree(new_gt_data.original_newick, new_gt_data.gene_tree_name, subfolder,
+
+            if include_visualizations:
+                custom_GBD_model.save_ascii_tree(new_gt_data.original_newick, new_gt_data.gene_tree_name, subfolder,
                             "_after_WGD_shedding.txt", new_gt_data.tree)
 
     log.write_to_log("total num WGD duplicates shedded:\t" + str(len(pruned_gt)))

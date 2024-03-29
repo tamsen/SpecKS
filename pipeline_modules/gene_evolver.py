@@ -163,7 +163,10 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
 
 
 def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_integer):
+
     config = polyploid.general_sim_config
+    include_visualizations = config.include_visualizations
+
     if len(polyploid.subtree_subfolder) > 0:
         subfolder = os.path.join(polyploid.species_subfolder,
                                  str(polyploid.analysis_step_num) + "_sequence_evolver_" + polyploid.subtree_subfolder)
@@ -188,8 +191,9 @@ def run_evolver(polyploid, gene_tree_results_by_gene_tree_name, random_seed_odd_
         #print("\t\tnum leaves:\t " + str(gene_tree_result.num_terminal_leaves))
         #print("\t\tevolver tree length:\t " + str(evolver_tree_length))
 
-        plot_file_name_1 = os.path.join(gene_tree_subfolder, "gt_used_by_evolver_phylo.png")
-        tree_visuals_by_phylo.save_tree_plot_from_newick(gene_tree_result.simple_newick, plot_file_name_1)
+        if include_visualizations:
+            plot_file_name_1 = os.path.join(gene_tree_subfolder, "gt_used_by_evolver_phylo.png")
+            tree_visuals_by_phylo.save_tree_plot_from_newick(gene_tree_result.simple_newick, plot_file_name_1)
 
         if gene_tree_result.num_terminal_leaves < 2:
             # Then all we have left is the outgroup. No point in running evolver.

@@ -68,7 +68,7 @@ def run_autosim(polyploid):
 
         log.write_to_log(
             "\n\n{0}. Prune WGD genes that will be dead before the end of the sim".format(polyploid.analysis_step_num))
-        second_leg_gene_tree_results_after_pruning_by_gt_name = gene_shedder.shed_genes_only_for_one_branch(
+        second_leg_gene_tree_results_after_pruning_by_gt_name = gene_shedder.shed_genes_for_autopolyploid(
                 polyploid, second_leg_gene_tree_results_by_tree_name, polyploid_genome_of_interest, "P1")
         if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
             return

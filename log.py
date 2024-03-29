@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-import version
+
 
 log_file_path = ""
 
@@ -30,7 +30,7 @@ def write_error_to_log(msg):
 
 def write_warning_to_log(msg):
     write_to_log("*******Warning******")
-    write_to_log("Warning*: " + msg)
+    write_to_log("Warning: " + msg)
     write_to_log(msg)
 
 def write_to_log(msg):

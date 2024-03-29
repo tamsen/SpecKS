@@ -13,6 +13,7 @@ from pipeline_modules.gene_tree_info import custom_gene_tree_result
 def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation_leg,
                               root_seq_files_written_by_gene_tree_by_child_tree):
     config = polyploid.general_sim_config
+    include_visuals = config.include_visualizations
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     subgenomes=simulation_leg.subgenomes_during_this_interval
 
@@ -26,9 +27,9 @@ def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation
         os.makedirs(subfolder)
 
     num_gene_trees_needed=sum([ len([root_seq_files_written_by_gene_tree_by_child_tree[gt][ct]
-                             for ct in  root_seq_files_written_by_gene_tree_by_child_tree[gt].keys() ])
+                             for ct in root_seq_files_written_by_gene_tree_by_child_tree[gt].keys() ])
                             for gt in root_seq_files_written_by_gene_tree_by_child_tree.keys()])
-    print(num_gene_trees_needed)
+
     SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config, subfolder,num_gene_trees_needed)
     gene_tree_data_by_tree_name={}
     idx_for_new_tree_generated = 0
@@ -49,7 +50,7 @@ def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation
                 gene_tree_newick_with_GBD, num_dup_added, num_dup_shed, randomness_idx = add_GBD_to_newick(species_tree_newick,
                                                 child_GT_name,idx_for_new_tree_generated, randomness_idx,
                                                 SSD_life_spans,SSD_time_between_gene_birth_events,
-                                                length_of_leg, subfolder)
+                                                length_of_leg, subfolder, include_visuals)
                 total_num_dup_added = total_num_dup_added + num_dup_added
                 total_num_dup_shed = total_num_dup_shed + num_dup_shed
 
@@ -70,6 +71,7 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
 
     config = polyploid.general_sim_config
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
+    include_visualizations = config.include_visualizations
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     gt_index_formatter = gene_tree_maker.get_gt_index_format(num_gene_trees_needed)
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_custom_GBD")
@@ -97,7 +99,7 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
                                                       gene_tree_name,
                                                       gt_idx,randomness_idx,
                                                       SSD_life_spans,SSD_time_between_gene_birth_events,
-                                                      length_of_leg,subfolder)
+                                                      length_of_leg,subfolder,include_visualizations)
             total_num_dup_added=total_num_dup_added+num_dup_added
             total_num_dup_shed=total_num_dup_shed+num_dup_shed
         gene_tree_data=custom_gene_tree_result(gene_tree_name,gene_tree_newick_with_GBD,all_genomes_of_interest)
@@ -146,15 +148,18 @@ def set_up(config, subfolder,num_gene_trees_needed):
 def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
                       gt_idx, randomness_idx,
                       SSD_life_spans, SSD_time_between_gene_birth_events,
-                      end_of_leg, outfolder):
+                      end_of_leg, outfolder, include_visuals):
 
 
         tree = Phylo.read(StringIO(base_gene_tree_newick), "newick")
-        save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, "_before_GBD.txt", tree)
         nodes_to_add_by_branch_name = {}
         internal_node_idx = 0
         duplicate_idx = 0
         tree.clade.name="root_" + str(gt_idx)
+
+        if include_visuals:
+            save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, "_before_GBD.txt", tree)
+
         recursively_get_new_branches_to_add(tree, tree.clade,
                                                  nodes_to_add_by_branch_name, SSD_time_between_gene_birth_events,
                                                  SSD_life_spans, internal_node_idx, duplicate_idx, randomness_idx)
@@ -176,7 +181,10 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
 
 
         gene_tree_newick_with_GBD=tree_to_newick(tree)
-        save_ascii_tree(gene_tree_newick_with_GBD, gene_tree_name, outfolder, "_after_GBD.txt", tree)
+
+        if include_visuals:
+            save_ascii_tree(gene_tree_newick_with_GBD, gene_tree_name, outfolder, "_after_GBD.txt", tree)
+
         return gene_tree_newick_with_GBD, num_dup_retained, num_dup_shed,randomness_idx
 
 

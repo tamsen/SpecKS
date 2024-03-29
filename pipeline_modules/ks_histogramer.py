@@ -6,6 +6,7 @@ import shutil
 
 import log
 from pipeline_modules import ks_calculator
+from version import version_info
 
 
 def get_Ks_from_file(paml_out_file):
@@ -35,7 +36,7 @@ def get_Ks_from_file(paml_out_file):
     return ks_results
 
 
-def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
+def get_Ks_from_folder(paml_out_folder, replicate, alg_name, version_string):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
@@ -44,6 +45,7 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name):
 
     with open(csv_file_out, 'w') as f:
 
+        f.writelines("SpecKS version " + version_string) #version_info.to_string())
         f.writelines("GeneTree,Ks,full_path\n")
         for paml_out_file in res_files:
             log.write_to_log(paml_out_file)
@@ -91,6 +93,7 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
 def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_species_by_replicate_num):
 
     config = polyploid.general_sim_config
+    specks_version = config.version_info.to_string()
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_histograms")
 
     if not os.path.exists(subfolder):
@@ -138,7 +141,7 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
             log.write_to_log("making histograms " + species_str + ", replicate " + replicate_string )
             WGD_as_Ks=polyploid.WGD_time_as_ks()
             SPEC_as_Ks=polyploid.SPEC_time_as_ks()
-            outfiles = summarize_ks(rep_subfolder, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
+            outfiles = summarize_ks(rep_subfolder, specks_version, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", bin_size)
             results_files_for_species_by_replicate[replicate]=outfiles
 
@@ -146,14 +149,14 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return results_files_by_species_by_replicate
-def summarize_ks(paml_out_folder, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
+def summarize_ks(paml_out_folder, specks_version, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
 
     outfiles=[]
     #for alg_name in ["ML","NG"]:
     for alg_name in ["ML"]:
 
         log.write_to_log("getting results for PAML alg name " + alg_name)
-        ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name)
+        ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name, specks_version)
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
                                       "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
