@@ -64,10 +64,8 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim9_gbd_in_auto"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim10_gshed"
 
-        #output_folder="/home/tamsen/Data/Specks_outout_from_mesx/mesx_sim2_genebirth_and_death"
-        #output_folder = "/home/tamsen/Data/SpecKS_mesx_data/mesx_sim2_genebirth_and_death"
 
         print("Reading csv files..")
         csvfiles_by_polyploid_by_species_rep_by_algorithm = self.get_ks_data_from_folders(output_folder)
@@ -97,6 +95,10 @@ class MulitRunViewerTests(unittest.TestCase):
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
                                          replicate, alg, params_by_polyploid,0.1, 0.001 )
+
+                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                                         replicate, alg, params_by_polyploid,0.5, 0.001 )
 
         self.assertEqual(True,True)
 
@@ -220,7 +222,7 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
             #plot allo result
             params=params_by_polyploid[allo_result_name]
             this_ax = ax[sim_idx, 0]
-            this_ax, ymax_suggestion = make_subplot(this_ax, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
+            this_ax, ymax_suggestion = make_subplot(this_ax, spec, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
                 max_Ks_for_x_axis, False,"blue")
 
             this_ax.set(ylabel="simulation #" + str(sim_idx))
@@ -237,7 +239,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
             ks_for_auto_result= csvs_for_auto_result[spec][replicate][alg]
             params=params_by_polyploid[auto_result_name]
             this_ax = ax[sim_idx, 1]
-            this_ax, ymax_suggestion = make_subplot(this_ax, ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
+            this_ax, ymax_suggestion = make_subplot(this_ax,spec,
+                ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
                 max_Ks_for_x_axis, ymax_suggestion,"blue")
 
             text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
@@ -256,35 +259,46 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     plt.close()
 
 
-def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, maxY, plot_color):
+def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, maxY, plot_color):
 
     WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
     SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
     default_xaxis_limit =SPEC_as_Ks + 0.2
     x = Ks_results
+    num_gene_pairs_str=str(len(Ks_results))
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25)#, label='ks hist. data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25,
+            label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
     else:
         bins = np.arange(0, default_xaxis_limit, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25)#, label='ks hist. data')
+        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25,
+            label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
 
     hist_maximum=max(n)
     ymax_suggestion=hist_maximum*1.6
 
-    if SPC_time_MYA == 20:
-        ymax_suggestion=400
 
-    fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
-    print("hist_maximum " + str(hist_maximum))
-    print("mode " + str(mode))
-    print("cm " + str(cm))
+
+
+
     this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
     this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
+    do_curve_fitting = (spec != "outgroup" ) and (max_Ks and (max_Ks > 0.1))
 
-    if fit_curve_ys1 and (hist_maximum>0):
-        this_ax.plot(xs_for_wgd,fit_curve_ys1,
+    if do_curve_fitting :
+        fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
+        print("hist_maximum " + str(hist_maximum))
+        print("mode " + str(mode))
+        print("cm " + str(cm))
+
+        if fit_curve_ys1 and (hist_maximum>0):
+            this_ax.plot(xs_for_wgd,fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit")
+
+        if SPC_time_MYA == 20:
+            ymax_suggestion=400
+
 
     if maxY:
         yaxis_limit=maxY
@@ -292,11 +306,12 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     else:
         yaxis_limit= ymax_suggestion
 
-    if fit_curve_ys1 and (hist_maximum>0):
-        this_ax.scatter(cm,0.05*yaxis_limit,
+    if do_curve_fitting:
+        if fit_curve_ys1 and (hist_maximum>0):
+            this_ax.scatter(cm,0.05*yaxis_limit,
                  color='darkgreen', marker='o', s=100)# label="cm",)
 
-        this_ax.scatter(mode,0.05*yaxis_limit,
+            this_ax.scatter(mode,0.05*yaxis_limit,
                  color='cyan', marker='^', s=80)# label="mode")
 
 
@@ -304,6 +319,7 @@ def make_subplot(this_ax, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_K
     this_ax.legend()
 
     this_ax.set(ylim=[0, yaxis_limit])
+
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
     else:

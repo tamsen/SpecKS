@@ -2,7 +2,6 @@
 <metadata>
     <Paths>
           <output_folder_root>/usr/scratch2/userdata2/tdunn/SpecKS_Output/sim9_gbd_in_auto/specks</output_folder_root>
-          <path_to_sagephy>/home/tdunn/Apps/sagephy/sagephy-1.0.0.jar</path_to_sagephy>
     </Paths>
     <SpeciesTree>
         <polyploid>
@@ -14,9 +13,6 @@
       <mean_gene_birth_rate_GpMY>0.00162</mean_gene_birth_rate_GpMY>
 	<mean_SSD_life_span_MY>5</mean_SSD_life_span_MY>
 	<gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>
-        <dup_rate_parameters>0</dup_rate_parameters>
-      <loss_rate_parameters>0</loss_rate_parameters>
-        <branch_relaxer_parameters>False</branch_relaxer_parameters>
         <num_gene_trees_per_species_tree>1000</num_gene_trees_per_species_tree>
         <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
     </GeneTree>
