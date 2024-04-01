@@ -259,7 +259,8 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     plt.close()
 
 
-def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA, max_Ks, maxY, plot_color):
+def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
+                 max_Ks, maxY, plot_color):
 
     WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
     SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
@@ -278,15 +279,14 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
     hist_maximum=max(n)
     ymax_suggestion=hist_maximum*1.6
 
-
-
-
-
-    this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
-    this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
+    #do_curve_fitting=False
     do_curve_fitting = (spec != "outgroup" ) and (max_Ks and (max_Ks > 0.1))
 
     if do_curve_fitting :
+
+        this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
+        this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
+
         fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
         print("hist_maximum " + str(hist_maximum))
         print("mode " + str(mode))

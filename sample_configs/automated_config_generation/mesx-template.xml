@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <Paths>
-          <output_folder_root>/usr/scratch2/userdata2/tdunn/SpecKS_Output/sim9_gbd_in_auto/specks</output_folder_root>
+        <output_folder_root>OUTPUT_ROOT</output_folder_root>
     </Paths>
     <SpeciesTree>
         <polyploid>
@@ -11,10 +11,10 @@
     </SpeciesTree>
     <GeneTree>
       <mean_gene_birth_rate_GpMY>0.00162</mean_gene_birth_rate_GpMY>
-	<mean_SSD_life_span_MY>5</mean_SSD_life_span_MY>
-	<gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>
-        <num_gene_trees_per_species_tree>1000</num_gene_trees_per_species_tree>
-        <post_WGD_shedding_rate_per_MY>0.10</post_WGD_shedding_rate_per_MY>
+        <mean_SSD_life_span_MY>5</mean_SSD_life_span_MY>
+        <mean_WGD_life_span_MY>100</mean_WGD_life_span_MY>
+	    <gene_div_time_distribution_parameters>DIV_DIST</gene_div_time_distribution_parameters>
+        <num_gene_trees_per_species_tree>3000</num_gene_trees_per_species_tree>
     </GeneTree>
     <SequenceEvolution>
         <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
@@ -26,5 +26,5 @@
     </Histogram>
     <StopAtStep>999</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>
-    <IncludeVisuals>True</IncludeVisuals>
+    <IncludeVisuals>FALSE</IncludeVisuals>
 </metadata>
