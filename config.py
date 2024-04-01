@@ -15,6 +15,7 @@ class SpecKS_config:
     num_replicates_per_gene_tree = 3  # 10
     num_codons = 10  # 1000
     Ks_per_Myr = 0.01
+    evolver_offset = 1.0
 
     max_ks_for_hist_plot = 5
     max_y_for_hist_plot = False
@@ -113,7 +114,8 @@ class SpecKS_config:
                         self.num_codons = int(incoming_txt)
                     if (incoming_tag == "Ks_per_Myr"):
                         self.Ks_per_Myr = float(incoming_txt)
-
+                    if (incoming_tag == "evolver_offset"):
+                        self.evolver_offset = float(incoming_txt)
 
 
 def parse_tuple_string(tuple_string):

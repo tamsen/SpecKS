@@ -11,7 +11,7 @@ class Generate_Config_Files(unittest.TestCase):
 
     def test_making_configs(self):
 
-        sim_subfolder="sim16_N0p1"
+        sim_subfolder="sim20_log"
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -20,7 +20,6 @@ class Generate_Config_Files(unittest.TestCase):
         output_folder_on_mesx="/usr/scratch2/userdata2/tdunn/SpecKS_Output"
         script_destination_folder_on_mesx = os.path.join(commands_folder_on_mesx, sim_subfolder)
         specks_output_path_on_mesx = os.path.join(output_folder_on_mesx, sim_subfolder)
-        specks_output_stub_on_mesx = os.path.join(specks_output_path_on_mesx, "specks")
         origin_folder=os.path.join(local_out_dir, sim_subfolder)
 
         if not os.path.exists(local_out_dir):
@@ -34,9 +33,11 @@ class Generate_Config_Files(unittest.TestCase):
         wgd_times = [75, 55, 35, 15, 5,1]
 
         div_log="lognorm,0.5,5.27"
-        div_expon_0p1="expon,0,0.1"
+        #div_expon_0p1="expon,0,0.1"
+        #div_expon = "expon,0,1"
 
         poly_params_by_name={}
+        out_folder_by_name={}
         cluster_cmds=[]
         for i in range(0,len(spec_times)):
 
@@ -52,13 +53,15 @@ class Generate_Config_Files(unittest.TestCase):
 
             poly_params_by_name[allo_name]=allo_params
             poly_params_by_name[auto_name]=auto_params
+            out_folder_by_name[allo_name] = os.path.join(specks_output_path_on_mesx, "specks_ALLO" + job_number)
+            out_folder_by_name[auto_name] = os.path.join(specks_output_path_on_mesx, "specks_AUTO" + job_number)
 
         for poly_name,poly_params in poly_params_by_name.items():
 
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
-                              ("OUTPUT_ROOT", specks_output_stub_on_mesx),
-                              ("DIV_DIST", div_expon_0p1)
+                              ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
+                              ("DIV_DIST", div_log)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)

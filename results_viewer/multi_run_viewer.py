@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 import config
+import process_wrapper
 from results_viewer import curve_fitting
 
 
@@ -57,51 +58,135 @@ class MulitRunViewerTests(unittest.TestCase):
         plt.savefig(out_file_name)
         plt.close()
 
+    def test_download_mesx_results(self):
+
+        batch_folder="sim18_N0p1"
+        runs=range(0,7)
+        me_at_remote_URL='tdunn@mesx.sdsu.edu'
+        local_output_folder="/home/tamsen/Data/Specks_outout_from_mesx"
+        remote_output_folder="/usr/scratch2/userdata2/tdunn/SpecKS_Output"
+        local_batch_folder=os.path.join(local_output_folder, batch_folder)
+        remote_batch_folder=os.path.join(remote_output_folder, batch_folder)
+        os.makedirs(local_batch_folder)
+        for run in runs:
+
+            allo_run="Allo" + str(run)
+            auto_run="Auto" + str(run)
+            local_allo_folder = os.path.join(local_batch_folder, allo_run)
+            local_auto_folder = os.path.join(local_batch_folder,auto_run)
+            os.makedirs(local_allo_folder)
+            os.makedirs(local_auto_folder)
+
+            remote_allo_folder=os.path.join(remote_batch_folder,"specks_" + allo_run.upper()+"*")
+            remote_to_match = remote_allo_folder + "/A*/*final*/*.csv"
+            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_allo_folder ]
+            print(" ".join(cmd2))
+            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+
+            remote_auto_folder=os.path.join(remote_batch_folder,"specks_" + auto_run.upper()+"*")
+            remote_to_match = remote_auto_folder + "/A*/*final*/*.csv"
+            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_auto_folder ]
+            print(" ".join(cmd2))
+            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+
+        cmd2=['scp','-r',me_at_remote_URL+':' +remote_batch_folder +'/specks*/*.xml','.']
+        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+
+        cmd2=['scp','-r',me_at_remote_URL+':' +remote_batch_folder +'/specks*/*log*','.']
+        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
     def test_multi_run_viewer(self):
 
-        plot_title='Simulation with custom GBD model, \nbut model gradual (~10MY) allopolyploid ortholog divergence'
+        plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        #output_folder="/home/tamsen/Data/SpecKS_mesx_data/mesx_sim1_no_genebirth_or_death"
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim10_gshed"
-
-
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim18_N0p1"
+        #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
+        params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
         csvfiles_by_polyploid_by_species_rep_by_algorithm = self.get_ks_data_from_folders(output_folder)
-        example_sim=list(csvfiles_by_polyploid_by_species_rep_by_algorithm.keys())[0]
+        example_sim='Allo1' #list(csvfiles_by_polyploid_by_species_rep_by_algorithm.keys())[0]
         species=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim].keys())
         replicates=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim][species[0]].keys())
         #algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
         algs=["ML"]
 
         print("Making plots..")
-        params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
+        metric_by_sim_name=[]
 
-        max_Ks = 1.0
+
         bin_size = 0.01
         for spec in species:#['outgroup']:#species:
             print(spec)
             for replicate in replicates:
                 for alg in algs:
-                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid, max_Ks, bin_size )
 
-                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                    max_Ks = 1.0
+                    metrics_by_result_names = plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid, False, bin_size)
+                                         replicate, alg, params_by_polyploid, max_Ks, bin_size, True )
 
-                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid,0.1, 0.001 )
+                    #max_Ks = False
+                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                    #                     replicate, alg, params_by_polyploid, max_Ks, bin_size, True)
 
-                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid,0.5, 0.001 )
+                    #max_Ks = 0.1
+                    # plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                    #                     replicate, alg, params_by_polyploid,0.1, 0.001, False )
+
+                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                    #                     replicate, alg, params_by_polyploid,0.5, 0.001 , False)
+
+                    print(metrics_by_result_names)
+
+
+        allo_xs=[]#times
+        auto_xs=[]#times
+        allo_ys=[]#metrics
+        auto_ys=[]#metrics
+        out_csv="metrics.csv"
+        out_metrics_path=os.path.join(output_folder,out_csv)
+        with open(out_metrics_path, 'w') as f:
+
+            f.writelines("sim_name,spc_time,mode,cm\n")
+            for sim_name,metric in metrics_by_result_names.items():
+
+                spec_time=params_by_polyploid[sim_name].SPC_time_MYA
+                mode=metric[0]
+                cm=metric[1]
+                diff=abs(mode-cm)
+                if "Allo" in sim_name:
+                    allo_xs.append(spec_time)
+                    allo_ys.append(diff)
+                else:
+                    auto_xs.append(spec_time)
+                    auto_ys.append(diff)
+
+                data = [sim_name, str(spec_time)] + [str(m) for m in metric]
+                f.writelines(",".join(data)+"\n")
+
+        plot_metrics(output_folder,allo_xs,allo_ys,
+                     auto_xs, auto_ys,"Discrimination plot")
 
         self.assertEqual(True,True)
-
+    def get_truth_for_Fig1_sim(self):
+        params_by_polyploid = {}
+        params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
+        params_by_polyploid["Allo2"] = config.PolyploidParams(60, 55, "Allo2")
+        params_by_polyploid["Allo3"] = config.PolyploidParams(40, 35, "Allo3")
+        params_by_polyploid["Allo4"] = config.PolyploidParams(20, 14, "Allo4")
+        params_by_polyploid["Allo5"] = config.PolyploidParams(10, 5, "Allo5")
+        params_by_polyploid["Allo6"] = config.PolyploidParams(5, 1, "Allo6")
+        params_by_polyploid["Auto1"] = config.PolyploidParams(80, 80, "Auto1")
+        params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
+        params_by_polyploid["Auto3"] = config.PolyploidParams(40, 40, "Auto3")
+        params_by_polyploid["Auto4"] = config.PolyploidParams(20, 20, "Auto4")
+        params_by_polyploid["Auto5"] = config.PolyploidParams(10, 10, "Auto5")
+        params_by_polyploid["Auto6"] = config.PolyploidParams(5, 5, "Auto6")
+        return params_by_polyploid
     def get_truth_for_1MY_sim(self):
         params_by_polyploid = {}
         params_by_polyploid["Allo0"] = config.PolyploidParams(20, 15, "Allo0")
@@ -178,6 +263,10 @@ def read_Ks_csv(csv_file):
         reading_header=True
         while True:
             line = f.readline()
+            if "ersion" in line:
+                continue
+            if "Git" in line:
+                continue
             if not line:
                 break
             if len(line)==0:
@@ -193,24 +282,27 @@ def read_Ks_csv(csv_file):
     return ks_results
 
 def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
-                                     spec,replicate, alg, params_by_polyploid, max_Ks_for_x_axis, bin_size):
+                                     spec,replicate, alg, params_by_polyploid, max_Ks_for_x_axis,
+                                     bin_size, do_curve_fit):
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
     ordered_allo_results=[n for n in result_names if "Allo" in n]
     ordered_auto_results=[n for n in result_names if "Auto" in n]
+    metrics_by_result_names= {}
 
     #bin_size = 0.01
     #f, a = plt.subplots(4, 2)
 
     # making subplots
-    fig, ax = plt.subplots(4, 2,figsize=(10, 10))
+    num_sims=len(ordered_allo_results)
+    fig, ax = plt.subplots(num_sims, 2,figsize=(10, 10))
     fig.suptitle(sample_name + " for " + replicate +", "+ alg + " algorithm")
     ax[0, 0].set_title("Allopolyploid\n",fontsize=20)
     ax[0, 1].set_title("Autopolyploid\n",fontsize=20)
 
-    num_sims=len(ordered_allo_results)
-    for sim_idx in range(0, 4):
+
+    for sim_idx in range(0, num_sims):
 
         #if len(ordered_allo_results) >0:
         allo_result_name=ordered_allo_results[sim_idx]
@@ -222,8 +314,11 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
             #plot allo result
             params=params_by_polyploid[allo_result_name]
             this_ax = ax[sim_idx, 0]
-            this_ax, ymax_suggestion = make_subplot(this_ax, spec, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
-                max_Ks_for_x_axis, False,"blue")
+            this_ax, ymax_suggestion, metrics = make_subplot(this_ax, spec, ks_for_allo_result, bin_size,params.WGD_time_MYA, params.SPC_time_MYA,
+                max_Ks_for_x_axis, False,"blue", do_curve_fit)
+
+            if metrics:
+                metrics_by_result_names[allo_result_name]=metrics
 
             this_ax.set(ylabel="simulation #" + str(sim_idx))
             if (sim_idx==3):
@@ -239,15 +334,18 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
             ks_for_auto_result= csvs_for_auto_result[spec][replicate][alg]
             params=params_by_polyploid[auto_result_name]
             this_ax = ax[sim_idx, 1]
-            this_ax, ymax_suggestion = make_subplot(this_ax,spec,
+            this_ax, ymax_suggestion, metrics= make_subplot(this_ax,spec,
                 ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
-                max_Ks_for_x_axis, ymax_suggestion,"blue")
+                max_Ks_for_x_axis, ymax_suggestion,"blue", do_curve_fit)
+
+            if metrics:
+                metrics_by_result_names[auto_result_name]=metrics
 
             text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
             #this_ax.text(0.8, 0.8, text_string,
             #             horizontalalignment='center', verticalalignment='center',
             #             transform=this_ax.transAxes)
-            if (sim_idx==3):
+            if (sim_idx==(num_sims-1)):
                 this_ax.set(xlabel="Ks")
 
     out_file_name=os.path.join(run_folder,"histogram" + "_plot_" + spec +"_" + replicate +"_"+ alg+".png")
@@ -257,10 +355,11 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     plt.savefig(out_file_name)
 
     plt.close()
+    return metrics_by_result_names
 
 
 def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
-                 max_Ks, maxY, plot_color):
+                 max_Ks, maxY, plot_color, do_curve_fit):
 
     WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
     SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
@@ -280,9 +379,11 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
     ymax_suggestion=hist_maximum*1.6
 
     #do_curve_fitting=False
-    do_curve_fitting = (spec != "outgroup" ) and (max_Ks and (max_Ks > 0.1))
+    #do_curve_fitting = (spec != "outgroup" ) and (max_Ks and (max_Ks > 0.1))
+    curve_fit_done=False
 
-    if do_curve_fitting :
+    metrics=False
+    if do_curve_fit and (spec != "outgroup" ):
 
         this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
         this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
@@ -291,7 +392,8 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
         print("hist_maximum " + str(hist_maximum))
         print("mode " + str(mode))
         print("cm " + str(cm))
-
+        curve_fit_done=True
+        metrics=[mode,cm]
         if fit_curve_ys1 and (hist_maximum>0):
             this_ax.plot(xs_for_wgd,fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit")
@@ -306,7 +408,7 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
     else:
         yaxis_limit= ymax_suggestion
 
-    if do_curve_fitting:
+    if curve_fit_done:
         if fit_curve_ys1 and (hist_maximum>0):
             this_ax.scatter(cm,0.05*yaxis_limit,
                  color='darkgreen', marker='o', s=100)# label="cm",)
@@ -322,7 +424,24 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
 
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
+        if max_Ks < 1.0:
+            this_ax.set(ylim=[0, 5])
     else:
         this_ax.set(xlim=[0, default_xaxis_limit])
 
-    return this_ax,ymax_suggestion
+    return this_ax,ymax_suggestion, metrics
+
+def plot_metrics(out_folder, allo_xs, allo_ys, auto_xs, auto_ys, title):
+
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    plt.plot(allo_xs, allo_ys, label='Allo',c='r')
+    plt.plot(auto_xs, auto_ys, label='Auto',c='b')
+    out_file_name = os.path.join(out_folder, title+ ".png")
+    fig.suptitle(title)
+    ax.set(xlabel="MYA")
+    ax.set(ylabel="Metric (mode-cm)")
+
+    ax.legend()
+    plt.savefig(out_file_name)
+    plt.close()
