@@ -60,7 +60,7 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_download_mesx_results(self):
 
-        batch_folder="sim18_N0p1"
+        batch_folder="sim20_log"
         runs=range(0,7)
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         local_output_folder="/home/tamsen/Data/Specks_outout_from_mesx"
@@ -100,7 +100,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim18_N0p1"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim20_log"
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
@@ -126,52 +126,78 @@ class MulitRunViewerTests(unittest.TestCase):
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
                                          replicate, alg, params_by_polyploid, max_Ks, bin_size, True )
 
-                    #max_Ks = False
-                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid, max_Ks, bin_size, True)
+                    max_Ks = False
+                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                                         replicate, alg, params_by_polyploid, max_Ks, bin_size, True)
 
-                    #max_Ks = 0.1
-                    # plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid,0.1, 0.001, False )
+                    max_Ks = 0.1
+                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                                         replicate, alg, params_by_polyploid,max_Ks, 0.001, False )
 
-                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid,0.5, 0.001 , False)
+                    plot_histograms_for_the_sim_runs(output_folder, plot_title,
+                                         csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
+                                         replicate, alg, params_by_polyploid,0.5, 0.001 , False)
 
                     print(metrics_by_result_names)
 
-
-        allo_xs=[]#times
-        auto_xs=[]#times
-        allo_ys=[]#metrics
-        auto_ys=[]#metrics
-        out_csv="metrics.csv"
-        out_metrics_path=os.path.join(output_folder,out_csv)
-        with open(out_metrics_path, 'w') as f:
-
-            f.writelines("sim_name,spc_time,mode,cm\n")
-            for sim_name,metric in metrics_by_result_names.items():
-
-                spec_time=params_by_polyploid[sim_name].SPC_time_MYA
-                mode=metric[0]
-                cm=metric[1]
-                diff=abs(mode-cm)
-                if "Allo" in sim_name:
-                    allo_xs.append(spec_time)
-                    allo_ys.append(diff)
-                else:
-                    auto_xs.append(spec_time)
-                    auto_ys.append(diff)
-
-                data = [sim_name, str(spec_time)] + [str(m) for m in metric]
-                f.writelines(",".join(data)+"\n")
-
-        plot_metrics(output_folder,allo_xs,allo_ys,
-                     auto_xs, auto_ys,"Discrimination plot")
+        self.plot_and_save_metrics(metrics_by_result_names, output_folder, params_by_polyploid)
 
         self.assertEqual(True,True)
+
+    def plot_and_save_metrics(self, metrics_by_result_names, output_folder, params_by_polyploid):
+
+        allo_results={}
+        auto_results={}
+        for sim_name, metric in metrics_by_result_names.items():
+            if "Allo" in sim_name:
+                allo_results[sim_name]=metric
+            else:
+                auto_results[sim_name] = metric
+
+        self.save_metrics_to_csv(allo_results, auto_results, output_folder, params_by_polyploid)
+
+        allo_xs_spc_times = []  # times
+        auto_xs_spc_times = []  # times
+        allo_ys_diffs = []  # metrics
+        auto_ys_diffs = []  # metrics
+
+        for sim_name, metric in metrics_by_result_names.items():
+
+                spec_time = params_by_polyploid[sim_name].SPC_time_MYA
+                mode = metric[0]
+                cm = metric[1]
+                num_paralogs=metric[2]
+                diff = abs(mode - cm)
+                if "Allo" in sim_name:
+                    allo_xs_spc_times.append(spec_time)
+                    allo_ys_diffs.append(diff)
+                else:
+                    auto_xs_spc_times.append(spec_time)
+                    auto_ys_diffs.append(diff)
+
+        plot_allo_vs_auto_metrics(output_folder, allo_xs_spc_times, allo_ys_diffs,
+                                  auto_xs_spc_times, auto_ys_diffs, "Allo vs Auto Discrimination plot")
+
+    def save_metrics_to_csv(self, allo_results, auto_results, output_folder, params_by_polyploid):
+        out_csv = "metrics.csv"
+        out_metrics_path = os.path.join(output_folder, out_csv)
+        with open(out_metrics_path, 'w') as f:
+            f.writelines("sim_name,spc_time,wgd_time,mode,cm,num_paralogs\n")
+
+            for sim_name, metric in allo_results.items():
+                spec_time = params_by_polyploid[sim_name].SPC_time_MYA
+                wgd_time = params_by_polyploid[sim_name].WGD_time_MYA
+                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric]
+                f.writelines(",".join(data) + "\n")
+
+            for sim_name, metric in auto_results.items():
+                spec_time = params_by_polyploid[sim_name].SPC_time_MYA
+                wgd_time = params_by_polyploid[sim_name].WGD_time_MYA
+                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric]
+                f.writelines(",".join(data) + "\n")
+
     def get_truth_for_Fig1_sim(self):
         params_by_polyploid = {}
         params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
@@ -291,9 +317,6 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
     ordered_auto_results=[n for n in result_names if "Auto" in n]
     metrics_by_result_names= {}
 
-    #bin_size = 0.01
-    #f, a = plt.subplots(4, 2)
-
     # making subplots
     num_sims=len(ordered_allo_results)
     fig, ax = plt.subplots(num_sims, 2,figsize=(10, 10))
@@ -393,7 +416,7 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
         print("mode " + str(mode))
         print("cm " + str(cm))
         curve_fit_done=True
-        metrics=[mode,cm]
+        metrics=[mode,cm,len(Ks_results)]
         if fit_curve_ys1 and (hist_maximum>0):
             this_ax.plot(xs_for_wgd,fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit")
@@ -431,7 +454,7 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
 
     return this_ax,ymax_suggestion, metrics
 
-def plot_metrics(out_folder, allo_xs, allo_ys, auto_xs, auto_ys, title):
+def plot_allo_vs_auto_metrics(out_folder, allo_xs, allo_ys, auto_xs, auto_ys, title):
 
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
