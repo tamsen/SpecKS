@@ -97,7 +97,9 @@ class metric_result():
     mode=-1
     cm=-1
     num_paralogs=-1
-
+    popt=[]
+    norm_fit_result=[]
+    lognorm_fit_result=[]
     def __init__(self,data_list):
         self.input_type = data_list[0]
         self.sim_name =data_list[1]
@@ -106,3 +108,22 @@ class metric_result():
         self.mode = float(data_list[4])
         self.cm = float(data_list[5])
         self.num_paralogs = int(data_list[6])
+        self.popt = [float(d) for d in data_list[7:7+4]]
+        self.norm_fit_result=data_list[11]
+        self.lognorm_fit_result=data_list[12]
+    def to_csv_string(self):
+
+        final_data = self.to_data_list()
+        return ",".join(final_data)
+
+    def to_data_list(self):
+        simple_data = [self.input_type, self.sim_name, self.spc_time, self.wgd_time,
+                       self.mode, self.cm, self.num_paralogs]
+        p_opt_data = [p for p in self.popt]
+        ks_data =[str(self.norm_fit_result), str(self.norm_fit_result)]
+        final_data = simple_data + p_opt_data + ks_data
+        return final_data
+
+def get_metric_result_data_headers():
+         return ["sim_name","spc_time","wgd_time","mode","cm","num_paralogs",
+                 "popt1","popt2","popt3","popt4","norm_fit_result","lognorm_fit_result"]

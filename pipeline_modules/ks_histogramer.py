@@ -41,24 +41,35 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name, version_string):
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
                                            "_Ks_by_GeneTree.csv")
-    KS_values = []
+    KS_values = extract_K_values(csv_file_out, res_files, version_string)
 
+    return KS_values,csv_file_out
+def get_Kn_from_folder(paml_out_folder, replicate, alg_name, version_string):
+
+    res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dN")
+    csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
+                                           "_Kn_by_GeneTree.csv")
+    KS_values = extract_K_values(csv_file_out, res_files, version_string)
+
+    return KS_values,csv_file_out
+
+def extract_K_values(csv_file_out, res_files, version_string):
+    KS_values = []
     with open(csv_file_out, 'w') as f:
 
-        f.writelines("SpecKS version " + version_string) #version_info.to_string())
+        f.writelines("SpecKS version " + version_string)  # version_info.to_string())
         f.writelines("GeneTree,Ks,full_path\n")
         for paml_out_file in res_files:
             log.write_to_log(paml_out_file)
-            base_name=os.path.basename(paml_out_file)
+            base_name = os.path.basename(paml_out_file)
             Ks_for_og = get_Ks_from_file(paml_out_file)
             for Ks_data in Ks_for_og:
                 Ks_value = Ks_data.ks_between_orthologs
-                ortholog_names_str = str(Ks_data.ortholog_pair).replace(","," ")
-                f.writelines(base_name + "," +  ortholog_names_str + "," +
-                             str(Ks_value)  +","+paml_out_file + "\n")
+                ortholog_names_str = str(Ks_data.ortholog_pair).replace(",", " ")
+                f.writelines(base_name + "," + ortholog_names_str + "," +
+                             str(Ks_value) + "," + paml_out_file + "\n")
                 KS_values.append(Ks_value)
-
-    return KS_values,csv_file_out
+    return KS_values
 
 
 def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, SPEC_as_Ks,
@@ -124,7 +135,7 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
             for gene_tree in gene_trees:
 
                 codeml_result=ks_result_files[gene_tree]
-                files=[codeml_result.ML_file,codeml_result.NG_file]
+                files=[codeml_result.ML_dN_file, codeml_result.ML_dS_file]
                 for file in files:
                     base=os.path.basename(file)
                     dst=os.path.join(rep_subfolder, gene_tree + "_" + base)
@@ -156,7 +167,9 @@ def summarize_ks(paml_out_folder, specks_version, replicate, species_name, WGD_a
     for alg_name in ["ML"]:
 
         log.write_to_log("getting results for PAML alg name " + alg_name)
-        ks_results,csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name, specks_version)
+        ks_results,ks_csv_file_out = get_Ks_from_folder(paml_out_folder, replicate, alg_name, specks_version)
+        kn_results,kn_csv_file_out = get_Kn_from_folder(paml_out_folder, replicate, alg_name, specks_version)
+
         paml_hist_file = os.path.join(paml_out_folder, species_name + "_rep" + str(replicate) +
                                       "_paml_hist_maxKS" + str(max_ks) +
                                   "_"+ alg_name + ".png")
@@ -170,7 +183,8 @@ def summarize_ks(paml_out_folder, specks_version, replicate, species_name, WGD_a
         plot_Ks_histogram(paml_hist_file, species_name, ks_results, WGD_as_Ks, SPEC_as_Ks, False, max_y,
                           alg_name, color, bin_size)
 
-        outfiles.append(csv_file_out)
+        outfiles.append(ks_csv_file_out)
+        outfiles.append(kn_csv_file_out)
 
     return outfiles
 

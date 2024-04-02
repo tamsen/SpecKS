@@ -14,7 +14,7 @@ class SpecKS_config:
     num_gene_trees_per_species_tree = 4  # 10
     num_replicates_per_gene_tree = 3  # 10
     num_codons = 10  # 1000
-    Ks_per_Myr = 0.01
+    Ks_per_Myr = 0.01#0.01268182
     evolver_offset = 1.0
 
     max_ks_for_hist_plot = 5

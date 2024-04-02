@@ -57,4 +57,4 @@ def fit_curve_to_hist(bins, n):
     x_value_of_ymax=sum(xs_of_ymax)/len(xs_of_ymax)
     center_of_mass=weighted_mass/weights
 
-    return fit_curve_ys, xs_for_wgd, x_value_of_ymax,center_of_mass
+    return fit_curve_ys, xs_for_wgd, x_value_of_ymax,center_of_mass,popt

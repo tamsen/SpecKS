@@ -276,8 +276,10 @@ def get_sequences_for_leaves_within_the_polyploid(
 
 
 class codeml_result():
-    NG_file=""
-    ML_file=""
+    ML_dS_file= ""
+    ML_dN_file= ""
+    #ML_file=""
     def __init__(self, gene_tree_subfolder):
-        self.NG_file = os.path.join(gene_tree_subfolder,"2NG.dS")
-        self.ML_file = os.path.join(gene_tree_subfolder,"2ML.dS")
+        self.ML_dS_file = os.path.join(gene_tree_subfolder, "2ML.dS")
+        self.ML_dN_file = os.path.join(gene_tree_subfolder, "2ML.dN")
+        #self.NG_file = os.path.join(gene_tree_subfolder,"2NG.dS")

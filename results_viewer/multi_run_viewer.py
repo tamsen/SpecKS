@@ -1,5 +1,7 @@
 import os
 import unittest
+
+from scipy import stats
 from scipy.optimize import curve_fit
 import numpy as np
 from matplotlib import pyplot as plt
@@ -7,6 +9,7 @@ from matplotlib import pyplot as plt
 import config
 import process_wrapper
 from results_viewer import curve_fitting
+from results_viewer.parse_aggregate_results import metric_result, get_metric_result_data_headers
 
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
@@ -28,10 +31,10 @@ class MulitRunViewerTests(unittest.TestCase):
         full_csv_path1=os.path.join(csv_folder,csv_file_base0)
         full_csv_path2=os.path.join(csv_folder,csv_file_base0)
 
-        bin_size = 0.01
+        bin_size = 0.001
         WGD_time_MYA=5
         SPC_time_MYA=10
-        max_Ks_for_x_axis = 1
+        max_Ks_for_x_axis = 0.7
         csv_files=[full_csv_path1,full_csv_path2]
         plot_titles=['polyploid_with_gene birth and death','outgroup_with_gene birth and death']
         specs=['polyploid','outgroup']
@@ -101,7 +104,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim20_log"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim19_N1"
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
@@ -130,7 +133,7 @@ class MulitRunViewerTests(unittest.TestCase):
                     max_Ks = False
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
                                          csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                         replicate, alg, params_by_polyploid, max_Ks, bin_size, True)
+                                         replicate, alg, params_by_polyploid, max_Ks, False, True)
 
                     max_Ks = 0.1
                     plot_histograms_for_the_sim_runs(output_folder, plot_title,
@@ -167,9 +170,9 @@ class MulitRunViewerTests(unittest.TestCase):
         for sim_name, metric in metrics_by_result_names.items():
 
                 spec_time = params_by_polyploid[sim_name].SPC_time_MYA
-                mode = metric[0]
-                cm = metric[1]
-                num_paralogs=metric[2]
+                mode = metric.mode
+                cm = metric.cm
+                num_paralogs=metric.num_paralogs
                 diff = abs(mode - cm)
                 if "Allo" in sim_name:
                     allo_xs_spc_times.append(spec_time)
@@ -185,18 +188,21 @@ class MulitRunViewerTests(unittest.TestCase):
         out_csv = "metrics.csv"
         out_metrics_path = os.path.join(output_folder, out_csv)
         with open(out_metrics_path, 'w') as f:
-            f.writelines("sim_name,spc_time,wgd_time,mode,cm,num_paralogs\n")
+            metric_result_data_headers= get_metric_result_data_headers()
+            f.writelines(",".join(metric_result_data_headers) +"\n")
 
             for sim_name, metric in allo_results.items():
                 spec_time = params_by_polyploid[sim_name].SPC_time_MYA
                 wgd_time = params_by_polyploid[sim_name].WGD_time_MYA
-                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric]
+                metric_data_list= metric.to_data_list()
+                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric_data_list]
                 f.writelines(",".join(data) + "\n")
 
             for sim_name, metric in auto_results.items():
                 spec_time = params_by_polyploid[sim_name].SPC_time_MYA
                 wgd_time = params_by_polyploid[sim_name].WGD_time_MYA
-                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric]
+                metric_data_list= metric.to_data_list()
+                data = [sim_name, str(spec_time), str(wgd_time)] + [str(m) for m in metric_data_list]
                 f.writelines(",".join(data) + "\n")
 
     def get_truth_for_Fig1_sim(self):
@@ -395,8 +401,9 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
         n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25,
             label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
     else:
-        bins = np.arange(0, default_xaxis_limit, bin_size)
-        n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25,
+        #bins = np.arange(0, default_xaxis_limit, bin_size)
+        nBins=100
+        n, bins, patches = this_ax.hist(x, bins=nBins, facecolor=plot_color, alpha=0.25,
             label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
 
     hist_maximum=max(n)
@@ -412,12 +419,27 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
         this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
         this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
 
-        fit_curve_ys1, xs_for_wgd, mode,cm = curve_fitting.fit_curve_to_hist(bins, n)
+        fit_curve_ys1, xs_for_wgd, mode,cm,popt = curve_fitting.fit_curve_to_hist(bins, n)
         print("hist_maximum " + str(hist_maximum))
         print("mode " + str(mode))
         print("cm " + str(cm))
         curve_fit_done=True
-        metrics=[mode,cm,len(Ks_results)]
+
+        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
+        ks_norm_result= stats.kstest(bins,stats.norm.cdf)
+        #ks_lognorm_result = stats.kstest(bins, stats.lognorm.cdf(popt))
+        #https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
+        my_args = popt[0:3]
+        ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
+        
+        print("ks_norm_result " + str(ks_norm_result))
+        print("ks_lognorm_result " + str(ks_lognorm_result))
+
+        fit_data=[spec,spec,
+            SPC_time_MYA,WGD_time_MYA,mode,cm,
+                  len(Ks_results),*popt,ks_norm_result ,ks_lognorm_result]
+        metrics=metric_result(fit_data)
+
         if fit_curve_ys1 and (hist_maximum>0):
             this_ax.plot(xs_for_wgd,fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit")
@@ -448,7 +470,7 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
 
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
-        if max_Ks < 1.0:
+        if max_Ks < 0.51:
             this_ax.set(ylim=[0, 5])
     else:
         this_ax.set(xlim=[0, default_xaxis_limit])
