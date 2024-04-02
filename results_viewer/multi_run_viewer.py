@@ -14,33 +14,34 @@ class MulitRunViewerTests(unittest.TestCase):
 
     def test_single_run_viewer(self):
 
-        test_out_folder="/home/tamsen/Git/SpecKS/SpecKS/test_code/test_out/test_main"
-        csv_folder="no_gbd_or_branching/Allo1_S150W100/8_final_results"
-        csv_file_base1="Allo1_S150W100_ML_rep0_Ks_by_GeneTree.csv"
+        #test_out_folder="/home/tamsen/Git/SpecKS/SpecKS/test_code/test_out/test_main"
+        test_out_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim19_N1"
+        csv_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim19_N1/Auto5"
+        csv_file_base0="Auto5_S010W010_ML_rep0_Ks_by_GeneTree.csv"
+        csv_file_base1="Allo5_S010W005_ML_rep0_Ks_by_GeneTree.csv"
         csv_file_base2="outgroup_ML_rep0_Ks_by_GeneTree.csv"
-        full_csv_path1=os.path.join(test_out_folder,csv_folder,csv_file_base1)
-        full_csv_path2=os.path.join(test_out_folder,csv_folder,csv_file_base2)
+        full_csv_path1=os.path.join(csv_folder,csv_file_base1)
+        full_csv_path2=os.path.join(csv_folder,csv_file_base2)
         #csv_folder="/home/tamsen/Data/SpecKS_output/SpecKS_m03d15y2024_h15m35s38/Allo1_S150W100/8_final_results"
-        csv_folder = "/home/tamsen/Data/SpecKS_output/SpecKS_m03d15y2024_h16m27s56/Allo1_S070W065/8_final_results"
+        #csv_folder = "/home/tamsen/Data/SpecKS_output/SpecKS_m03d15y2024_h16m27s56/Allo1_S070W065/8_final_results"
 
-        full_csv_path1=os.path.join(csv_folder,
-                                    'Allo1_S070W065_ML_rep0_Ks_by_GeneTree.csv')
-        full_csv_path2=os.path.join(csv_folder,
-                                    'outgroup_ML_rep0_Ks_by_GeneTree.csv')
+        full_csv_path1=os.path.join(csv_folder,csv_file_base0)
+        full_csv_path2=os.path.join(csv_folder,csv_file_base0)
 
         bin_size = 0.01
-        WGD_time_MYA=65
-        SPC_time_MYA=70
+        WGD_time_MYA=5
+        SPC_time_MYA=10
         max_Ks_for_x_axis = 1
         csv_files=[full_csv_path1,full_csv_path2]
         plot_titles=['polyploid_with_gene birth and death','outgroup_with_gene birth and death']
+        specs=['polyploid','outgroup']
         for i in range(0,len(csv_files)):
             csv_file=csv_files[i]
             plot_title=plot_titles[i]
-            self.histogram_a_single_csv_file(SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis,
+            self.histogram_a_single_csv_file(specs[i], SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis,
                                              csv_file, plot_title)
 
-    def histogram_a_single_csv_file(self, SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis, full_csv_path, plot_title):
+    def histogram_a_single_csv_file(self,spec, SPC_time_MYA, WGD_time_MYA, bin_size, max_Ks_for_x_axis, full_csv_path, plot_title):
         ks_result_for_file = read_Ks_csv(full_csv_path)
         # making subplots
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -48,9 +49,9 @@ class MulitRunViewerTests(unittest.TestCase):
         # ax[0, 0].set_title("Allopolyploid\n", fontsize=20)
         #max_Ks_for_x_axis = 8
         this_ax = ax
-        this_ax, ymax_suggestion = make_subplot(this_ax, ks_result_for_file, bin_size, WGD_time_MYA,
+        this_ax, ymax_suggestion, metrics = make_subplot(this_ax,spec, ks_result_for_file, bin_size, WGD_time_MYA,
                                                 SPC_time_MYA,
-                                                max_Ks_for_x_axis, False, "blue")
+                                                max_Ks_for_x_axis, False, "blue", True)
         this_ax.set(xlabel="Ks")
         out_file_name = full_csv_path.replace(".csv", ".hist.png")
         if max_Ks_for_x_axis:

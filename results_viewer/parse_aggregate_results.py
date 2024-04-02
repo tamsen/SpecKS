@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 
 class MyAggparser(unittest.TestCase):
+
     def test_parse_agg_results(self):
 
         out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
@@ -16,16 +17,22 @@ class MyAggparser(unittest.TestCase):
         ys_by_sim=[]
         labels_by_sim=[]
         colors_by_sim=[]
+        type_by_sim=[]
         for sim, sim_result in data.items():
             for polyploid_type, polyploid_results in sim_result.items():
                     xs=[res.spc_time  for res in polyploid_results]
                     xs_by_sim.append(xs)
                     ys = [abs(res.cm-res.mode) for res in polyploid_results]
                     ys_by_sim.append(ys)
-
                     labels_by_sim.append(sim)
+                    type_by_sim.append(polyploid_type)
+                    if polyploid_type== "Allo":
+                        colors_by_sim.append('r')
+                    else:
+                        colors_by_sim.append('b')
         print(data)
-        plot_allo_vs_auto_metrics(out_folder,xs_by_sim[0],ys_by_sim[0], "foo")
+        plot_allo_vs_auto_metrics(out_folder,xs_by_sim,ys_by_sim, labels_by_sim, colors_by_sim,type_by_sim,
+                                  "Allopolyploids show more skew Ks histograms than Autopolyploids ")
         self.assertEqual(True, False)  # add assertion here
 
 
@@ -62,14 +69,18 @@ def read_data_csv(csv_file):
     return data_by_sim_name_by_type
 
 
-def plot_allo_vs_auto_metrics(out_folder, xs, ys, title):
+def plot_allo_vs_auto_metrics(out_folder, list_of_xs, list_of_ys, list_of_sims,colors_by_sim,type_by_sim, title):
 
-
+    marker_styles={"lognorm":"x","N=0p1":"+","N=1p0" : "o"}
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-    plt.plot(xs, ys, label='Allo',c='r')
+
+    for i in range(0,len(list_of_xs)):
+        label= list_of_sims[i] + "(" + type_by_sim[i] + ")"
+        plt.scatter(list_of_xs[i], list_of_ys[i], label=label,c=colors_by_sim[i],
+                    marker=marker_styles[list_of_sims[i]] )
     out_file_name = os.path.join(out_folder, title+ ".png")
     fig.suptitle(title)
-    ax.set(xlabel="MYA")
+    ax.set(xlabel="Spec time, MYA")
     ax.set(ylabel="Metric (mode-cm)")
 
     ax.legend()

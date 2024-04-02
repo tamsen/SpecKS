@@ -29,7 +29,7 @@ class Generate_Config_Files(unittest.TestCase):
 
         decimals_needed=3
         formatter = "{:0" + str(decimals_needed) + "d}"
-        spec_times=[80,60,40,20,10,5]
+        spec_times= [80 ,60, 40, 20,10,5]
         wgd_times = [75, 55, 35, 15, 5,1]
 
         div_log="lognorm,0.5,5.27"
