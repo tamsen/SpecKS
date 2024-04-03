@@ -101,8 +101,8 @@ class GeneEvolverAndCodemlTests(unittest.TestCase):
             NG_out_file = os.path.join(replicates_subfolder, "2NG.dS")
             ML_ks_result_data = ks_histogramer.get_Ks_from_file(ML_out_file)
             NG_ks_result_data = ks_histogramer.get_Ks_from_file(NG_out_file)
-            ML_ks_results = [ks.ks_between_orthologs for ks in ML_ks_result_data]
-            NG_ks_results = [ks.ks_between_orthologs for ks in NG_ks_result_data]
+            ML_ks_results = [ks.round_trip_ks_between_orthologs for ks in ML_ks_result_data]
+            NG_ks_results = [ks.round_trip_ks_between_orthologs for ks in NG_ks_result_data]
 
             all_ML_ks_results = all_ML_ks_results + ML_ks_results
             all_NG_ks_results = all_NG_ks_results + NG_ks_results

@@ -250,7 +250,7 @@ def get_evolver_tree_length(config, gene_tree_result):
     # n general, the ratio of tree distance to K is
     # config.per_site_evolutionary_distance * 1.2 (because K= Ks+Kn , and our Kn/Ks ratio is 0.2) * 0.5 (because we t only one way, not round trip)
     # ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance * 0.6
-    ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance * 0.5
+    ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance #* 0.5
 
     # (config.Ks_per_Myr  + 0.2 Kn_per_Myr )* 0.5
     # ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.65

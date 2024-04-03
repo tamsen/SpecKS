@@ -40,7 +40,7 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name, version_string):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
-                                           "_Ks_by_GeneTree.csv")
+                                           "_LCA_to_Ortholog_Ks_by_GeneTree.csv")
     KS_values = extract_K_values(csv_file_out, res_files, version_string)
 
     return KS_values,csv_file_out
@@ -48,7 +48,7 @@ def get_Kn_from_folder(paml_out_folder, replicate, alg_name, version_string):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dN")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
-                                           "_Kn_by_GeneTree.csv")
+                                           "__LCA_to_Ortholog_Kn_by_GeneTree.csv")
     KS_values = extract_K_values(csv_file_out, res_files, version_string)
 
     return KS_values,csv_file_out
@@ -64,7 +64,7 @@ def extract_K_values(csv_file_out, res_files, version_string):
             base_name = os.path.basename(paml_out_file)
             Ks_for_og = get_Ks_from_file(paml_out_file)
             for Ks_data in Ks_for_og:
-                Ks_value = Ks_data.ks_between_orthologs
+                Ks_value = Ks_data.ks_between_ortholog_and_LCA
                 ortholog_names_str = str(Ks_data.ortholog_pair).replace(",", " ")
                 f.writelines(base_name + "," + ortholog_names_str + "," +
                              str(Ks_value) + "," + paml_out_file + "\n")
@@ -192,12 +192,14 @@ def summarize_ks(paml_out_folder, specks_version, replicate, species_name, WGD_a
 
 class ks_data():
 
-    ks_between_orthologs=0
+    round_trip_ks_between_orthologs=0
+    ks_between_ortholog_and_LCA=0
     ortholog_pair=[]
     row_index=-1
     col_index=-1
-    def __init__(self, ks_data_result,row_index,col_index):
-        self.ks_between_orthologs = ks_data_result
+    def __init__(self, round_trip_ks_data_result, row_index, col_index):
+        self.round_trip_ks_between_orthologs = round_trip_ks_data_result
+        self.ks_between_ortholog_and_LCA = self.round_trip_ks_between_orthologs * 0.5
         self.ortholog_pair = []
         self.row_index = row_index
         self.col_index = col_index
