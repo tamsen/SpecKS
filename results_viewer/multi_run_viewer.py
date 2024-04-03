@@ -61,50 +61,13 @@ class MulitRunViewerTests(unittest.TestCase):
             out_file_name = out_file_name.replace(".png", "_maxKs" + str(max_Ks_for_x_axis) + ".png")
         plt.savefig(out_file_name)
         plt.close()
-
-    def test_download_mesx_results(self):
-
-        batch_folder="sim20_log"
-        runs=range(0,7)
-        me_at_remote_URL='tdunn@mesx.sdsu.edu'
-        local_output_folder="/home/tamsen/Data/Specks_outout_from_mesx"
-        remote_output_folder="/usr/scratch2/userdata2/tdunn/SpecKS_Output"
-        local_batch_folder=os.path.join(local_output_folder, batch_folder)
-        remote_batch_folder=os.path.join(remote_output_folder, batch_folder)
-        os.makedirs(local_batch_folder)
-        for run in runs:
-
-            allo_run="Allo" + str(run)
-            auto_run="Auto" + str(run)
-            local_allo_folder = os.path.join(local_batch_folder, allo_run)
-            local_auto_folder = os.path.join(local_batch_folder,auto_run)
-            os.makedirs(local_allo_folder)
-            os.makedirs(local_auto_folder)
-
-            remote_allo_folder=os.path.join(remote_batch_folder,"specks_" + allo_run.upper()+"*")
-            remote_to_match = remote_allo_folder + "/A*/*final*/*.csv"
-            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_allo_folder ]
-            print(" ".join(cmd2))
-            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
-
-            remote_auto_folder=os.path.join(remote_batch_folder,"specks_" + auto_run.upper()+"*")
-            remote_to_match = remote_auto_folder + "/A*/*final*/*.csv"
-            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_auto_folder ]
-            print(" ".join(cmd2))
-            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
-
-        cmd2=['scp','-r',me_at_remote_URL+':' +remote_batch_folder +'/specks*/*.xml','.']
-        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
-
-        cmd2=['scp','-r',me_at_remote_URL+':' +remote_batch_folder +'/specks*/*log*','.']
-        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
     def test_multi_run_viewer(self):
 
         plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim19_N1"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim22_log"
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
@@ -259,6 +222,9 @@ class MulitRunViewerTests(unittest.TestCase):
                     #    continue
 
                     if not ".csv" in csv_file:
+                        continue
+
+                    if "Kn" in csv_file:
                         continue
 
                     # example file name: ML_rep0_Ks_by_GeneTree.csv
@@ -423,22 +389,25 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
         print("hist_maximum " + str(hist_maximum))
         print("mode " + str(mode))
         print("cm " + str(cm))
-        curve_fit_done=True
 
-        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
-        ks_norm_result= stats.kstest(bins,stats.norm.cdf)
-        #ks_lognorm_result = stats.kstest(bins, stats.lognorm.cdf(popt))
-        #https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
-        my_args = popt[0:3]
-        ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
-        
-        print("ks_norm_result " + str(ks_norm_result))
-        print("ks_lognorm_result " + str(ks_lognorm_result))
+        if fit_curve_ys1:
+            curve_fit_done=True
 
-        fit_data=[spec,spec,
-            SPC_time_MYA,WGD_time_MYA,mode,cm,
-                  len(Ks_results),*popt,ks_norm_result ,ks_lognorm_result]
-        metrics=metric_result(fit_data)
+            #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
+            #ks_norm_result= stats.kstest(bins,stats.norm.cdf)
+            #ks_lognorm_result = stats.kstest(bins, stats.lognorm.cdf(popt))
+            #https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
+            #my_args = popt[0:3]
+            #ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
+
+            #print("ks_norm_result " + str(ks_norm_result))
+            #print("ks_lognorm_result " + str(ks_lognorm_result))
+
+            fit_data=[spec,spec,
+                SPC_time_MYA,WGD_time_MYA,mode,cm,
+                      len(Ks_results),*popt,0,0]
+            #,ks_norm_result ,ks_lognorm_result]
+            metrics=metric_result(fit_data)
 
         if fit_curve_ys1 and (hist_maximum>0):
             this_ax.plot(xs_for_wgd,fit_curve_ys1,

@@ -31,8 +31,7 @@
         <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
         <num_codons>100</num_codons>
         <Ks_per_Myr>0.01</Ks_per_Myr>
-        <!--<evolver_offset>1.01268182</evolver_offset>-->
-        <evolver_offset>1</evolver_offset>
+        <per_site_evolutionary_distance>0.01268182</per_site_evolutionary_distance>
     </SequenceEvolution>
     <Histogram>
         <maxKs>1</maxKs>

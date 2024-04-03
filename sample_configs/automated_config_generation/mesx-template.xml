@@ -20,6 +20,7 @@
         <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
         <num_codons>1000</num_codons>
         <Ks_per_Myr>0.01</Ks_per_Myr>
+        <per_site_evolutionary_distance>0.01268182</per_site_evolutionary_distance>
     </SequenceEvolution>
     <Histogram>
         <maxKs>1</maxKs>

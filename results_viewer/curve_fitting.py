@@ -36,7 +36,7 @@ def fit_curve_to_hist(bins, n):
         print(type(inst))  # the exception type
         print(inst.args)  # arguments stored in .args
         print(inst)  # __str__ allows args to be printed directly,
-        return False, xs_for_wgd, 0,0
+        return False, xs_for_wgd, 0,0, False
 
     fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
 

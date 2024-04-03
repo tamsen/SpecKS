@@ -248,14 +248,14 @@ def get_evolver_tree_length(config, gene_tree_result):
     # So the K for the whole tree should be (0.006)*1100
 
     # n general, the ratio of tree distance to K is
-    # config.Ks_per_Myr * 1.2 (because K= Ks+Kn , and our Kn/Ks ratio is 0.2) * 0.5 (because we t only one way, not round trip)
-    ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.6
+    # config.per_site_evolutionary_distance * 1.2 (because K= Ks+Kn , and our Kn/Ks ratio is 0.2) * 0.5 (because we t only one way, not round trip)
+    ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance * 0.6
 
     # (config.Ks_per_Myr  + 0.2 Kn_per_Myr )* 0.5
     # ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.65
 
     total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
-    evolver_tree_length = total_tree_length * ratio_of_tree_distance_to_K * config.evolver_offset
+    evolver_tree_length = total_tree_length * ratio_of_tree_distance_to_K
     return evolver_tree_length
 
 
