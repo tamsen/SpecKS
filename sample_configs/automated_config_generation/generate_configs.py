@@ -11,7 +11,7 @@ class Generate_Config_Files(unittest.TestCase):
 
     def test_making_configs(self):
 
-        sim_subfolder="sim21_log"
+        sim_subfolder="sim22_log"
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
