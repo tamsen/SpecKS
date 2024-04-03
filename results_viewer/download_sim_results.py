@@ -5,7 +5,7 @@ import process_wrapper
 class MyTestDownloader(unittest.TestCase):
 
     def test_download_mesx_results(self):
-        batch_folder = "sim23_log"
+        batch_folder = "sim26_log"
         runs = range(1, 7)
         me_at_remote_URL = 'tdunn@mesx.sdsu.edu'
         local_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx"

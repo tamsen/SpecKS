@@ -123,7 +123,7 @@ def run_evolver_with_root_seq(polyploid, gene_tree_results_by_gene_tree_name,
         os.makedirs(gene_tree_subfolder)
         root_seq_files_written_for_replicates = root_seq_files_written_by_gene_tree_by_child_tree[first_leg_GT_name][
             second_leg_GT_name]
-        evolver_tree_length = get_evolver_tree_length(config, gene_tree_result)
+        evolver_tree_length = get_autopoly_evolver_tree_length_in_second_leg(config, gene_tree_result)
 
 
         for replicate_i in range(0, (len(root_seq_files_written_for_replicates))):
@@ -238,27 +238,27 @@ def get_evolver_template_file():
 
 
 def get_evolver_tree_length(config, gene_tree_result):
-    # Example calculation:
-    # Newick: ((O:500, (P1:100, P2:100)G2_0:400));
-    # because in "evolver_input_example.dat" the total tree length is
-    # 100+ 100 + 400 + 500 = 1100
-    # ie, if we want P1 and P2 to be 1 unit of Ks apart, for 1 MYA
-    # Then we expect tree distance of 100+100=200 to have Ks of 1,ie K= Ks+Kn of 1.2
-    # So the ratio of tree distance (200) to K (1.2) to be 1.2/200 = 0.006
-    # So the K for the whole tree should be (0.006)*1100
 
-    # n general, the ratio of tree distance to K is
-    # config.per_site_evolutionary_distance * 1.2 (because K= Ks+Kn , and our Kn/Ks ratio is 0.2) * 0.5 (because we t only one way, not round trip)
-    # ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance * 0.6
-    ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance #* 0.5
-
-    # (config.Ks_per_Myr  + 0.2 Kn_per_Myr )* 0.5
-    # ratio_of_tree_distance_to_K = config.Ks_per_Myr * 0.65
-
+    ratio_of_tree_distance_to_K = config.per_site_evolutionary_distance
     total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
     evolver_tree_length = total_tree_length * ratio_of_tree_distance_to_K
     return evolver_tree_length
 
+def get_autopoly_evolver_tree_length_in_second_leg(config, gene_tree_result):
+
+    # Normally we would use config.per_site_evolutionary_distance,
+    # but now we need to over-clock the Ks accumulation, because
+    # we are calculating the tree length from (P1 and O1) and (P2 and O2) separately.
+    # despite, in the final Ks histogram, we actually need the Ks distance from (P1 and P2).
+    # For the allopolyploid, this is just the tree distance, enforced by evolver.
+    # For the autopolyploid, we need to account for the fact that evolver enforces
+    # the (O1-P1) & (O2-P2) sides of the triangle, but not (P1-P2) overtly
+    # So we need at P1-to-O1 per_site_evolutionary_distance big enough
+    # to force P1-to-P2 per_site_evolutionary_distance to be what we expect.
+    ratio_of_tree_distance_to_K = config.P1_to_O1_per_site_evolutionary_distance
+    total_tree_length = gene_tree_result.get_tree_length_as_in_PAML()
+    evolver_tree_length = total_tree_length * ratio_of_tree_distance_to_K
+    return evolver_tree_length
 
 class evolver_version_string():
     version_string = ""

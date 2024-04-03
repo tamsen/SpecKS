@@ -67,7 +67,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim23_log"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim26_log"
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
@@ -232,10 +232,12 @@ class MulitRunViewerTests(unittest.TestCase):
                     len_splat=len(splat)
                     if splat[0]== "outgroup":
                         species = "outgroup"
+                        algorithm = splat[1]
+                        replicate = splat[2]
                     else:
                         species = "polyploid"
-                    algorithm = splat[len_splat-5]
-                    replicate = splat[len_splat-4]
+                        algorithm = splat[2]
+                        replicate = splat[3]
 
                     if not species in csvfiles_by_species_rep_by_algorthim:
                         csvfiles_by_species_rep_by_algorthim[species] = {}
@@ -303,6 +305,9 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
         #if len(ordered_allo_results) >0:
         allo_result_name=ordered_allo_results[sim_idx]
         csvs_for_allo_result= csvfiles_by_polyploid_by_rep_by_algorthim[allo_result_name]
+        print("spec:\t" + spec)
+        print("replicate:\t" + replicate)
+        print("alg:\t" + alg)
 
         if spec in csvs_for_allo_result:
             ks_for_allo_result= csvs_for_allo_result[spec][replicate][alg]

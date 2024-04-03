@@ -28,9 +28,9 @@ class custom_gene_tree_result():
         self.leaves_by_species=leaves_by_species
 
     def get_tree_length_as_in_PAML(self):
+
         # As per the PAML manual, “The tree length is the expected number of substitutions
         # per site along all branches in the phylogeny, calculated as the sum of the branch lengths”.
-
         total_branch_length = self.tree.total_branch_length()
         return total_branch_length
 

@@ -9,9 +9,10 @@ class Generate_Config_Files(unittest.TestCase):
 
 
 
+    # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim23_log"
+        sim_subfolder="sim26_log" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -32,7 +33,8 @@ class Generate_Config_Files(unittest.TestCase):
         spec_times= [80 ,60, 40, 20,10,5]
         wgd_times = [75, 55, 35, 15, 5,1]
 
-        div_log="lognorm,0.5,5.27"
+        div_distribution = "impulse,1,1"
+        #div_distribution="lognorm,0.5,5.27"
         #div_expon_0p1="expon,0,0.1"
         #div_expon = "expon,0,1"
 
@@ -61,7 +63,7 @@ class Generate_Config_Files(unittest.TestCase):
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", div_log)
+                              ("DIV_DIST", div_distribution)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)
@@ -79,8 +81,7 @@ class Generate_Config_Files(unittest.TestCase):
         print(" ".join(cmd2))
         out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_out_dir)
 
-        #can I qsub remotely?
-        #ssh "$server" "mkdir -p $destiny"
+
         #https://stackoverflow.com/questions/26278167/submitting-a-job-to-qsub-remotely
         #https://unix.stackexchange.com/questions/8612/programmatically-creating-a-remote-directory-using-ssh
 
