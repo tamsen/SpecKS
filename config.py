@@ -120,7 +120,7 @@ class SpecKS_config:
 
         delta_per_site_evolutionary_distance= self.per_site_evolutionary_distance-0.012
         #adjusted_delta=1.414213562*delta_per_site_evolutionary_distance #from sqrt(2)
-        adjusted_delta = 2.0 * delta_per_site_evolutionary_distance  
+        adjusted_delta = 2.0 * delta_per_site_evolutionary_distance
         self.P1_to_O1_per_site_evolutionary_distance=0.012+adjusted_delta
 def parse_tuple_string(tuple_string):
     if tuple_string.upper() == "FALSE":
