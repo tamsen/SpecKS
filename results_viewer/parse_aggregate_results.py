@@ -13,13 +13,17 @@ class MyAggparser(unittest.TestCase):
         out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
         batch_name="sim20_log"
         batch_folder=os.path.join(out_folder,batch_name)
-
+        metric_data_by_batch={}
         files = os.listdir(batch_folder)
         for file in files:
             print("file:\t" + file)
-            if ".csv" in file:
+            if (".csv" in file) and ("polyploid" in file):
                 full_file_path=os.path.join(batch_folder,file)
-                metric_data=read_data_csv(full_file_path)
+                metric_data_for_batch=read_data_csv(full_file_path)
+                metric_data_by_batch[batch_name]=metric_data_for_batch
+
+        title="foo.png"
+        plot_allo_vs_auto_metrics(metric_data_by_batch,out_folder, title)
         '''
         #get_allo_vs_auto_data(out_folder, xs, ys, title):
         xs_by_sim=[]
@@ -47,7 +51,7 @@ class MyAggparser(unittest.TestCase):
 
 def read_data_csv(csv_file):
 
-    data_by_sim_name_by_type={}
+    data_by_sim_name={}
     with open(csv_file, "r") as f:
 
         while True:
@@ -58,32 +62,20 @@ def read_data_csv(csv_file):
                 break
             data = line.strip().split(",")
             print(str(data))
-            sim_name=data[0]
-            if sim_name=='':
+            sim_type=data[0]
+            if sim_type=='':
                 continue
 
-            run_metrics.get_metrics_from_data_line(data)
+            metrics_for_run= run_metrics.get_metrics_from_data_line(data)
+            run_name=metrics_for_run.sim_name
+            data_by_sim_name[run_name]=metrics_for_run
 
-            '''
-            if sim_name not in data_by_sim_name_by_type:
-                data_by_sim_name_by_type[sim_name]={}
+    return data_by_sim_name
 
-            polyploid_type_string=data[1]
-            polyploid_type="Auto"
-            if "Allo" in polyploid_type_string:
-                polyploid_type="Allo"
 
-            if polyploid_type not in data_by_sim_name_by_type[sim_name]:
-                data_by_sim_name_by_type[sim_name][polyploid_type]=[]
-
-            sim_metric_result= metric_result(data)
-            data_by_sim_name_by_type[sim_name][polyploid_type].append(sim_metric_result)
-            '''
-    return data_by_sim_name_by_type
-
+def plot_allo_vs_auto_metrics(metric_data_by_batch,out_folder, title):
+    
 '''
-def plot_allo_vs_auto_metrics(out_folder, list_of_xs, list_of_ys, list_of_sims,colors_by_sim,type_by_sim, title):
-
     marker_styles={"lognorm":"x","N=0p1":"+","N=1p0" : "o"}
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 
