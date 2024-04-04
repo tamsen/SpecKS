@@ -20,12 +20,16 @@ class KsFittingTests(unittest.TestCase):
 
     def test_Ks_fit(self):
 
-        csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim19_N1/Auto5"
-        csv_file_base0 = "Auto5_S010W010_ML_rep0_Ks_by_GeneTree.csv"
+        #csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim20_log/Allo4"
+        #csv_file_base0 = "Allo4_S020W015_ML_rep0_Ks_by_GeneTree.csv"
+
+        csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim20_log/Auto4"
+        csv_file_base0 = "Auto4_S020W020_ML_rep0_Ks_by_GeneTree.csv"
+
         plot_title=csv_file_base0.replace(".csv",".png")
         full_csv_path=os.path.join(csv_folder,csv_file_base0)
-        WGD_time_MYA = 5
-        SPC_time_MYA = 10
+        WGD_time_MYA = 15
+        SPC_time_MYA = 20
         WGD_time_Ks = WGD_time_MYA * 0.01
         SPC_time_Ks = SPC_time_MYA * 0.01
         max_Ks_for_x_axis = 0.7
@@ -70,7 +74,7 @@ class KsFittingTests(unittest.TestCase):
         # print("ks_norm_result " + str(ks_norm_result))
         # print("ks_lognorm_result " + str(ks_lognorm_result))
 
-        label="lognorm fit" + str(popt)
+        label="lognorm fit"# + str(popt)
         this_ax.plot(xs_for_wgd, fit_curve_ys1,color='green', linestyle=':', label=label)
 
 
@@ -78,7 +82,8 @@ class KsFittingTests(unittest.TestCase):
         this_ax.scatter(mode, 0.05,color='cyan', marker='^', s=80)  # label="mode")
         this_ax.legend()
         this_ax.set(xlabel="Ks")
-        this_ax.set(xlim=[0, 0.25])
+        this_ax.set(xlim=[0, 0.5])
+        this_ax.set(ylim=[0, 250])
         out_file_name = full_csv_path.replace(".csv", ".hist.png")
 
         out_file_name = out_file_name.replace(".png", "_Ks_fit" + str(max_Ks_for_x_axis) + ".png")
