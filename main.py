@@ -26,10 +26,11 @@ def run_sim():
 
     for polyploid in list_of_polyploids:
 
-        if polyploid.is_allo():
-            allosim.run_allosim(polyploid)
-        else:
-            autosim.run_autosim(polyploid)
+        allosim.run_allosim(polyploid)
+        #if polyploid.is_allo():
+        #    allosim.run_allosim(polyploid)
+        #else:
+        #    autosim.run_autosim(polyploid)
 
     log.write_end_to_log()
 

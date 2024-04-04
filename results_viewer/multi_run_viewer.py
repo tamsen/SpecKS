@@ -8,8 +8,7 @@ from matplotlib import pyplot as plt
 
 import config
 import process_wrapper
-from results_viewer import curve_fitting
-from results_viewer.parse_aggregate_results import metric_result, get_metric_result_data_headers
+from results_viewer import curve_fitting, run_metrics
 
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
@@ -22,6 +21,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #and you want to see them all together on one plot.
 
         output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim20_log"
+        batch_run_name=os.path.basename(output_folder)
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = self.get_truth_for_Fig1_sim()
         print("Reading csv files..")
@@ -63,56 +63,11 @@ class MulitRunViewerTests(unittest.TestCase):
 
                     print(metrics_by_result_names)
 
-                    self.plot_and_save_metrics(metrics_by_result_names, output_folder, params_by_polyploid)
+                    out_csv = "{0}_{1}_{2}_{3}_metrics.csv".format(batch_run_name,spec,replicate,alg)
+                    out_file_name = os.path.join(output_folder, out_csv)
+                    run_metrics.plot_and_save_metrics(metrics_by_result_names, out_file_name)
 
         self.assertEqual(True,True)
-
-    def plot_and_save_metrics(self, metrics_by_result_names, output_folder, params_by_polyploid):
-
-        allo_results={}
-        auto_results={}
-        for sim_name, metric in metrics_by_result_names.items():
-            if "Allo" in sim_name:
-                allo_results[sim_name]=metric
-            else:
-                auto_results[sim_name] = metric
-
-        self.save_metrics_to_csv(allo_results, auto_results, output_folder, params_by_polyploid)
-
-        #allo_xs_spc_times = []  # times
-        #auto_xs_spc_times = []  # times
-        #allo_ys_diffs = []  # metrics
-        #auto_ys_diffs = []  # metrics
-
-        #for sim_name, metric in metrics_by_result_names.items():
-
-        #        spec_time = params_by_polyploid[sim_name].SPC_time_MYA
-        #        mode = metric.mode
-        #        cm = metric.cm
-        #        num_paralogs=metric.num_paralogs
-        #        diff = abs(mode - cm)
-        #        if "Allo" in sim_name:
-        #            allo_xs_spc_times.append(spec_time)
-        #            allo_ys_diffs.append(diff)
-        #        else:
-        #            auto_xs_spc_times.append(spec_time)
-        #            auto_ys_diffs.append(diff)
-
-        #plot_allo_vs_auto_metrics(output_folder, allo_xs_spc_times, allo_ys_diffs,
-        #                          auto_xs_spc_times, auto_ys_diffs, "Allo vs Auto Discrimination plot")
-
-    def save_metrics_to_csv(self, allo_results, auto_results, output_folder, params_by_polyploid):
-        out_csv = "metrics.csv"
-        out_metrics_path = os.path.join(output_folder, out_csv)
-        with open(out_metrics_path, 'w') as f:
-            metric_result_data_headers= get_metric_result_data_headers()
-            f.writelines(",".join(metric_result_data_headers) +"\n")
-
-            for sim_name, metric in allo_results.items():
-                f.writelines(metric.to_csv_string() + "\n")
-
-            for sim_name, metric in auto_results.items():
-                f.writelines(metric.to_csv_string() + "\n")
 
     def get_truth_for_Fig1_sim(self):
         params_by_polyploid = {}
@@ -265,9 +220,9 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
                 max_Ks_for_x_axis, False,"blue", do_curve_fit)
 
             if lognorm_fit_metrics:
-                fit_data = fit_data_to_keep("allo",allo_result_name,
-                                            params.SPC_time_MYA,params.WGD_time_MYA,
-                                            lognorm_fit_metrics,gaussian_fit_metrics)
+                fit_data = run_metrics.run_metrics("allo", allo_result_name,
+                                                   params.SPC_time_MYA, params.WGD_time_MYA,
+                                                   lognorm_fit_metrics, gaussian_fit_metrics)
                 metrics_by_result_names[allo_result_name]=fit_data
 
             this_ax.set(ylabel="simulation #" + str(sim_idx))
@@ -289,9 +244,9 @@ def plot_histograms_for_the_sim_runs(run_folder, sample_name, csvfiles_by_polypl
                 max_Ks_for_x_axis, ymax_suggestion,"blue", do_curve_fit)
 
             if lognorm_fit_metrics:
-                fit_data = fit_data_to_keep("auto",auto_result_name,
-                                            params.SPC_time_MYA,params.WGD_time_MYA,
-                                            lognorm_fit_metrics, gaussian_fit_metrics)
+                fit_data = run_metrics.run_metrics("auto", auto_result_name,
+                                                   params.SPC_time_MYA, params.WGD_time_MYA,
+                                                   lognorm_fit_metrics, gaussian_fit_metrics)
                 metrics_by_result_names[auto_result_name]=fit_data
 
             text_string="SPC: {0} MYA\nWGD: {1} MYA".format(params.SPC_time_MYA,params.WGD_time_MYA)
@@ -423,32 +378,3 @@ def plot_allo_vs_auto_metrics(out_folder, allo_xs, allo_ys, auto_xs, auto_ys, ti
     plt.close()
 
 
-class fit_data_to_keep():
-    input_type=''
-    sim_name=''
-    spc_time=-1
-    wgd_time=-1
-    lognorm_fit_data=-1
-    gaussian_fit_data=-1
-
-    def __init__(self, input_type, sim_name, spc_time, wgd_time, lognorm_fit_data, gaussian_fit_data):
-        self.input_type = input_type
-        self.sim_name =sim_name
-        self.spc_time =spc_time
-        self.wgd_time = wgd_time
-        self.lognorm_fit_data = lognorm_fit_data
-        self.gaussian_fit_data = gaussian_fit_data
-    def to_csv_string(self):
-
-        final_data = self.to_data_list()
-        return ",".join(final_data)
-
-    def to_data_list(self):
-        simple_data = [self.input_type, self.sim_name, self.spc_time, self.wgd_time]#,self.fit_data]
-        fit_data_list=self.lognorm_fit_data.to_data_list() + [str(self.gaussian_fit_data.RMSE)]
-        final_data = [str(d) for d in simple_data] + [str(d) for d in fit_data_list]
-        return final_data
-
-def get_metric_result_data_headers():
-         return ["sim_type","sim_name","spc_time","wgd_time","mode","cm","num_paralogs",
-                 "popt","lognorm_RMSE","gaussian_RMSE"]

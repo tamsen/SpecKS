@@ -64,6 +64,8 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
     gt_after_everyone_that_needed_pruning_is_pruned={}
     pruned_gt=[]
     for gt in gene_data_by_gt_name.keys():
+
+            print("gt: " + str(gt))
             if gt in gene_trees_to_loose_a_duplicate_gene:
                 original_gt_newick=gene_data_by_gt_name[gt]
                 print("pruning time!")

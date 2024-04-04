@@ -3,15 +3,24 @@ import unittest
 
 from matplotlib import pyplot as plt
 
+from results_viewer import run_metrics
+
 
 class MyAggparser(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
         out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
-        csv_file="/home/tamsen/Data/Specks_outout_from_mesx/joint_data.csv"
-        data=read_data_csv(csv_file)
+        batch_name="sim20_log"
+        batch_folder=os.path.join(out_folder,batch_name)
 
+        files = os.listdir(batch_folder)
+        for file in files:
+            print("file:\t" + file)
+            if ".csv" in file:
+                full_file_path=os.path.join(batch_folder,file)
+                metric_data=read_data_csv(full_file_path)
+        '''
         #get_allo_vs_auto_data(out_folder, xs, ys, title):
         xs_by_sim=[]
         ys_by_sim=[]
@@ -34,7 +43,7 @@ class MyAggparser(unittest.TestCase):
         plot_allo_vs_auto_metrics(out_folder,xs_by_sim,ys_by_sim, labels_by_sim, colors_by_sim,type_by_sim,
                                   "Allopolyploids show more skew Ks histograms than Autopolyploids ")
         self.assertEqual(True, False)  # add assertion here
-
+'''
 
 def read_data_csv(csv_file):
 
@@ -43,15 +52,19 @@ def read_data_csv(csv_file):
 
         while True:
             line = f.readline()
-            if "input_type" in line:
+            if "sim_type" in line:
                 continue
             if len(line)==0:
                 break
             data = line.strip().split(",")
+            print(str(data))
             sim_name=data[0]
             if sim_name=='':
                 continue
 
+            run_metrics.get_metrics_from_data_line(data)
+
+            '''
             if sim_name not in data_by_sim_name_by_type:
                 data_by_sim_name_by_type[sim_name]={}
 
@@ -65,10 +78,10 @@ def read_data_csv(csv_file):
 
             sim_metric_result= metric_result(data)
             data_by_sim_name_by_type[sim_name][polyploid_type].append(sim_metric_result)
-
+            '''
     return data_by_sim_name_by_type
 
-
+'''
 def plot_allo_vs_auto_metrics(out_folder, list_of_xs, list_of_ys, list_of_sims,colors_by_sim,type_by_sim, title):
 
     marker_styles={"lognorm":"x","N=0p1":"+","N=1p0" : "o"}
@@ -127,3 +140,4 @@ class metric_result():
 def get_metric_result_data_headers():
          return ["sim_name","spc_time","wgd_time","mode","cm","num_paralogs",
                  "popt1","popt2","popt3","popt4","norm_fit_result","lognorm_fit_result"]
+'''

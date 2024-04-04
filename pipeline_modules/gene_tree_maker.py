@@ -168,7 +168,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
         else:    #else, for an allopolyploid...we do something more fancy.
             #perturb parent species tree
             gene_div_time=base_speciation_time+variation
-            [new_newick_string] = species_tree_maker.get_example_allopolyploid_tree(time_span,gene_div_time)
+            [new_newick_string] = species_tree_maker.get_polyploid_species_tree(time_span, gene_div_time)
 
 
         gene_tree_newicks_by_tree_name[gt_name]=new_newick_string

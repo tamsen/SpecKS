@@ -53,17 +53,11 @@ class polyploid_data():
 
         if (SPC_time==WGD_time):
             self.mode ="AUTO"
-            first_simulation_leg=sim_time_interval_forward_in_time(0,
-                                                                    self.FULL_time_MYA-self.WGD_time_MYA,
-                                                                    self.original_genome_name)
-            second_simulation_leg=sim_time_interval_forward_in_time(self.FULL_time_MYA-self.WGD_time_MYA,
-                                                                    self.FULL_time_MYA,self.subgenome_names)
-            self.simulation_legs=[first_simulation_leg,second_simulation_leg]
         else:
             self.mode="ALLO"
-            single_simulation_leg=sim_time_interval_forward_in_time(0,
+        single_simulation_leg=sim_time_interval_forward_in_time(0,
                                                                     self.FULL_time_MYA,self.subgenome_names)
-            self.simulation_legs = [single_simulation_leg]
+        self.simulation_legs = [single_simulation_leg]
 
     def is_allo(self):
 

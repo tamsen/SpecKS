@@ -9,7 +9,7 @@
                 <name>Allo1_S070W065</name>
                 <SPC_time_MYA>70</SPC_time_MYA>
                 <WGD_time_MYA>65</WGD_time_MYA>
-         </polyploid><!--    -->
+         </polyploid>
         <polyploid>
                 <name>Auto1_S070W070</name>
                 <SPC_time_MYA>070</SPC_time_MYA>
@@ -24,8 +24,8 @@
         <mean_WGD_life_span_MY>100</mean_WGD_life_span_MY>
         <num_gene_trees_per_species_tree>100</num_gene_trees_per_species_tree>
         <!--<gene_div_time_distribution_parameters>expon,0,0.1</gene_div_time_distribution_parameters>-->
-        <!--<gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>-->
-        <gene_div_time_distribution_parameters>impulse,1,1</gene_div_time_distribution_parameters>
+        <gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>
+        <!--<gene_div_time_distribution_parameters>impulse,1,1</gene_div_time_distribution_parameters>-->
     </GeneTree>
     <SequenceEvolution>
         <num_replicates_per_gene_tree>1</num_replicates_per_gene_tree>
@@ -38,5 +38,5 @@
     </Histogram>
     <StopAtStep>999</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>
-    <IncludeVisuals>False</IncludeVisuals>
+    <IncludeVisuals>True</IncludeVisuals>
 </metadata>
