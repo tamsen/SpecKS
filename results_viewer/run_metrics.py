@@ -70,9 +70,6 @@ def save_metrics_to_csv(allo_results, auto_results, out_file_name):
 
 def read_run_metrics_from_csv(csv_file_name):
 
-    allo_results=[]
-    auto_results=[]
-
     with open(csv_file_name, 'r') as f:
 
         while True:

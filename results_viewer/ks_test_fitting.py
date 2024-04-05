@@ -12,7 +12,7 @@ import config
 import process_wrapper
 #from results_viewer import curve_fitting
 from results_viewer.multi_run_viewer import read_Ks_csv, make_subplot
-from results_viewer.parse_aggregate_results import metric_result, get_metric_result_data_headers
+from results_viewer.collect_aggregate_metrics import metric_result, get_metric_result_data_headers
 
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots

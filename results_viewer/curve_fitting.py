@@ -32,22 +32,26 @@ def fit_curve_to_hist(bins, n, fit_fxn ):
     #fit_fxn = wgd_lognorm  # wgd_skewnorm
 
     minimum_x=0.1 #to keep us away from SSDs
+    [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
+    '''
     [xs_for_wgd_all, ys_for_wgd_all] = get_xs_from_histogram(bins, n)
     xs_for_wgd =[]
     ys_for_wgd= []
     for i in range(0,len(xs_for_wgd_all)):
         x=xs_for_wgd_all[i]
-        if x > minimum_x:
+        y = ys_for_wgd_all[i]
+        #if x > minimum_x:
+        if y > 5:
             xs_for_wgd.append(x)
-            ys_for_wgd.append(ys_for_wgd_all[i])
-
+            ys_for_wgd.append(y)
+    '''
     try:
         popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
     except Exception as inst:
         print(type(inst))  # the exception type
         print(inst.args)  # arguments stored in .args
         print(inst)  # __str__ allows args to be printed directly,
-        return False, xs_for_wgd, 0,0, False
+        return False, xs_for_wgd, False
 
     fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
     RMSE_to_sum = [(fit_curve_ys[i] - ys_for_wgd[i])* (fit_curve_ys[i] - ys_for_wgd[i]) for i in range(0,len(xs_for_wgd))]

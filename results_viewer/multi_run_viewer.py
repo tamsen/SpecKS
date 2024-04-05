@@ -69,92 +69,92 @@ class MulitRunViewerTests(unittest.TestCase):
 
         self.assertEqual(True,True)
 
-    def get_truth_for_Fig1_sim(self):
-        params_by_polyploid = {}
-        params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
-        params_by_polyploid["Allo2"] = config.PolyploidParams(60, 55, "Allo2")
-        params_by_polyploid["Allo3"] = config.PolyploidParams(40, 35, "Allo3")
-        params_by_polyploid["Allo4"] = config.PolyploidParams(20, 14, "Allo4")
-        params_by_polyploid["Allo5"] = config.PolyploidParams(10, 5, "Allo5")
-        params_by_polyploid["Allo6"] = config.PolyploidParams(5, 1, "Allo6")
-        params_by_polyploid["Auto1"] = config.PolyploidParams(80, 80, "Auto1")
-        params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
-        params_by_polyploid["Auto3"] = config.PolyploidParams(40, 40, "Auto3")
-        params_by_polyploid["Auto4"] = config.PolyploidParams(20, 20, "Auto4")
-        params_by_polyploid["Auto5"] = config.PolyploidParams(10, 10, "Auto5")
-        params_by_polyploid["Auto6"] = config.PolyploidParams(5, 5, "Auto6")
-        return params_by_polyploid
-    def get_truth_for_1MY_sim(self):
-        params_by_polyploid = {}
-        params_by_polyploid["Allo0"] = config.PolyploidParams(20, 15, "Allo0")
-        params_by_polyploid["Allo1"] = config.PolyploidParams(40, 30, "Allo1")
-        params_by_polyploid["Allo2"] = config.PolyploidParams(60, 50, "Allo2")
-        params_by_polyploid["Allo3"] = config.PolyploidParams(80, 70, "Allo3")
-        params_by_polyploid["Auto0"] = config.PolyploidParams(20, 20, "Auto0")
-        params_by_polyploid["Auto1"] = config.PolyploidParams(40, 40, "Auto1")
-        params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
-        params_by_polyploid["Auto3"] = config.PolyploidParams(80, 80, "Auto3")
-        return params_by_polyploid
-    def get_truth_for_5MY_sim(self):
-        params_by_polyploid = {}
-        params_by_polyploid["Allo0"] = config.PolyploidParams(200, 150, "Allo0")
-        params_by_polyploid["Allo1"] = config.PolyploidParams(150, 100, "Allo1")
-        params_by_polyploid["Allo2"] = config.PolyploidParams(50, 25, "Allo2")
-        params_by_polyploid["Allo3"] = config.PolyploidParams(25, 20, "Allo3")
-        params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
-        params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
-        params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
-        params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
-        return params_by_polyploid
+def get_truth_for_Fig1_sim():
+    params_by_polyploid = {}
+    params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
+    params_by_polyploid["Allo2"] = config.PolyploidParams(60, 55, "Allo2")
+    params_by_polyploid["Allo3"] = config.PolyploidParams(40, 35, "Allo3")
+    params_by_polyploid["Allo4"] = config.PolyploidParams(20, 14, "Allo4")
+    params_by_polyploid["Allo5"] = config.PolyploidParams(10, 5, "Allo5")
+    params_by_polyploid["Allo6"] = config.PolyploidParams(5, 1, "Allo6")
+    params_by_polyploid["Auto1"] = config.PolyploidParams(80, 80, "Auto1")
+    params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
+    params_by_polyploid["Auto3"] = config.PolyploidParams(40, 40, "Auto3")
+    params_by_polyploid["Auto4"] = config.PolyploidParams(20, 20, "Auto4")
+    params_by_polyploid["Auto5"] = config.PolyploidParams(10, 10, "Auto5")
+    params_by_polyploid["Auto6"] = config.PolyploidParams(5, 5, "Auto6")
+    return params_by_polyploid
+def get_truth_for_1MY_sim():
+    params_by_polyploid = {}
+    params_by_polyploid["Allo0"] = config.PolyploidParams(20, 15, "Allo0")
+    params_by_polyploid["Allo1"] = config.PolyploidParams(40, 30, "Allo1")
+    params_by_polyploid["Allo2"] = config.PolyploidParams(60, 50, "Allo2")
+    params_by_polyploid["Allo3"] = config.PolyploidParams(80, 70, "Allo3")
+    params_by_polyploid["Auto0"] = config.PolyploidParams(20, 20, "Auto0")
+    params_by_polyploid["Auto1"] = config.PolyploidParams(40, 40, "Auto1")
+    params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
+    params_by_polyploid["Auto3"] = config.PolyploidParams(80, 80, "Auto3")
+    return params_by_polyploid
+def get_truth_for_5MY_sim():
+    params_by_polyploid = {}
+    params_by_polyploid["Allo0"] = config.PolyploidParams(200, 150, "Allo0")
+    params_by_polyploid["Allo1"] = config.PolyploidParams(150, 100, "Allo1")
+    params_by_polyploid["Allo2"] = config.PolyploidParams(50, 25, "Allo2")
+    params_by_polyploid["Allo3"] = config.PolyploidParams(25, 20, "Allo3")
+    params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
+    params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
+    params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
+    params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
+    return params_by_polyploid
 
-    def get_ks_data_from_folders(self, output_folder):
-        polyploid_data_folders = os.listdir(output_folder)
-        csvfiles_by_polyploid_by_species_rep_by_algorthim = {}
-        for polyploid_folder in polyploid_data_folders:
-            print(polyploid_folder)
-            csvfiles_by_species_rep_by_algorthim = {}
-            full_polyploid_folder_path = os.path.join(output_folder, polyploid_folder)
-            if (os.path.isdir(full_polyploid_folder_path)):
-                files = os.listdir(full_polyploid_folder_path)
-                csvfiles_by_replicate = {}
-                for csv_file in files:
+def get_ks_data_from_folders(output_folder):
+    polyploid_data_folders = os.listdir(output_folder)
+    csvfiles_by_polyploid_by_species_rep_by_algorthim = {}
+    for polyploid_folder in polyploid_data_folders:
+        print(polyploid_folder)
+        csvfiles_by_species_rep_by_algorthim = {}
+        full_polyploid_folder_path = os.path.join(output_folder, polyploid_folder)
+        if (os.path.isdir(full_polyploid_folder_path)):
+            files = os.listdir(full_polyploid_folder_path)
+            csvfiles_by_replicate = {}
+            for csv_file in files:
 
-                    #if "outgroup" in csv_file:
-                    #    continue
+                #if "outgroup" in csv_file:
+                #    continue
 
-                    if not ".csv" in csv_file:
-                        continue
+                if not ".csv" in csv_file:
+                    continue
 
-                    if "Kn" in csv_file:
-                        continue
+                if "Kn" in csv_file:
+                    continue
 
-                    # example file name: ML_rep0_Ks_by_GeneTree.csv
-                    splat = csv_file.split("_")
-                    len_splat=len(splat)
-                    if splat[0]== "outgroup":
-                        species = "outgroup"
-                        algorithm = splat[1]
-                        replicate = splat[2]
-                    else:
-                        species = "polyploid"
-                        algorithm = splat[2]
-                        replicate = splat[3]
+                # example file name: ML_rep0_Ks_by_GeneTree.csv
+                splat = csv_file.split("_")
+                len_splat=len(splat)
+                if splat[0]== "outgroup":
+                    species = "outgroup"
+                    algorithm = splat[1]
+                    replicate = splat[2]
+                else:
+                    species = "polyploid"
+                    algorithm = splat[2]
+                    replicate = splat[3]
 
-                    if not species in csvfiles_by_species_rep_by_algorthim:
-                        csvfiles_by_species_rep_by_algorthim[species] = {}
+                if not species in csvfiles_by_species_rep_by_algorthim:
+                    csvfiles_by_species_rep_by_algorthim[species] = {}
 
-                    if not replicate in csvfiles_by_species_rep_by_algorthim[species]:
+                if not replicate in csvfiles_by_species_rep_by_algorthim[species]:
 
-                        csvfiles_by_species_rep_by_algorthim[species][replicate] = {}
+                    csvfiles_by_species_rep_by_algorthim[species][replicate] = {}
 
-                    # csvfiles_by_replicate[replicate][algorithm]=csv_file
-                    full_csv_path = os.path.join(full_polyploid_folder_path, csv_file)
-                    print("reading " + full_csv_path)
-                    ks_result_for_file = read_Ks_csv(full_csv_path)
-                    csvfiles_by_species_rep_by_algorthim[species][replicate][algorithm] = ks_result_for_file
+                # csvfiles_by_replicate[replicate][algorithm]=csv_file
+                full_csv_path = os.path.join(full_polyploid_folder_path, csv_file)
+                print("reading " + full_csv_path)
+                ks_result_for_file = read_Ks_csv(full_csv_path)
+                csvfiles_by_species_rep_by_algorthim[species][replicate][algorithm] = ks_result_for_file
 
-                csvfiles_by_polyploid_by_species_rep_by_algorthim[polyploid_folder] = csvfiles_by_species_rep_by_algorthim
-        return csvfiles_by_polyploid_by_species_rep_by_algorthim
+            csvfiles_by_polyploid_by_species_rep_by_algorthim[polyploid_folder] = csvfiles_by_species_rep_by_algorthim
+    return csvfiles_by_polyploid_by_species_rep_by_algorthim
 
 
 def read_Ks_csv(csv_file):
@@ -275,7 +275,9 @@ def make_subplot(this_ax, spec, Ks_results, bin_size,WGD_time_MYA, SPC_time_MYA,
     x = Ks_results
     num_gene_pairs_str=str(len(Ks_results))
     if max_Ks:
+
         bins = np.arange(0, max_Ks + 0.1, bin_size)
+        #bins = [i*0.01 for i in range(0,110)]
         n, bins, patches = this_ax.hist(x, bins=bins, facecolor=plot_color, alpha=0.25,
             label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
     else:
