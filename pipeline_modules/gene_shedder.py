@@ -65,10 +65,10 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
     pruned_gt=[]
     for gt in gene_data_by_gt_name.keys():
 
-            print("gt: " + str(gt))
+            #print("gt: " + str(gt))
             if gt in gene_trees_to_loose_a_duplicate_gene:
                 original_gt_newick=gene_data_by_gt_name[gt]
-                print("pruning time!")
+                #print("pruning time!")
                 new_gt_data =remove_a_duplicate(original_gt_newick, leaf_to_prune)
                 gt_after_everyone_that_needed_pruning_is_pruned[gt] = new_gt_data
                 pruned_gt.append(new_gt_data.gene_tree_name)
@@ -136,7 +136,8 @@ def new_tree_with_a_branch_renamed(original_newick, original_name,
 
     if not shedding_complete:
         log.write_to_log("couldn't find this branch to shed:\t" + name_of_branch_to_prune)
-        return False
+        # (already gone)
+        #return False
 
     handle = StringIO()
     Phylo.write(tree_copy, handle, "newick")

@@ -12,7 +12,7 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim28_log" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim30_log" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -30,33 +30,36 @@ class Generate_Config_Files(unittest.TestCase):
 
         decimals_needed=3
         formatter = "{:0" + str(decimals_needed) + "d}"
-        spec_times= [80 ,60, 40, 20,10,5]
-        wgd_times = [75, 55, 35, 15, 5,1]
+        spec_times= [80,70, 60, 50, 40, 30, 20,10]
+        wgd_offsets=[0,5,10,20,50]
+        #wgd_times = [75,65, 55, 45, 35, 25, 15, 5]
 
-        div_distribution = "impulse,1,1"
-        #div_distribution="lognorm,0.5,5.27"
+        #div_distribution = "impulse,1,1"
+        div_distribution="lognorm,0.5,5.27"
         #div_expon_0p1="expon,0,0.1"
         #div_expon = "expon,0,1"
+        #div_expon = "expon,0,10"
 
         poly_params_by_name={}
         out_folder_by_name={}
         cluster_cmds=[]
+
         for i in range(0,len(spec_times)):
 
-            spec_time=spec_times[i]
-            wgd_time=wgd_times[i]
-            job_number=str(i+1)
+            job_str=str(i+1)
+            for wgd_offset in wgd_offsets:
 
-            allo_name="Allo"+job_number+"_S"+formatter.format(spec_time)+"W"+formatter.format(wgd_time)
-            auto_name="Auto"+job_number+"_S"+formatter.format(spec_time)+"W"+formatter.format(spec_time)
+                if wgd_offset==0:
+                    job_type = "Auto"
+                else:
+                    job_type = "Allo"
 
-            allo_params = PolyploidParams(spec_time, wgd_time, allo_name)
-            auto_params = PolyploidParams(spec_time, spec_time, auto_name)
-
-            poly_params_by_name[allo_name]=allo_params
-            poly_params_by_name[auto_name]=auto_params
-            out_folder_by_name[allo_name] = os.path.join(specks_output_path_on_mesx, "specks_ALLO" + job_number)
-            out_folder_by_name[auto_name] = os.path.join(specks_output_path_on_mesx, "specks_AUTO" + job_number)
+                spec_time = spec_times[i]
+                wgd_time = spec_time-wgd_offset
+                job_name = job_type + job_str + "_S" + formatter.format(spec_time) + "W" + formatter.format(wgd_time)
+                job_params = PolyploidParams(spec_time, wgd_time, job_name)
+                poly_params_by_name[job_name] = job_params
+                out_folder_by_name[job_name] = os.path.join(specks_output_path_on_mesx, "specks_" + job_type + job_str)
 
         for poly_name,poly_params in poly_params_by_name.items():
 

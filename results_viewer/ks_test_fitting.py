@@ -10,26 +10,26 @@ from scipy.optimize import curve_fit
 from scipy.stats import lognorm, norm
 import config
 import process_wrapper
+from results_viewer import curve_fitting
+from results_viewer.curve_fitting import curve_fit_metrics, fit_curve_to_xs_and_ys
 #from results_viewer import curve_fitting
-from results_viewer.multi_run_viewer import read_Ks_csv, make_subplot
+from results_viewer.multi_run_viewer import read_Ks_csv, make_histogram_subplot
 from results_viewer.collect_aggregate_metrics import metric_result, get_metric_result_data_headers
 
 
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
 class KsFittingTests(unittest.TestCase):
 
-    def test_Ks_fit(self):
+    def test_Ks_hist_fit(self):
 
-        #csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim20_log/Allo4"
-        #csv_file_base0 = "Allo4_S020W015_ML_rep0_Ks_by_GeneTree.csv"
 
-        csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim20_log/Auto4"
-        csv_file_base0 = "Auto4_S020W020_ML_rep0_Ks_by_GeneTree.csv"
+        csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim29_log/Auto3"
+        csv_file_base0 = "Auto3_S040W040_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
 
         plot_title=csv_file_base0.replace(".csv",".png")
         full_csv_path=os.path.join(csv_folder,csv_file_base0)
-        WGD_time_MYA = 15
-        SPC_time_MYA = 20
+        WGD_time_MYA = 40
+        SPC_time_MYA = 40
         WGD_time_Ks = WGD_time_MYA * 0.01
         SPC_time_Ks = SPC_time_MYA * 0.01
         max_Ks_for_x_axis = 0.7
@@ -51,16 +51,19 @@ class KsFittingTests(unittest.TestCase):
         n, bins, patches = this_ax.hist(x, bins=nBins, facecolor='b', alpha=0.25,
                                             label='ks hist ({0} pairs)'.format(num_gene_pairs_str))
 
+        [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
+        kde = stats.gaussian_kde(x)
+        kde_fit_curve_ys1=kde(xs_for_wgd)
+
         this_ax.axvline(x=WGD_time_Ks, color='b', linestyle='-', label="WGD time, " + str(WGD_time_MYA) + " MYA")
         this_ax.axvline(x=SPC_time_Ks, color='r', linestyle='--',
                         label="SPEC time, " + str(SPC_time_MYA) + " MYA")
 
-        #using std error / covariance
-        #https://education.molssi.org/python-data-analysis/03-data-fitting/index.html
-        fit_curve_ys1, xs_for_wgd, mode, cm, popt, standard_error = fit_curve_to_hist(bins, n)
-        print("mode " + str(mode))
-        print("cm " + str(cm))
-        print("standard_error " + str(standard_error))
+        gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
+            curve_fitting.fit_curve_to_hist(bins, n,curve_fitting.wgd_gaussian)
+
+        lognorm_fit_curve_ys1, xs_for_wgd,lognorm_goodness_of_fit =  \
+            curve_fitting.fit_curve_to_hist(bins, n, curve_fitting.wgd_lognorm )
 
         #reject null hypothesis if p value is less than significance.
 
@@ -74,19 +77,98 @@ class KsFittingTests(unittest.TestCase):
         # print("ks_norm_result " + str(ks_norm_result))
         # print("ks_lognorm_result " + str(ks_lognorm_result))
 
-        label="lognorm fit"# + str(popt)
-        this_ax.plot(xs_for_wgd, fit_curve_ys1,color='green', linestyle=':', label=label)
+        #https://seaborn.pydata.org/generated/seaborn.kdeplot.html
 
+        label="lognorm fit ({0})".format(str(round(lognorm_goodness_of_fit.RMSE,3)))
+        this_ax.plot(xs_for_wgd, lognorm_fit_curve_ys1,color='green', linestyle=':', label=label)
+        label="gaussian fit ({0})".format(str(round(gaussian_goodness_of_fit.RMSE,3)))
+        this_ax.plot(xs_for_wgd, gaussian_fit_curve_ys1,color='blue', linestyle=':', label=label)
 
-        this_ax.scatter(cm, 0.05,color='darkgreen', marker='o', s=100)  # label="cm",)
-        this_ax.scatter(mode, 0.05,color='cyan', marker='^', s=80)  # label="mode")
+        label="kde fit ({0})".format(str(round(0.0)))
+        this_ax.plot(xs_for_wgd, kde_fit_curve_ys1,color='cyan', linestyle=':', label=label)
+
+        #this_ax.scatter(cm, 0.05,color='darkgreen', marker='o', s=100)  # label="cm",)
+        #this_ax.scatter(mode, 0.05,color='cyan', marker='^', s=80)  # label="mode")
         this_ax.legend()
         this_ax.set(xlabel="Ks")
         this_ax.set(xlim=[0, 0.5])
         this_ax.set(ylim=[0, 250])
         out_file_name = full_csv_path.replace(".csv", ".hist.png")
 
-        out_file_name = out_file_name.replace(".png", "_Ks_fit" + str(max_Ks_for_x_axis) + ".png")
+        out_file_name = out_file_name.replace(".png", "_Ks_hist_fit" + str(max_Ks_for_x_axis) + ".png")
+        plt.savefig(out_file_name)
+        plt.close()
+
+    def test_Ks_kde_fit(self):
+
+
+        csv_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim29_log/Auto3"
+        csv_file_base0 = "Auto3_S040W040_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+
+        plot_title=csv_file_base0.replace(".csv",".png")
+        full_csv_path=os.path.join(csv_folder,csv_file_base0)
+        WGD_time_MYA = 40
+        SPC_time_MYA = 40
+        WGD_time_Ks = WGD_time_MYA * 0.01
+        SPC_time_Ks = SPC_time_MYA * 0.01
+        max_Ks_for_x_axis = 0.7
+
+        Ks_results = read_Ks_csv(full_csv_path)
+
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+        fig.suptitle(plot_title)
+        this_ax = ax
+
+        x = Ks_results
+        num_gene_pairs_str = str(len(Ks_results))
+
+        max_Ks=1.0
+        bin_size=0.001
+        xs_for_wgd = np.arange(0, max_Ks + 0.1, bin_size)
+        kde = stats.gaussian_kde(x)
+        kde_fit_curve_ys1=kde(xs_for_wgd)
+
+        this_ax.axvline(x=WGD_time_Ks, color='b', linestyle='-', label="WGD time, " + str(WGD_time_MYA) + " MYA")
+        this_ax.axvline(x=SPC_time_Ks, color='r', linestyle='--',
+                        label="SPEC time, " + str(SPC_time_MYA) + " MYA")
+
+        gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
+            fit_curve_to_xs_and_ys(xs_for_wgd, kde_fit_curve_ys1,curve_fitting.wgd_gaussian)
+
+        lognorm_fit_curve_ys1, xs_for_wgd,lognorm_goodness_of_fit =  \
+            fit_curve_to_xs_and_ys(xs_for_wgd,kde_fit_curve_ys1, curve_fitting.wgd_lognorm )
+
+        #reject null hypothesis if p value is less than significance.
+
+        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
+        # ks_norm_result = stats.kstest(Ks_results, stats.norm.cdf)
+        # ks_lognorm_result = stats.kstest(Ks_results, lambda x: wgd_lognorm_cdf(x, popt, 0,10))
+
+        # https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
+        #my_args = popt[0:3]
+        #ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
+        # print("ks_norm_result " + str(ks_norm_result))
+        # print("ks_lognorm_result " + str(ks_lognorm_result))
+
+        #https://seaborn.pydata.org/generated/seaborn.kdeplot.html
+
+        label="lognorm fit ({0})".format(str(round(lognorm_goodness_of_fit.RMSE,3)))
+        this_ax.plot(xs_for_wgd, lognorm_fit_curve_ys1,color='green', linestyle=':', label=label)
+        label="gaussian fit ({0})".format(str(round(gaussian_goodness_of_fit.RMSE,3)))
+        this_ax.plot(xs_for_wgd, gaussian_fit_curve_ys1,color='blue', linestyle=':', label=label)
+
+        label="kde fit ({0})".format(str(round(0.0)))
+        this_ax.plot(xs_for_wgd, kde_fit_curve_ys1,color='cyan', linestyle=':', label=label)
+
+        #this_ax.scatter(cm, 0.05,color='darkgreen', marker='o', s=100)  # label="cm",)
+        #this_ax.scatter(mode, 0.05,color='cyan', marker='^', s=80)  # label="mode")
+        this_ax.legend()
+        this_ax.set(xlabel="Ks")
+        this_ax.set(xlim=[0, 0.5])
+        #this_ax.set(ylim=[0, 250])
+        out_file_name = full_csv_path.replace(".csv", ".hist.png")
+
+        out_file_name = out_file_name.replace(".png", "_Ks_kde_fit" + str(max_Ks_for_x_axis) + ".png")
         plt.savefig(out_file_name)
         plt.close()
 
@@ -122,41 +204,3 @@ def get_xs_from_histogram(Bins,N):
 
     #plt.plot(xs,ys)
     return [xs,ys]
-
-def fit_curve_to_hist(bins, n):
-    fit_fxn = wgd_lognorm  # wgd_skewnorm
-    [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
-
-
-    try:
-        popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
-    except Exception as inst:
-        print(type(inst))  # the exception type
-        print(inst.args)  # arguments stored in .args
-        print(inst)  # __str__ allows args to be printed directly,
-        return False, xs_for_wgd, 0,0, False
-
-    fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
-    SE = np.sqrt(np.diag(pcov))
-
-    RMSE_to_sum = [(fit_curve_ys[i] - ys_for_wgd[i])* (fit_curve_ys[i] - ys_for_wgd[i]) for i in range(0,len(xs_for_wgd))]
-    RMSE = math.sqrt( sum(RMSE_to_sum) / len(RMSE_to_sum))
-
-    #get mode & center of mass
-    ymax=max(fit_curve_ys)
-    xs_of_ymax=[]
-    weighted_mass=0
-    weights=0
-    for i in range(0,len(xs_for_wgd)):
-        x=xs_for_wgd[i]
-        y=fit_curve_ys[i]
-        weighted_mass = weighted_mass+(x*y)
-        weights = weights + y
-        if y==ymax:
-            xs_of_ymax.append(x)
-
-
-    x_value_of_ymax=sum(xs_of_ymax)/len(xs_of_ymax)
-    center_of_mass=weighted_mass/weights
-
-    return fit_curve_ys, xs_for_wgd, x_value_of_ymax,center_of_mass,popt, SE

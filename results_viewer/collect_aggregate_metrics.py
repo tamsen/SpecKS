@@ -19,6 +19,7 @@ class CollectAggregateMetrics(unittest.TestCase):
                        (get_wgd_time, get_genes_shed, "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
                        (get_spec_time, get_mode, "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
                        (get_wgd_time, get_mode, "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
+                       (get_spec_time, get_metric0, "spec time (MYA)", "allo vs auto metric0", "metric0.png"),
                        (get_spec_time, get_metric1, "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
                        (get_spec_time, get_metric2, "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
                        (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3", "metric3.png"),
@@ -26,7 +27,7 @@ class CollectAggregateMetrics(unittest.TestCase):
         reprocess=True
         marker_styles_for_batches = [".", "+", "*", ">"]
 
-        bin_size = 0.01
+        bin_size = 0.001
         if reprocess:
             for batch_name in batch_names:
                 batch_folder = os.path.join(out_folder, batch_name)
@@ -67,7 +68,8 @@ def reprocess_batch(batch_folder, batch_name, bin_size):
     replicates=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim][species[0]].keys())
     algs=["ML"]
     print("Making plots..")
-
+    do_kde = False
+    do_curve_fit = True
     #bin_size = 0.001
     for spec in species:#['outgroup']:#species:
         print(spec)
@@ -75,11 +77,15 @@ def reprocess_batch(batch_folder, batch_name, bin_size):
             for alg in algs:
 
                 max_Ks = 1.0
-                metrics_by_result_names = multi_run_viewer.plot_histograms_for_the_sim_runs(batch_folder, plot_title,
-                                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                                     replicate, alg, params_by_polyploid, max_Ks, bin_size, True )
+                metrics_by_result_names = multi_run_viewer.plot_ks_disributions_for_the_sim_runs(
+                    batch_folder, plot_title,
+                    csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
+                    replicate, alg, params_by_polyploid, max_Ks, bin_size, do_curve_fit,do_kde)
 
-        out_csv = "batch_processed_{0}_{1}_{2}_{3}_metrics.csv".format(batch_name, spec, replicate, alg)
+        if do_kde:
+            out_csv = "batch_processed_{0}_{1}_{2}_{3}_kde_metrics.csv".format(batch_name, spec, replicate, alg)
+        else:
+            out_csv = "batch_processed_{0}_{1}_{2}_{3}_hist_metrics.csv".format(batch_name, spec, replicate, alg)
         out_file_name = os.path.join(batch_folder, out_csv)
         run_metrics.plot_and_save_metrics(metrics_by_result_names, out_file_name)
 
@@ -112,6 +118,13 @@ def get_lognorm_RMSE(run_metrics):
 def get_gaussian_RMSE(run_metrics):
     y = round(float(run_metrics.gaussian_fit_data.RMSE),3)
     return y
+
+def get_metric0(run_metrics):
+
+    cm=run_metrics.lognorm_fit_data.cm
+    mode=run_metrics.lognorm_fit_data.mode
+    return mode-cm
+
 
 def get_metric1(run_metrics):
 

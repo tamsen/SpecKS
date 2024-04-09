@@ -5,7 +5,7 @@ import process_wrapper
 class MyTestDownloader(unittest.TestCase):
 
     def test_download_mesx_results(self):
-        batch_folder = "sim28_log"
+        batch_folder = "sim30_log"
         runs = range(1, 7)
         me_at_remote_URL = 'tdunn@mesx.sdsu.edu'
         local_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
@@ -35,6 +35,18 @@ class MyTestDownloader(unittest.TestCase):
 
             remote_auto_folder = os.path.join(remote_batch_folder, "specks_" + auto_run.upper() + "*")
             remote_to_match = remote_auto_folder + "/A*/*final*/*.csv"
+            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_auto_folder]
+            print(" ".join(cmd2))
+            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+
+            remote_allo_folder = os.path.join(remote_batch_folder, "specks_" + allo_run.upper() + "*")
+            remote_to_match = remote_allo_folder + "/A*/*randomized*/*.*"
+            cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_allo_folder]
+            print(" ".join(cmd2))
+            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+
+            remote_auto_folder = os.path.join(remote_batch_folder, "specks_" + auto_run.upper() + "*")
+            remote_to_match = remote_auto_folder + "/A*/*randomized*/*.*"
             cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_auto_folder]
             print(" ".join(cmd2))
             out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)

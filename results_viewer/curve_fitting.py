@@ -33,18 +33,10 @@ def fit_curve_to_hist(bins, n, fit_fxn ):
 
     minimum_x=0.1 #to keep us away from SSDs
     [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
-    '''
-    [xs_for_wgd_all, ys_for_wgd_all] = get_xs_from_histogram(bins, n)
-    xs_for_wgd =[]
-    ys_for_wgd= []
-    for i in range(0,len(xs_for_wgd_all)):
-        x=xs_for_wgd_all[i]
-        y = ys_for_wgd_all[i]
-        #if x > minimum_x:
-        if y > 5:
-            xs_for_wgd.append(x)
-            ys_for_wgd.append(y)
-    '''
+    return fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn)
+
+def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
+
     try:
         popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
     except Exception as inst:
