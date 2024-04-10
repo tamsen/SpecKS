@@ -14,18 +14,18 @@ from results_viewer import curve_fitting, run_metrics
 #https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
 class MulitRunViewerTests(unittest.TestCase):
 
-    def test_multi_run_viewer(self):
+    def test_fig1_viewer(self):
 
         plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim31_log"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim33_log"
         batch_run_name=os.path.basename(output_folder)
-        #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
-        params_by_polyploid = get_truth_for_sim31()
+
         print("Reading csv files..")
         csvfiles_by_polyploid_by_species_rep_by_algorithm = get_ks_data_from_folders(output_folder)
+        params_by_polyploid = get_truth_from_names(csvfiles_by_polyploid_by_species_rep_by_algorithm)
         example_sim=list(csvfiles_by_polyploid_by_species_rep_by_algorithm.keys())[0]
         species=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim].keys())
         replicates=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim][species[0]].keys())
@@ -35,10 +35,10 @@ class MulitRunViewerTests(unittest.TestCase):
         print("Making plots..")
         metric_by_sim_name=[]
         do_kde=False
-        do_curve_fit=False
+        do_curve_fit=True
         bin_size = 0.001
 
-        for spec in species:#['outgroup']:#species:
+        for spec in ['polyploid']:#species:
             print(spec)
             for replicate in replicates:
                 for alg in algs:
@@ -49,20 +49,6 @@ class MulitRunViewerTests(unittest.TestCase):
                                    csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
                                    replicate, alg, params_by_polyploid, max_Ks, bin_size, do_curve_fit, do_kde)
 
-                    #max_Ks = False
-                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid, max_Ks, False, True)
-
-                    #max_Ks = 0.1
-                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid,max_Ks, 0.001, False )
-
-                    #plot_histograms_for_the_sim_runs(output_folder, plot_title,
-                    #                     csvfiles_by_polyploid_by_species_rep_by_algorithm,spec,
-                    #                     replicate, alg, params_by_polyploid,0.5, 0.001 , False)
-
                     print(metrics_by_result_names)
 
                     out_csv = "{0}_{1}_{2}_{3}_metrics.csv".format(batch_run_name,spec,replicate,alg)
@@ -71,54 +57,13 @@ class MulitRunViewerTests(unittest.TestCase):
 
         self.assertEqual(True,True)
 
-def get_truth_for_Fig1_sim():
+def get_truth_from_names(dict_by_name):
     params_by_polyploid = {}
-    params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
-    params_by_polyploid["Allo2"] = config.PolyploidParams(60, 55, "Allo2")
-    params_by_polyploid["Allo3"] = config.PolyploidParams(40, 35, "Allo3")
-    params_by_polyploid["Allo4"] = config.PolyploidParams(20, 15, "Allo4")
-    params_by_polyploid["Allo5"] = config.PolyploidParams(10, 5, "Allo5")
-    params_by_polyploid["Allo6"] = config.PolyploidParams(5, 1, "Allo6")
-    params_by_polyploid["Auto1"] = config.PolyploidParams(80, 80, "Auto1")
-    params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
-    params_by_polyploid["Auto3"] = config.PolyploidParams(40, 40, "Auto3")
-    params_by_polyploid["Auto4"] = config.PolyploidParams(20, 20, "Auto4")
-    params_by_polyploid["Auto5"] = config.PolyploidParams(10, 10, "Auto5")
-    params_by_polyploid["Auto6"] = config.PolyploidParams(5, 5, "Auto6")
-    return params_by_polyploid
-
-def get_truth_for_sim31():
-    params_by_polyploid = {}
-    params_by_polyploid["Allo1"] = config.PolyploidParams(80, 75, "Allo1")
-    params_by_polyploid["Allo2"] = config.PolyploidParams(70, 65, "Allo2")
-    params_by_polyploid["Allo3"] = config.PolyploidParams(60, 50, "Allo3")
-    params_by_polyploid["Allo4"] = config.PolyploidParams(50, 45, "Allo4")
-    params_by_polyploid["Auto1"] = config.PolyploidParams(80, 80, "Auto1")
-    params_by_polyploid["Auto2"] = config.PolyploidParams(70, 70, "Auto2")
-    params_by_polyploid["Auto3"] = config.PolyploidParams(60, 60, "Auto3")
-    params_by_polyploid["Auto4"] = config.PolyploidParams(50, 50, "Auto4")
-    return params_by_polyploid
-def get_truth_for_1MY_sim():
-    params_by_polyploid = {}
-    params_by_polyploid["Allo0"] = config.PolyploidParams(20, 15, "Allo0")
-    params_by_polyploid["Allo1"] = config.PolyploidParams(40, 30, "Allo1")
-    params_by_polyploid["Allo2"] = config.PolyploidParams(60, 50, "Allo2")
-    params_by_polyploid["Allo3"] = config.PolyploidParams(80, 70, "Allo3")
-    params_by_polyploid["Auto0"] = config.PolyploidParams(20, 20, "Auto0")
-    params_by_polyploid["Auto1"] = config.PolyploidParams(40, 40, "Auto1")
-    params_by_polyploid["Auto2"] = config.PolyploidParams(60, 60, "Auto2")
-    params_by_polyploid["Auto3"] = config.PolyploidParams(80, 80, "Auto3")
-    return params_by_polyploid
-def get_truth_for_5MY_sim():
-    params_by_polyploid = {}
-    params_by_polyploid["Allo0"] = config.PolyploidParams(200, 150, "Allo0")
-    params_by_polyploid["Allo1"] = config.PolyploidParams(150, 100, "Allo1")
-    params_by_polyploid["Allo2"] = config.PolyploidParams(50, 25, "Allo2")
-    params_by_polyploid["Allo3"] = config.PolyploidParams(25, 20, "Allo3")
-    params_by_polyploid["Auto0"] = config.PolyploidParams(200, 200, "Auto0")
-    params_by_polyploid["Auto1"] = config.PolyploidParams(150, 150, "Auto1")
-    params_by_polyploid["Auto2"] = config.PolyploidParams(50, 50, "Auto2")
-    params_by_polyploid["Auto3"] = config.PolyploidParams(25, 25, "Auto3")
+    names=dict_by_name.keys()
+    for name in names:
+        spec_time=int(name[7:10])
+        wgd_time=int(name[11:14])
+        params_by_polyploid[name] = config.PolyploidParams(spec_time, wgd_time, name)
     return params_by_polyploid
 
 def get_ks_data_from_folders(output_folder):
@@ -203,12 +148,12 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
-    ordered_allo_results=[n for n in result_names if "Allo" in n]
+    #ordered_allo_results=[n for n in result_names if "Allo" in n]
     ordered_auto_results=[n for n in result_names if "Auto" in n]
     metrics_by_result_names= {}
 
     # making subplots
-    num_sims=len(ordered_allo_results)
+    num_sims=len(ordered_auto_results)
     fig, ax = plt.subplots(num_sims, 2,figsize=(10, 10))
     fig.suptitle(sample_name + " for " + replicate +", "+ alg + " algorithm")
     ax[0, 0].set_title("Allopolyploid\n",fontsize=20)
@@ -217,8 +162,12 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
 
     for sim_idx in range(0, num_sims):
 
-        #if len(ordered_allo_results) >0:
-        allo_result_name=ordered_allo_results[sim_idx]
+        allo_group="Allo"+str(sim_idx+1)
+        print("allo_group:" + str(allo_group))
+        ordered_allo_results=[n for n in result_names if allo_group in n]
+        ordered_allo_results.sort()
+        print("ordered_allo_results:" + str(ordered_allo_results))
+        allo_result_name=ordered_allo_results[0]
         csvs_for_allo_result= csvfiles_by_polyploid_by_rep_by_algorthim[allo_result_name]
         print("spec:\t" + spec)
         print("replicate:\t" + replicate)
@@ -337,10 +286,10 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
 
     lognorm_goodness_of_fit =False
     gaussian_goodness_of_fit =False
-    this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
-    this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
-
     if do_curve_fit and (spec != "outgroup" ):
+
+        this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
+        this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
 
         gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
             curve_fitting.fit_curve_to_hist(bins, n,curve_fitting.wgd_gaussian)
@@ -373,8 +322,8 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
             this_ax.plot(xs_for_wgd,gaussian_fit_curve_ys1,
                  color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
 
-        if SPC_time_MYA == 20:
-            ymax_suggestion=400
+        #if SPC_time_MYA == 20:
+        #    ymax_suggestion=400
 
 
     if maxY:
@@ -393,10 +342,9 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
 
 
 
-    this_ax.legend()
+    #this_ax.legend()
 
-    #this_ax.set(ylim=[0, yaxis_limit])
-    this_ax.set(ylim=[0, 100])
+    this_ax.set(ylim=[0, yaxis_limit])
 
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])

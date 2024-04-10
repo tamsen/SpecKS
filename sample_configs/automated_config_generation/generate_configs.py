@@ -12,7 +12,7 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim30_log" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim33_log" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -31,14 +31,17 @@ class Generate_Config_Files(unittest.TestCase):
         decimals_needed=3
         formatter = "{:0" + str(decimals_needed) + "d}"
         spec_times= [80,70, 60, 50, 40, 30, 20,10]
-        wgd_offsets=[0,5,10,20,50]
+        wgd_offsets=[0,5]#,10,20,50]
         #wgd_times = [75,65, 55, 45, 35, 25, 15, 5]
 
-        #div_distribution = "impulse,1,1"
-        div_distribution="lognorm,0.5,5.27"
-        #div_expon_0p1="expon,0,0.1"
-        #div_expon = "expon,0,1"
-        #div_expon = "expon,0,10"
+
+        imp_distribution = "impulse,1,1"
+        ln_distribution="lognorm,0.5,5.27"
+        expon_0p1="expon,0,0.1"
+        expon_1p0 = "expon,0,1"
+        expon_10p0 = "expon,0,10"
+        expon_100p0 = "expon,0,100"
+        coalescent_distributions=[]
 
         poly_params_by_name={}
         out_folder_by_name={}
@@ -56,6 +59,10 @@ class Generate_Config_Files(unittest.TestCase):
 
                 spec_time = spec_times[i]
                 wgd_time = spec_time-wgd_offset
+
+                if wgd_time < 5:
+                    continue
+
                 job_name = job_type + job_str + "_S" + formatter.format(spec_time) + "W" + formatter.format(wgd_time)
                 job_params = PolyploidParams(spec_time, wgd_time, job_name)
                 poly_params_by_name[job_name] = job_params
@@ -66,7 +73,7 @@ class Generate_Config_Files(unittest.TestCase):
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", div_distribution)
+                              ("DIV_DIST", ln_distribution)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)
