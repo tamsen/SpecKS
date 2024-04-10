@@ -20,7 +20,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim31_log"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim34_log"
         batch_run_name=os.path.basename(output_folder)
         #params_by_polyploid = self.get_truth_for_1MY_sim() #self.get_truth_for_5MY_sim()
         params_by_polyploid = get_truth_for_sim31()

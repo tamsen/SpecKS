@@ -12,7 +12,7 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim34_log" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim35_log" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -31,12 +31,12 @@ class Generate_Config_Files(unittest.TestCase):
         decimals_needed=3
         formatter = "{:0" + str(decimals_needed) + "d}"
         spec_times= [80,70, 60, 50, 40, 30, 20,10]
-        wgd_offsets=[0,5]#,10,20,50]
+        wgd_offsets=[0,5,10,20,50]
         #wgd_times = [75,65, 55, 45, 35, 25, 15, 5]
 
 
         imp_distribution = "impulse,1,1"
-        ln_distribution="lognorm,0.5,5.27"
+        #ln_distribution="lognorm,0.5,5.27"
         expon_0p1="expon,0,0.1"
         expon_1p0 = "expon,0,1"
         expon_10p0 = "expon,0,10"
@@ -73,7 +73,7 @@ class Generate_Config_Files(unittest.TestCase):
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", ln_distribution)
+                              ("DIV_DIST", expon_10p0)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)
@@ -112,7 +112,9 @@ class Generate_Config_Files(unittest.TestCase):
         full_cmd_with_all_qsubs=['ssh', me_at_remote_URL, '. ~/.bash_profile;',
                 'cd ' + script_destination_folder_on_mesx + ';'] + cmds_to_qsub_via_ssh
         print(" ".join(full_cmd_with_all_qsubs))
-        out_string, error_string = process_wrapper.run_and_wait_on_process(full_cmd_with_all_qsubs, local_out_dir)
+        out_string, error_string = process_wrapper.run_and_wait_with_retry(
+            full_cmd_with_all_qsubs, local_out_dir,"Connection reset by peer",
+            3, 10)
 
 
 def write_config_file(template_file, out_dir, new_file_name, replacements):

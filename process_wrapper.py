@@ -5,11 +5,9 @@ import time
 import log
 
 
-def run_and_wait_with_retry(cmd, folder, excuse, sleepy_time):
+def run_and_wait_with_retry(cmd, folder, excuse, num_retries_allowed, sleepy_time):
 
-    num_retries_allowed=3
     num_tries=0
-    #sleepy_time=2 #seconds
     while True:
 
         out_string,error_string = run_and_wait_on_process(cmd, folder)

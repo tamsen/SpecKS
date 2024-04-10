@@ -31,45 +31,19 @@ class MyTestDownloader(unittest.TestCase):
 
         run_folders= self.get_subdirectories(local_output_folder, me_at_remote_URL,
                                              remote_batch_folder, "sp*")
-        directory_groups=run_folders.split("\n\n")
-        print(run_folders)
-        print(directory_groups)
-        run_folder_by_polyploid_name={}
-        for group in directory_groups:
-            paths=group.split("\n")
-            directory_name=paths[0]
-            poyploid_names=[]
-            for path in paths[1:len(paths)]:
+        run_folder_by_polyploid_name = self.get_run_folders_by_polyploid_name(run_folders)
 
-                if path=="":
-                    continue
-                    
-                if not "." in path:
-                    poyploid_names.append(path)
 
-            for polyploid in poyploid_names:
-                run_folder_by_polyploid_name[polyploid]=directory_name
-
-        print(run_folder_by_polyploid_name)
-        return
-        print(run_folders)
         polyploid_folders_by_name={}
-        for run_folder in run_folders:
-            full_path=os.path.join(remote_batch_folder, run_folder)
-            potential_polyploid_folders = self.get_subdirectories(local_output_folder, me_at_remote_URL, full_path)
-            print("sub_folders:" + str(potential_polyploid_folders))
-            for f in potential_polyploid_folders:
-                if not "." in f:
-                    polyploid_path=os.path.join(full_path, f)
-                    polyploid_folders_by_name[f]=polyploid_path
+        for polyploid_name, run_folder in run_folder_by_polyploid_name.items():
+            full_path=os.path.join(remote_batch_folder, run_folder,polyploid_name)
+            polyploid_folders_by_name[polyploid_name]=full_path
 
         print(polyploid_folders_by_name)
-        return
+
         scp_commands=[]
         for polyploid, remote_path in polyploid_folders_by_name.items():
 
-            scp_commands.append(polyploid)
-            continue
             #allo_run = "Allo" + str(run)
             #auto_run = "Auto" + str(run)
             local_allo_folder = os.path.join(local_batch_folder, polyploid)
@@ -103,6 +77,28 @@ class MyTestDownloader(unittest.TestCase):
         #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
 
         print(scp_commands)
+
+    def get_run_folders_by_polyploid_name(self, run_folders):
+        directory_groups = run_folders.split("\n\n")
+        #print(run_folders)
+        #print(directory_groups)
+        run_folder_by_polyploid_name = {}
+        for group in directory_groups:
+            paths = group.split("\n")
+            directory_name = paths[0].replace(":", "")
+            poyploid_names = []
+            for path in paths[1:len(paths)]:
+
+                if path == "":
+                    continue
+
+                if not "." in path:
+                    poyploid_names.append(path)
+
+            for polyploid in poyploid_names:
+                run_folder_by_polyploid_name[polyploid] = directory_name
+        return run_folder_by_polyploid_name
+
 
 if __name__ == '__main__':
     unittest.main()
