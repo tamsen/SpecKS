@@ -1,8 +1,31 @@
 import os
 import subprocess
+import time
 
 import log
 
+
+def run_and_wait_with_retry(cmd, folder, excuse, sleepy_time):
+
+    num_retries_allowed=3
+    num_tries=0
+    #sleepy_time=2 #seconds
+    while True:
+
+        out_string,error_string = run_and_wait_on_process(cmd, folder)
+        num_tries = num_tries+1
+        if num_tries > num_retries_allowed:
+            break
+
+        if excuse in error_string:
+            log.write_to_log("Got "+ excuse +". Retrying " + str(num_tries) + " time.")
+            log.write_to_log("Wait for " + str(sleepy_time) + " secs.")
+            time.sleep(sleepy_time)
+        else:
+            break
+
+
+    return out_string,error_string
 
 def run_and_wait_on_process(cmd, folder):
 

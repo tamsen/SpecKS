@@ -12,7 +12,7 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim33_log" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim34_log" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -87,6 +87,7 @@ class Generate_Config_Files(unittest.TestCase):
             self.assertTrue(os.path.exists(new_sh_created))
             cluster_cmds.append(new_script_file_name)
 
+        #copy over the folder of cluster commands
         cmd2=['scp','-r',origin_folder,me_at_remote_URL+':' +commands_folder_on_mesx]
         print(" ".join(cmd2))
         out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_out_dir)
@@ -94,17 +95,25 @@ class Generate_Config_Files(unittest.TestCase):
 
         #https://stackoverflow.com/questions/26278167/submitting-a-job-to-qsub-remotely
         #https://unix.stackexchange.com/questions/8612/programmatically-creating-a-remote-directory-using-ssh
-
+        #make the output directory
         cmd3 = ['ssh', me_at_remote_URL, '. ~/.bash_profile;','mkdir ' + specks_output_path_on_mesx]
         print(" ".join(cmd3))
         out_string, error_string = process_wrapper.run_and_wait_on_process(cmd3, local_out_dir)
 
+        cmds_to_qsub_via_ssh=[]
         for cmd in cluster_cmds:
             cmd4 = ['ssh', me_at_remote_URL, '. ~/.bash_profile;',
                 'cd ' + script_destination_folder_on_mesx + ';', 'qsub',cmd]
+            cmds_to_qsub_via_ssh.append("qsub")
+            cmds_to_qsub_via_ssh.append(cmd + ";")
+            #print(" ".join(cmd4))
+            #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd4, local_out_dir)
 
-            print(" ".join(cmd4))
-            out_string, error_string = process_wrapper.run_and_wait_on_process(cmd4, local_out_dir)
+        full_cmd_with_all_qsubs=['ssh', me_at_remote_URL, '. ~/.bash_profile;',
+                'cd ' + script_destination_folder_on_mesx + ';'] + cmds_to_qsub_via_ssh
+        print(" ".join(full_cmd_with_all_qsubs))
+        out_string, error_string = process_wrapper.run_and_wait_on_process(full_cmd_with_all_qsubs, local_out_dir)
+
 
 def write_config_file(template_file, out_dir, new_file_name, replacements):
 
