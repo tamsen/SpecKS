@@ -20,7 +20,7 @@ class MulitRunViewerTests(unittest.TestCase):
         #suppose you have lots of results (cvs files) with all the KS results from many specks runs,
         #and you want to see them all together on one plot.
 
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim34_log"
+        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim35_log"
         batch_run_name=os.path.basename(output_folder)
 
         print("Reading csv files..")
@@ -35,7 +35,7 @@ class MulitRunViewerTests(unittest.TestCase):
         print("Making plots..")
         metric_by_sim_name=[]
         do_kde=False
-        do_curve_fit=True
+        do_curve_fit=False
         bin_size = 0.001
 
         for spec in ['polyploid']:#species:
@@ -155,12 +155,13 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
     # making subplots
     num_spec_times=len(ordered_auto_results)
     num_wgd_times = len([n for n in result_names if "Allo1" in n]) + 1
+    auto_index=num_wgd_times-1
     print(num_wgd_times)
 
     fig, ax = plt.subplots(num_spec_times, num_wgd_times,figsize=(10, 10))
     fig.suptitle(sample_name + " for " + replicate +", "+ alg + " algorithm")
     ax[0, 0].set_title("Allopolyploid\n",fontsize=20)
-    ax[0, 1].set_title("Autopolyploid\n",fontsize=20)
+    ax[0, auto_index].set_title("Autopolyploid\n",fontsize=20)
 
 
     for sim_idx in range(0, num_spec_times):
@@ -168,36 +169,30 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
         allo_group="Allo"+str(sim_idx+1)
         print("allo_group:" + str(allo_group))
         ordered_allo_results=[n for n in result_names if allo_group in n]
-        ordered_allo_results.sort()
+        ordered_allo_results.sort(reverse=True)
         print("ordered_allo_results:" + str(ordered_allo_results))
 
-        for allo_idx in range(0,(num_wgd_times-1)):
+        ax[sim_idx, 0].set(ylabel="sim #" + str(sim_idx))
+
+        for allo_idx in range(0,auto_index):
+
+            if allo_idx > (len(ordered_allo_results) -1):
+                continue
+
             allo_result_name=ordered_allo_results[allo_idx]
             csvs_for_allo_result= csvfiles_by_polyploid_by_rep_by_algorthim[allo_result_name]
             print("spec:\t" + spec)
             print("replicate:\t" + replicate)
             print("alg:\t" + alg)
-
+            ax_col =0
             if spec in csvs_for_allo_result:
                 ks_for_allo_result= csvs_for_allo_result[spec][replicate][alg]
-
+                ax_col=auto_index - allo_idx - 1
                 #plot allo result
                 params=params_by_polyploid[allo_result_name]
-                this_ax = ax[sim_idx, allo_idx]
+                this_ax = ax[sim_idx, ax_col]
 
-                if do_kde:
-                    this_ax, ymax_suggestion, lognorm_fit_metrics, gaussian_fit_metrics = make_kde_subplot(this_ax,
-                                                                                                                 spec,
-                                                                                                                 ks_for_allo_result,
-                                                                                                                 bin_size,
-                                                                                                                 params.WGD_time_MYA,
-                                                                                                                 params.SPC_time_MYA,
-                                                                                                                 max_Ks_for_x_axis,
-                                                                                                                 False,
-                                                                                                                 "blue",
-                                                                                                                 do_curve_fit)
-                else:
-                    this_ax, ymax_suggestion, lognorm_fit_metrics,gaussian_fit_metrics = make_histogram_subplot(this_ax, spec, ks_for_allo_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
+                this_ax, ymax_suggestion, lognorm_fit_metrics,gaussian_fit_metrics = make_histogram_subplot(this_ax, spec, ks_for_allo_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
                                                                                                             max_Ks_for_x_axis, False,"blue", do_curve_fit)
 
                 if lognorm_fit_metrics:
@@ -206,9 +201,7 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
                                                        lognorm_fit_metrics, gaussian_fit_metrics)
                     metrics_by_result_names[allo_result_name]=fit_data
 
-                this_ax.set(ylabel="simulation #" + str(sim_idx))
-                if (sim_idx==3):
-                    this_ax.set(xlabel="Ks")
+
 
         #plot auto result
 
@@ -219,14 +212,10 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
         if spec in csvs_for_auto_result:
             ks_for_auto_result= csvs_for_auto_result[spec][replicate][alg]
             params=params_by_polyploid[auto_result_name]
-            this_ax = ax[sim_idx, num_wgd_times-1]
+            ax_col = num_wgd_times-1
+            this_ax = ax[sim_idx, ax_col]
 
-            if do_kde:
-                this_ax, ymax_suggestion, lognorm_fit_metrics, gaussian_fit_metrics= make_kde_subplot(this_ax, spec,
-                                            ks_for_auto_result, bin_size, params.WGD_time_MYA, params.SPC_time_MYA,
-                                            max_Ks_for_x_axis, ymax_suggestion,"blue", do_curve_fit)
-            else:
-                this_ax, ymax_suggestion, lognorm_fit_metrics, gaussian_fit_metrics = make_histogram_subplot(this_ax,spec,
+            this_ax, ymax_suggestion, lognorm_fit_metrics, gaussian_fit_metrics = make_histogram_subplot(this_ax,spec,
                                             ks_for_auto_result,
                                                                                                              bin_size,
                                                                                                              params.WGD_time_MYA,
@@ -246,8 +235,8 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
             #this_ax.text(0.8, 0.8, text_string,
             #             horizontalalignment='center', verticalalignment='center',
             #             transform=this_ax.transAxes)
-            if (sim_idx==(num_spec_times-1)):
-                this_ax.set(xlabel="Ks")
+        if (sim_idx==(num_spec_times-1)):
+            this_ax.set(xlabel="Ks")
 
     if do_kde:
         out_file_name = os.path.join(run_folder, "kde" + "_plot_" + spec + "_" + replicate + "_" + alg + ".png")
@@ -291,10 +280,9 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
 
     lognorm_goodness_of_fit =False
     gaussian_goodness_of_fit =False
+    this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, " + str(WGD_time_MYA) + " MYA")
+    this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, " + str(SPC_time_MYA) + " MYA")
     if do_curve_fit and (spec != "outgroup" ):
-
-        this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
-        this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
 
         gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
             curve_fitting.fit_curve_to_hist(bins, n,curve_fitting.wgd_gaussian)
@@ -350,7 +338,7 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
     #this_ax.legend()
 
     #this_ax.set(ylim=[0, yaxis_limit])
-    this_ax.set(ylim=[0, 150])
+    #this_ax.set(ylim=[0, 150])
 
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
@@ -361,92 +349,6 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SP
 
     return this_ax,ymax_suggestion, lognorm_goodness_of_fit,gaussian_goodness_of_fit
 
-
-def make_kde_subplot(this_ax, spec, Ks_results, bin_size, WGD_time_MYA, SPC_time_MYA,
-                           max_Ks, maxY, plot_color, do_curve_fit):
-
-    WGD_as_Ks = WGD_time_MYA * 0.01 #/ 1.04 ..the peak max is about 96% off from where it should be
-    SPEC_as_Ks =SPC_time_MYA * 0.01 #/ 1.04
-    default_xaxis_limit =SPEC_as_Ks + 0.2
-    x = Ks_results
-    num_gene_pairs_str=str(len(Ks_results))
-    xs_for_wgd = np.arange(0, max_Ks + 0.1, bin_size)
-    kde = stats.gaussian_kde(x)
-    kde_fit_curve_ys1 = kde(xs_for_wgd)
-    kde_maximum=max(kde_fit_curve_ys1)
-    ymax_suggestion=kde_maximum*1.6
-
-    curve_fit_done=False
-    lognorm_goodness_of_fit =False
-    gaussian_goodness_of_fit =False
-    if do_curve_fit and (spec != "outgroup" ):
-
-        this_ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, "+ str(WGD_time_MYA)+ " MYA")
-        this_ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, "+ str(SPC_time_MYA)+ " MYA")
-
-        gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
-            curve_fitting.fit_curve_to_xs_and_ys(xs_for_wgd, kde_fit_curve_ys1,curve_fitting.wgd_gaussian)
-
-        lognorm_fit_curve_ys1, xs_for_wgd,lognorm_goodness_of_fit =  \
-            curve_fitting.fit_curve_to_xs_and_ys(xs_for_wgd, kde_fit_curve_ys1, curve_fitting.wgd_lognorm )
-
-
-        if lognorm_fit_curve_ys1:
-            curve_fit_done=True
-
-            #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
-            #ks_norm_result= stats.kstest(bins,stats.norm.cdf)
-            #ks_lognorm_result = stats.kstest(bins, stats.lognorm.cdf(popt))
-            #https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
-            #my_args = popt[0:3]
-            #ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
-
-            #print("ks_norm_result " + str(ks_norm_result))
-            #print("ks_lognorm_result " + str(ks_lognorm_result))
-
-
-        if lognorm_fit_curve_ys1 and (kde_maximum>0):
-            rmse_str= str(round(lognorm_goodness_of_fit.RMSE,4))
-            this_ax.plot(xs_for_wgd,lognorm_fit_curve_ys1,
-                 color='green', linestyle=':', label="lognorm fit (err={0})".format(rmse_str))
-
-        if gaussian_fit_curve_ys1 and (kde_maximum>0):
-            rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
-            this_ax.plot(xs_for_wgd,gaussian_fit_curve_ys1,
-                 color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
-
-        if SPC_time_MYA == 20:
-            ymax_suggestion=400
-
-
-    if maxY:
-        yaxis_limit=maxY
-        ymax_suggestion=False
-    else:
-        yaxis_limit= ymax_suggestion
-
-    if curve_fit_done:
-        if lognorm_fit_curve_ys1 and (kde_maximum>0):
-            this_ax.scatter(lognorm_goodness_of_fit.cm,0.05*yaxis_limit,
-                 color='darkgreen', marker='o', s=100)# label="cm",)
-
-            this_ax.scatter(lognorm_goodness_of_fit.mode,0.05*yaxis_limit,
-                 color='cyan', marker='^', s=80)# label="mode")
-
-
-
-    this_ax.legend()
-
-    this_ax.set(ylim=[0, yaxis_limit])
-
-    if max_Ks:
-        this_ax.set(xlim=[0, max_Ks * 1.1])
-        if max_Ks < 0.51:
-            this_ax.set(ylim=[0, 5])
-    else:
-        this_ax.set(xlim=[0, default_xaxis_limit])
-
-    return this_ax,ymax_suggestion, lognorm_goodness_of_fit,gaussian_goodness_of_fit
 
 def plot_allo_vs_auto_metrics(out_folder, allo_xs, allo_ys, auto_xs, auto_ys, title):
 

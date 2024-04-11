@@ -14,11 +14,11 @@ class MyTestDownloader(unittest.TestCase):
         print(" ".join(cmd4))
         #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd4, local_output_folder)
         out_string, error_string = process_wrapper.run_and_wait_with_retry(cmd4, local_output_folder,
-                                        "Connection reset by peer", 5)
+                                        "Connection reset by peer", 3,5)
         return out_string
 
     def test_download_mesx_results(self):
-        batch_folder = "sim34_log"
+        batch_folder = "sim35_log"
         #runs = range(1, 7)
         me_at_remote_URL = 'tdunn@mesx.sdsu.edu'
         local_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx"

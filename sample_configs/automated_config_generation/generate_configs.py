@@ -36,10 +36,10 @@ class Generate_Config_Files(unittest.TestCase):
 
 
         imp_distribution = "impulse,1,1"
-        #ln_distribution="lognorm,0.5,5.27"
+        ln_distribution="lognorm,0.5,5.27"
         expon_0p1="expon,0,0.1"
         expon_1p0 = "expon,0,1"
-        expon_10p0 = "expon,0,10"
+        #expon_10p0 = "expon,0,10"
         expon_100p0 = "expon,0,100"
         coalescent_distributions=[]
 
@@ -66,14 +66,14 @@ class Generate_Config_Files(unittest.TestCase):
                 job_name = job_type + job_str + "_S" + formatter.format(spec_time) + "W" + formatter.format(wgd_time)
                 job_params = PolyploidParams(spec_time, wgd_time, job_name)
                 poly_params_by_name[job_name] = job_params
-                out_folder_by_name[job_name] = os.path.join(specks_output_path_on_mesx, "specks_" + job_type + job_str)
+                out_folder_by_name[job_name] = os.path.join(specks_output_path_on_mesx, "specks_" + job_name)
 
         for poly_name,poly_params in poly_params_by_name.items():
 
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", expon_10p0)
+                              ("DIV_DIST", ln_distribution)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)
@@ -106,15 +106,14 @@ class Generate_Config_Files(unittest.TestCase):
                 'cd ' + script_destination_folder_on_mesx + ';', 'qsub',cmd]
             cmds_to_qsub_via_ssh.append("qsub")
             cmds_to_qsub_via_ssh.append(cmd + ";")
-            #print(" ".join(cmd4))
-            #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd4, local_out_dir)
 
+        #submit all the qsub commands
         full_cmd_with_all_qsubs=['ssh', me_at_remote_URL, '. ~/.bash_profile;',
                 'cd ' + script_destination_folder_on_mesx + ';'] + cmds_to_qsub_via_ssh
         print(" ".join(full_cmd_with_all_qsubs))
-        out_string, error_string = process_wrapper.run_and_wait_with_retry(
-            full_cmd_with_all_qsubs, local_out_dir,"Connection reset by peer",
-            3, 10)
+        #out_string, error_string = process_wrapper.run_and_wait_with_retry(
+        #    full_cmd_with_all_qsubs, local_out_dir,"Connection reset by peer",
+        #    3, 10)
 
 
 def write_config_file(template_file, out_dir, new_file_name, replacements):
