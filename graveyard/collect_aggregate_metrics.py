@@ -4,7 +4,7 @@ import unittest
 from matplotlib import pyplot as plt
 
 from results_viewer import run_metrics
-from results_viewer import multi_run_viewer
+from graveyard import multi_run_viewer
 
 
 class CollectAggregateMetrics(unittest.TestCase):
@@ -13,7 +13,7 @@ class CollectAggregateMetrics(unittest.TestCase):
 
         out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
         #batch_names = ["sim18_N0p1","sim19_N1","sim20_log"]
-        batch_names = ["sim35_log"]
+        batch_names = ["sim36_N10"]#,"sim35_log"]
         plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
                        (get_spec_time, get_genes_shed, "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),

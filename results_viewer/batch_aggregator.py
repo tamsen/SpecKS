@@ -4,7 +4,8 @@ import unittest
 from matplotlib import pyplot as plt
 
 from results_viewer import run_metrics
-from results_viewer import multi_run_viewer
+from graveyard import multi_run_viewer
+from results_viewer.batch_analyzer import compute_metrics_for_batch
 
 
 class BatchAggregator(unittest.TestCase):
@@ -13,26 +14,28 @@ class BatchAggregator(unittest.TestCase):
 
         out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
         #batch_names = ["sim18_N0p1","sim19_N1","sim20_log"]
-        batch_names = ["sim35_log"]
+        batch_names = ["sim36_N10","sim35_log"]
         plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
                        (get_spec_time, get_genes_shed, "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
                        (get_wgd_time, get_genes_shed, "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
                        (get_spec_time, get_mode, "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
                        (get_wgd_time, get_mode, "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
+                       (get_spec_time, get_max, "spec time (MYA)", "max vs spec time", "max_vs_spec_time.png"),
+                       (get_spec_time, get_max_d, "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
                        (get_spec_time, get_metric0, "spec time (MYA)", "allo vs auto metric0", "metric0.png"),
                        (get_spec_time, get_metric1, "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
                        (get_spec_time, get_metric2, "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
                        (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3", "metric3.png"),
                        ]
-        reprocess=False
+
+        reprocess=True
         marker_styles_for_batches = [".", "+", "*", ">"]
 
-        bin_size = 0.001
         if reprocess:
             for batch_name in batch_names:
-                batch_folder = os.path.join(out_folder, batch_name)
-                reprocess_batch(batch_folder, batch_name,bin_size )
+                #batch_folder = os.path.join(out_folder, batch_name)
+                reprocess_batch(batch_name)
 
         metric_data_by_batch = self.read_in_metric_data_fo_all_batches(batch_names, out_folder)
 
@@ -58,38 +61,8 @@ class BatchAggregator(unittest.TestCase):
         return metric_data_by_batch
 
 
-def reprocess_batch(batch_folder, batch_name, bin_size):
-
-    plot_title='Batch Simulation Processing: ' + batch_name
-    params_by_polyploid = multi_run_viewer.get_truth_for_Fig1_sim()
-    print("Reading csv files..")
-    csvfiles_by_polyploid_by_species_rep_by_algorithm = multi_run_viewer.get_ks_data_from_folders(batch_folder)
-    example_sim='Allo1' #list(csvfiles_by_polyploid_by_species_rep_by_algorithm.keys())[0]
-    species=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim].keys())
-    replicates=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim][species[0]].keys())
-    algs=["ML"]
-    print("Making plots..")
-    do_kde = False
-    do_curve_fit = True
-    #bin_size = 0.001
-    for spec in species:#['outgroup']:#species:
-        print(spec)
-        for replicate in replicates:
-            for alg in algs:
-
-                max_Ks = 1.0
-                metrics_by_result_names = multi_run_viewer.plot_ks_disributions_for_the_sim_runs(
-                    batch_folder, plot_title,
-                    csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
-                    replicate, alg, params_by_polyploid, max_Ks, bin_size, do_curve_fit,do_kde)
-
-        if do_kde:
-            out_csv = "batch_processed_{0}_{1}_{2}_{3}_kde_metrics.csv".format(batch_name, spec, replicate, alg)
-        else:
-            out_csv = "batch_processed_{0}_{1}_{2}_{3}_hist_metrics.csv".format(batch_name, spec, replicate, alg)
-        out_file_name = os.path.join(batch_folder, out_csv)
-        run_metrics.plot_and_save_metrics(metrics_by_result_names, out_file_name)
-
+def reprocess_batch(batch_name):
+    compute_metrics_for_batch(batch_name)
 def sort_batch_into_xs_and_ys(metric_data_for_batch,get_x,get_y):
 
     allo_xs=[]
@@ -102,7 +75,7 @@ def sort_batch_into_xs_and_ys(metric_data_for_batch,get_x,get_y):
         x = get_x(run_metrics)
         y = get_y(run_metrics)
 
-        if run_metrics.input_type=="allo":
+        if run_metrics.input_type.upper()=="ALLO":
             allo_xs.append(x)
             allo_ys.append(y)
         else:
@@ -167,6 +140,14 @@ def get_wgd_time(run_metrics):
 
 def get_mode(run_metrics):
     y = round(float(run_metrics.lognorm_fit_data.mode),3)
+    return y
+
+def get_max(run_metrics):
+    y = round(float(run_metrics.wgd_maxima),3)
+    return y
+
+def get_max_d(run_metrics):
+    y = round(float(run_metrics.wgd_maxima_d),3)
     return y
 def read_data_csv(csv_file):
 

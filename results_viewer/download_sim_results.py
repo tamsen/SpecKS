@@ -18,7 +18,7 @@ class MyTestDownloader(unittest.TestCase):
         return out_string
 
     def test_download_mesx_results(self):
-        batch_folder = "sim35_log"
+        batch_folder = "sim36_N10"
         #runs = range(1, 7)
         me_at_remote_URL = 'tdunn@mesx.sdsu.edu'
         local_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx"

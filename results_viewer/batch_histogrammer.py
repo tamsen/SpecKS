@@ -17,7 +17,7 @@ class BatchHistogrammer(unittest.TestCase):
     def test_make_histograms_for_batch(self):
 
         plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
-        input_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim35_log"
+        input_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim36_N10"
         output_folder=os.path.join(input_folder,"analysis")
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
