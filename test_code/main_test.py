@@ -1,7 +1,7 @@
 import os
 import unittest
-import allosim
-import autosim
+import polyploidsim
+from graveyard import autosim
 import main
 
 class TestMain(unittest.TestCase):

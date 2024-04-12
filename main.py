@@ -1,8 +1,7 @@
 import os
 import shutil
 import sys
-import allosim
-import autosim
+import polyploidsim
 import config
 from datetime import datetime
 
@@ -25,12 +24,7 @@ def run_sim():
     list_of_polyploids = make_polyploids(conf)
 
     for polyploid in list_of_polyploids:
-
-        allosim.run_allosim(polyploid)
-        #if polyploid.is_allo():
-        #    allosim.run_allosim(polyploid)
-        #else:
-        #    autosim.run_autosim(polyploid)
+        polyploidsim.run_sim(polyploid)
 
     log.write_end_to_log()
 

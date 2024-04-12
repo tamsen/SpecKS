@@ -4,7 +4,7 @@ from pipeline_modules import ks_histogramer, ks_calculator, gene_evolver, \
 
 from Bio import Phylo
 from io import StringIO
-def run_allosim(polyploid):
+def run_sim(polyploid):
 
 
     #the allopolyploid has only one simulation leg for the full sim
