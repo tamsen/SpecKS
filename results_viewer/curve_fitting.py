@@ -1,8 +1,10 @@
 import math
 
+import numpy as np
+from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
-from scipy.stats import lognorm, norm
-
+from scipy.stats import lognorm, norm, chisquare
+from sklearn.preprocessing import normalize
 def wgd_gaussian(x, amp, mu, sig):
     return amp * norm.pdf(x, mu, sig)
 
@@ -48,8 +50,23 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
     RMSE_to_sum = [(fit_curve_ys[i] - ys_for_wgd[i])* (fit_curve_ys[i] - ys_for_wgd[i]) for i in range(0,len(xs_for_wgd))]
     RMSE = math.sqrt( sum(RMSE_to_sum) / len(RMSE_to_sum))
+    rms2 = mean_squared_error(ys_for_wgd, fit_curve_ys, squared=False)
+    print(rms2)
 
-    #get mode & center of mass
+    chi2 = do_chi2(fit_curve_ys, ys_for_wgd)
+
+    ff1=normalize([f1], norm="l1")
+    ff2=normalize([f2], norm="l1")
+    #print(ff1[0])
+    #chi2=  chisquare(ff1[0], f_exp=ff2[0], ddof=2, axis=0)
+    #chi2 = chisquare(f1, f_exp=f2, ddof=(len(f1)-1), axis=0)
+    #chi2 = chisquare([1,2,3], f_exp=[1,.1,2.2,2.9], ddof=2, axis=0)
+    #print(chi2)
+    #f_exp = np.array([44, 24, 29, 3]) / 100 * 189
+    #f_obs = np.array([43, 52, 54, 40])
+    #chi2 = chisquare(f_obs=f_obs, f_exp=f_exp)
+    print(chi2)
+
     ymax=max(fit_curve_ys)
     xs_of_ymax=[]
     weighted_mass=0
@@ -68,6 +85,16 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     num_paralogs = sum(ys_for_wgd)
     goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt, RMSE)
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
+
+
+def do_chi2(fit_curve_ys, ys_for_wgd):
+    f_obs = np.array(ys_for_wgd)
+    f_exp = np.array(fit_curve_ys)
+    scale = sum(f_obs) / sum(f_exp)
+    f_exp_normalized = f_exp * scale
+    chi2 = chisquare(f_obs=f_obs, f_exp=f_exp_normalized)
+    return chi2
+
 
 class curve_fit_metrics():
 

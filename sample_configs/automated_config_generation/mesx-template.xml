@@ -11,8 +11,8 @@
     </SpeciesTree>
     <GeneTree>
         <mean_gene_birth_rate_GpMY>0.01</mean_gene_birth_rate_GpMY>
-        <mean_SSD_life_span_MY>5.77</mean_SSD_life_span_MY>
-        <mean_WGD_life_span_MY>43.2</mean_WGD_life_span_MY>
+        <SSD_half_life_MY>4</SSD_half_life_MY>
+        <WGD_half_life_MY>31</WGD_half_life_MY>
 	    <gene_div_time_distribution_parameters>DIV_DIST</gene_div_time_distribution_parameters>
         <num_gene_trees_per_species_tree>3000</num_gene_trees_per_species_tree>
        <!--
@@ -29,7 +29,7 @@
         <per_site_evolutionary_distance>0.01268182</per_site_evolutionary_distance>
     </SequenceEvolution>
     <Histogram>
-        <maxKs>1</maxKs>
+        <maxKs>2</maxKs>
     </Histogram>
     <StopAtStep>999</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>

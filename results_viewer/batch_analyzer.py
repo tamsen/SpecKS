@@ -3,8 +3,9 @@ import unittest
 
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy import stats
 from scipy.signal import find_peaks
-
+#from scipy.stats import norm
 from results_viewer import curve_fitting
 from results_viewer.batch_histogrammer import get_truth_from_name_list
 from results_viewer.run_metrics import run_metrics, plot_and_save_metrics
@@ -12,6 +13,39 @@ from results_viewer.run_metrics import run_metrics, plot_and_save_metrics
 
 class BatchAnalyser(unittest.TestCase):
 
+    def test_ks_test_example(self):
+
+        n=10000
+        # reject null hypothesis if p value is less than significance.
+        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
+        random_draws_from_distribution = stats.norm.rvs(loc=0, size=n, scale=1)
+        ks_norm_result = stats.kstest(random_draws_from_distribution, stats.norm.cdf)
+        print(ks_norm_result)
+
+        random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
+        ks_norm_result = stats.kstest(random_draws_from_distribution, stats.norm.cdf)
+        print(ks_norm_result)
+
+        random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
+        ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
+        print(ks_norm_result)
+
+        random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
+        ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
+        print(ks_norm_result)
+
+        random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
+        ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
+        print(ks_norm_result)
+        # ks_lognorm_result = stats.kstest(Ks_results, lambda x: wgd_lognorm_cdf(x, popt, 0,10))
+
+        # https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
+        # my_args = popt[0:3]
+        # ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
+        # print("ks_norm_result " + str(ks_norm_result))
+        # print("ks_lognorm_result " + str(ks_lognorm_result))
+
+        # https://seaborn.pydata.org/generated/seaborn.kdeplot.html
     def test_compute_metrics_for_batch(self):
         batch_name= "sim36_N10"
         compute_metrics_for_batch(batch_name)
@@ -158,6 +192,19 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
     #        rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
     #        plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
     #             color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
+
+
+    #reject null hypothesis if p value is less than significance.
+
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
+    #ks_norm_result = stats.kstest(Ks_results, stats.norm.cdf)
+    #ks_lognorm_result = stats.kstest(Ks_results, lambda x: wgd_lognorm_cdf(x, popt, 0,10))
+
+    # https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
+    #my_args = popt[0:3]
+    #ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
+    # print("ks_norm_result " + str(ks_norm_result))
+    # print("ks_lognorm_result " + str(ks_lognorm_result))
 
     if lognorm_fit_curve_ys1 and (hist_maximum>0):
             plt.scatter(lognorm_goodness_of_fit.cm,-0.05*maxY,

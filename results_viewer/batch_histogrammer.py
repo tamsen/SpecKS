@@ -195,7 +195,8 @@ def get_histograms_for_runs_in_batch(out_folder, sample_name, csvfiles_by_polypl
         first_col=0
         ax[i, first_col].set(ylabel="<- density ->\nspec: "+ str(spec_times[i]) + "MYA")
 
-    out_file_name=os.path.join(out_folder, "histogram" + "_plot_" + spec + "_" + replicate + "_" + str(max_Ks_for_x_axis) + ".png")
+    out_file_name=os.path.join(out_folder, "histogram" + "_plot_" + spec +
+                               "_" + replicate + "_" + str(max_Ks_for_x_axis) + ".png")
     plt.savefig(out_file_name)
     plt.close()
     return metrics_by_result_names
