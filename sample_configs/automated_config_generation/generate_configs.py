@@ -12,7 +12,7 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim35_log" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim36_N10" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -39,9 +39,9 @@ class Generate_Config_Files(unittest.TestCase):
         ln_distribution="lognorm,0.5,5.27"
         expon_0p1="expon,0,0.1"
         expon_1p0 = "expon,0,1"
-        #expon_10p0 = "expon,0,10"
+        expon_10p0 = "expon,0,10"
         expon_100p0 = "expon,0,100"
-        coalescent_distributions=[]
+        coalescent_distribution=expon_10p0
 
         poly_params_by_name={}
         out_folder_by_name={}
@@ -73,7 +73,7 @@ class Generate_Config_Files(unittest.TestCase):
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", ln_distribution)
+                              ("DIV_DIST", coalescent_distribution)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)

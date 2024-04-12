@@ -25,8 +25,12 @@ class run_metrics():
 
     def to_data_list(self):
         simple_data = [self.input_type, self.sim_name, self.spc_time, self.wgd_time]#,self.fit_data]
-        fit_data_list=self.lognorm_fit_data.to_data_list() + [str(self.gaussian_fit_data.popt)] \
+
+        if self.lognorm_fit_data and self.gaussian_fit_data:
+            fit_data_list=self.lognorm_fit_data.to_data_list() + [str(self.gaussian_fit_data.popt)] \
                        +[str(self.gaussian_fit_data.RMSE)]
+        else:
+            fit_data_list =  ["NA","NA", "NA","NA", "NA","NA","NA"]
         final_data = [str(d) for d in simple_data] + [str(d) for d in fit_data_list]
         return final_data
 

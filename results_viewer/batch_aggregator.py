@@ -7,7 +7,7 @@ from results_viewer import run_metrics
 from results_viewer import multi_run_viewer
 
 
-class CollectAggregateMetrics(unittest.TestCase):
+class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
@@ -51,7 +51,7 @@ class CollectAggregateMetrics(unittest.TestCase):
             files = os.listdir(batch_folder)
             for file in files:
                 print("file:\t" + file)
-                if (".csv" in file) and ("polyploid" in file) and ("batch_processed" in file):
+                if ("metrics.csv" in file):# and ("polyploid" in file) and ("batch_processed" in file):
                     full_file_path = os.path.join(batch_folder, file)
                     metric_data_for_batch = read_data_csv(full_file_path)
                     metric_data_by_batch[batch_name] = metric_data_for_batch

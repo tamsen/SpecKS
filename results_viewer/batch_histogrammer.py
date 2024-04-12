@@ -17,16 +17,17 @@ class BatchHistogrammer(unittest.TestCase):
     def test_make_histograms_for_batch(self):
 
         plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
-        output_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim35_log"
-        batch_run_name=os.path.basename(output_folder)
+        input_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim35_log"
+        output_folder=os.path.join(input_folder,"analysis")
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
 
         print("Reading csv files..")
-        csvfiles_by_polyploid_by_species_rep_by_algorithm = get_ks_data_from_folders(output_folder)
-        params_by_polyploid = get_truth_from_names(csvfiles_by_polyploid_by_species_rep_by_algorithm)
+        csvfiles_by_polyploid_by_species_rep_by_algorithm = get_ks_data_from_folders(input_folder)
+        params_by_polyploid = get_truth_from_name_dict(csvfiles_by_polyploid_by_species_rep_by_algorithm)
         example_sim=list(csvfiles_by_polyploid_by_species_rep_by_algorithm.keys())[0]
         species=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim].keys())
         replicates=list(csvfiles_by_polyploid_by_species_rep_by_algorithm[example_sim][species[0]].keys())
-        #algs=list(csvfiles_by_polyploid_by_rep_by_algorthim[example_sim][replicates[0]].keys())
         alg="ML"
 
         print("Making plots..")
@@ -40,20 +41,30 @@ class BatchHistogrammer(unittest.TestCase):
                                                      csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
                                                      replicate, alg, params_by_polyploid, max_Ks, bin_size)
 
-def get_truth_from_names(dict_by_name):
-    params_by_polyploid = {}
+def get_truth_from_name_dict(dict_by_name):
     names=dict_by_name.keys()
+    return get_truth_from_name_list(names)
+
+
+def get_truth_from_name_list(names):
+    params_by_polyploid = {}
     for name in names:
-        spec_time=int(name[7:10])
-        wgd_time=int(name[11:14])
+        print(name)
+        spec_time = int(name[7:10])
+        wgd_time = int(name[11:14])
         params_by_polyploid[name] = config.PolyploidParams(spec_time, wgd_time, name)
     return params_by_polyploid
+
 
 def get_ks_data_from_folders(output_folder):
     polyploid_data_folders = os.listdir(output_folder)
     csvfiles_by_polyploid_by_species_rep_by_algorthim = {}
     for polyploid_folder in polyploid_data_folders:
         print(polyploid_folder)
+
+        if not ("Allo" in polyploid_folder) and not ("Auto" in polyploid_folder):
+            continue
+
         csvfiles_by_species_rep_by_algorthim = {}
         full_polyploid_folder_path = os.path.join(output_folder, polyploid_folder)
         if (os.path.isdir(full_polyploid_folder_path)):
@@ -125,7 +136,7 @@ def read_Ks_csv(csv_file):
 
     return ks_results
 
-def get_histograms_for_runs_in_batch(run_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
+def get_histograms_for_runs_in_batch(out_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
                                      spec, replicate, alg, params_by_polyploid, max_Ks_for_x_axis,
                                      bin_size):
 
@@ -172,19 +183,19 @@ def get_histograms_for_runs_in_batch(run_folder, sample_name, csvfiles_by_polypl
                                         bin_size, params,
                                         max_Ks_for_x_axis, False,"blue")
 
-            out_file_name = os.path.join(run_folder, allo_result_name + ".hist.csv")
+            out_file_name = os.path.join(out_folder, allo_result_name + ".hist.csv")
             save_hist_to_csv(hist_data, out_file_name)
 
 
     for i in range(0,num_wgd_times):
         last_row=num_spec_times-1
-        ax[last_row, i].set(xlabel="Ks\n(wgd offset " + str(wgd_offsets[i]) + "MYA)")
+        ax[last_row, i].set(xlabel="(wgd offset: " + str(wgd_offsets[i]) + "MYA\n<-- Ks -->")
 
     for i in range(0,num_spec_times):
         first_col=0
-        ax[i, first_col].set(ylabel="density\n(spec "+ str(spec_times[i]) + "MYA)")
+        ax[i, first_col].set(ylabel="<- density ->\nspec: "+ str(spec_times[i]) + "MYA")
 
-    out_file_name=os.path.join(run_folder,"histogram" + "_plot_" + spec +"_" + replicate +"_"+ str(max_Ks_for_x_axis)+".png")
+    out_file_name=os.path.join(out_folder, "histogram" + "_plot_" + spec + "_" + replicate + "_" + str(max_Ks_for_x_axis) + ".png")
     plt.savefig(out_file_name)
     plt.close()
     return metrics_by_result_names
