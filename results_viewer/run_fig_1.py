@@ -176,6 +176,9 @@ def plot_ks_disributions_for_the_sim_runs(run_folder, sample_name, csvfiles_by_p
 
         for allo_idx in range(0,auto_index):
 
+            if sim_idx == num_spec_times-1:
+                ax[sim_idx, allo_idx].set(xlabel="Ks")
+
             if allo_idx > (len(ordered_allo_results) -1):
                 continue
 

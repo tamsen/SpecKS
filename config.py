@@ -1,4 +1,5 @@
 # eventually this should be read in from an xml config or similar
+import math
 import xml.etree.ElementTree as ET
 
 
@@ -98,6 +99,10 @@ class SpecKS_config:
                         self.mean_SSD_life_span = parse_float_or_false(incoming_txt)
                     if (incoming_tag == "mean_WGD_life_span_MY"):
                         self.mean_WGD_life_span = parse_float_or_false(incoming_txt)
+                    if (incoming_tag == "SSD_half_life_MY"):
+                        self.mean_SSD_life_span = half_life_to_mean_life(incoming_txt)
+                    if (incoming_tag == "WGD_half_life_MY"):
+                        self.mean_WGD_life_span = half_life_to_mean_life(incoming_txt)
                     if (incoming_tag == "branch_relaxer_parameters"):
                         self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
@@ -135,6 +140,15 @@ def parse_float_or_false(input_string):
         return False
     else:
         return float(input_string)
+
+def half_life_to_mean_life(input_string):
+
+    half_life=parse_float_or_false(input_string)
+    if not half_life:
+        return False
+    else:
+        ln2=math.log(2)
+        return half_life/ln2
 def parse_comma_separated_values(input_string):
     if input_string.upper() == "FALSE":
         return False
