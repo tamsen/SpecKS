@@ -9,8 +9,8 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        #batch_names = ["sim37_N1","sim37_N100","sim36_N10","sim35_log"]
-        batch_names = ["sim37_N1", "sim36_N10", "sim35_log"]
+        batch_names = ["sim37_N1","sim37_N100","sim36_N10","sim35_log"]
+        #batch_names = ["sim37_N1", "sim36_N10", "sim35_log"]
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
@@ -41,8 +41,14 @@ class BatchAggregator(unittest.TestCase):
             i=i+1
 
         for plot_to_make in plots_to_make:
+            plot_name = plot_to_make[4]
             plot_data=plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch, *plot_to_make,out_folder)
-            data_file_name=plot_to_make[4].replace(".png",".csv")
+            if "metric" in plot_name:
+                log_plot_to_make=[d for d in plot_to_make]
+                log_plot_to_make[4] =plot_name.replace(".png","_log.png")
+                plot_allo_vs_auto_metrics(metric_data_by_batch, marker_styles_by_batch,
+                                          *log_plot_to_make, out_folder, ylog=True)
+            data_file_name=plot_name.replace(".png",".csv")
             out_file_path=os.path.join(out_folder,data_file_name)
             save_metrics_to_csv(plot_data, out_file_path)
 
@@ -178,7 +184,7 @@ def read_data_csv(csv_file):
 
 def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
                               get_x_method,get_y_method,x_axis_name,y_axis_name,
-                              title,out_folder):
+                              title,out_folder, ylog=False):
 
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     auto_color='gray'
@@ -199,10 +205,14 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
 
     out_file_name = os.path.join(out_folder, title)
     fig.suptitle(title)
+
+    if ylog:
+        ax.set(yscale='log')
+
     ax.set(xlabel=x_axis_name)
     ax.set(ylabel=y_axis_name)
 
-    ax.legend()
+    #ax.legend()
     plt.savefig(out_file_name)
     plt.close()
     return plot_data

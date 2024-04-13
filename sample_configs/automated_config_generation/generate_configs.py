@@ -12,7 +12,12 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        sim_subfolder="sim37_N100" #folder to make, to put put the shell scrips & qsub output
+        #TODO:
+        #expon_0p1 = "expon,0,0.1"
+        #expon_5p0 = "expon,0,5"
+        #expon_20p0 = "expon,0,20"
+
+        sim_subfolder="sim37_N20" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -39,9 +44,11 @@ class Generate_Config_Files(unittest.TestCase):
         ln_distribution="lognorm,0.5,5.27"
         expon_0p1="expon,0,0.1"
         expon_1p0 = "expon,0,1"
+        expon_5p0 = "expon,0,5"
         expon_10p0 = "expon,0,10"
+        expon_20p0 = "expon,0,20"
         expon_100p0 = "expon,0,100"
-        coalescent_distribution=expon_100p0
+        coalescent_distribution=expon_20p0
 
         poly_params_by_name={}
         out_folder_by_name={}
