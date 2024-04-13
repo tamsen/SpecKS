@@ -20,20 +20,27 @@ class BatchAnalyser(unittest.TestCase):
         # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
         random_draws_from_distribution = stats.norm.rvs(loc=0, size=n, scale=1)
         ks_norm_result = stats.kstest(random_draws_from_distribution, stats.norm.cdf)
-        print(ks_norm_result)
+        print("accept:\t" + str(ks_norm_result))
 
         random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
         ks_norm_result = stats.kstest(random_draws_from_distribution, stats.norm.cdf)
-        print(ks_norm_result)
+        print("reject:\t" + str(ks_norm_result))
 
         random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
         ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
         print(ks_norm_result)
+        s=sum(random_draws_from_distribution)
+        m = s / len(random_draws_from_distribution)
 
+        print("mean:" + str(m))
+        print("sum:" + str(m))
         random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
+        normalized= (np.array(random_draws_from_distribution) - m ) / s
         ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
         print(ks_norm_result)
-
+        print("normalized:" + str(normalized))
+        ks_norm_result = stats.kstest( normalized, stats.norm.cdf)
+        print(ks_norm_result)
         random_draws_from_distribution = stats.norm.rvs(loc=10, size=n, scale=1)
         ks_norm_result = stats.kstest([r-10 for r in random_draws_from_distribution], stats.norm.cdf)
         print(ks_norm_result)
