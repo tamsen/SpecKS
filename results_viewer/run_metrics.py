@@ -6,19 +6,24 @@ class run_metrics():
     sim_name=''
     spc_time=-1
     wgd_time=-1
-    wgd_maxima=-1
-    wgd_maxima_d=-1
+    wgd_raw_cm=-1
+    wgd_raw_x_value_of_ymax=-1
+    wgd_fit_maxima=-1
+    wgd_fit_maxima_d=-1
     lognorm_fit_data=-1
     gaussian_fit_data=-1
 
     def __init__(self, input_type, sim_name, spc_time, wgd_time,
-                 wgd_maxima, wgd_maxima_d,lognorm_fit_data,gaussian_fit_data):
+                 raw_cm, raw_x_value_of_ymax,
+                 wgd_fit_maxima, wgd_fit_maxima_d, lognorm_fit_data, gaussian_fit_data):
         self.input_type = input_type
         self.sim_name =sim_name
         self.spc_time =spc_time
         self.wgd_time = wgd_time
-        self.wgd_maxima = wgd_maxima
-        self.wgd_maxima_d = wgd_maxima_d
+        self.wgd_raw_cm = raw_cm
+        self.wgd_raw_x_value_of_ymax =raw_x_value_of_ymax
+        self.wgd_fit_maxima = wgd_fit_maxima
+        self.wgd_fit_maxima_d = wgd_fit_maxima_d
         self.lognorm_fit_data = lognorm_fit_data
         self.gaussian_fit_data = gaussian_fit_data
                  #mod,cm,num_paralogs,lognorm_RMSE,gaussian_RMSE
@@ -29,7 +34,8 @@ class run_metrics():
 
     def to_data_list(self):
         simple_data = [self.input_type, self.sim_name, self.spc_time,
-                       self.wgd_time, self.wgd_maxima, self.wgd_maxima_d]
+                       self.wgd_time, self.wgd_raw_cm, self.wgd_raw_x_value_of_ymax,
+                       self.wgd_fit_maxima, self.wgd_fit_maxima_d]
 
         if self.lognorm_fit_data and self.gaussian_fit_data:
             fit_data_list=self.lognorm_fit_data.to_data_list() + [str(self.gaussian_fit_data.popt)] \
@@ -40,14 +46,14 @@ class run_metrics():
         return final_data
 
 def get_metrics_from_data_line(data_list):
-    simple_data=data_list[0:6]
-    mode=data_list[6]
-    cm=data_list[7]
-    np=data_list[8]
-    ln_popt= data_list[9]
-    ln_RMSE=data_list[10]
-    g_popt= data_list[11]
-    g_RMSE=data_list[12]
+    simple_data=data_list[0:8]
+    mode=data_list[8]
+    cm=data_list[9]
+    np=data_list[10]
+    ln_popt= data_list[11]
+    ln_RMSE=data_list[12]
+    g_popt= data_list[13]
+    g_RMSE=data_list[14]
     lognorm_data=curve_fit_metrics(cm,mode,np,ln_popt,ln_RMSE)
     gaussian_data=curve_fit_metrics(cm,mode,np,g_popt,g_RMSE)
     metrics=run_metrics(*simple_data,lognorm_data,gaussian_data)
@@ -95,5 +101,7 @@ def read_run_metrics_from_csv(csv_file_name):
 
 def get_metric_result_data_headers():
 
-    return ["sim_type","sim_name","spc_time","wgd_time","wgd_maxima","wgd_maxima_d","mode","cm","num_paralogs",
+    return ["sim_type","sim_name","spc_time","wgd_time","wgd_maxima",
+            "raw_cm","raw_x_value_of_ymax",
+            "wgd_maxima_d","mode","cm","num_paralogs",
                      "lognorm_popt","lognorm_RMSE","gaussian_popt","gaussian_RMSE"]

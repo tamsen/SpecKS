@@ -150,11 +150,11 @@ def get_mode(run_metrics):
     return y
 
 def get_max(run_metrics):
-    y = round(float(run_metrics.wgd_maxima),3)
+    y = round(float(run_metrics.wgd_fit_maxima), 3)
     return y
 
 def get_max_d(run_metrics):
-    y = round(float(run_metrics.wgd_maxima_d),3)
+    y = round(float(run_metrics.wgd_fit_maxima_d), 3)
     return y
 def read_data_csv(csv_file):
 

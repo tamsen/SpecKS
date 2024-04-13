@@ -58,24 +58,28 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     #rms2 = mean_squared_error(ys_for_wgd, fit_curve_ys, squared=False)
     #chi2 = do_chi2(fit_curve_ys, ys_for_wgd)
 
-    ymax=max(fit_curve_ys)
-    xs_of_ymax=[]
-    weighted_mass=0
-    weights=0
-    for i in range(0,len(xs_for_wgd)):
-        x=xs_for_wgd[i]
-        y=fit_curve_ys[i]
-        weighted_mass = weighted_mass+(x*y)
-        weights = weights + y
-        if y==ymax:
-            xs_of_ymax.append(x)
+    center_of_mass, x_value_of_ymax = get_mode_and_cm(fit_curve_ys, xs_for_wgd)
 
-
-    x_value_of_ymax=sum(xs_of_ymax)/len(xs_of_ymax)
-    center_of_mass=weighted_mass/weights
     num_paralogs = sum(ys_for_wgd)
     goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt, RMSE)
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
+
+
+def get_mode_and_cm(fit_curve_ys, xs_for_wgd):
+    ymax = max(fit_curve_ys)
+    xs_of_ymax = []
+    weighted_mass = 0
+    weights = 0
+    for i in range(0, len(xs_for_wgd)):
+        x = xs_for_wgd[i]
+        y = fit_curve_ys[i]
+        weighted_mass = weighted_mass + (x * y)
+        weights = weights + y
+        if y == ymax:
+            xs_of_ymax.append(x)
+    x_value_of_ymax = sum(xs_of_ymax) / len(xs_of_ymax)
+    center_of_mass = weighted_mass / weights
+    return center_of_mass, x_value_of_ymax
 
 
 def do_chi2(fit_curve_ys, ys_for_wgd):

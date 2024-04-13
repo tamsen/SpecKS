@@ -18,6 +18,7 @@ class BatchAnalyser(unittest.TestCase):
         batch_name= "sim37_N100"
         base_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/"
         compute_metrics_for_batch(batch_name,base_output_folder )
+
     def test_compute_metrics_for_csv(self):
         csv_file = "Allo2_S070W060.hist.csv"  # "Allo6_S030W010.hist.csv"
         max_Ks = 1.0
@@ -137,8 +138,8 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
     plt.scatter(wgd_maxima[0], -0.05 * maxY,
                 color='blue', marker='^', s=80, label="wgd max")
 
-    wgd_max_d=best_spec_time_by_derivative(kernel_size, wgd_ys, wgd_xs)
-
+    wgd_max_d=get_loc_of_max_derivative(kernel_size, wgd_ys, wgd_xs)
+    raw_cm, raw_x_value_of_ymax = curve_fitting.get_mode_and_cm(wgd_ys, wgd_xs)
 
     plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
     plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
@@ -184,8 +185,10 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
     plt.close()
 
     fit_data = run_metrics(polyploid_name[0:4], polyploid_name,
-                                       SPC_time_MYA, WGD_time_MYA,wgd_maxima[0],wgd_max_d[0],
-                                       lognorm_goodness_of_fit, gaussian_goodness_of_fit)
+                           SPC_time_MYA, WGD_time_MYA,
+                           raw_cm, raw_x_value_of_ymax,
+                           wgd_maxima[0],wgd_max_d[0],
+                           lognorm_goodness_of_fit, gaussian_goodness_of_fit)
 
     return fit_data
 
@@ -234,20 +237,6 @@ def sort_ssds_and_wgds(bins, n, ssd_end, overlap_ssds):
     #    wgd_ys= [0]+wgd_ys
 
     return ssd_xs, ssd_ys, wgd_xs, wgd_ys
-
-
-def garbage(minima):
-    biggest_gap_idx = 0
-    gap_so_far = 0
-    for i in range(0, len(minima) - 1):
-        gap = minima[i + 1][0] - minima[i][0]
-        if gap > gap_so_far:
-            biggest_gap_idx = i
-            gap_so_far = gap
-    print("biggest_gap_idx: " + str(biggest_gap_idx))
-    wwd_range_idx = [minima[biggest_gap_idx][2], minima[biggest_gap_idx + 1][2]]
-    return biggest_gap_idx
-
 def smallest_min(minima,peak_max):
 
     if peak_max:
@@ -278,18 +267,6 @@ def smallest_min(minima,peak_max):
         return smallest_min(minima,False)
 
     return best_min, next_min
-def garbage(minima):
-    biggest_gap_idx = 0
-    gap_so_far = 0
-    for i in range(0, len(minima) - 1):
-        gap = minima[i + 1][0] - minima[i][0]
-        if gap > gap_so_far:
-            biggest_gap_idx = i
-            gap_so_far = gap
-    print("biggest_gap_idx: " + str(biggest_gap_idx))
-    wwd_range_idx = [minima[biggest_gap_idx][2], minima[biggest_gap_idx + 1][2]]
-    return biggest_gap_idx
-
 
 def smooth_data(kernel_size, ys):
 
@@ -297,7 +274,7 @@ def smooth_data(kernel_size, ys):
         smoothed_ys = np.convolve(ys, kernel, mode='same')
         return smoothed_ys
 
-def best_spec_time_by_derivative(kernel_size,wgd_ys,wgd_xs):
+def get_loc_of_max_derivative(kernel_size, wgd_ys, wgd_xs):
 
     smooth_wgd=smooth_data(kernel_size,wgd_ys)
     d=find_derivative(smooth_wgd)
