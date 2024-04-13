@@ -20,6 +20,9 @@ def run_sim():
     log.write_start_to_log(conf.output_folder,conf.log_file_name, conf.version_info)
     log.write_to_log('Command Arguments Given: %s' % sys.argv)
 
+    log.write_to_log("mean_SSD_life_span:\t" + str(conf.mean_SSD_life_span))
+    log.write_to_log("mean_WGD_life_span:\t" +str(conf.mean_WGD_life_span))
+
     # Time since WGD: 5,10, 15,50,100,200 MYA. Total tree length 500 MY. Make allo and autopoly examples.
     list_of_polyploids = make_polyploids(conf)
 

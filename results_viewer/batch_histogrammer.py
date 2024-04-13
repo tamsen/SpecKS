@@ -1,23 +1,15 @@
 import os
 import unittest
-
-from scipy import stats
-from scipy.optimize import curve_fit
 import numpy as np
 from matplotlib import pyplot as plt
-
 import config
-import process_wrapper
-from results_viewer import curve_fitting, run_metrics
 
-
-#https://stackoverflow.com/questions/14770735/how-do-i-change-the-figure-size-with-subplots
 class BatchHistogrammer(unittest.TestCase):
 
     def test_make_histograms_for_batch(self):
 
         plot_title='Simulation with custom GBD model, \nwith Ne-driven allopolyploid ortholog divergence'
-        input_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim36_N10"
+        input_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim37_N1"
         output_folder=os.path.join(input_folder,"analysis")
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
@@ -32,7 +24,7 @@ class BatchHistogrammer(unittest.TestCase):
 
         print("Making plots..")
         bin_size = 0.001
-        max_Ks = 1.0
+        max_Ks = 2.0
 
         for spec in ['polyploid']:#species:
             print(spec)

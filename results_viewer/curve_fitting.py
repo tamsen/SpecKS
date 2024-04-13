@@ -38,6 +38,10 @@ def fit_curve_to_hist(bins, n, fit_fxn ):
     return fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn)
 
 def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
+    
+    #https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+    #def wgd_lognorm(x, amp, scale, x_shift, skew):
+    #    return amp * lognorm.pdf(scale * x + x_shift, skew)
 
     try:
         popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
@@ -50,22 +54,9 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     fit_curve_ys = [fit_fxn(x, *popt) for x in xs_for_wgd]
     RMSE_to_sum = [(fit_curve_ys[i] - ys_for_wgd[i])* (fit_curve_ys[i] - ys_for_wgd[i]) for i in range(0,len(xs_for_wgd))]
     RMSE = math.sqrt( sum(RMSE_to_sum) / len(RMSE_to_sum))
-    rms2 = mean_squared_error(ys_for_wgd, fit_curve_ys, squared=False)
-    print(rms2)
 
-    chi2 = do_chi2(fit_curve_ys, ys_for_wgd)
-
-    ff1=normalize([f1], norm="l1")
-    ff2=normalize([f2], norm="l1")
-    #print(ff1[0])
-    #chi2=  chisquare(ff1[0], f_exp=ff2[0], ddof=2, axis=0)
-    #chi2 = chisquare(f1, f_exp=f2, ddof=(len(f1)-1), axis=0)
-    #chi2 = chisquare([1,2,3], f_exp=[1,.1,2.2,2.9], ddof=2, axis=0)
-    #print(chi2)
-    #f_exp = np.array([44, 24, 29, 3]) / 100 * 189
-    #f_obs = np.array([43, 52, 54, 40])
-    #chi2 = chisquare(f_obs=f_obs, f_exp=f_exp)
-    print(chi2)
+    #rms2 = mean_squared_error(ys_for_wgd, fit_curve_ys, squared=False)
+    #chi2 = do_chi2(fit_curve_ys, ys_for_wgd)
 
     ymax=max(fit_curve_ys)
     xs_of_ymax=[]

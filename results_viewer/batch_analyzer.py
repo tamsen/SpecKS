@@ -53,13 +53,26 @@ class BatchAnalyser(unittest.TestCase):
         # print("ks_lognorm_result " + str(ks_lognorm_result))
 
         # https://seaborn.pydata.org/generated/seaborn.kdeplot.html
+
+        #ff1 = normalize([f1], norm="l1")
+        #ff2 = normalize([f2], norm="l1")
+        # print(ff1[0])
+        # chi2=  chisquare(ff1[0], f_exp=ff2[0], ddof=2, axis=0)
+        # chi2 = chisquare(f1, f_exp=f2, ddof=(len(f1)-1), axis=0)
+        # chi2 = chisquare([1,2,3], f_exp=[1,.1,2.2,2.9], ddof=2, axis=0)
+        # print(chi2)
+        # f_exp = np.array([44, 24, 29, 3]) / 100 * 189
+        # f_obs = np.array([43, 52, 54, 40])
+        # chi2 = chisquare(f_obs=f_obs, f_exp=f_exp)
     def test_compute_metrics_for_batch(self):
-        batch_name= "sim36_N10"
-        compute_metrics_for_batch(batch_name)
+
+        batch_name= "sim37_N100"
+        base_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/"
+        compute_metrics_for_batch(batch_name,base_output_folder )
     def test_compute_metrics_for_csv(self):
-        csv_file = "Allo1_S080W075.hist.csv"  # "Allo6_S030W010.hist.csv"
+        csv_file = "Allo2_S070W060.hist.csv"  # "Allo6_S030W010.hist.csv"
         max_Ks = 1.0
-        output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim36_N10/analysis"
+        output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim37_N100/analysis"
         # /home/tamsen/Data/Specks_outout_from_mesx/sim36_N10/analysis/Allo1_S080W075.hist.csv
         full_path = os.path.join(output_folder, csv_file)
         hist_data = read_hist_csv(full_path)
@@ -75,15 +88,13 @@ class BatchAnalyser(unittest.TestCase):
         plot_and_save_metrics(results_by_file, out_file_name)
 
 
-def compute_metrics_for_batch(batch_name):
+def compute_metrics_for_batch(batch_name,base_output_folder):
 
-    #batch_name="sim36_N10"
-    base_output_folder="/home/tamsen/Data/Specks_outout_from_mesx/"
     analysis_folder="analysis"
     output_folder=os.path.join(base_output_folder,batch_name,analysis_folder)
 
     files = os.listdir(output_folder)
-    max_Ks=1
+    max_Ks=2.0
     maxY= False
     hist_data_by_file={}
     polyploid_names=[]
@@ -163,24 +174,25 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
 
     smoothed_minima = find_local_minima(bins, smoothed_ys)
-    smoothed_maxima = find_global_maxima(bins, smoothed_ys)
+    smoothed_maxima = find_global_maxima(bins, smoothed_ys, 0.075)
     plt.scatter([m[0] for m in smoothed_minima], [m[1] for m in smoothed_minima], color="red", label="minima", marker='*')
 
     ssd_end, next_min =smallest_min(smoothed_minima,smoothed_maxima)
     ssds_xs_to_subtract, ssds_ys_to_subtract = estimate_overlap(bins, ssd_end, next_min)
 
     plt.scatter(ssd_end[0],3*ssd_end[1],color="black", label="wgd_start",marker='*',s=50)
-    ssd_xs, ssd_ys, wgd_xs, wgd_ys = sort_ssds_and_wgds(bins, n, ssd_end, ssds_ys_to_subtract )
-    wgd_maxima = find_global_maxima(wgd_xs, wgd_ys)
+    #super_smoothed_ys=smooth_data(200, n)
+    ssd_xs, ssd_ys, wgd_xs, wgd_ys = sort_ssds_and_wgds(bins, n, ssd_end, ssds_ys_to_subtract)
+
+    wgd_maxima = find_global_maxima(wgd_xs, wgd_ys, 0.075)
     plt.scatter(wgd_maxima[0], -0.05 * maxY,
                 color='blue', marker='^', s=80, label="wgd max")
 
     wgd_max_d=best_spec_time_by_derivative(kernel_size, wgd_ys, wgd_xs)
-    plt.scatter(wgd_max_d[0], -0.05 * maxY,
-                color='k', marker='^', s=80, label="wgd max d")
 
-    #plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
-    #plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
+
+    plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
+    plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
     #plt.bar(ssds_xs_to_subtract, ssds_ys_to_subtract, width=0.001, color="lightgray", label="ssd under wgd")
 
     gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
@@ -195,23 +207,11 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
             plt.plot(xs_for_wgd,lognorm_fit_curve_ys1,
                  color='green', linestyle=':', label="lognorm fit (err={0})".format(rmse_str))
 
-    #if gaussian_fit_curve_ys1 and (hist_maximum>0):
-    #        rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
-    #        plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
-    #             color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
+    if gaussian_fit_curve_ys1 and (hist_maximum>0):
+            rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
+            plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
+                 color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
 
-
-    #reject null hypothesis if p value is less than significance.
-
-    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html
-    #ks_norm_result = stats.kstest(Ks_results, stats.norm.cdf)
-    #ks_lognorm_result = stats.kstest(Ks_results, lambda x: wgd_lognorm_cdf(x, popt, 0,10))
-
-    # https://stackoverflow.com/questions/51902996/scipy-kstest-used-on-scipy-lognormal-distrubtion
-    #my_args = popt[0:3]
-    #ks_lognorm_result = stats.kstest(bins, 'lognorm', args=my_args)
-    # print("ks_norm_result " + str(ks_norm_result))
-    # print("ks_lognorm_result " + str(ks_lognorm_result))
 
     if lognorm_fit_curve_ys1 and (hist_maximum>0):
             plt.scatter(lognorm_goodness_of_fit.cm,-0.05*maxY,
@@ -219,6 +219,12 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
             plt.scatter(lognorm_goodness_of_fit.mode,-0.05*maxY,
                  color='cyan', marker='^', s=80, label="mode")
+
+    plt.scatter(wgd_maxima[0], -0.05 * maxY,
+                color='green', marker='^', s=80, label="wgd abs max")
+
+    plt.scatter(wgd_max_d[0], -0.05 * maxY,
+                color='k', marker='^', s=80, label="wgd max derivative")
 
     #plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
     #plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
@@ -264,9 +270,20 @@ def sort_ssds_and_wgds(bins, n, ssd_end, overlap_ssds):
         if i < ssd_end[2]:
             ssd_xs.append(bins[i])
             ssd_ys.append(n[i])
+            #wgd_xs.append(0)
+            #wgd_ys.append(0)
         else:
             wgd_xs.append(bins[i])
             wgd_ys.append(n[i]-overlap_ssds[i])
+            #ssd_xs.append(0)
+            #ssd_ys.append(0)
+
+    #bin_size=bins[1]-bins[0]
+    #print(bin_size)
+    #for i in range(0, 100):
+    #    wgd_xs= [-1*bin_size*i]+wgd_xs
+    #    wgd_ys= [0]+wgd_ys
+
     return ssd_xs, ssd_ys, wgd_xs, wgd_ys
 
 
@@ -294,9 +311,11 @@ def smallest_min(minima,peak_max):
     for i in range(0, len(minima) - 1):
         m = minima[i]
 
-        #dont look left of the peak maximum
-        if peak_max and( m[0] > peak_max[0]):
-            break
+        # presuming the peak max is the WGD and not the SSD
+        # dont look left of the peak maximum
+        if peak_max and (peak_max[0] > 0.1):
+            if ( m[0] > peak_max[0]):
+                break
 
         if smallest_min_y > m[1]:
             smallest_min_y=m[1]
@@ -333,7 +352,7 @@ def best_spec_time_by_derivative(kernel_size,wgd_ys,wgd_xs):
 
     smooth_wgd=smooth_data(kernel_size,wgd_ys)
     d=find_derivative(smooth_wgd)
-    max_d=find_global_maxima(wgd_xs[0:len(d)], d)
+    max_d=find_global_maxima(wgd_xs[0:len(d)], d, 0)
     return max_d
 
 def find_derivative(ys):
@@ -342,13 +361,18 @@ def find_derivative(ys):
     for i in range(0,len(ys)-1):
         d.append(ys[i+1]-ys[i])
     return d
-def find_global_maxima(xs,ys):
+def find_global_maxima(xs,ys,keep_right_of_ssds):
 
     maxima=0
     maxima_idx=-1
     for i in range(0,len(xs)):
+
         xi=xs[i]
         yi=ys[i]
+
+        if xi < keep_right_of_ssds:
+            continue
+
         if yi>maxima:
             maxima=yi
             maxima_idx=i

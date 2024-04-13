@@ -1,10 +1,7 @@
 import os
 import unittest
-
 from matplotlib import pyplot as plt
-
 from results_viewer import run_metrics
-from graveyard import multi_run_viewer
 from results_viewer.batch_analyzer import compute_metrics_for_batch
 
 
@@ -12,9 +9,9 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        out_folder= "/home/tamsen/Data/Specks_outout_from_mesx/"
-        #batch_names = ["sim18_N0p1","sim19_N1","sim20_log"]
-        batch_names = ["sim36_N10","sim35_log"]
+        #batch_names = ["sim37_N1","sim37_N100","sim36_N10","sim35_log"]
+        batch_names = ["sim37_N1", "sim36_N10", "sim35_log"]
+        out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
                        (get_spec_time, get_genes_shed, "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
@@ -29,13 +26,12 @@ class BatchAggregator(unittest.TestCase):
                        (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3", "metric3.png"),
                        ]
 
-        reprocess=True
+        reprocess=False
         marker_styles_for_batches = [".", "+", "*", ">"]
 
         if reprocess:
             for batch_name in batch_names:
-                #batch_folder = os.path.join(out_folder, batch_name)
-                reprocess_batch(batch_name)
+                reprocess_batch(batch_name, out_folder)
 
         metric_data_by_batch = self.read_in_metric_data_fo_all_batches(batch_names, out_folder)
 
@@ -45,7 +41,10 @@ class BatchAggregator(unittest.TestCase):
             i=i+1
 
         for plot_to_make in plots_to_make:
-            plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch, *plot_to_make,out_folder)
+            plot_data=plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch, *plot_to_make,out_folder)
+            data_file_name=plot_to_make[4].replace(".png",".csv")
+            out_file_path=os.path.join(out_folder,data_file_name)
+            save_metrics_to_csv(plot_data, out_file_path)
 
     def read_in_metric_data_fo_all_batches(self, batch_names, out_folder):
         metric_data_by_batch = {}
@@ -61,19 +60,21 @@ class BatchAggregator(unittest.TestCase):
         return metric_data_by_batch
 
 
-def reprocess_batch(batch_name):
-    compute_metrics_for_batch(batch_name)
+def reprocess_batch(batch_name,output_folder):
+    compute_metrics_for_batch(batch_name,output_folder)
 def sort_batch_into_xs_and_ys(metric_data_for_batch,get_x,get_y):
 
     allo_xs=[]
     allo_ys=[]
     auto_xs=[]
     auto_ys=[]
+    sim_data=[]
 
     for sim, run_metrics in metric_data_for_batch.items():
 
         x = get_x(run_metrics)
         y = get_y(run_metrics)
+        sim_data.append([sim,x,y])
 
         if run_metrics.input_type.upper()=="ALLO":
             allo_xs.append(x)
@@ -82,7 +83,7 @@ def sort_batch_into_xs_and_ys(metric_data_for_batch,get_x,get_y):
             auto_xs.append(x)
             auto_ys.append(y)
 
-    return [allo_xs,allo_ys],[auto_xs,auto_ys]
+    return [allo_xs,allo_ys],[auto_xs,auto_ys],sim_data
 
 
 def get_lognorm_RMSE(run_metrics):
@@ -160,6 +161,8 @@ def read_data_csv(csv_file):
                 continue
             if len(line)==0:
                 break
+            if "NA" in line:
+                continue
             data = line.strip().split(",")
             print(str(data))
             sim_type=data[0]
@@ -179,18 +182,20 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
 
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     auto_color='gray'
-    #allo_color='b'
-    allo_colors = ['cyan','lightblue','blue']
+    plot_data={}
+    allo_colors = ['cyan','lightblue','blue','darkblue']
     i=0
     for batch_name, metric_data_for_batch in metric_data_by_batch.items():
         marker_style=marker_styles_by_batch[batch_name]
-        [allo_xs,allo_ys],[auto_xs,auto_ys] =sort_batch_into_xs_and_ys(metric_data_for_batch,get_x_method,get_y_method)
+        [allo_xs,allo_ys],[auto_xs,auto_ys],sim_data =sort_batch_into_xs_and_ys(metric_data_for_batch,get_x_method,get_y_method)
 
         label=batch_name + "(allo)"
         plt.scatter(allo_xs,allo_ys,c=allo_colors[i],label=label,marker=marker_style)
         label=batch_name + "(auto)"
         plt.scatter(auto_xs,auto_ys,c=auto_color,label=label,marker=marker_style)
+
         i=i+1
+        plot_data[batch_name] = sim_data
 
     out_file_name = os.path.join(out_folder, title)
     fig.suptitle(title)
@@ -200,6 +205,20 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
     ax.legend()
     plt.savefig(out_file_name)
     plt.close()
+    return plot_data
+def save_metrics_to_csv(plot_data, out_file_name):
+
+    with open(out_file_name, 'w') as f:
+        data_headers= ['batch','sim','x','y']
+        f.writelines(",".join(data_headers) +"\n")
+
+        for batch_name, plot_data_for_sims in plot_data.items():
+
+            for plot_data in plot_data_for_sims:
+                data_list=[batch_name,*plot_data]
+                data_list_string=[str(d) for d in data_list]
+                f.writelines(",".join(data_list_string) +"\n")
+
 
 if __name__ == '__main__':
     unittest.main()
