@@ -2,15 +2,35 @@ import os
 import unittest
 
 import numpy as np
-from matplotlib import pyplot as plt
+from scipy.stats import lognorm, kstest
 from scipy import stats
 
 
 #https://stackoverflow.com/questions/53177243/fitting-a-lognormal-distribution-to-the-data-and-performing-kolmogorov-smirnov-t
-
+#https://www.rdocumentation.org/packages/dgof/versions/1.4/topics/ks.test
 
 class BatchAnalyser(unittest.TestCase):
 
+    def test_ks_test_from_web(self):
+
+        # reject null hypothesis if p value is less than significance.
+        # Ie, high p-value, means it is from the distribution we think it is.
+
+        #random_draws_from_distribution = stats.lognorm.rvs(loc=0, size=n, scale=1)
+        x = [341, 291, 283, 155, 271, 270, 250, 272, 209, 236,
+             295, 214, 443, 632, 310, 334, 376, 305, 216, 339]
+
+        sigma, loc, scale = lognorm.fit(x, floc=0)
+
+        mu = np.log(scale)
+
+        print("mu    = %9.5f" % mu)
+        print("sigma = %9.5f" % sigma)
+
+        stat, p = kstest(x, 'lognorm', args=(sigma, 0, scale), alternative='two-sided')
+        print("KS Test:")
+        print("stat    = %9.5f" % stat)
+        print("p-value = %9.5f" % p)
     def test_ks_test_example(self):
         n = 10000
         # reject null hypothesis if p value is less than significance.

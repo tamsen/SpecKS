@@ -20,10 +20,10 @@ class BatchAggregator(unittest.TestCase):
                        (get_wgd_time, get_mode, "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
                        (get_spec_time, get_max, "spec time (MYA)", "max vs spec time", "max_vs_spec_time.png"),
                        (get_spec_time, get_max_d, "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
-                       (get_spec_time, get_metric0, "spec time (MYA)", "allo vs auto metric0", "metric0.png"),
+                       (get_spec_time, get_metric4, "spec time (MYA)", "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
                        (get_spec_time, get_metric1, "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
                        (get_spec_time, get_metric2, "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
-                       (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3", "metric3.png"),
+                       (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
                        ]
 
         reprocess=False
@@ -61,6 +61,7 @@ class BatchAggregator(unittest.TestCase):
                 print("file:\t" + file)
                 if ("metrics.csv" in file):# and ("polyploid" in file) and ("batch_processed" in file):
                     full_file_path = os.path.join(batch_folder, file)
+                    print("full_file_path:\t" + full_file_path)
                     metric_data_for_batch = read_data_csv(full_file_path)
                     metric_data_by_batch[batch_name] = metric_data_for_batch
         return metric_data_by_batch
@@ -100,11 +101,6 @@ def get_gaussian_RMSE(run_metrics):
     y = round(float(run_metrics.gaussian_fit_data.RMSE),3)
     return y
 
-def get_metric0(run_metrics):
-
-    cm=run_metrics.lognorm_fit_data.cm
-    mode=run_metrics.lognorm_fit_data.mode
-    return mode-cm
 
 
 def get_metric1(run_metrics):
@@ -129,9 +125,14 @@ def get_metric3(run_metrics):
 
     ln_mode=run_metrics.lognorm_fit_data.mode
     ln_cm=run_metrics.lognorm_fit_data.cm
-    m3 = ln_mode-ln_cm
+    m3 = ln_cm-ln_mode
     return m3
 
+def get_metric4(run_metrics):
+
+    cm=float(run_metrics.wgd_raw_cm)
+    max=float(run_metrics.wgd_raw_x_value_of_ymax)
+    return cm-max
 def get_genes_shed(run_metrics):
     pairs_remaining=run_metrics.lognorm_fit_data.num_paralogs
     num_paralogs_at_WGD=2*3000

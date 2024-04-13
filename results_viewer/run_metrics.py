@@ -54,8 +54,8 @@ def get_metrics_from_data_line(data_list):
     ln_RMSE=data_list[12]
     g_popt= data_list[13]
     g_RMSE=data_list[14]
-    lognorm_data=curve_fit_metrics(cm,mode,np,ln_popt,ln_RMSE)
-    gaussian_data=curve_fit_metrics(cm,mode,np,g_popt,g_RMSE)
+    lognorm_data=curve_fit_metrics(mode,cm,np,ln_popt,ln_RMSE)
+    gaussian_data=curve_fit_metrics(mode,cm,np,g_popt,g_RMSE)
     metrics=run_metrics(*simple_data,lognorm_data,gaussian_data)
     return metrics
 def plot_and_save_metrics(metrics_by_result_names, out_file_name):
