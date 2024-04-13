@@ -2,7 +2,7 @@ import os
 import unittest
 
 import numpy as np
-from scipy.stats import lognorm, kstest
+from scipy.stats import lognorm, kstest, pearsonr
 from scipy import stats
 
 
@@ -11,16 +11,36 @@ from scipy import stats
 
 class BatchAnalyser(unittest.TestCase):
 
+    #https://forecastegy.com/posts/correlation-between-two-time-series-python/#:~:text=NumPy%20is%20the%20most%20popular,corrcoef%20function.&text=This%20function%20calculates%20the%20Pearson%20correlation%20coefficient.
+    # https://pieriantraining.com/pearson-correlation-coefficient-with-scipy-pearsonr/#:~:text=To%20find%20the%20Pearson%20Correlation,value%20is%20the%20p%2Dvalue.
+
+    def test_ks_test_from_web(self):
+        x = [1, 2, 3, 4, 5]
+        y = [5, 4, 3, 2, 1]
+
+        # Finding Pearson Correlation Coefficient
+        corr_coef, p_value = pearsonr(x, y)
+        print("Correlation Coefficient:", corr_coef)
     def test_ks_test_from_web(self):
 
         # reject null hypothesis if p value is less than significance.
         # Ie, high p-value, means it is from the distribution we think it is.
 
-        #random_draws_from_distribution = stats.lognorm.rvs(loc=0, size=n, scale=1)
-        x = [341, 291, 283, 155, 271, 270, 250, 272, 209, 236,
-             295, 214, 443, 632, 310, 334, 376, 305, 216, 339]
+        # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+        #Specifically, lognorm.pdf(x, s, loc, scale) is identically equivalent to
+        # lognorm.pdf(y, s) / scale
+        # with y = (x - loc) / scale
 
+        n=1000
+        x = stats.lognorm.rvs(loc=0, size=n, scale=1, s=1)
+        print("x:\t" +str(x))
+        #x_mean=sum(x)/n
+        #print(x_mean)
+        #x = [341, 291, 283, 155, 271, 270, 250, 272, 209, 236,
+        #     295, 214, 443, 632, 310, 334, 376, 305, 216, 339]
+        #x_shifted= [0 for xi in x ]
         sigma, loc, scale = lognorm.fit(x, floc=0)
+        #sigma, loc, scale = lognorm.fit(x, loc=0, scale=1)
 
         mu = np.log(scale)
 
