@@ -1,4 +1,5 @@
 import os
+import time
 import unittest
 import process_wrapper
 
@@ -19,7 +20,7 @@ class MyTestDownloader(unittest.TestCase):
 
     def test_download_mesx_results(self):
 
-        batch_folder = "sim37_N1"
+        batch_folder = "sim37_N5" #"sim37_N20" #sim37_N0p1,sim37_N5
         me_at_remote_URL = 'tdunn@mesx.sdsu.edu'
         local_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         remote_output_folder = "/usr/scratch2/userdata2/tdunn/SpecKS_Output"
@@ -58,23 +59,25 @@ class MyTestDownloader(unittest.TestCase):
             cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_allo_folder]
             print(" ".join(cmd2))
             #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_allo_folder)
-            #out_string, error_string = process_wrapper.run_and_wait_with_retry(cmd2, local_allo_folder,
-            #                                "Connection reset by peer", 2)
-            scp_commands.append(polyploid)
+            out_string, error_string = process_wrapper.run_and_wait_with_retry(cmd2, local_allo_folder,
+                                            "Connection reset by peer", 2, 5)
+            time.sleep(5)
+            #scp_commands.append(polyploid)
             scp_commands.append(" ".join(cmd2))
             #remote_to_match = remote_path + "/*randomized*/*.*"
             #cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_to_match, local_allo_folder]
             #print(" ".join(cmd2))
             #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
 
+        time.sleep(5)
+        cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_batch_folder + '/specks*/*.xml', '.']
+        print(" ".join(cmd2))
+        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
 
-        #cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_batch_folder + '/specks*/*.xml', '.']
-        #print(" ".join(cmd2))
-        #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
-
-        #cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_batch_folder + '/specks*/*log*', '.']
-        #print(" ".join(cmd2))
-        #out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
+        time.sleep(5)
+        cmd2 = ['scp', '-r', me_at_remote_URL + ':' + remote_batch_folder + '/specks*/*log*', '.']
+        print(" ".join(cmd2))
+        out_string, error_string = process_wrapper.run_and_wait_on_process(cmd2, local_batch_folder)
 
         print(scp_commands)
 
