@@ -9,8 +9,9 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        batch_names = ["sim37_N1","sim37_N100","sim36_N10","sim35_log"]
-        #batch_names = ["sim37_N1", "sim36_N10", "sim35_log"]
+        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
+                       "sim37_N20","sim37_N100","sim35_log"]
+
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
@@ -26,8 +27,8 @@ class BatchAggregator(unittest.TestCase):
                        (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
                        ]
 
-        reprocess=False
-        marker_styles_for_batches = [".", "+", "*", ">"]
+        reprocess=True
+        marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
 
         if reprocess:
             for batch_name in batch_names:
@@ -190,7 +191,7 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
     auto_color='gray'
     plot_data={}
-    allo_colors = ['cyan','lightblue','blue','darkblue']
+    allo_colors = ['cyan','lightblue','blue','darkblue','slateblue','purple','indigo']
     i=0
     for batch_name, metric_data_for_batch in metric_data_by_batch.items():
         marker_style=marker_styles_by_batch[batch_name]
