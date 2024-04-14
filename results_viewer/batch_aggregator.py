@@ -27,7 +27,7 @@ class BatchAggregator(unittest.TestCase):
                        (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
                        ]
 
-        reprocess=True
+        reprocess=False
         marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
 
         if reprocess:
@@ -136,7 +136,7 @@ def get_metric4(run_metrics):
     return cm-max
 def get_genes_shed(run_metrics):
     pairs_remaining=run_metrics.lognorm_fit_data.num_paralogs
-    num_paralogs_at_WGD=2*3000
+    num_paralogs_at_WGD=3000
     genes_lost=num_paralogs_at_WGD-pairs_remaining
     y = genes_lost
     return y
@@ -214,7 +214,7 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
     ax.set(xlabel=x_axis_name)
     ax.set(ylabel=y_axis_name)
 
-    #ax.legend()
+    ax.legend()
     plt.savefig(out_file_name)
     plt.close()
     return plot_data
