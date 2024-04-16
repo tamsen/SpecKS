@@ -3,7 +3,9 @@ import math
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import lognorm, norm, chisquare, pearsonr
-
+def logfit(x, m, b, c):
+    #600 - 38 * math.log(2000 * x)
+    return b - m * np.log(c*x)
 def linear(x, m, b):
     return m * x + b
 def wgd_gaussian(x, amp, mu, sig):

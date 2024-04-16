@@ -138,7 +138,8 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
     wgd_max_d=get_loc_of_max_derivative(kernel_size, wgd_ys, wgd_xs)
     raw_cm, raw_x_value_of_ymax = curve_fitting.get_mode_and_cm(wgd_ys, wgd_xs)
-
+    ax.set(xlabel="Ks")
+    ax.set(ylabel="# paralogs")
     plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
     plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
     #plt.bar(ssds_xs_to_subtract, ssds_ys_to_subtract, width=0.001, color="lightgray", label="ssd under wgd")
