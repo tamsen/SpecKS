@@ -3,9 +3,7 @@ import unittest
 
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy import stats
 from scipy.signal import find_peaks
-#from scipy.stats import norm
 from results_viewer import curve_fitting
 from results_viewer.batch_histogrammer import get_truth_from_name_list
 from results_viewer.run_metrics import run_metrics, plot_and_save_metrics
@@ -15,14 +13,14 @@ class BatchAnalyser(unittest.TestCase):
 
     def test_compute_metrics_for_batch(self):
 
-        batch_name= "sim37_N100"
+        batch_name= "sim37_N1"
         base_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/"
         compute_metrics_for_batch(batch_name,base_output_folder )
 
     def test_compute_metrics_for_csv(self):
         csv_file = "Allo2_S070W060.hist.csv"  # "Allo6_S030W010.hist.csv"
         max_Ks = 1.0
-        output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim37_N100/analysis"
+        output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim37_N1/analysis"
         # /home/tamsen/Data/Specks_outout_from_mesx/sim36_N10/analysis/Allo1_S080W075.hist.csv
         full_path = os.path.join(output_folder, csv_file)
         hist_data = read_hist_csv(full_path)
@@ -154,13 +152,17 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
     if lognorm_fit_curve_ys1 and (hist_maximum>0):
             rmse_str= str(round(lognorm_goodness_of_fit.RMSE,4))
+            pser_str= str(round(lognorm_goodness_of_fit.pearsons_corr_result[2],4))
             plt.plot(xs_for_wgd,lognorm_fit_curve_ys1,
-                 color='green', linestyle=':', label="lognorm fit (err={0})".format(rmse_str))
+                 color='green', linestyle=':',
+                     label="lognorm fit \n(RMSE={0})\n(PRSE={1})".format(rmse_str,pser_str))
 
     if gaussian_fit_curve_ys1 and (hist_maximum>0):
             rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
+            pser_str= str(round(lognorm_goodness_of_fit.pearsons_corr_result[2],4))
             plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
-                 color='blue', linestyle=':', label="gaussian fit (err={0})".format(rmse_str))
+                 color='blue', linestyle=':',
+                     label="gaussian fit \n(RMSE={0})\n(PRSE={1})".format(rmse_str,pser_str))
 
 
     if lognorm_fit_curve_ys1 and (hist_maximum>0):

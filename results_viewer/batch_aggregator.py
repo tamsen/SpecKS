@@ -1,3 +1,4 @@
+import math
 import os
 import unittest
 from matplotlib import pyplot as plt
@@ -9,25 +10,31 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
-                       "sim37_N20","sim37_N100","sim35_log"]
-
+        #batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
+        #               "sim37_N20","sim37_N100","sim35_log"]
+        reprocess=False
+        batch_names = ["sim37_N1","sim37_N20","sim37_N100"]
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
-        plots_to_make=[(get_spec_time,get_lognorm_RMSE,"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
-                       (get_spec_time,get_gaussian_RMSE, "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
-                       (get_spec_time, get_genes_shed, "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
-                       (get_wgd_time, get_genes_shed, "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
-                       (get_spec_time, get_mode, "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
-                       (get_wgd_time, get_mode, "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
-                       (get_spec_time, get_max, "spec time (MYA)", "max vs spec time", "max_vs_spec_time.png"),
-                       (get_spec_time, get_max_d, "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
-                       (get_spec_time, get_metric4, "spec time (MYA)", "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
-                       (get_spec_time, get_metric1, "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
-                       (get_spec_time, get_metric2, "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
-                       (get_spec_time, get_metric3, "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
+        plots_to_make=[([get_spec_time,get_lognorm_RMSE],"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
+                       ([get_spec_time,get_gaussian_RMSE], "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
+                       ([get_spec_time, get_genes_shed], "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
+                       ([get_wgd_time, get_genes_shed], "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
+                       ([get_spec_time, get_mode], "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
+                       ([get_wgd_time, get_mode,get_max_RMSE], "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
+                       ([get_spec_time, get_max,get_max_RMSE], "spec time (MYA)", "max vs spec time", "max_vs_spec_time.png"),
+                       ([get_spec_time, get_max_d], "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
+                       ([get_spec_time, get_metric4,get_max_RMSE], "spec time (MYA)", "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
+                       ([get_spec_time, get_metric1], "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
+                       ([get_spec_time, get_metric2], "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
+                       ([get_spec_time, get_metric3], "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
+                       ([get_spec_time, get_metric5_pearsons_r],"spec time (MYA)", "allo vs auto metric5 (fit pr1-pr2)",
+                        "metric5.png"),
+                       ([get_spec_time, get_metric6_pearsons_pv], "spec time (MYA)", "allo vs auto metric6 (fit pv ratio)",
+                        "metric6.png"),
+                       ([get_metric7a, get_metric7b], "Ln Pearson corr_coef", "Gaussian pearson corr_coef",
+                        "metric7.png"),
                        ]
 
-        reprocess=False
         marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
 
         if reprocess:
@@ -42,11 +49,12 @@ class BatchAggregator(unittest.TestCase):
             i=i+1
 
         for plot_to_make in plots_to_make:
-            plot_name = plot_to_make[4]
-            plot_data=plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch, *plot_to_make,out_folder)
+            plot_name = plot_to_make[3]
+            plot_data=plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
+                                                *plot_to_make,out_folder)
             if "metric" in plot_name:
                 log_plot_to_make=[d for d in plot_to_make]
-                log_plot_to_make[4] =plot_name.replace(".png","_log.png")
+                log_plot_to_make[3] =plot_name.replace(".png","_log.png")
                 plot_allo_vs_auto_metrics(metric_data_by_batch, marker_styles_by_batch,
                                           *log_plot_to_make, out_folder, ylog=True)
             data_file_name=plot_name.replace(".png",".csv")
@@ -70,6 +78,27 @@ class BatchAggregator(unittest.TestCase):
 
 def reprocess_batch(batch_name,output_folder):
     compute_metrics_for_batch(batch_name,output_folder)
+def sort_batch_into_xs_and_ys_2(metric_data_for_batch,methods):
+
+    allo_xs=[]
+    auto_xs=[]
+    sim_data=[]
+
+    for sim, run_metrics in metric_data_for_batch.items():
+
+        new_data_point=[]
+        for method in methods:
+            new_data_point.append(method(run_metrics))
+
+        sim_data.append([sim,*new_data_point])
+
+        if run_metrics.input_type.upper()=="ALLO":
+            allo_xs.append(new_data_point)
+        else:
+            auto_xs.append(new_data_point)
+
+    return allo_xs,auto_xs,sim_data
+
 def sort_batch_into_xs_and_ys(metric_data_for_batch,get_x,get_y):
 
     allo_xs=[]
@@ -102,8 +131,15 @@ def get_gaussian_RMSE(run_metrics):
     y = round(float(run_metrics.gaussian_fit_data.RMSE),3)
     return y
 
+def get_max_RMSE(run_metrics):
+    ln_e = get_lognorm_RMSE(run_metrics)
+    ga_e = get_gaussian_RMSE(run_metrics)
+    return max(ln_e,ga_e)
 
-
+def get_max_PRSE(run_metrics):
+    ln_pearsons_se=float(run_metrics.lognorm_fit_data.get_pearsons_std_error())
+    ga_pearsons_se=float(run_metrics.gaussian_fit_data.get_pearsons_std_error())
+    return max(ln_pearsons_se,ga_pearsons_se)
 def get_metric1(run_metrics):
 
     ln_rmse=get_lognorm_RMSE(run_metrics)
@@ -134,6 +170,34 @@ def get_metric4(run_metrics):
     cm=float(run_metrics.wgd_raw_cm)
     max=float(run_metrics.wgd_raw_x_value_of_ymax)
     return cm-max
+
+def get_metric7a(run_metrics):
+
+    ln_pearsons_cc=float(run_metrics.lognorm_fit_data.get_pearsons_corr_coef())
+    return ln_pearsons_cc
+
+def get_metric7b(run_metrics):
+
+    ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
+    return ga_pearsons_cc
+def get_metric5_pearsons_r(run_metrics):
+
+    ln_pearsons_cc=float(run_metrics.lognorm_fit_data.get_pearsons_corr_coef())
+    ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
+    return ln_pearsons_cc-ga_pearsons_cc
+
+def get_metric6_pearsons_pv(run_metrics):
+
+    ln_pearsons_pv=float(run_metrics.lognorm_fit_data.get_pearsons_p_value())
+    ga_pearsons_pv=float(run_metrics.gaussian_fit_data.get_pearsons_p_value())
+
+    if (ln_pearsons_pv == 0):
+        return math.nan
+
+    log_ga=math.log(ga_pearsons_pv)
+    log_pr=math.log(ln_pearsons_pv)
+    #ratio=ga_pearsons_pv/ln_pearsons_pv
+    return log_ga - log_pr
 def get_genes_shed(run_metrics):
     pairs_remaining=run_metrics.lognorm_fit_data.num_paralogs
     num_paralogs_at_WGD=3000
@@ -185,7 +249,7 @@ def read_data_csv(csv_file):
 
 
 def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
-                              get_x_method,get_y_method,x_axis_name,y_axis_name,
+                              x_and_y_methods,x_axis_name,y_axis_name,
                               title,out_folder, ylog=False):
 
     fig, ax = plt.subplots(1, 1, figsize=(5, 5))
@@ -195,12 +259,30 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
     i=0
     for batch_name, metric_data_for_batch in metric_data_by_batch.items():
         marker_style=marker_styles_by_batch[batch_name]
-        [allo_xs,allo_ys],[auto_xs,auto_ys],sim_data =sort_batch_into_xs_and_ys(metric_data_for_batch,get_x_method,get_y_method)
 
-        label=batch_name + "(allo)"
-        plt.scatter(allo_xs,allo_ys,c=allo_colors[i],label=label,marker=marker_style)
-        label=batch_name + "(auto)"
-        plt.scatter(auto_xs,auto_ys,c=auto_color,label=label,marker=marker_style)
+        #[allo_xs,allo_ys],[auto_xs,auto_ys],sim_data =sort_batch_into_xs_and_ys(metric_data_for_batch,get_x_method,get_y_method)
+        allo_data, auto_data, sim_data = sort_batch_into_xs_and_ys_2(metric_data_for_batch,
+                                                                     x_and_y_methods)
+        data_by_label={"allo": allo_data,"auto" :auto_data}
+        for label, data in data_by_label.items():
+
+            label_string=batch_name + "({0})".format(label)
+            first_data_point=data[0]
+
+            if label=="auto":
+                color=auto_color
+            else:
+                color=allo_colors[i]
+
+            xs=[d[0] for d in data]
+            ys=[d[1] for d in data]
+            if len(first_data_point) ==2:
+                plt.scatter(xs,ys,
+                    c=color,label=label_string,marker=marker_style)
+            else:
+                yerr =[d[2] for d in data]
+                plt.errorbar(xs,ys, yerr, c=allo_colors[i],label=label,
+                     marker=marker_style, linestyle='')
 
         i=i+1
         plot_data[batch_name] = sim_data
@@ -235,41 +317,3 @@ def save_metrics_to_csv(plot_data, out_file_name):
 if __name__ == '__main__':
     unittest.main()
 
-class metric_result():
-    input_type=''
-    sim_name=''
-    spc_time=-1
-    wgd_time=-1
-    mode=-1
-    cm=-1
-    num_paralogs=-1
-    popt=[]
-    norm_fit_result=[]
-    lognorm_fit_result=[]
-    def __init__(self,data_list):
-        self.input_type = data_list[0]
-        self.sim_name =data_list[1]
-        self.spc_time =int(data_list[2])
-        self.wgd_time = int(data_list[3])
-        self.mode = float(data_list[4])
-        self.cm = float(data_list[5])
-        self.num_paralogs = int(data_list[6])
-        #self.popt = [float(d) for d in data_list[7:7+4]]
-        #self.norm_fit_result=data_list[11]
-        #self.lognorm_fit_result=data_list[12]
-    def to_csv_string(self):
-
-        final_data = self.to_data_list()
-        return ",".join(final_data)
-
-    def to_data_list(self):
-        simple_data = [self.input_type, self.sim_name, self.spc_time, self.wgd_time,
-                       self.mode, self.cm, self.num_paralogs]
-        #p_opt_data = [p for p in self.popt]
-        #ks_data =[str(self.norm_fit_result), str(self.norm_fit_result)]
-        final_data = simple_data #+ p_opt_data + ks_data
-        return final_data
-
-def get_metric_result_data_headers():
-         return ["sim_name","spc_time","wgd_time","mode","cm","num_paralogs",
-                 "popt1","popt2","popt3","popt4","norm_fit_result","lognorm_fit_result"]

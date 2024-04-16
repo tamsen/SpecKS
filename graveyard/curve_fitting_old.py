@@ -2,19 +2,45 @@ import math
 
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import lognorm, norm, chisquare, pearsonr
-
-def linear(x, m, b):
-    return m * x + b
+from scipy.stats import lognorm, norm, chisquare
 def wgd_gaussian(x, amp, mu, sig):
     return amp * norm.pdf(x, mu, sig)
 
 def wgd_lognorm(x, amp, scale, x_shift,skew):
     return amp * lognorm.pdf(scale * x + x_shift, skew)
 
+#TODO - I cant rememver why this was so complicated...
+def get_xs_from_histogram(Bins,N):
+
+    Num=len(list(N))
+    interval=Bins[1]-Bins[0]
+    #print(interval)
+
+    xs=[(Bins[i]+Bins[i+1])*0.5 for i in range(0,Num)]
+    ys=list(N)
+    last_x=0
+    while last_x <= 2:
+        last_x=xs[-1]+interval
+        xs=xs+[last_x]
+        ys=ys+[0]
+
+    #plt.plot(xs,ys)
+    return [xs,ys]
+
+def fit_curve_to_hist(bins, n, fit_fxn ):
+
+    #fit_fxn = wgd_lognorm  # wgd_skewnorm
+
+    minimum_x=0.1 #to keep us away from SSDs
+    [xs_for_wgd, ys_for_wgd] = get_xs_from_histogram(bins, n)
+    return fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn)
 
 def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     
+    #https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+    #def wgd_lognorm(x, amp, scale, x_shift, skew):
+    #    return amp * lognorm.pdf(scale * x + x_shift, skew)
+
     try:
         popt, pcov = curve_fit(fit_fxn, xs_for_wgd, ys_for_wgd)
     except Exception as inst:
@@ -30,11 +56,10 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     #rms2 = mean_squared_error(ys_for_wgd, fit_curve_ys, squared=False)
     #chi2 = do_chi2(fit_curve_ys, ys_for_wgd)
 
-    pearson_result=do_pearsons_corr(fit_curve_ys, ys_for_wgd)
     center_of_mass, x_value_of_ymax = get_mode_and_cm(fit_curve_ys, xs_for_wgd)
 
     num_paralogs = sum(ys_for_wgd)
-    goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt, RMSE, pearson_result)
+    goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt, RMSE)
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
 
 
@@ -63,26 +88,6 @@ def do_chi2(fit_curve_ys, ys_for_wgd):
     chi2 = chisquare(f_obs=f_obs, f_exp=f_exp_normalized)
     return chi2
 
-def do_pearsons_corr(fit_curve_ys, ys_for_wgd):
-
-    #Pearson correlation
-    #The P-value is the probability that you would have found the current result
-    # if the correlation coefficient were in fact zero (null hypothesis).
-    # If this probability is lower than the conventional 5% (P<0.05)
-    # the correlation coefficient is called statistically significant.
-
-    # (ie lower p-value is better)
-    corr_coef, p_value = pearsonr(fit_curve_ys, ys_for_wgd)
-    se=standard_error_from_pearsons_corr_r(corr_coef, len(ys_for_wgd))
-
-    return np.array([corr_coef, p_value, se])
-def standard_error_from_pearsons_corr_r(r,n):
-
-    r2= r*r
-    numerator=1.0-r2
-    denominator=n-2.0
-    SEr = math.sqrt(numerator/denominator)
-    return SEr
 
 class curve_fit_metrics():
 
@@ -90,32 +95,12 @@ class curve_fit_metrics():
     cm=-1
     popt=[]
     RMSE = 0
-    pearsons_corr_result = [] # (corr_coef, p_value, se)
-    def __init__(self,mode,cm,num_paralogs,popt, RMSE, pearson_result):
+    def __init__(self,mode,cm,num_paralogs,popt, RMSE):
         self.mode = float(mode)
         self.cm = float(cm)
         self.num_paralogs = int(num_paralogs)
         self.popt = popt
         self.RMSE = RMSE
 
-        res = isinstance(pearson_result, str)
-        if res:
-            splat=pearson_result.replace("[","").replace("]","").split(" ")
-            data = [float(s) for s in splat if not s == '']
-            self.pearsons_corr_result = data
-        else:
-            self.pearsons_corr_result = pearson_result
-
     def to_data_list(self):
-        return [self.mode,self.cm,self.num_paralogs,self.popt,self.RMSE,self.pearsons_corr_result]
-
-    def get_pearsons_corr_coef(self):
-        return self.pearsons_corr_result[0]
-
-    def get_pearsons_p_value(self):
-        return self.pearsons_corr_result[1]
-
-    def get_pearsons_std_error(self):
-        return self.pearsons_corr_result[2]
-def col_headers_for_curve_fit_metrics():
-        return ["mode","cm","num_paralogs","popt","RMSE","pearsons_corr_result (ccoef pv prse)"]
+        return [self.mode,self.cm,self.num_paralogs,self.popt,self.RMSE]

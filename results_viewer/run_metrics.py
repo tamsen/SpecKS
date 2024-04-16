@@ -1,3 +1,4 @@
+from results_viewer import curve_fitting
 from results_viewer.curve_fitting import curve_fit_metrics
 
 
@@ -38,24 +39,28 @@ class run_metrics():
                        self.wgd_fit_maxima, self.wgd_fit_maxima_d]
 
         if self.lognorm_fit_data and self.gaussian_fit_data:
-            fit_data_list=self.lognorm_fit_data.to_data_list() + [str(self.gaussian_fit_data.popt)] \
-                       +[str(self.gaussian_fit_data.RMSE)]
+            fit_data_list=self.lognorm_fit_data.to_data_list() + self.gaussian_fit_data.to_data_list()
         else:
-            fit_data_list =  ["NA","NA", "NA","NA", "NA","NA","NA"]
+            fit_data_list =  ["NA","NA", "NA","NA", "NA","NA","NA","NA","NA","NA","NA","NA","NA"]
         final_data = [str(d) for d in simple_data] + [str(d) for d in fit_data_list]
         return final_data
 
+def get_metric_result_data_headers():
+
+    ln_headers= ["ln_" + h for h in curve_fitting.col_headers_for_curve_fit_metrics()]
+    ga_headers= ["ga_" + h for h in curve_fitting.col_headers_for_curve_fit_metrics()]
+
+    return ["sim_type","sim_name","spc_time",
+            "wgd_time","raw_cm","raw_x_value_of_ymax",
+            "wgd_fit_maxima","wgd_fit_maxima_d",
+            *ln_headers,*ga_headers]
 def get_metrics_from_data_line(data_list):
+
     simple_data=data_list[0:8]
-    mode=data_list[8]
-    cm=data_list[9]
-    np=data_list[10]
-    ln_popt= data_list[11]
-    ln_RMSE=data_list[12]
-    g_popt= data_list[13]
-    g_RMSE=data_list[14]
-    lognorm_data=curve_fit_metrics(mode,cm,np,ln_popt,ln_RMSE)
-    gaussian_data=curve_fit_metrics(mode,cm,np,g_popt,g_RMSE)
+    ln_data=data_list[8:14]
+    ga_data=data_list[14:20]
+    lognorm_data=curve_fit_metrics(*ln_data)
+    gaussian_data=curve_fit_metrics(*ga_data)
     metrics=run_metrics(*simple_data,lognorm_data,gaussian_data)
     return metrics
 def plot_and_save_metrics(metrics_by_result_names, out_file_name):
@@ -98,10 +103,3 @@ def read_run_metrics_from_csv(csv_file_name):
             if sim_name == '':
                 continue
 
-
-def get_metric_result_data_headers():
-
-    return ["sim_type","sim_name","spc_time","wgd_time","wgd_maxima",
-            "raw_cm","raw_x_value_of_ymax",
-            "wgd_maxima_d","mode","cm","num_paralogs",
-                     "lognorm_popt","lognorm_RMSE","gaussian_popt","gaussian_RMSE"]

@@ -1,3 +1,4 @@
+import math
 import os
 import unittest
 
@@ -9,18 +10,21 @@ from scipy import stats
 #https://stackoverflow.com/questions/53177243/fitting-a-lognormal-distribution-to-the-data-and-performing-kolmogorov-smirnov-t
 #https://www.rdocumentation.org/packages/dgof/versions/1.4/topics/ks.test
 
-class BatchAnalyser(unittest.TestCase):
+class PearsonsCorrelation(unittest.TestCase):
 
     #https://forecastegy.com/posts/correlation-between-two-time-series-python/#:~:text=NumPy%20is%20the%20most%20popular,corrcoef%20function.&text=This%20function%20calculates%20the%20Pearson%20correlation%20coefficient.
     # https://pieriantraining.com/pearson-correlation-coefficient-with-scipy-pearsonr/#:~:text=To%20find%20the%20Pearson%20Correlation,value%20is%20the%20p%2Dvalue.
-
-    def test_ks_test_from_web(self):
+    # https://stats.stackexchange.com/questions/226380/derivation-of-the-standard-error-for-pearsons-correlation-coefficient
+    def test_ks_pearsons_corr(self):
         x = [1, 2, 3, 4, 5]
         y = [5, 4, 3, 2, 1]
 
         # Finding Pearson Correlation Coefficient
         corr_coef, p_value = pearsonr(x, y)
-        print("Correlation Coefficient:", corr_coef)
+        print("Correlation Coefficient:\t", corr_coef)
+
+        se=standard_error_from_pearsons_corr_r(corr_coef, len(x))
+        print("Standard Error:\t", corr_coef)
     def test_ks_test_from_web(self):
 
         # reject null hypothesis if p value is less than significance.
@@ -101,3 +105,11 @@ class BatchAnalyser(unittest.TestCase):
         # f_exp = np.array([44, 24, 29, 3]) / 100 * 189
         # f_obs = np.array([43, 52, 54, 40])
         # chi2 = chisquare(f_obs=f_obs, f_exp=f_exp)
+
+def standard_error_from_pearsons_corr_r(r,n):
+
+    r2= r*r
+    numerator=1.0-r2
+    denominator=n-2.0
+    SEr = math.sqrt(numerator/denominator)
+    return SEr
