@@ -10,20 +10,21 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        #batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
-        #               "sim37_N20","sim37_N100","sim35_log"]
+        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
+                       "sim37_N20","sim37_N100","sim35_log"]
+
+        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
+                       "sim37_N20","sim35_log"]
+
         reprocess=False
-        batch_names = ["sim37_N1","sim37_N20","sim37_N100"]
+        #batch_names = ["sim37_N1","sim37_N20","sim37_N100"]
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         plots_to_make=[([get_spec_time,get_lognorm_RMSE],"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        ([get_spec_time,get_gaussian_RMSE], "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
                        ([get_spec_time, get_genes_shed], "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
                        ([get_wgd_time, get_genes_shed], "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
                        ([get_spec_time, get_mode], "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
-                       ([get_wgd_time, get_mode,get_max_RMSE], "wgd time (MYA)", "mode vs wgd time", "mode_vs_wgd_time.png"),
-                       ([get_spec_time, get_max,get_max_RMSE], "spec time (MYA)", "max vs spec time", "max_vs_spec_time.png"),
                        ([get_spec_time, get_max_d], "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
-                       ([get_spec_time, get_metric4,get_max_RMSE], "spec time (MYA)", "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
                        ([get_spec_time, get_metric1], "spec time (MYA)", "allo vs auto metric1", "metric1.png"),
                        ([get_spec_time, get_metric2], "spec time (MYA)", "allo vs auto metric2", "metric2.png"),
                        ([get_spec_time, get_metric3], "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
@@ -33,7 +34,22 @@ class BatchAggregator(unittest.TestCase):
                         "metric6.png"),
                        ([get_metric7a, get_metric7b], "Ln Pearson corr_coef", "Gaussian pearson corr_coef",
                         "metric7.png"),
-                       ]
+                       ([get_wgd_time, get_mode], "wgd time (MYA)", "mode vs wgd time",
+                        "mode_vs_wgd_time.png"),
+                       ([get_spec_time, get_max], "spec time (MYA)", "max vs spec time",
+                        "max_vs_spec_time.png"),
+                       ([get_spec_time, get_metric4], "spec time (MYA)",
+                        "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
+                       ([get_spec_time, get_metric8_pearsons_ratio],"spec time (MYA)",
+                       "Pearson corr_coef ratio","metric8.png"),
+                        ]
+                       #([get_wgd_time, get_mode, get_max_RMSE], "wgd time (MYA)", "mode vs wgd time",
+                       # "mode_vs_wgd_time.png"),
+                       #([get_spec_time, get_max, get_max_RMSE], "spec time (MYA)", "max vs spec time",
+                       # "max_vs_spec_time.png"),
+                       #([get_spec_time, get_metric4, get_max_RMSE], "spec time (MYA)",
+                       # "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
+
 
         marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
 
@@ -186,6 +202,11 @@ def get_metric5_pearsons_r(run_metrics):
     ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
     return ln_pearsons_cc-ga_pearsons_cc
 
+def get_metric8_pearsons_ratio(run_metrics):
+
+    ln_pearsons_cc=float(run_metrics.lognorm_fit_data.get_pearsons_corr_coef())
+    ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
+    return math.log( ln_pearsons_cc / ga_pearsons_cc )
 def get_metric6_pearsons_pv(run_metrics):
 
     ln_pearsons_pv=float(run_metrics.lognorm_fit_data.get_pearsons_p_value())
@@ -252,7 +273,7 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
                               x_and_y_methods,x_axis_name,y_axis_name,
                               title,out_folder, ylog=False):
 
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    fig, ax = plt.subplots(1, 1, figsize=(8, 10))
     auto_color='gray'
     plot_data={}
     allo_colors = ['cyan','lightblue','blue','darkblue','slateblue','purple','indigo']
@@ -269,8 +290,10 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
             label_string=batch_name + "({0})".format(label)
             first_data_point=data[0]
 
+            size=30
             if label=="auto":
                 color=auto_color
+                size=30
             else:
                 color=allo_colors[i]
 
@@ -278,7 +301,7 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
             ys=[d[1] for d in data]
             if len(first_data_point) ==2:
                 plt.scatter(xs,ys,
-                    c=color,label=label_string,marker=marker_style)
+                    c=color,label=label_string,marker=marker_style, s=size)
             else:
                 yerr =[d[2] for d in data]
                 plt.errorbar(xs,ys, yerr, c=allo_colors[i],label=label,
@@ -296,7 +319,12 @@ def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
     ax.set(xlabel=x_axis_name)
     ax.set(ylabel=y_axis_name)
 
-    ax.legend()
+    #ax.legend()
+    #plt.legend(bbox_to_anchor=(1.04, 1), loc="lower center")
+    #plt.tight_layout()
+    #plt.legend(bbox_to_anchor=(0, -5),loc="lower left",ncol=3)
+    plt.legend( bbox_to_anchor=(0,-0.3),loc="lower left", ncol=3)
+    fig.set_tight_layout(True)
     plt.savefig(out_file_name)
     plt.close()
     return plot_data
