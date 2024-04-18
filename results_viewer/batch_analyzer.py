@@ -13,7 +13,7 @@ class BatchAnalyser(unittest.TestCase):
 
     def test_compute_metrics_for_batch(self):
 
-        batch_name= "sim37_N1"
+        batch_name= "sim37_N100"
         base_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/"
         compute_metrics_for_batch(batch_name,base_output_folder )
 

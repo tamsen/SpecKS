@@ -3,6 +3,14 @@ import math
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.stats import lognorm, norm, chisquare, pearsonr
+
+
+def coal(x, N):
+
+    k = 1 / N
+    return k * math.exp(k*(1 - x))
+def sigmoid(x, a, c):
+    return 1 / (1 + math.exp(-a*x +c))
 def logfit(x, m, b, c):
     return b - m * np.log(c*x)
 def linear(x, m, b):

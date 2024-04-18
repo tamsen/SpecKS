@@ -10,8 +10,8 @@ class BatchAggregator(unittest.TestCase):
 
     def test_parse_agg_results(self):
 
-        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
-                       "sim37_N20","sim37_N100","sim35_log"]
+        #batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
+        #               "sim37_N20","sim37_N100","sim35_log"]
 
         batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
                        "sim37_N20","sim35_log"]
@@ -22,6 +22,9 @@ class BatchAggregator(unittest.TestCase):
         plots_to_make=[([get_spec_time,get_lognorm_RMSE],"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        ([get_spec_time,get_gaussian_RMSE], "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
                        ([get_spec_time, get_genes_shed], "spec time (MYA)","# genes shed","genes_shed_vs_spec_time.png"),
+                       ([get_wgd_time, get_genes_remaining], "spec time (MYA)", "# genes remaining",
+                        "genes_remaining_vs_wgd_time.png"),
+
                        ([get_wgd_time, get_genes_shed], "wgd time (MYA)","# genes shed","genes_shed_vs_wgd_time.png"),
                        ([get_spec_time, get_mode], "spec time (MYA)", "mode vs spec time", "mode_vs_spec_time.png"),
                        ([get_spec_time, get_max_d], "spec time (MYA)", "max d vs spec time", "maxd_vs_spec_time.png"),
@@ -225,6 +228,9 @@ def get_genes_shed(run_metrics):
     genes_lost=num_paralogs_at_WGD-pairs_remaining
     y = genes_lost
     return y
+
+def get_genes_remaining(run_metrics):
+    return run_metrics.lognorm_fit_data.num_paralogs
 
 def get_spec_time(run_metrics):
     return int(run_metrics.spc_time)
