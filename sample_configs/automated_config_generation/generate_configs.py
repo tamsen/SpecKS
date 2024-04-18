@@ -35,10 +35,16 @@ class Generate_Config_Files(unittest.TestCase):
 
         decimals_needed=3
         formatter = "{:0" + str(decimals_needed) + "d}"
+
+        #for fig 1 - 4
         spec_times= [80,70, 60, 50, 40, 30, 20,10]
         wgd_offsets=[0,5,10,20,50]
-        #wgd_times = [75,65, 55, 45, 35, 25, 15, 5]
+        #all distributions
 
+        #for 4
+        #spec_times= [30]
+        #wgd_offsets=[0,1,2,3,5,10,20,50]
+        #dist N=5
 
         imp_distribution = "impulse,1,1"
         ln_distribution="lognorm,0.5,5.27"

@@ -11,41 +11,6 @@ import log
 from pipeline_modules import gene_tree_info, custom_GBD_model
 from pipeline_modules.gene_tree_maker import plot_distribution
 
-
-def shed_genes_for_autopolyploid(polyploid, gene_data_by_gt_name, polyploid_genome_of_interest, side_to_shed):
-
-    if len(polyploid.subtree_subfolder) > 0:
-        subfolder = os.path.join(polyploid.species_subfolder,
-                                 str(polyploid.analysis_step_num) + "_WGD_gene_shedder_" + polyploid.subtree_subfolder)
-    else:
-        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_shedder")
-
-    if not os.path.exists(subfolder):
-        os.makedirs(subfolder)
-
-
-    if (polyploid_genome_of_interest == side_to_shed):
-
-        pruned_gene_data_by_gt_name={}
-        gene_trees_to_loose_a_duplicate_gene = choose_trees_to_loose_duplicate(gene_data_by_gt_name,
-                                                                               polyploid, subfolder)
-        num_WGD_dup_shed=0
-        for gt, gt_data in gene_data_by_gt_name.items():
-            if gt in gene_trees_to_loose_a_duplicate_gene:
-                log.write_to_log("Removing GT " + gt + " from " + side_to_shed)
-                num_WGD_dup_shed = num_WGD_dup_shed+1
-            else:
-                pruned_gene_data_by_gt_name[gt]=gene_data_by_gt_name[gt]
-
-        log.write_to_log("A total of {0} WGD duplicates were shed from side {1}".format(
-            num_WGD_dup_shed,polyploid_genome_of_interest))
-        return pruned_gene_data_by_gt_name
-
-    else:
-
-        log.write_to_log("No WGD duplicates were shed from side " + str(polyploid_genome_of_interest))
-        polyploid.analysis_step_num = polyploid.analysis_step_num + 1
-        return gene_data_by_gt_name
 def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
 
     include_visualizations = polyploid.general_sim_config.include_visualizations

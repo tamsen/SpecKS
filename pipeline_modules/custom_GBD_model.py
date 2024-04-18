@@ -10,63 +10,6 @@ import log
 from pipeline_modules import gene_tree_maker
 from pipeline_modules.gene_tree_info import custom_gene_tree_result
 
-def run_run_custom_GBD_model_with_root(polyploid, species_tree_newick,simulation_leg,
-                              root_seq_files_written_by_gene_tree_by_child_tree):
-    config = polyploid.general_sim_config
-    include_visuals = config.include_visualizations
-    length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
-    subgenomes=simulation_leg.subgenomes_during_this_interval
-
-    if len(polyploid.subtree_subfolder) > 0:
-        subfolder = os.path.join(polyploid.species_subfolder,
-                                 str(polyploid.analysis_step_num) + "_gene_trees_" + polyploid.subtree_subfolder)
-    else:
-        subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_gene_trees")
-
-    if not os.path.exists(subfolder):
-        os.makedirs(subfolder)
-
-    num_gene_trees_needed=sum([ len([root_seq_files_written_by_gene_tree_by_child_tree[gt][ct]
-                             for ct in root_seq_files_written_by_gene_tree_by_child_tree[gt].keys() ])
-                            for gt in root_seq_files_written_by_gene_tree_by_child_tree.keys()])
-
-    SSD_life_spans, SSD_time_between_gene_birth_events, skip_GBD_model = set_up(config, subfolder,num_gene_trees_needed)
-    gene_tree_data_by_tree_name={}
-    idx_for_new_tree_generated = 0
-    total_num_dup_added=0
-    total_num_dup_shed=0
-    randomness_idx=idx_by_reference(0)
-    for original_GT_name, sequence_data_file_by_child_for_leaves in root_seq_files_written_by_gene_tree_by_child_tree.items():
-
-        for child_GT_name in sequence_data_file_by_child_for_leaves:
-            # GeneTree05_childG6_1.rep1.txt
-            #'GeneTree00_childP_duplicate_6'
-
-            idx_for_new_tree_generated = idx_for_new_tree_generated + 1
-
-            if skip_GBD_model:
-                gene_tree_newick_with_GBD = species_tree_newick
-            else:
-                gene_tree_newick_with_GBD, num_dup_added, num_dup_shed, randomness_idx = add_GBD_to_newick(species_tree_newick,
-                                                child_GT_name,idx_for_new_tree_generated, randomness_idx,
-                                                SSD_life_spans,SSD_time_between_gene_birth_events,
-                                                length_of_leg, subfolder, include_visuals)
-                total_num_dup_added = total_num_dup_added + num_dup_added
-                total_num_dup_shed = total_num_dup_shed + num_dup_shed
-
-            composite_GT_name = original_GT_name + "_child" + child_GT_name
-            gene_tree_data = custom_gene_tree_result(composite_GT_name, gene_tree_newick_with_GBD,subgenomes)
-            gene_tree_data_by_tree_name[composite_GT_name]=gene_tree_data
-
-    log.write_to_log("Overall, " +
-                     str(total_num_dup_added+total_num_dup_shed) +
-                     " total num SSD duplicates occurred over time ")
-    log.write_to_log(str(total_num_dup_shed) + " were shed ")
-    log.write_to_log(str(total_num_dup_added) + " were retained (not yet shed) ")
-
-    polyploid.analysis_step_num = polyploid.analysis_step_num + 1
-    return gene_tree_data_by_tree_name
-
 def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, base_gene_tree_newicks_by_tree_name):
 
     config = polyploid.general_sim_config
@@ -158,6 +101,7 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
         tree.clade.name="root_" + str(gt_idx)
 
         if include_visuals:
+            print(base_gene_tree_newick)
             save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, "_before_GBD.txt", tree)
 
         recursively_get_new_branches_to_add(tree, tree.clade,

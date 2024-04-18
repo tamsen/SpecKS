@@ -3,10 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob
 import shutil
-
 import log
 from pipeline_modules import ks_calculator
-from version import version_info
 
 
 def get_Ks_from_file(paml_out_file):

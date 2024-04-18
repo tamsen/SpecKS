@@ -1,5 +1,7 @@
 import os
 
+import log
+
 
 def make_polyploids(config):
 
@@ -23,6 +25,7 @@ def make_polyploids(config):
                 species_name="Allopolyploid_" + str(num_allos)
 
         polyploid = polyploid_data(subfolder, species_name, SPC_time_MYA, WGD_time_MYA, config)
+        polyploid.validate()
         polyploids.append(polyploid)
 
     return polyploids
@@ -83,6 +86,14 @@ class polyploid_data():
         else:
             return False
 
+    def validate(self):
+        full_sim_time=self.general_sim_config.full_sim_time
+        if self.SPC_time_MYA > full_sim_time:
+            log.write_to_log("SPC_time_MYA > full_sim_time. That's going to be a problem")
+        if self.WGD_time_MYA > full_sim_time:
+            log.write_to_log("WGD_time_MYA > full_sim_time. That's going to be a problem")
+        if self.WGD_time_MYA > self.SPC_time_MYA:
+            log.write_to_log("WGD_time_MYA > fSPC_time_MYA. That's going to be a problem")
 
 class sim_time_interval_forward_in_time():
 
