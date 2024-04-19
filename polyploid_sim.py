@@ -9,7 +9,7 @@ def run_sim(polyploid):
 
     #the allopolyploid has only one simulation leg for the full sim
     only_simulation_leg=polyploid.simulation_legs[0]
-    first_leg_random_seed=137
+    evolver_random_seed=polyploid.general_sim_config.evolver_random_seed
     polyploid_genomes_of_interest = ['P1', 'P2']
     genomes_of_interest_by_species={"outgroup":['O'],polyploid.species_name:polyploid_genomes_of_interest}
     all_genomes_of_interest= polyploid_genomes_of_interest + ['O']
@@ -38,7 +38,7 @@ def run_sim(polyploid):
 
     log.write_to_log("\n\n{0}. Evolve sequences through gene trees (Evolver)".format(polyploid.analysis_step_num))
     evolver_results_by_gene_tree = gene_evolver.run_evolver(polyploid, pruned_gene_data_by_gt_name,
-                                                            first_leg_random_seed)
+                                                            evolver_random_seed)
     if polyploid.analysis_step_num > polyploid.general_sim_config.stop_at_step:
         return
 

@@ -17,7 +17,7 @@ class SpecKS_config:
     num_codons = 10  # 1000
     Ks_per_Myr = 0.01#0.01268182
     per_site_evolutionary_distance = 0.01268182
-
+    evolver_random_seed = 137
 
     max_ks_for_hist_plot = 5
     max_y_for_hist_plot = False

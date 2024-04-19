@@ -39,6 +39,7 @@ class Generate_Config_Files(unittest.TestCase):
         #for fig 1 - 4
         spec_times= [80,70, 60, 50, 40, 30, 20,10]
         wgd_offsets=[0,5,10,20,50]
+        full_sim_time  = 100
         #all distributions
 
         #for 4
@@ -87,6 +88,7 @@ class Generate_Config_Files(unittest.TestCase):
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
                               ("DIV_DIST", coalescent_distribution)
+                              ("FULL_SIM_TIME", full_sim_time)
                               ]
             new_file_created=write_config_file(
                 template_xml_file, origin_folder,new_xml_file_name,xml_replacements)

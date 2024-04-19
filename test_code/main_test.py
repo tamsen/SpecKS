@@ -1,6 +1,6 @@
 import os
 import unittest
-import polyploidsim
+import polyploid_sim
 from graveyard import autosim
 import main
 
