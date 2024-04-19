@@ -102,10 +102,6 @@ class AlloAutoPredictor(unittest.TestCase):
         predicted_indexes_for_true_allos=[]
         for sim_name in sims_names:
 
-            print(sim_name)
-            #if "uto" in sim_name:
-            #    print("FOUND ONE!!!!!!!!!!!!!")
-
             polyploid_params=truth_by_sim_name[sim_name]
             how_auto_t=polyploid_params.SPC_time_MYA - polyploid_params.WGD_time_MYA
             truth=[polyploid_params.SPC_time_MYA,polyploid_params.WGD_time_MYA,how_auto_t]
@@ -185,12 +181,14 @@ class AlloAutoPredictor(unittest.TestCase):
         for i in range(0,len(wgd_sims)):
             sim = wgd_sims[i]
             spc_time=spc_xs[i]
+            #true_category= categorize_sim(low_N_sims, med_N_sims, high_N_sims, sim)
+            #truth_by_sim[sim]=true_category
             if spc_time >= cutoff:
                 continue
             if metric[i] <= 0:
                 continue
             true_category= categorize_sim(low_N_sims, med_N_sims, high_N_sims, sim)
-            truth_by_sim[sim]=true_category
+            #truth_by_sim[sim]=true_category
             #print(metric[i])
             #plus_1=metric[i]+1
             truth_by_sim[sim] = true_category
@@ -257,7 +255,6 @@ class AlloAutoPredictor(unittest.TestCase):
                                1, 1- medium_vs_high_discrimination,
                                color='blue', alpha=0.15))
 
-
         for sim,results in accuracy_by_sim.items():
 
             [true_category,predicted_category] = accuracy_by_sim[sim]
@@ -286,6 +283,9 @@ class AlloAutoPredictor(unittest.TestCase):
         plt.close()
 
         make_box_plots(colors_by_category, metrics_by_category, out_folder)
+
+        #data_file = os.path.join(out_folder,"highN_vs_lowN_truth_and_predictions.csv")
+        #save_metrics_to_csv(plot_data, data_file)
 
 def predict_category(low_vs_medium_discrimination, medium_vs_high_discrimination, metric):
     if metric < low_vs_medium_discrimination:
