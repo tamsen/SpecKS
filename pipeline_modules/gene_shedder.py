@@ -23,14 +23,15 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
+    print("choosing GT")
     gene_trees_to_loose_a_duplicate_gene = choose_trees_to_loose_duplicate(gene_data_by_gt_name,
                                                                                            polyploid, subfolder)
-
+    print("done choosing GT")
     gt_after_everyone_that_needed_pruning_is_pruned={}
     pruned_gt=[]
     for gt in gene_data_by_gt_name.keys():
 
-            #print("gt: " + str(gt))
+            print("gt: " + str(gt))
             if gt in gene_trees_to_loose_a_duplicate_gene:
                 original_gt_newick=gene_data_by_gt_name[gt]
                 #print("pruning time!")
@@ -62,9 +63,13 @@ def choose_trees_to_loose_duplicate(gene_data_by_gt_name, polyploid, subfolder):
     # the mean of exp is 1/lambda
     fraction_WGD_genes_remaining_at_time_since_WGD = avg_WGD_gene_lifespan * expon.pdf(
         time_since_WGD, loc=0, scale=avg_WGD_gene_lifespan)
+
+    print("in vis")
     if polyploid.general_sim_config.include_visualizations:
         plot_distribution(avg_WGD_gene_lifespan, time_since_WGD, "exponential", subfolder,
                           " decay for genes duplicated by WGD")
+
+    print("in choose_trees_to_loose_duplicate")
     all_gt_newicks = list(gene_data_by_gt_name.keys())
     num_original_gt = float(len(all_gt_newicks))
     num_genes_to_shed = int(num_original_gt * (1.0 - fraction_WGD_genes_remaining_at_time_since_WGD))
@@ -116,10 +121,12 @@ def plot_distribution(theoretical_avg, time_since_WGD, distribution_name, out_fo
 
     bin_size = max(time_since_WGD / 100.0, 0.0001)
     xs = np.arange(0, theoretical_avg * 3, bin_size)
+    print("stuck here")
+    print("theoretical_avg" + str(theoretical_avg))
     ys = [theoretical_avg * y for y in [expon.pdf(x, loc=0, scale=theoretical_avg) for x in xs]]
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-
+    print("plotting dist")
     plt.plot(xs, ys, label='underlying distribution')
     plt.axvline(x=theoretical_avg, color='b', linestyle='-', label="mean WGD duplicate life span ")
     plt.axvline(x=time_since_WGD, color='g', linestyle='-', label="Present time (time since WGD=" +

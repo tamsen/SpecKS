@@ -168,6 +168,11 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
         else:    #else, for an allopolyploid...we do something more fancy.
             #perturb parent species tree
             gene_div_time=base_speciation_time+variation
+
+            if gene_div_time > time_span:
+                log.write_to_log("The coalescent for this gene tree reaches further back than the sim time")
+                log.write_to_log("Please increase your sim time")
+
             [new_newick_string] = species_tree_maker.get_polyploid_species_tree(time_span, gene_div_time)
 
 

@@ -101,7 +101,7 @@ def add_GBD_to_newick(base_gene_tree_newick, gene_tree_name,
         tree.clade.name="root_" + str(gt_idx)
 
         if include_visuals:
-            print(base_gene_tree_newick)
+            #print(base_gene_tree_newick)
             save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, "_before_GBD.txt", tree)
 
         recursively_get_new_branches_to_add(tree, tree.clade,
@@ -141,6 +141,7 @@ def save_ascii_tree(base_gene_tree_newick, gene_tree_name, outfolder, suffix, tr
         if len(tree.get_terminals()) < 2:
             f.writelines("The tree has less than two branches, so nothing to draw.")
         else:
+            #print(tree)
             Phylo.draw_ascii(tree, f)
 
 
