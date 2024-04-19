@@ -7,6 +7,7 @@ import unittest
 import numpy as np
 from scipy.optimize import curve_fit
 from sklearn import linear_model
+import sklearn.metrics as metrics
 from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 from results_viewer import curve_fitting
@@ -162,6 +163,8 @@ class AlloAutoPredictor(unittest.TestCase):
             plot_data = [sims_names_list,ava_truth,ava_predictions]
             data_file = plot_file.replace("png", "csv")
             save_metrics_to_csv(plot_data,data_file)
+
+    #https://stackoverflow.com/questions/25009284/how-to-plot-roc-curve-in-python
 
 
     def test_highN_vs_lowN_predictor(self):

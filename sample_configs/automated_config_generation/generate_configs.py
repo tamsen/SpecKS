@@ -12,12 +12,8 @@ class Generate_Config_Files(unittest.TestCase):
     # automatically set off a batch of simulation runs via qsub
     def test_making_configs(self):
 
-        #TODO:
-        #expon_0p1 = "expon,0,0.1"
-        #expon_5p0 = "expon,0,5"
-        #expon_20p0 = "expon,0,20"
 
-        sim_subfolder="sim37_N20" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim38_test" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -37,14 +33,15 @@ class Generate_Config_Files(unittest.TestCase):
         formatter = "{:0" + str(decimals_needed) + "d}"
 
         #for fig 1 - 4
-        spec_times= [80,70, 60, 50, 40, 30, 20,10]
-        wgd_offsets=[0,5,10,20,50]
-        full_sim_time  = 100
+        #spec_times= [80,70, 60, 50, 40, 30, 20,10]
+        #wgd_offsets=[0,5,10,20,50]
+        #full_sim_time  = 100
         #all distributions
 
-        #for 4
-        #spec_times= [30]
-        #wgd_offsets=[0,1,2,3,5,10,20,50]
+        #for fig 5.
+        spec_times= [50,40,30,20,15,10,5]
+        wgd_offsets=[0,5]
+        full_sim_time=str(100)
         #dist N=5
 
         imp_distribution = "impulse,1,1"
@@ -55,7 +52,7 @@ class Generate_Config_Files(unittest.TestCase):
         expon_10p0 = "expon,0,10"
         expon_20p0 = "expon,0,20"
         expon_100p0 = "expon,0,100"
-        coalescent_distribution=expon_20p0
+        coalescent_distribution=expon_5p0
 
         poly_params_by_name={}
         out_folder_by_name={}
@@ -87,7 +84,7 @@ class Generate_Config_Files(unittest.TestCase):
             new_xml_file_name = poly_name + ".xml"
             xml_replacements=[("POLYPLOID_SECTION",poly_params.to_xml()),
                               ("OUTPUT_ROOT", out_folder_by_name[poly_name]),
-                              ("DIV_DIST", coalescent_distribution)
+                              ("DIV_DIST", coalescent_distribution),
                               ("FULL_SIM_TIME", full_sim_time)
                               ]
             new_file_created=write_config_file(
