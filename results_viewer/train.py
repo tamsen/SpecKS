@@ -1,16 +1,11 @@
 import math
 import os
 import unittest
-
 import numpy as np
-from sklearn import svm, datasets
-#import scikitplot as skplt
-import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_breast_cancer
 import matplotlib.pyplot as plt
 
 from results_viewer.allo_auto_predictor import read_xs_ys_csv, categorize_sim
@@ -20,169 +15,170 @@ from results_viewer.allo_auto_predictor import read_xs_ys_csv, categorize_sim
 # https://stackoverflow.com/questions/28716241/controlling-the-threshold-in-logistic-regression-in-scikit-learn
 
 class TestLinearRegression(unittest.TestCase):
+
     def test_linear_regression_on_allo_vs_auto_data(self):
 
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         file_basename= "allopolyploid_index_truth_vs_predictions.csv"
         csv_file=os.path.join(out_folder,file_basename)
-        data, target = load_allo_vs_auto_data(csv_file)
-
-        #threshold=0.39
-        threshold = 0.9284
-        predictions, accuracy, tn, fp, fn, tp = get_threshold_based_accuracy(data, target, threshold)
-
-        target_as_array=np.array(target)
-        data_as_array=np.array([data]).transpose()
-        X_train, X_test, y_train, y_test = train_test_split(data_as_array, target_as_array, test_size=0.33, random_state=44)
-        clf = LogisticRegression(penalty='l2', C=0.1)
-        clf.fit(X_train, y_train)
-        y_pred = clf.predict(X_test)
-        accuracy = metrics.accuracy_score(y_test, y_pred)
-        print("Lin Regression Accuracy", str( accuracy))
-        print("Lin Regression Coeff",str(clf.coef_))
-        #Lin Regression Coeff [[0.92845063]]
-        #
-        y_pred_proba = clf.predict_proba(X_test)[::, 1]
-        fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_proba)
-        auc = metrics.roc_auc_score(y_test, y_pred_proba)
-        print("thresholds:\t" + str(thresholds))
-        title=file_basename.replace(".csv"," ROC plot")
-        fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-        plt.plot(fpr, tpr, label="data 1, auc=" + str(auc),  marker='o')
-        ax.set(xlabel="<-- fpr -->")
-        ax.set(ylabel="<-- tpr -->")
-        plt.legend(loc=4)
-        ax.set(title=title)
-        plot_file = os.path.join(out_folder, title.replace(" ","_")+".png")
-        plt.savefig(plot_file)
-        plt.close()
-
-        fpr_t=[]; tpr_t=[]; thresholds_t=[];
-        custom_thresholds = np.arange(0, 2, 0.005)
-        for t in custom_thresholds:
-            y_pred_t = (clf.predict_proba(X_test)[:, 1] > t).astype('float')
-            result = confusion_matrix(y_test, y_pred_t).ravel()
-            tn, fp, fn, tp = result
-            total=sum([tn,fp,fn,tp])
-            fpr=fp/total
-            tpr=tp/total
-            fpr_t.append(fpr)
-            tpr_t.append(tpr)
-            thresholds_t.append(t)
-
-        title = file_basename.replace(".csv", " custom ROC plot")
-        fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-        plt.plot(fpr_t, tpr_t, label="data 1 by t",marker="x")
-        ax.set(xlabel="<-- fpr -->")
-        ax.set(ylabel="<-- tpr -->")
-        plt.legend(loc=4)
-        ax.set(title=title)
-        plot_file = os.path.join(out_folder, title.replace(" ", "_") + ".png")
-        plt.savefig(plot_file)
-        plt.close()
+        specs, data, target = load_allo_vs_auto_data(csv_file)
+        colors = ["red" if m == 0 else "gray" for m in target]
+        linear_regression_threshold_color = 'black'
+        likely_range_for_threshold = np.arange(0.8, 2, 0.001)
+        ROC_plot_base_name = "allo_vs_auto_basic_ROC2"
+        threshold_plot_title = "threshold_on_allo_vs_auto_data"
+        threshold_plot_labels_by_case={0:"Auto",1:"Allo"}
+        case0_color="red"
+        self.make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
+                                 linear_regression_threshold_color, case0_color,
+                                 out_folder, specs, target,
+                                 threshold_plot_title, threshold_plot_labels_by_case)
 
     def test_linear_regression_on_high_vs_low_N_data(self):
 
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         sims,specs,true_category,data=get_highN_vs_lowN_truth()
 
-        #for i in range(0,len(sims)):
-        #    print([sims[i],specs[i],true_category[i],data[i]])
+        target = [0 if m == "Low" else 1 for m in true_category]
+        colors = ["gray" if m == 0  else "cyan" for m in target]
+        linear_regression_threshold_color = 'cyan'
+        likely_range_for_threshold = np.arange(-6, -4, 0.001)
+        ROC_plot_base_name="low_vs_high&medium_N_basic_ROC"
+        threshold_plot_title="threshold_on_low_vs_high&medium_N_data"
+        threshold_plot_labels_by_case={0:"Low",1:"Medium&High"}
+        case0_color="gray"
+        make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
+                                 linear_regression_threshold_color, case0_color,
+                                 out_folder, specs, target,
+                                 threshold_plot_title, threshold_plot_labels_by_case)
 
-        target = [0 if m == "Low"
-                  else 1 for m in true_category]
+        target = [1 if m == "High" else 0 for m in true_category]
+        colors = ["cyan" if m == 0 else "blue" for m in target]
+        linear_regression_threshold_color = 'blue'
+        likely_range_for_threshold = np.arange(-6, -1, 0.001)
+        ROC_plot_base_name = "low&medium_vs_high_N_basic_ROC"
+        threshold_plot_title = "threshold_on_low&medium_vs_high_N_data"
+        threshold_plot_labels_by_case={0:"Low&Medium",1:"High"}
+        case0_color="cyan"
+        make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
+                                 linear_regression_threshold_color, case0_color,
+                                 out_folder, specs, target,
+                                 threshold_plot_title,threshold_plot_labels_by_case)
 
-        threshold=0.01
-        predictions = [1 if d > threshold else 0 for d in data]
-        result = confusion_matrix(target, predictions).ravel()
+        return
+
+def make_custom_ROC_plot(X_test, clf, custom_prob_thresholds,
+                         file_basename, out_folder, y_test,accuracy_string):
+
+    y_pred_proba=clf.predict_proba(X_test)[:, 1]
+    auc = metrics.roc_auc_score(y_test, y_pred_proba)
+    fpr_t = [];
+    tpr_t = [];
+    thresholds_t = [];
+    for t in custom_prob_thresholds:
+        y_pred_t = (clf.predict_proba(X_test)[:, 1] > t).astype('float')
+        result = confusion_matrix(y_test, y_pred_t).ravel()
         tn, fp, fn, tp = result
-        print(result)
-        accuracy = metrics.accuracy_score(target, predictions)
-        print("Accuracy:\t" + str(accuracy))
+        total = sum([tn, fp, fn, tp])
+        fpr = fp / total
+        tpr = tp / total
+        fpr_t.append(fpr)
+        tpr_t.append(tpr)
+        thresholds_t.append(t)
+    title = file_basename.replace(".csv", " custom ROC plot")
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 
-        #plot it
-        #colors = ["gray" if m == "Low"
-        #          else "cyan" if m == "Medium"
-        #            else "blue" for m in true_category]
+    plt.plot(fpr_t, tpr_t, label="auc={0},accuracy={1}".format(auc, accuracy_string), marker='x')
+    ax.set(xlabel="<-- fpr -->")
+    ax.set(ylabel="<-- tpr -->")
+    plt.legend(loc=4)
+    ax.set(title=title)
+    plot_file = os.path.join(out_folder, title.replace(" ", "_") + ".png")
+    plt.savefig(plot_file)
+    plt.close()
 
-        colors = ["gray" if m == 0
-                  else "cyan" for m in target]
+def make_basic_ROC_plot(file_basename, clf, out_folder,
+                        X_test, y_test, accuracy_string):
 
-        #LinearRegression fits a linear model with coefficients w = (w1, …, wp) to
-        # minimize the residual sum of squares between the observed targets in the dataset,
-        # and the targets predicted by the linear approximation.
+    y_pred_proba = clf.predict_proba(X_test)[::, 1]
+    fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_proba)
+    auc = metrics.roc_auc_score(y_test, y_pred_proba)
+    print("thresholds:\t" + str(thresholds))
+    title = file_basename.replace(".csv", " ROC plot")
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    plt.plot(fpr, tpr, label="auc={0},accuracy={1}".format(auc,accuracy_string), marker='o')
+    ax.set(xlabel="<-- fpr -->")
+    ax.set(ylabel="<-- tpr -->")
+    plt.legend(loc=4)
+    ax.set(title=title)
+    plot_file = os.path.join(out_folder, title.replace(" ", "_") + ".png")
+    plt.savefig(plot_file)
+    plt.close()
 
-        target_as_array = np.array(target)
-        data_as_array = np.array([data]).transpose()
-        X_train, X_test, y_train, y_test = train_test_split(data_as_array, target_as_array, test_size=0.33,
-                                                            random_state=44)
-        clf = LogisticRegression(penalty='l2', C=0.1)
-        clf.fit(X_train, y_train)
-        y_pred = clf.predict(X_test)
-        accuracy = metrics.accuracy_score(y_test, y_pred)
-        print("Lin Regression Accuracy", str(accuracy))
-        print("Lin Regression Coeff", str(clf.coef_))
-        print("Lin Regression Int", str(clf.intercept_))
-        #return
-        test_m = np.arange(-10, 0, 1)
-        probs=clf.predict(np.array([test_m]).transpose())
-        for i in range(0,len(test_m)):
-            #print("metric {0} has p {1} prob of being HIGH or MEDIUM".format(test_m[i],probs[i][1]))
-            print("metric {0} has p {1} prob of being HIGH or MEDIUM".format(test_m[i],probs[i]))
-        print("clf params:" + str(clf.get_params()))
+def make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
+                        linear_regression_threshold_color, case0_color, out_folder,
+                        specs, target, threshold_plot_title, plot_labels_by_case):
+    target_as_array = np.array(target)
+    data_as_array = np.array([data]).transpose()
+    X_train, X_test, y_train, y_test = train_test_split(data_as_array, target_as_array, test_size=0.33,
+                                                        random_state=44)
+    clf = LogisticRegression(penalty='l2', C=0.1)
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    accuracy = metrics.accuracy_score(y_test, y_pred)
+    accuracy_string = str(round(accuracy, 4))
+    make_basic_ROC_plot(ROC_plot_base_name, clf, out_folder, X_test, y_test, accuracy_string)
+    custom_prob_thresholds = np.arange(0, 2, 0.005)
+    make_custom_ROC_plot(X_test, clf, custom_prob_thresholds,
+                              ROC_plot_base_name, out_folder, y_test, accuracy_string)
+    linear_regression_threshold = get_linear_regession_metric_threshold(clf, likely_range_for_threshold)
+    plot_threshold_against_data(colors, data, linear_regression_threshold,
+                                     linear_regression_threshold_color, case0_color,
+                                     out_folder, threshold_plot_title, specs, plot_labels_by_case)
+    print(linear_regression_threshold)
+    return linear_regression_threshold
 
-        fig, ax = plt.subplots(1, 1, figsize=(4, 4))
-        plt.scatter(specs, data, label='label', marker='o', c=colors)
+def get_linear_regession_metric_threshold(clf, likely_range_for_threshold):
+    model_predictions = clf.predict(np.array([likely_range_for_threshold]).transpose())
+    model_prediction_change = [model_predictions[i + 1] - model_predictions[i] for i in
+                               range(0, len(likely_range_for_threshold) - 1)]
+    i_of_threshold = [i for i in range(0, len(model_prediction_change)) if model_prediction_change[i] == 1]
+    linear_regression_threshold = 0.5 * (
+                likely_range_for_threshold[i_of_threshold[0]] + likely_range_for_threshold[i_of_threshold[0] + 1])
+    return linear_regression_threshold
 
-        ax.axhline(y=threshold, color='cyan', linestyle='--', label="lvm disc. criteria"
-                                                                                          + " ({0})".format(
-            round(threshold, 2)))
-        ax.set(xlabel=" spec time ")
-        ax.set(ylabel=" metric ")
-        plt.legend(loc=4)
-        ax.set(title='title')
-        plot_file = os.path.join(out_folder, "metric3_catagories2.png")
-        plt.savefig(plot_file)
-        plt.close()
+def plot_threshold_against_data(colors, data, linear_regression_threshold,
+                                linear_regression_threshold_color, case0_color,
+                                out_folder, plot_title, specs, plot_labels_by_case):
+    fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+    labeled_0=False
+    labeled_1=False
+    alpha=0.2
+    for i in range(0,len(specs)):
 
-        return predictions, accuracy, tn, fp, fn, tp
-
-
-
-        #catagory_0 = ["Low","Medium"]
-        #catagory_1 =["High"]
-        #optimal_threshold_Medium_vs_High = perform_linear_regression(
-        #    catagory_0, catagory_1, true_category,data, out_folder)
-
-
-        #colors = ["gray" if m < optimal_threshold_Low_vs_Medium
-        #        else "blue" if  m > optimal_threshold_Medium_vs_High
-        #        else "cyan" for m in data]
-
-        colors = ["gray" if m == "Low"
-                  else "cyan" if m == "Medium"
-                    else "blue" for m in true_category]
+        if colors[i]==case0_color and labeled_0==0:
+            plt.scatter(specs[i], data[i], label=plot_labels_by_case[0], marker='o',
+                        c=colors[i],alpha=alpha)
+            labeled_0=True
+        elif colors[i]!=case0_color and labeled_1==0:
+            plt.scatter(specs[i], data[i], label=plot_labels_by_case[1], marker='o',
+                        c=colors[i],alpha=alpha)
+            labeled_1=True
+        else:
+            plt.scatter(specs[i], data[i], marker='o', c=colors[i],alpha=alpha)
 
 
+    ax.axhline(y=linear_regression_threshold, color=linear_regression_threshold_color, linestyle='--',
+               label="thresh lr"
+                     + " ({0})".format(round(linear_regression_threshold, 4)))
+    ax.set(xlabel=" spec time ")
+    ax.set(ylabel=" metric ")
+    plt.legend(loc=4)
+    ax.set(title=plot_title)
+    plot_file = os.path.join(out_folder, plot_title + ".png")
+    plt.savefig(plot_file)
+    plt.close()
 
-        fig, ax = plt.subplots(1, 1, figsize=(4, 4))
-        plt.scatter(specs,data, label='label', marker='o', c=colors)
-
-        ax.axhline(y=optimal_threshold_Low_vs_Medium, color='cyan', linestyle='--', label="lvm disc. criteria"
-                                                                                       + " ({0})".format(
-            round(optimal_threshold_Low_vs_Medium, 2)))
-
-        #ax.axhline(y=optimal_threshold_Medium_vs_High , color='purple', linestyle='--', label="mvh disc. criteria"
-        #                                                                                  + " ({0})".format(
-        #    round(optimal_threshold_Medium_vs_High , 2)))
-
-        ax.set(xlabel=" spec time ")
-        ax.set(ylabel=" metric ")
-        plt.legend(loc=4)
-        ax.set(title='title')
-        plot_file = os.path.join(out_folder, "metric3_with_thresholds.png")
-        plt.savefig(plot_file)
-        plt.close()
 
 def get_highN_vs_lowN_truth():
 
@@ -216,40 +212,6 @@ def get_highN_vs_lowN_truth():
         data.append(math.log(metric[i]))
 
     return sims,specs,category,data
-def perform_linear_regression(catagory_0, catagory_1, true_category, raw_data, out_folder):
-
-    test_name="".join(catagory_0) +"vs" + "".join(catagory_1)
-    data, target = load_high_vs_low_data(true_category, raw_data, catagory_0, catagory_1)
-    target_as_array = np.array(target)
-    data_as_array = np.array([data]).transpose()
-    X_train, X_test, y_train, y_test = train_test_split(data_as_array, target_as_array, test_size=0.33,
-                                                        random_state=44)
-    clf = LogisticRegression(penalty='l2', C=0.1)
-    clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
-    accuracy = metrics.accuracy_score(y_test, y_pred)
-    print("Lin Regression Accuracy", str(accuracy))
-    print("Lin Regression Coeff", str(clf.coef_))
-
-    y_pred_proba = clf.predict_proba(X_test)[::, 1]
-    fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_proba)
-    auc = metrics.roc_auc_score(y_test, y_pred_proba)
-    print("thresholds:\t" + str(thresholds))
-    title = test_name + "N ROC plot"
-    fig, ax = plt.subplots(1, 1, figsize=(4, 4))
-    label = "data 1, auc=" + str(round(auc,3)) + "\nopt. threshold: " + str(round(clf.coef_[0][0],3))
-    plt.plot(fpr, tpr, label=label, marker='o')
-    ax.set(xlabel="<-- fpr -->")
-    ax.set(ylabel="<-- tpr -->")
-    plt.legend(loc=4)
-    ax.set(title=title)
-    plot_file = os.path.join(out_folder, title.replace(" ", "_") + "_"+test_name + ".png")
-    plt.savefig(plot_file)
-    plt.close()
-
-    optimal_threshold=clf.coef_[0][0]
-    return optimal_threshold
-
 def get_threshold_based_accuracy(data, target, threshold):
     predictions = [1 if d > threshold else 0 for d in data]
     result = confusion_matrix(target, predictions).ravel()
@@ -262,6 +224,8 @@ def get_threshold_based_accuracy(data, target, threshold):
 def load_allo_vs_auto_data(csv_file):
     with open(csv_file, "r") as f:
         lines = f.readlines()
+
+    specs = []
     target = []
     data = []
     for l in lines:
@@ -273,28 +237,12 @@ def load_allo_vs_auto_data(csv_file):
             target.append(0)
 
         splat = l.split(",")
+        specs.append(float(splat[1]))
         data.append(float(splat[2]))
 
     print("Target:\t" + str(target))
     print("Data:\t" + str(data))
-    return data, target
-
-def load_high_vs_low_data(true_category, raw_data,catagory_0,catagory_1):
-
-    target = []
-    data = []
-    for i in range(0,len(true_category)):
-
-        if true_category[i] in catagory_0:
-            target.append(0)
-        else:
-            target.append(1)
-
-        data.append(float(raw_data[i]))
-
-    print("Target:\t" + str(target))
-    print("Data:\t" + str(data))
-    return data, target
+    return specs,data, target
 
 
 if __name__ == '__main__':
