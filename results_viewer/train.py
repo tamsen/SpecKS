@@ -1,5 +1,6 @@
 import math
 import os
+import random
 import unittest
 import numpy as np
 from sklearn import metrics
@@ -7,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-
+from matplotlib.patches import Rectangle
 from results_viewer.allo_auto_predictor import read_xs_ys_csv, categorize_sim
 
 
@@ -37,7 +38,8 @@ class TestLinearRegression(unittest.TestCase):
     def test_linear_regression_on_high_vs_low_N_data(self):
 
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
-        sims,specs,true_category,data=get_highN_vs_lowN_truth()
+        cutoff = 60 #MY
+        sims,specs,true_category,data=get_highN_vs_lowN_truth(cutoff)
 
         target1 = [0 if m == "Low" else 1 for m in true_category]
         colors1 = ["gray" if m == 0  else "cyan" for m in target1]
@@ -47,7 +49,7 @@ class TestLinearRegression(unittest.TestCase):
         threshold_plot_title="threshold_on_low_vs_high&medium_N_data"
         threshold_plot_labels_by_case={0:"Low",1:"Medium&High"}
         case0_color="gray"
-        linear_regression_threshold1=make_both_ROC_plots(ROC_plot_base_name,
+        linear_regression_threshold1,clf1=make_both_ROC_plots(ROC_plot_base_name,
                                  colors1, data, likely_range_for_threshold,
                                  linear_regression_threshold_color1, case0_color,
                                  out_folder, specs, target1,
@@ -61,7 +63,7 @@ class TestLinearRegression(unittest.TestCase):
         threshold_plot_title = "threshold_on_low&medium_vs_high_N_data"
         threshold_plot_labels_by_case={0:"Low&Medium",1:"High"}
         case0_color="cyan"
-        linear_regression_threshold2=make_both_ROC_plots(ROC_plot_base_name,
+        linear_regression_threshold2,clf2=make_both_ROC_plots(ROC_plot_base_name,
                                  colors2, data, likely_range_for_threshold,
                                  linear_regression_threshold_color2, case0_color,
                                  out_folder, specs, target2,
@@ -70,27 +72,104 @@ class TestLinearRegression(unittest.TestCase):
         #plot the two thresholds together
         threshold_plot_title3 = "threshold_on_low_vs_medium_vs_high_N_data"
         colors3 = ["blue" if m == "High" else "cyan" if m == "Medium" else "gray" for m in true_category]
-        threshold_plot_labels_by_case = {0: "Low",1: "Low", 2: "High"}
-        fig, ax = plt.subplots(1, 1, figsize=(4, 4))
-        alpha = 0.2
-        for i in range(0, len(specs)):
-            plt.scatter(specs[i], data[i], marker='o', c=colors3[i], alpha=alpha)
+        plot_2_thresholds_against_data(colors3, data, linear_regression_threshold1, linear_regression_threshold2,
+                                            linear_regression_threshold_color1, linear_regression_threshold_color2,
+                                            out_folder, specs, threshold_plot_title3)
 
-        ax.axhline(y=linear_regression_threshold1, color=linear_regression_threshold_color1, linestyle='--',
-                   label="thresh1 lr"
-                         + " ({0})".format(round(linear_regression_threshold1, 4)))
-        ax.axhline(y=linear_regression_threshold2, color=linear_regression_threshold_color2, linestyle='--',
-                   label="thresh2 lr"
-                         + " ({0})".format(round(linear_regression_threshold2, 4)))
-        ax.set(xlabel=" spec time ")
-        ax.set(ylabel=" metric ")
-        plt.legend(loc=4)
-        ax.set(title=threshold_plot_title3)
-        plot_file = os.path.join(out_folder, threshold_plot_title3 + ".png")
-        plt.savefig(plot_file)
-        plt.close()
+        colors_by_category= {"Low":"gray","Medium":"cyan","High":"blue"}
+        accuracy_by_sim = get_accurcay_by_sim(clf1, clf2, data, sims, true_category)
+
+        high_centroid=-2; medium_centroid=-3.9; low_centroid=-8
+        plot_confusion(accuracy_by_sim, colors_by_category, high_centroid,medium_centroid,low_centroid,
+                       linear_regression_threshold1, linear_regression_threshold2, out_folder, cutoff)
+
+        cutoff = 100 #MY
+        all_sims,all_specs,all_true_category,all_data=get_highN_vs_lowN_truth(cutoff)
+        accuracy_by_sim = get_accurcay_by_sim(clf1, clf2,all_data, all_sims, all_true_category)
+        plot_confusion(accuracy_by_sim, colors_by_category, high_centroid,medium_centroid,low_centroid,
+                       linear_regression_threshold1, linear_regression_threshold2, out_folder, cutoff)
 
         return
+
+def get_accurcay_by_sim(clf1, clf2, data, sims, true_category):
+    accuracy_by_sim = {}
+    for i in range(0, len(sims)):
+        sim = sims[i]
+        x = data[i]
+        true_cat_for_sim = true_category[i]
+        y_pred1 = clf1.predict([[x]])
+        y_pred2 = clf2.predict([[x]])
+        pred_num = y_pred1 + y_pred2
+        pred_cat_for_sim = "High" if pred_num == 2 else "Medium" if pred_num == 1 else "Low"
+        accuracy_by_sim[sim] = [true_cat_for_sim, pred_cat_for_sim]
+    return accuracy_by_sim
+
+
+def plot_confusion(accuracy_by_sim, colors_by_category, high_centroid, medium_centroid, low_centroid,
+                   threshold1, threshold2, out_folder, cutoff):
+    means_by_category = {"Low": low_centroid, "Medium": medium_centroid, "High": high_centroid}
+    stutter = 0.7
+    plot_min=-12
+    plot_max=-1
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    ax.add_patch(Rectangle((plot_min, plot_min), threshold1 - plot_min, plot_max - plot_min, color='gray', alpha=0.15))
+    ax.add_patch(Rectangle((plot_min, plot_min), plot_max - plot_min,threshold1 - plot_min, color='gray', alpha=0.15))
+
+    ax.add_patch(Rectangle((threshold1, plot_min),
+                           threshold2- threshold1, plot_max - plot_min,
+                           color='cyan', alpha=0.15))
+    ax.add_patch(Rectangle((plot_min, threshold1),
+                           plot_max - plot_min, threshold2 - threshold1,
+                           color='cyan', alpha=0.15))
+
+    ax.add_patch(Rectangle((threshold2, plot_min),
+                           plot_max -threshold2, plot_max - plot_min,
+                           color='blue', alpha=0.15))
+    ax.add_patch(Rectangle((plot_min, threshold2),
+                           plot_max - plot_min, plot_max -threshold2,
+                           color='blue', alpha=0.15))
+    for sim, results in accuracy_by_sim.items():
+        [true_category, predicted_category] = accuracy_by_sim[sim]
+        x_value = means_by_category[true_category]  + stutter * (random.random() - 0.5)
+        y_value = means_by_category[predicted_category]  + stutter * (random.random() - 0.5)
+
+        plt.scatter(x_value, y_value, alpha=0.25,c=colors_by_category[true_category])
+    ax.axhline(y=threshold1, color='cyan', linestyle='--', label="lvm disc. criteria"
+                                                                 + " ({0})".format(
+        round(threshold1, 2)))
+
+    ax.axhline(y=threshold2, color='blue', linestyle='--', label="mvh disc. criteria"
+                                                                   + " ({0})".format(
+        round(threshold2, 2)))
+    ax.set(xlabel="<-- truth -->")
+    ax.set(ylabel="<-- prediction -->")
+    #ax.set(xscale='log')
+    #ax.set(yscale='log')
+    plt.legend()
+    plot_file = os.path.join(out_folder, "highN_vs_lowN_accuracy_cutoff{0}MY.png".format(cutoff))
+    plt.savefig(plot_file)
+    plt.close()
+def plot_2_thresholds_against_data(colors3, data, linear_regression_threshold1, linear_regression_threshold2,
+                                   linear_regression_threshold_color1, linear_regression_threshold_color2,
+                                   out_folder, specs, threshold_plot_title3):
+    fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+    alpha = 0.2
+    for i in range(0, len(specs)):
+        plt.scatter(specs[i], data[i], marker='o', c=colors3[i], alpha=alpha)
+    ax.axhline(y=linear_regression_threshold1, color=linear_regression_threshold_color1, linestyle='--',
+               label="thresh1 lr"
+                     + " ({0})".format(round(linear_regression_threshold1, 4)))
+    ax.axhline(y=linear_regression_threshold2, color=linear_regression_threshold_color2, linestyle='--',
+               label="thresh2 lr"
+                     + " ({0})".format(round(linear_regression_threshold2, 4)))
+    ax.set(xlabel=" spec time ")
+    ax.set(ylabel=" metric ")
+    plt.legend(loc=4)
+    ax.set(title=threshold_plot_title3)
+    plot_file = os.path.join(out_folder, threshold_plot_title3 + ".png")
+    plt.savefig(plot_file)
+    plt.close()
+
 
 def make_custom_ROC_plot(X_test, clf, custom_prob_thresholds,
                          file_basename, out_folder, y_test,accuracy_string):
@@ -161,7 +240,7 @@ def make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_thres
                                      linear_regression_threshold_color, case0_color,
                                      out_folder, threshold_plot_title, specs, plot_labels_by_case)
     print(linear_regression_threshold)
-    return linear_regression_threshold
+    return linear_regression_threshold,clf
 
 def get_linear_regession_metric_threshold(clf, likely_range_for_threshold):
     model_predictions = clf.predict(np.array([likely_range_for_threshold]).transpose())
@@ -205,7 +284,7 @@ def plot_threshold_against_data(colors, data, linear_regression_threshold,
     plt.close()
 
 
-def get_highN_vs_lowN_truth():
+def get_highN_vs_lowN_truth(cutoff):
 
     out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
     file1="metric3.csv"
@@ -221,7 +300,7 @@ def get_highN_vs_lowN_truth():
     category=[]
     data=[]
 
-    cutoff=60
+    #cutoff=60
     for i in range(0,len(wgd_sims)):
         sim = wgd_sims[i]
         spc_time=spc_xs[i]

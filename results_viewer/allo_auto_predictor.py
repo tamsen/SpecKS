@@ -3,11 +3,8 @@ import os
 import random
 import statistics
 import unittest
-
 import numpy as np
 from scipy.optimize import curve_fit
-from sklearn import linear_model
-import sklearn.metrics as metrics
 from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 from results_viewer import curve_fitting
@@ -234,58 +231,56 @@ class AlloAutoPredictor(unittest.TestCase):
         plt.savefig(plot_file)
         plt.close()
 
-        means_by_category= {"Low":low_n_mean,"Medium":med_n_mean,"High":high_n_mean}
-        stutter=0.5
-        fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-
-        ax.add_patch(Rectangle((0, 0), low_vs_medium_discrimination, 1, color='gray', alpha=0.15))
-        ax.add_patch(Rectangle((0, 0), 1, low_vs_medium_discrimination, color='gray', alpha=0.15))
-
-        ax.add_patch(Rectangle((low_vs_medium_discrimination,0),
-                               medium_vs_high_discrimination-low_vs_medium_discrimination, 1,
-                               color='cyan', alpha=0.15))
-        ax.add_patch(Rectangle((0, low_vs_medium_discrimination),
-                               1, medium_vs_high_discrimination-low_vs_medium_discrimination,
-                               color='cyan', alpha=0.15))
-
-        ax.add_patch(Rectangle((medium_vs_high_discrimination, 0),
-                               1- medium_vs_high_discrimination, 1,
-                               color='blue', alpha=0.15))
-        ax.add_patch(Rectangle((0, medium_vs_high_discrimination),
-                               1, 1- medium_vs_high_discrimination,
-                               color='blue', alpha=0.15))
-
-        for sim,results in accuracy_by_sim.items():
-
-            [true_category,predicted_category] = accuracy_by_sim[sim]
-            x_value=means_by_category[true_category]*(1+stutter*random.random())
-            y_value=means_by_category[predicted_category]*(1+stutter*random.random())
-
-            plt.scatter(x_value, y_value, alpha=0.25,
-                        c=colors_by_category[true_category])
-
-        ax.axvline(x=low_vs_medium_discrimination, color='cyan', linestyle='--', label="lvm disc. criteria"
-                                                                                       + " ({0})".format(
-            round(low_vs_medium_discrimination, 2)))
-
-        #ax.add_patch(Rectangle((0, 0), low_vs_medium_discrimination, 1), color='cyan')
-
-        ax.axvline(x=medium_vs_high_discrimination, color='purple', linestyle='--', label="mvh disc. criteria"
-                                                                                          + " ({0})".format(
-            round(medium_vs_high_discrimination, 2)))
-        ax.set(xlabel="<-- truth -->")
-        ax.set(ylabel="<-- prediction -->")
-        ax.set(xscale='log')
-        ax.set(yscale='log')
-        plt.legend()
-        plot_file = os.path.join(out_folder, "highN_vs_lowN_accuracy.png")
-        plt.savefig(plot_file)
-        plt.close()
+        plot_confusion(accuracy_by_sim, colors_by_category, high_n_mean, low_n_mean, low_vs_medium_discrimination,
+                            med_n_mean, medium_vs_high_discrimination, out_folder)
 
         make_box_plots(colors_by_category, metrics_by_category, out_folder)
 
         #data_file = os.path.join(out_folder,"highN_vs_lowN_truth_and_predictions.csv")
         #save_metrics_to_csv(plot_data, data_file)
+
+def plot_confusion(accuracy_by_sim, colors_by_category, high_n_mean, low_n_mean, low_vs_medium_discrimination,
+                   med_n_mean, medium_vs_high_discrimination, out_folder):
+    means_by_category = {"Low": low_n_mean, "Medium": med_n_mean, "High": high_n_mean}
+    stutter = 0.5
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    ax.add_patch(Rectangle((0, 0), low_vs_medium_discrimination, 1, color='gray', alpha=0.15))
+    ax.add_patch(Rectangle((0, 0), 1, low_vs_medium_discrimination, color='gray', alpha=0.15))
+    ax.add_patch(Rectangle((low_vs_medium_discrimination, 0),
+                           medium_vs_high_discrimination - low_vs_medium_discrimination, 1,
+                           color='cyan', alpha=0.15))
+    ax.add_patch(Rectangle((0, low_vs_medium_discrimination),
+                           1, medium_vs_high_discrimination - low_vs_medium_discrimination,
+                           color='cyan', alpha=0.15))
+    ax.add_patch(Rectangle((medium_vs_high_discrimination, 0),
+                           1 - medium_vs_high_discrimination, 1,
+                           color='blue', alpha=0.15))
+    ax.add_patch(Rectangle((0, medium_vs_high_discrimination),
+                           1, 1 - medium_vs_high_discrimination,
+                           color='blue', alpha=0.15))
+    for sim, results in accuracy_by_sim.items():
+        [true_category, predicted_category] = accuracy_by_sim[sim]
+        x_value = means_by_category[true_category] * (1 + stutter * random.random())
+        y_value = means_by_category[predicted_category] * (1 + stutter * random.random())
+
+        plt.scatter(x_value, y_value, alpha=0.25,
+                    c=colors_by_category[true_category])
+    ax.axvline(x=low_vs_medium_discrimination, color='cyan', linestyle='--', label="lvm disc. criteria"
+                                                                                   + " ({0})".format(
+        round(low_vs_medium_discrimination, 2)))
+    # ax.add_patch(Rectangle((0, 0), low_vs_medium_discrimination, 1), color='cyan')
+    ax.axvline(x=medium_vs_high_discrimination, color='purple', linestyle='--', label="mvh disc. criteria"
+                                                                                      + " ({0})".format(
+        round(medium_vs_high_discrimination, 2)))
+    ax.set(xlabel="<-- truth -->")
+    ax.set(ylabel="<-- prediction -->")
+    ax.set(xscale='log')
+    ax.set(yscale='log')
+    plt.legend()
+    plot_file = os.path.join(out_folder, "highN_vs_lowN_accuracy.png")
+    plt.savefig(plot_file)
+    plt.close()
+
 
 def predict_category(low_vs_medium_discrimination, medium_vs_high_discrimination, metric):
     if metric < low_vs_medium_discrimination:
