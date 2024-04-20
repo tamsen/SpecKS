@@ -39,31 +39,56 @@ class TestLinearRegression(unittest.TestCase):
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         sims,specs,true_category,data=get_highN_vs_lowN_truth()
 
-        target = [0 if m == "Low" else 1 for m in true_category]
-        colors = ["gray" if m == 0  else "cyan" for m in target]
-        linear_regression_threshold_color = 'cyan'
+        target1 = [0 if m == "Low" else 1 for m in true_category]
+        colors1 = ["gray" if m == 0  else "cyan" for m in target1]
+        linear_regression_threshold_color1 = 'cyan'
         likely_range_for_threshold = np.arange(-6, -4, 0.001)
         ROC_plot_base_name="low_vs_high&medium_N_basic_ROC"
         threshold_plot_title="threshold_on_low_vs_high&medium_N_data"
         threshold_plot_labels_by_case={0:"Low",1:"Medium&High"}
         case0_color="gray"
-        make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
-                                 linear_regression_threshold_color, case0_color,
-                                 out_folder, specs, target,
+        linear_regression_threshold1=make_both_ROC_plots(ROC_plot_base_name,
+                                 colors1, data, likely_range_for_threshold,
+                                 linear_regression_threshold_color1, case0_color,
+                                 out_folder, specs, target1,
                                  threshold_plot_title, threshold_plot_labels_by_case)
 
-        target = [1 if m == "High" else 0 for m in true_category]
-        colors = ["cyan" if m == 0 else "blue" for m in target]
-        linear_regression_threshold_color = 'blue'
+        target2 = [1 if m == "High" else 0 for m in true_category]
+        colors2 = ["cyan" if m == 0 else "blue" for m in target2]
+        linear_regression_threshold_color2 = 'blue'
         likely_range_for_threshold = np.arange(-6, -1, 0.001)
         ROC_plot_base_name = "low&medium_vs_high_N_basic_ROC"
         threshold_plot_title = "threshold_on_low&medium_vs_high_N_data"
         threshold_plot_labels_by_case={0:"Low&Medium",1:"High"}
         case0_color="cyan"
-        make_both_ROC_plots(ROC_plot_base_name, colors, data, likely_range_for_threshold,
-                                 linear_regression_threshold_color, case0_color,
-                                 out_folder, specs, target,
+        linear_regression_threshold2=make_both_ROC_plots(ROC_plot_base_name,
+                                 colors2, data, likely_range_for_threshold,
+                                 linear_regression_threshold_color2, case0_color,
+                                 out_folder, specs, target2,
                                  threshold_plot_title,threshold_plot_labels_by_case)
+
+        #plot the two thresholds together
+        threshold_plot_title3 = "threshold_on_low_vs_medium_vs_high_N_data"
+        colors3 = ["blue" if m == "High" else "cyan" if m == "Medium" else "gray" for m in true_category]
+        threshold_plot_labels_by_case = {0: "Low",1: "Low", 2: "High"}
+        fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+        alpha = 0.2
+        for i in range(0, len(specs)):
+            plt.scatter(specs[i], data[i], marker='o', c=colors3[i], alpha=alpha)
+
+        ax.axhline(y=linear_regression_threshold1, color=linear_regression_threshold_color1, linestyle='--',
+                   label="thresh1 lr"
+                         + " ({0})".format(round(linear_regression_threshold1, 4)))
+        ax.axhline(y=linear_regression_threshold2, color=linear_regression_threshold_color2, linestyle='--',
+                   label="thresh2 lr"
+                         + " ({0})".format(round(linear_regression_threshold2, 4)))
+        ax.set(xlabel=" spec time ")
+        ax.set(ylabel=" metric ")
+        plt.legend(loc=4)
+        ax.set(title=threshold_plot_title3)
+        plot_file = os.path.join(out_folder, threshold_plot_title3 + ".png")
+        plt.savefig(plot_file)
+        plt.close()
 
         return
 
