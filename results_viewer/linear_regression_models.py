@@ -89,7 +89,30 @@ class TestLinearRegression(unittest.TestCase):
         plot_confusion(accuracy_by_sim, colors_by_category, high_centroid,medium_centroid,low_centroid,
                        linear_regression_threshold1, linear_regression_threshold2, out_folder, cutoff)
 
+        example_cutoffs=np.arange(20, 110, 10)
+        accuracies=[]
+        threshold_plot_title3="Classifier accuracy by time range"
+        for cutoff in example_cutoffs:
+            all_sims, all_specs, all_true_category, all_data = get_highN_vs_lowN_truth(cutoff)
+            accuracy_by_sim = get_accurcay_by_sim(clf1, clf2, all_data, all_sims, all_true_category)
+            test=[accuracy_by_sim[sim][0] for sim in accuracy_by_sim]
+            pred=[accuracy_by_sim[sim][1] for sim in accuracy_by_sim]
+            accuracy = metrics.accuracy_score(test, pred)
+            accuracies.append(accuracy )
+
+        fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+        ax.set(xlabel=" spec time cutoff ")
+        ax.set(ylabel=" accuracy ")
+        ax.set(ylim=[0,1.2])
+        plt.plot(example_cutoffs,accuracies, marker='x')
+        plt.legend(loc=4)
+        ax.set(title=threshold_plot_title3)
+        plot_file = os.path.join(out_folder, "Accuracy_by_cutoff" + ".png")
+        plt.savefig(plot_file)
+        plt.close()
+        print(accuracies)
         return
+
 
 def get_accurcay_by_sim(clf1, clf2, data, sims, true_category):
     accuracy_by_sim = {}

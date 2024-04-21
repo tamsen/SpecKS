@@ -1,0 +1,1342 @@
+1kP_Sample,Clade,Family,Species,Tissue Type,Status,Voucher Data,Sample Provider,RNA Extractor
+URDJ,Basalmost angiosperms,Amborellaceae,Amborella trichopoda,leaves,sequenced,Soltis and Miles 2778,D. Soltis,BGI
+WTKZ,Basalmost angiosperms,Nymphaeaceae,Nuphar advena,young leaves,sequenced,Soltis and Miles 2783,D. Soltis,BGI
+PZRT,Basalmost angiosperms,Nymphaeaceae,Nymphaea sp.,young leaves,sequenced,T. Chen et al. 2010090805,Tao Chen,BGI
+ROAP,Basalmost angiosperms,Schisandraceae (incl. Illiciac.),Illicium parviflorum,leaves,sequenced,Soltis and Miles 2799,D. Soltis,BGI
+VZCI,Basalmost angiosperms,Schisandraceae (incl. Illiciac.),Illicium floridanum,young leaves,sequenced,Soltis and Miles 2960,D. Soltis,D. Soltis
+NWMY,Basalmost angiosperms,Schisandraceae (incl. Illiciac.),Kadsura heteroclita,leaves,sequenced,T. Chen et. al. 081210-04,Tao Chen,BGI
+FZJL,Basalmost angiosperms,Austrobaileyaceae,Austrobaileya scandens,young shoot,sequenced,JLM2013-22 (GA),J. Leebens-Mack,J. Leebens-Mack
+NPND,Basalmost angiosperms,Ceratophyllaceae,Ceratophyllum demersum,leaves,sequenced,Soltis and Miles 2755,D. Soltis,BGI
+DDEV,Magnoliids,Canellaceae,Canella winterana,young leaves,sequenced,Soltis and Miles 2995,D. Soltis,I. Jordon-Thaden
+IFCJ,Magnoliids,Canellaceae,Canella winterana,young leaves,sequenced,Soltis and Miles 2995,D. Soltis,D. Soltis
+WKSU,Magnoliids,Winteraceae,Drimys winteri,leaves,sequenced,Soltis and Miles 2843,D. Soltis,BGI
+WAIL,Magnoliids,Atherospermataceae,Laurelia sempervirens,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+FALI,Magnoliids,Calycanthaceae,Calycanthus floridus,leaves,sequenced,Soltis and Miles 2752,D. Soltis,BGI
+WPHN,Magnoliids,Calycanthaceae,Idiospermum australiense,young shoot,sequenced,JLM2013-45 (GA),J. Leebens-Mack,J. Leebens-Mack
+MAQO,Magnoliids,Gomortegaceae,Gomortega keule,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+BSVG,Magnoliids,Hernandiaceae,Gyrocarpus americanus,young leaves,sequenced,Soltis and Miles 2908,D. Soltis,BGI
+BCGB,Magnoliids,Lauraceae,Cinnamomum camphora,leaves,sequenced,DWS NY424/43,D. W. Stevenson,BGI
+ABSS,Magnoliids,Lauraceae,Sassafras albidum,young leaves,sequenced,Soltis and Miles 2914,D. Soltis,BGI
+KAYP,Magnoliids,Lauraceae,Lindera benzoin,young leaves,sequenced,Soltis & Miles 2968,D. Soltis,D. Soltis
+WIGA,Magnoliids,Lauraceae,Persea borbonia,young leaves and shoots,sequenced,Soltis and Miles 2980,D. Soltis,D. Soltis
+VYLQ,Magnoliids,Lauraceae,Cassytha filiformis,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+KRJP,Magnoliids,Monimiaceae,Peumus boldus,leaves,sequenced,Chase 34466 K,M. Chase,BGI
+YZRI,Magnoliids,Annonaceae,Annona muricata,leaves,sequenced,Soltis and Miles 2753,D. Soltis,BGI
+PSJT,Magnoliids,Annonaceae,Uvaria microcarpa,young leaves,sequenced,T. Chen et. al. 2010090803,Tao Chen,BGI
+DHPO,Magnoliids,Eupomatiaceae,Eupomatia bennettii,leaves,sequenced,Soltis and Miles 2750,D. Soltis,BGI
+XQWC,Magnoliids,Magnoliaceae,Michelia maudiae,young leaves,sequenced,Soltis and Miles 2954,D. Soltis,D. Soltis
+WBOD,Magnoliids,Magnoliaceae,Magnolia grandiflora,leaves,sequenced,Soltis and Miles 2764,D. Soltis,BGI
+OBPL,Magnoliids,Myristicaceae,Myristica fragrans,leaves,sequenced,Chase 33144,M. Chase,BGI
+PAWA,Magnoliids,Aristolochiaceae,Aristolochia elegans,leaves,sequenced,Soltis and Miles 2754,D. Soltis,BGI
+QDVW,Magnoliids,Aristolochiaceae,Saruma henryi,leaves,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+MUNP,Magnoliids,Piperaceae,Piper auritum,leaves,sequenced,Soltis and Miles 2794,D. Soltis,BGI
+XSZI,Magnoliids,Piperaceae,Peperomia fraseri,"flowers, stem, leaves",sequenced,132712 (ALTA),M. Deyholos,M. Deyholos
+OPDF,Magnoliids,Saururaceae,Saururus cernuus,leaves,sequenced,Soltis and Miles 2784,D. Soltis,BGI
+CSSK,Magnoliids,Saururaceae,Houttuynia cordata,leaves,sequenced,T. Chen et. al. 081210-03,Tao Chen,BGI
+WPYJ,Magnoliids,Frankeniaceae,Frankenia laevis,,sequenced,JLM2013-41 (GA),J. Leebens-Mack,J. Leebens-Mack
+OSHQ,Chloranthales,Chloranthaceae,Sarcandra glabra,leaves,sequenced,T. Chen et. al. 081210-04,Tao Chen,BGI
+WZFE,Chloranthales,Chloranthaceae,Ascarina rubricaulis,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+IWMW,Basal Eudicots,Buxaceae,Buxus sempervirens,green branch with attached leaves,sequenced,132722 (ALTA),M. Deyholos,M. Deyholos
+AALA,Basal Eudicots,Sabiaceae,Meliosma cuneifolia,leaves,sequenced,Chase 33142,M. Chase,BGI
+SWOH,Basal Eudicots,Trochodendraceae,Trochodendron aralioides,young leaves and flowers,sequenced,DWS NY 334/82A,D. W. Stevenson,BGI
+FAKD,Basal Eudicots,Nelumbonaceae,Nelumbo sp.,leaves,sequenced,Chase 34460 K,M. Chase,BGI
+GRRW,Basal Eudicots,Proteaceae,Grevillea robusta,leaves,sequenced,Soltis and Miles 2758,D. Soltis,BGI
+REOF,Basal Eudicots,Proteaceae,Hakea prostrata,young roots,sequenced,Perth 07984049,R. Jost,R. Jost
+OBOJ,Basal Eudicots,Proteaceae,Hakea prostrata,young leaves,sequenced,Perth 07984049,R. Jost,R. Jost
+SIIK,Basal Eudicots,Proteaceae,Hakea drupacea,young shoot,sequenced,J. Clopton 212 (PERTH),P. M. Finnegan,R. Jost
+VQFW,Basal Eudicots,Platanaceae,Platanus occidentalis,leaves,sequenced,Soltis and Miles 2757,D. Soltis,BGI
+WFBF,Basal Eudicots,Berberidaceae,Podophyllum peltatum,leaves and root,sequenced,in preparation,M. Deyholos,M. Deyholos
+YHFG,Basal Eudicots,Berberidaceae,Nandina domestica,young leaves and flower buds,sequenced,Soltis and Miles 2972,D. Soltis,D. Soltis
+QTJY,Basal Eudicots,Eupteleaceae,Euptelea pleiosperma,leaves,sequenced,Chase 33135 ,M. Chase,BGI
+CCID,Basal Eudicots,Lardizabalaceae,Akebia trifoliata,leaves,sequenced,Soltis and Miles 2751,D. Soltis,BGI
+LVNW,Basal Eudicots,Menispermaceae,Cocculus laurifolius,leaves,sequenced,Soltis and Miles 2837,D. Soltis,BGI
+NMGG,Basal Eudicots,Fumariaceae,Hypecoum procumbens,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+AUGV,Basal Eudicots,Papaveraceae,Capnoides sempervirens,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+UDHA,Basal Eudicots,Papaveraceae,Ceratocapnos vesicaria,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XHKT,Basal Eudicots,Papaveraceae,Sanguinaria canadensis,young shoot and flower buds,sequenced,JLM2013-65 (GA),J. Leebens-Mack,J. Leebens-Mack
+YDEH,Basal Eudicots,Papaveraceae,Argemone mexicana,leaf,sequenced,T. Kutchan 6173585 (MO),T. Kutchan,T. Kutchan
+GOQJ,Basal Eudicots,Papaveraceae,Argemone mexicana,stem,sequenced,T. Kutchan 6173585 (MO),T. Kutchan,T. Kutchan
+SMZF,Basal Eudicots,Papaveraceae,Argemone mexicana,root,sequenced,T. Kutchan 6173585 (MO),T. Kutchan,T. Kutchan
+CCHG,Basal Eudicots,Papaveraceae,Argemone mexicana,flower bud,sequenced,T. Kutchan 6173585 (MO),T. Kutchan,T. Kutchan
+BFMT,Basal Eudicots,Papaveraceae,Argemone mexicana,developing fruit,sequenced,T. Kutchan 6173585 (MO),T. Kutchan,T. Kutchan
+UNPT,Basal Eudicots,Papaveraceae,Eschscholzia californica,leaf,sequenced,T. Kutchan 6173583 (MO),T. Kutchan,T. Kutchan
+NJKC,Basal Eudicots,Papaveraceae,Eschscholzia californica,stem,sequenced,T. Kutchan 6173583 (MO),T. Kutchan,T. Kutchan
+RKGT,Basal Eudicots,Papaveraceae,Eschscholzia californica,root,sequenced,T. Kutchan 6173583 (MO),T. Kutchan,T. Kutchan
+TUHA,Basal Eudicots,Papaveraceae,Eschscholzia californica,flower bud,sequenced,T. Kutchan 6173583 (MO),T. Kutchan,T. Kutchan
+ERXG,Basal Eudicots,Papaveraceae,Eschscholzia californica,developing fruit,sequenced,T. Kutchan 6173583 (MO),T. Kutchan,T. Kutchan
+RRID,Basal Eudicots,Papaveraceae,Papaver bracteatum,leaf,sequenced,waiting for bloom 2010-03-17,T. Kutchan,T. Kutchan
+TMWO,Basal Eudicots,Papaveraceae,Papaver bracteatum,bulb,sequenced,waiting for bloom 2010-03-17,T. Kutchan,T. Kutchan
+ZSNV,Basal Eudicots,Papaveraceae,Papaver bracteatum,root,sequenced,waiting for bloom 2010-03-17,T. Kutchan,T. Kutchan
+ACYX,Basal Eudicots,Papaveraceae,Papaver rhoeas,leaf,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+GMAM,Basal Eudicots,Papaveraceae,Papaver rhoeas,stem,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+QZBA,Basal Eudicots,Papaveraceae,Papaver rhoeas,root,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+IORZ,Basal Eudicots,Papaveraceae,Papaver rhoeas,flower bud,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+MVTX,Basal Eudicots,Papaveraceae,Papaver rhoeas,developing fruit,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+FNXH,Basal Eudicots,Papaveraceae,Papaver setigerum,leaf,sequenced,T. Kutchan 6173582 (MO),T. Kutchan,T. Kutchan
+MLPX,Basal Eudicots,Papaveraceae,Papaver setigerum,stem,sequenced,T. Kutchan 6173582 (MO),T. Kutchan,T. Kutchan
+JSVC,Basal Eudicots,Papaveraceae,Papaver setigerum,root,sequenced,T. Kutchan 6173582 (MO),T. Kutchan,T. Kutchan
+STDO,Basal Eudicots,Papaveraceae,Papaver setigerum,flower bud,sequenced,T. Kutchan 6173582 (MO),T. Kutchan,T. Kutchan
+EPRK,Basal Eudicots,Papaveraceae,Papaver setigerum,developing fruit,sequenced,T. Kutchan 6173582 (MO),T. Kutchan,T. Kutchan
+BMRX,Basal Eudicots,Papaveraceae,Papaver somniferum,leaf,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+SUFP,Basal Eudicots,Papaveraceae,Papaver somniferum,stem,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+MIKW,Basal Eudicots,Papaveraceae,Papaver somniferum,root,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+FPYZ,Basal Eudicots,Papaveraceae,Papaver somniferum,flower bud,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+KKCW,Basal Eudicots,Papaveraceae,Papaver somniferum,developing fruit,sequenced,T. Kutchan 6173586 (MO),T. Kutchan,T. Kutchan
+ZGQD,Basal Eudicots,Papaveraceae,Corydalis linstowiana,leaves,sequenced,Chase 34442 K,M. Chase,BGI
+XMVD,Basal Eudicots,Papaveraceae,Chelidonium majus,leaf,sequenced,M.K. Deyholos 2016-100,M. Deyholos,Yu Yang
+VGHH,Basal Eudicots,Ranunculaceae,Hydrastis canadensis,young shoots and flowers,sequenced,JLM2013-44 (GA),J. Leebens-Mack,J. Leebens-Mack
+CYVA,Basal Eudicots,Ranunculaceae,Cimicifuga racemosa,root and shoot,sequenced,,M. Deyholos,M. Deyholos
+ZUHO,Basal Eudicots,Ranunculaceae,Anemone hupehensis,leaf,sequenced,,D. W. Stevenson,BGI
+GBVZ,Basal Eudicots,Ranunculaceae,Thalictrum thalictroides,floral buds,sequenced,V. Di Stilio 123 (WTU),V. Di Stilio,V. Di Stilio
+UPOG,Basal Eudicots,Ranunculaceae,Anemone pulsatilla,leaf,sequenced,M.K. Deyholos 2016-101,M. Deyholos,Yu Yang
+XMQO,Basal Eudicots,Gunneraceae,Gunnera manicata,young leaves,sequenced,Soltis and Miles 2938,D. Soltis,I. Jordon-Thaden
+QUTB,Basal Eudicots,Aextoxicaceae,Aextoxicon punctatum,leaves,sequenced,Chase 33145,M. Chase,BGI
+HAEU,Basal Eudicots,Berberidopsidaceae,Berberidopsis beckleri,leaves,sequenced,Chase 33137,M. Chase,BGI
+EHNF,Basal Eudicots,Dilleniaceae,Dillenia indica,leaves,sequenced,Soltis and Miles 2768,D. Soltis,BGI
+OKEF,Basal Eudicots,Dilleniaceae,Hibbertia grossulariifolia,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+BJKT,Core Eudicots,Aizoaceae,Delosperma echinatum,leaves and young flowers,sequenced,Soltis and Miles 2832,D. Soltis,BGI
+GJNX,Core Eudicots,Aizoaceae,Cypselea humifusa,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+HZTS,Core Eudicots,Aizoaceae,Sesuvium portulacastrum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+OPZX,Core Eudicots,Aizoaceae,Sesuvium verrucosum,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+ZJDK,Core Eudicots,Aizoaceae,Sesuvium verrucosum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+QNIK,Core Eudicots,Aizoaceae,Trianthema portulacastrum,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+TNVE,Core Eudicots,Aizoaceae,Trianthema portulacastrum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+BERS,Core Eudicots,Aizoaceae,Zaleya pentandra,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+VKOE,Core Eudicots,Amaranthaceae,Aerva lanata,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+EMIG,Core Eudicots,Amaranthaceae,Aerva lanata,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+MEAH,Core Eudicots,Amaranthaceae,Aerva persica,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+GBCQ,Core Eudicots,Amaranthaceae,Aerva persica,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+JBGU,Core Eudicots,Amaranthaceae,Amaranthus palmeri,leaves and stems,sequenced,Chance,N. Stewart,N. Stewart
+XSSD,Core Eudicots,Amaranthaceae,Amaranthus tricolor,"young leaves, stem, and flowers",sequenced,132716 (ALTA),M. Deyholos,M. Deyholos
+WMLW,Core Eudicots,Amaranthaceae,Amaranthus retroflexus,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+CUTE,Core Eudicots,Amaranthaceae,Blutaparon vermiculare,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+WGET,Core Eudicots,Amaranthaceae,Kochia scoparia,stem and leaves,sequenced,M.K. Deyholos 2016-102,M. Deyholos,M. Deyholos
+BDIW,Core Eudicots,Chenopodiaceae,Atriplex hortensis,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+AKTA,Core Eudicots,Chenopodiaceae,Atriplex hortensis,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+EPVF,Core Eudicots,Chenopodiaceae,Atriplex prostrata,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+MUCT,Core Eudicots,Chenopodiaceae,Atriplex prostrata,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+PDXY,Core Eudicots,Chenopodiaceae,Atriplex rosea,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+LBZM,Core Eudicots,Chenopodiaceae,Atriplex rosea,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+SMMC,Core Eudicots,Amaranthaceae,Chenopodium quinoa,leaves and buds,sequenced,Ames 13220 (UWA),M. Nelson,M. Nelson
+KTQI,Core Eudicots,Amaranthaceae,Alternanthera brasiliana,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+ENCD,Core Eudicots,Amaranthaceae,Alternanthera brasiliana,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+WGUG,Core Eudicots,Amaranthaceae,Alternanthera caracasana,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+VUIT,Core Eudicots,Amaranthaceae,Alternanthera caracasana,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+LUNL,Core Eudicots,Amaranthaceae,Alternanthera sessilis,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+OYST,Core Eudicots,Amaranthaceae,Alternanthera sessilis,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DEMH,Core Eudicots,Amaranthaceae,Alternanthera tenella,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DBCE,Core Eudicots,Amaranthaceae,Alternanthera tenella,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+FVXD,Core Eudicots,Amaranthaceae,Beta maritima,leaves,sequenced,Cheeseman UIUC003,J. Cheeseman,J. Cheeseman
+HSXO,Core Eudicots,Ancistrocladaceae,Ancistrocladus tectorius,young leaves,low quality,T. Chen et. al. 2010090809,Tao Chen,BGI
+CTYH,Core Eudicots,Basellaceae,Basella alba,leaves,sequenced,Chase 33139 ,M. Chase,BGI
+JLOV,Core Eudicots,Cactaceae,Pereskia aculeata,young leaves,low quality,Soltis and Miles 2831,J. Leebens-Mack,BGI
+CPKP,Core Eudicots,Cactaceae,Lophophora williamsii,whole plant (no flower),sequenced,M.K. Deyholos 2016-103,M. Deyholos,M. Deyholos
+QAIR,Core Eudicots,Cactaceae,Opuntia polyacantha,paddle,sequenced,132751 (ALTA),M. Deyholos,M. Deyholos
+SKNL,Core Eudicots,Caryophyllaceae,Saponaria officinalis,"flower, fruit, stem, leaves",sequenced,132760 (ALTA),M. Deyholos,M. Deyholos
+RXEN,Core Eudicots,Caryophyllaceae,Polycarpaea repens,green leaves and shoots,sequenced,,Dmitry Filatov,BGI
+TJES,Core Eudicots,Caryophyllaceae,Spergularia media,leaves,sequenced,CheesemanUIUC007,J. Cheeseman,J. Cheeseman
+OLES,Core Eudicots,Caryophyllaceae,Schiedea membranacea,,sequenced,Weller and Sakai 864 192-30,D. Soltis,J. Leebens-Mack
+SHEZ,Core Eudicots,Caryophyllaceae,Dianthus caryophyllus,leaves and young flowers,sequenced,Soltis and Miles 2849,D. Soltis,BGI
+FZQN,Core Eudicots,Caryophyllaceae,Silene latifolia,"flowers, leaves, stem",sequenced,J.R. McDill 2011-8,M. Deyholos,M. Deyholos
+RNBN,Core Eudicots,Molluginaceae,Mollugo cerviana,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+CUVY,Core Eudicots,Molluginaceae,Mollugo nudicaulis,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+UNSW,Core Eudicots,Molluginaceae,Mollugo nudicaulis,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+HURS,Core Eudicots,Molluginaceae,Mollugo pentaphylla,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+BZMI,Core Eudicots,Molluginaceae,Mollugo spp.,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+QASA,Core Eudicots,Molluginaceae,Mollugo verticillata,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+OFWX,Core Eudicots,Molluginaceae,Mollugo verticillata,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+WQUF,Core Eudicots,Nepenthaceae,Nepenthes alata,lower leaf,sequenced,Miles 58,D. Soltis,BGI
+JAFJ,Core Eudicots,Nyctaginaceae,Bougainvillea spectabilis,leaves,sequenced,Soltis and Miles 2777,D. Soltis,BGI
+DVXD,Core Eudicots,Nyctaginaceae,Allionia incarnata,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+EGOS,Core Eudicots,Nyctaginaceae,Allionia incarnata,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+WHHY,Core Eudicots,Nyctaginaceae,Boerhavia coccinea,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+MBWM,Core Eudicots,Nyctaginaceae,Boerhavia coccinea,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+HUGU,Core Eudicots,Nyctaginaceae,Boerhavia burbidgeana,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+GDYP,Core Eudicots,Nyctaginaceae,Boerhavia burbidgeana,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+GQAV,Core Eudicots,Nyctaginaceae,Mirabilis jalapa,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DZRA,Core Eudicots,Nyctaginaceae,Mirabilis jalapa,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+RUUB,Core Eudicots,Physenaceae,Physena madagascariensis,leaves,sequenced,Chase 33153 K,M. Chase,BGI
+BKQU,Core Eudicots,Phytolaccaceae,Phytolacca americana,leaves and young flowers,sequenced,Soltis and Miles 2759,D. Soltis,BGI
+AZBL,Core Eudicots, Petiveriaceae,Petiveria alliacea,young leaves,sequenced,Soltis and Miles 2939,D. Soltis,D. Soltis
+MRKX,Core Eudicots,Phytolaccaceae,Phytolacca bogotensis,"flowers, developing fruits, leaves, stem",sequenced,132753 (ALTA),M. Deyholos,M. Deyholos
+YNFJ,Core Eudicots,Miroteaceae,Microtea debilis,young leaves,sequenced,Soltis and Miles 2997,D. Soltis,I. Jordon-Thaden
+SFKQ,Core Eudicots,Phytolaccaceae,Hilleria latifolia,young leaves and flower buds,sequenced,Soltis and Miles 2976,D. Soltis,BGI
+CGGO,Core Eudicots,Plumbaginaceae,Plumbago auriculata,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+WOBD,Core Eudicots,Plumbaginaceae,Limonium spectabile,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+FYSJ,Core Eudicots,Polygonaceae,Polygonum convolvulus,young shoot,sequenced,"Zuidof-Lacombe AB, Wild buckwheat#1",N. Stewart,BGI
+CZJT,Core Eudicots,Portulacaceae,Portulaca oleracea,young shoot,sequenced,"Zuidof-Lacombe AB, Purslane#1",N. Stewart,BGI
+QMUN,Core Eudicots,Portulacaceae,Portulaca amilis,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+LFQH,Core Eudicots,Portulacaceae,Portulaca amilis,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+VPCP,Core Eudicots,Portulacaceae,Portulaca cryptopetala,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+TMMR,Core Eudicots,Portulacaceae,Portulaca cryptopetala,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+CPLT,Core Eudicots,Portulacaceae,Portulaca grandiflora,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+BYNZ,Core Eudicots,Portulacaceae,Portulaca umbraticola,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+UQCB,Core Eudicots,Portulacaceae,Portulaca molokiniensis,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+TRLB,Core Eudicots,Portulacaceae,Portulaca oleracea,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+IWIS,Core Eudicots,Portulacaceae,Portulaca pilosa,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+GCYL,Core Eudicots,Portulacaceae,Portulaca suffrutescens,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+KDCH,Core Eudicots,Portulacaceae,Portulaca umbraticola,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+LKKX,Core Eudicots,Talinaceae,Talinum sp.,young leaves,sequenced,Soltis and Miles 2979,D. Soltis,D. Soltis
+GIWN,Core Eudicots,Sarcobataceae,Sarcobatus vermiculatus,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+CVDF,Core Eudicots,Simmondsiaceae,Simmondsia chinensis,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+HTDC,Core Eudicots,Tamaricaceae,Tamarix chinensis,leaves,sequenced,Chase 33138,M. Chase,BGI
+STKY,Core Eudicots,Balanophoraceae,Balanophora fungosa,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XKPS,Core Eudicots,Olacaceae,Ximenia americana,young leaves and shoots,sequenced,Soltis and Miles 2949,D. Soltis,D. Soltis
+VGVI,Core Eudicots,Loranthaceae,Dendropemon caribaeus,seedlings / whole plant,sequenced,CWD 2012.10,C. DePamphilis,C. DePamphilis
+RSPO,Core Eudicots,Santalaceae,Santalum acuminatum,,sequenced,Pfc38A,A. Lowe,BGI
+BSEY,Core Eudicots,Santalaceae,Daenikera sp.,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XGFU,Core Eudicots,Santalaceae,Exocarpos cupressiformis,,sequenced,DJ490A,A. Lowe,BGI
+QKMG,Core Eudicots,Viscaceae,Phoradendron serotinum,"leaves, stem, fruit",sequenced,CWD+JRM 2012.4,C. DePamphilis,C. DePamphilis
+DMKC,Core Eudicots,Hamamelidaceae,Hamamelis virginiana,leaves,sequenced,Soltis and Miles 2792,D. Soltis,BGI
+YHXT,Core Eudicots,Hamamelidaceae,Hamamelis virginiana,leaves,sequenced,1440/57B,D. W. Stevenson,BGI
+HQRJ,Core Eudicots,Hamamelidaceae,Loropetalum chinense,leaves,sequenced,Soltis and Miles 2858,D. Soltis,BGI
+OMDH,Core Eudicots,Hamamelidaceae,Loropetalum chinense,leaves,sequenced,Chase 34458 K,M. Chase,BGI
+FWBF,Core Eudicots,Alangiaceae,Alangium chinense,leaves,sequenced,Chase 34454 K,M. Chase,BGI
+LMVB,Core Eudicots,Altingiaceae,Liquidambar styraciflua,leaves,sequenced,Soltis and Miles 2850,D. Soltis,BGI
+NUZN,Core Eudicots,Cercidiphyllaceae,Cercidiphyllum japonicum,young leaves,sequenced,DWS NY 65/100A,D. W. Stevenson,BGI
+ZJUL,Core Eudicots,Crassulaceae,Rhodiola rosea,"flowers, stem, leaves",sequenced,132756 (ALTA),M. Deyholos,M. Deyholos
+KWGC,Core Eudicots,Crassulaceae,Crassula perforata,young leaves,sequenced,Soltis and Miles 2809,D. Soltis,BGI
+DRIL,Core Eudicots,Crassulaceae,Kalanchoe crenato-diagremontiana,young leaves,sequenced,Soltis and Miles 2808,D. Soltis,BGI
+FYTP,Core Eudicots,Daphniphyllaceae,Daphniphyllum macropodum,vegetative shoot meristems,sequenced,Chase 33136,M. Chase,BGI
+SYHW,Core Eudicots,Grossulariaceae,Ribes aff. giraldii,leaves,sequenced,Chase 34453 K,M. Chase,BGI
+IUSR,Core Eudicots,Haloragaceae,Myriophyllum aquaticum,leaves,sequenced,Soltis and Miles 2788,D. Soltis,BGI
+TOKV,Core Eudicots,[Aphanopetalaceae],Aphanopetalum resinosum,leaves,sequenced,Chase 34479 K,M. Chase,BGI
+UWFU,Core Eudicots,Iteaceae,Itea virginica,leaves,sequenced,Soltis and Miles 2760,D. Soltis,BGI
+HTIP,Core Eudicots,Paeoniacae,Paeonia lactiflora,flower buds,sequenced,Chase 33134 ,M. Chase,BGI
+FCBJ,Core Eudicots,Saxifragaceae,Saxifraga stolonifera,leaves,sequenced,Soltis and Miles 2795,D. Soltis,BGI
+ERIA,Core Eudicots,Saxifragaceae,Heuchera sanguinea,young leaves,sequenced,Soltis and Miles 2906,D. Soltis,BGI
+CIAC,Core Eudicots,Saxifragaceae,Bergenia sp.,young leaves,sequenced,Soltis and Miles 2904,D. Soltis,BGI
+UHBY,Core Eudicots,Saxifragaceae,Oresitrophe rupifraga,young leaves,sequenced,Soltis and Miles 2918,J. Leebens-Mack,J. Leebens-Mack
+DAYQ,Core Eudicots,Saxifragaceae,Mitella pentandra,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+OOVX,Core Eudicots,Saxifragaceae,Boykinia jamesii,young leaves,sequenced,Chase 38782,D. Soltis,D. Soltis
+CKKR,Core Eudicots,Saxifragaceae,Astilbe chinensis,young leaves,sequenced,Chase 38784,D. Soltis,D. Soltis
+SLOI,Core Eudicots,Saxifragaceae,Tiarella polyphylla,young leaves,sequenced,Chase 38786,D. Soltis,D. Soltis
+YKFU,Core Eudicots,Saxifragaceae,Peltoboykinia watanabei,young leaves,sequenced,Chase 38787,D. Soltis,D. Soltis
+CTSS,Core Eudicots,Saxifragaceae,Tellima breviflora,young leaves,sequenced,Chase 38789,D. Soltis,D. Soltis
+BGZG,Core Eudicots/Rosids,Vitaceae,Cissus quadrangularis,leaves,sequenced,Chase 34459 K,M. Chase,BGI
+SZPD,Core Eudicots/Rosids,Vitaceae,Tetrastigma voinierianum,young leaves,sequenced,Soltis and Miles 2853,D. Soltis,BGI
+BBBA,Core Eudicots/Rosids,Vitaceae,Tetrastigma obtectum,leaves,sequenced,Chase 34457 K,M. Chase,BGI
+VYGG,Core Eudicots/Rosids,Stachyuraceae,Stachyurus praecox,young leaves,sequenced,DWS NY 487/2003B,D. W. Stevenson,BGI
+PTLU,Core Eudicots/Rosids,Staphyleaceae,Staphylea trifolia,vegetative shoots,sequenced,JLM2013-66 (GA),J. Leebens-Mack,J. Leebens-Mack
+VKGP,Core Eudicots/Rosids,Geraniaceae,Geranium carolinianum,young leaves and some flower buds,sequenced,Soltis and Miles 2919,D. Soltis,BGI
+YGCX,Core Eudicots/Rosids,Geraniaceae,Geranium maculatum,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+HDWF,Core Eudicots/Rosids,Melianthaceae,Francoa appendiculata,leaves,sequenced,Chase 33147 ,M. Chase,BGI
+FONV,Core Eudicots/Rosids,Melianthaceae,Greyia sutherlandii,leaves,sequenced,Soltis and Miles 2844,D. Soltis,BGI
+AJJE,Core Eudicots/Rosids,Combretaceae,Terminalia neotaliala,leaves,sequenced,Chase 34481 K,M. Chase,BGI
+NIJU,Core Eudicots/Rosids,Heteropyxidaceae,Heteropyxis natalensis,leaves,sequenced,T. McLellan (J),Tracy McLellan,BGI
+RJNQ,Core Eudicots/Rosids,Lythraceae,Lagerstroemia indica,young leaves,sequenced,Soltis and Miles 2971,D. Soltis,D. Soltis
+JROW,Core Eudicots/Rosids,Lythraceae,Punica granatum,young leaves,sequenced,Soltis and Miles 2973,D. Soltis,D. Soltis
+QEBC,Core Eudicots/Rosids,Lythraceae,Punica granatum,young leaves,sequenced,Soltis and Miles 2973,D. Soltis,D. Soltis
+YMUO,Core Eudicots/Rosids,Lythraceae,Punica granatum,developing seeds,sequenced,M.K. Deyholos 2016-104,M. Deyholos,Elzbieta Mietkiewska
+VUGF,Core Eudicots/Rosids,Lythraceae,Punica granatum,developing seeds,sequenced,M.K. Deyholos 2016-105,M. Deyholos,Elzbieta Mietkiewska
+SWGX,Core Eudicots/Rosids,Melastomataceae,Tetrazygia bicolor,leaves,sequenced,Soltis and Miles 2766,D. Soltis,BGI
+WWQZ,Core Eudicots/Rosids,Melastomataceae,Medinilla magnifica,young leaves,sequenced,Soltis and Miles 2948,D. Soltis,D. Soltis
+FGDU,Core Eudicots/Rosids,Myrtaceae,Syzygium paniculatum,leaves and flower buds,sequenced,Chase 34478 K,M. Chase,BGI
+NEBM,Core Eudicots/Rosids,Myrtaceae,Syzygium micranthum,,sequenced,JLM2013-70 (GA),J. Leebens-Mack,J. Leebens-Mack
+AYMT,Core Eudicots/Rosids,Myrtaceae,Eucalyptus leucoxylon,,sequenced,DJ531A,A. Lowe,BGI
+JLLY,Core Eudicots/Rosids,Myrtaceae,Melaleuca quinquenervia,young leaves,sequenced,Soltis and Miles 2824,D. Soltis,BGI
+FEDW,Core Eudicots/Rosids,Onagraceae,Chamerion angustifolium,"leaf, stem, flowers",sequenced,132727 (ALTA),M. Deyholos,M. Deyholos
+DSVQ,Core Eudicots/Rosids,Onagraceae,Oenothera biennis,young true leaves from seedlings,sequenced,M. Johnson 659,M. Johnson,BGI
+EXGW,Core Eudicots/Rosids,Onagraceae,Oenothera biennis,young true leaves from seedlings,sequenced,M. Johnson 378,M. Johnson,M. Johnson
+FDBS,Core Eudicots/Rosids,Onagraceae,Oenothera biennis,young true leaves from seedlings,sequenced,M. Johnson 442,M. Johnson,M. Johnson
+MLUJ,Core Eudicots/Rosids,Onagraceae,Oenothera biennis,young true leaves from seedlings,sequenced,M. Johnson 658,M. Johnson,M. Johnson
+DWAP,Core Eudicots/Rosids,Onagraceae,Oenothera biennis,young true leaves from seedlings,sequenced,M. Johnson 676,M. Johnson,BGI
+REZJ,Core Eudicots/Rosids,Onagraceae,Oenothera grandiflora,young true leaves from seedlings,sequenced,M. Johnson 666,M. Johnson,BGI
+MJHP,Core Eudicots/Rosids,Onagraceae,Oenothera grandiflora,young true leaves from seedlings,sequenced,M. Johnson 562,M. Johnson,M. Johnson
+GZUR,Core Eudicots/Rosids,Onagraceae,Oenothera grandiflora,young true leaves from seedlings,sequenced,M. Johnson 564,M. Johnson,M. Johnson
+EBPG,Core Eudicots/Rosids,Onagraceae,Oenothera grandiflora,young true leaves from seedlings,sequenced,M. Johnson 538,M. Johnson,BGI
+HOOU,Core Eudicots/Rosids,Onagraceae,Oenothera grandiflora,young true leaves from seedlings,sequenced,M. Johnson 541,M. Johnson,M. Johnson
+SEMK,Core Eudicots/Rosids,Onagraceae,Oenothera grandis,young true leaves from seedlings,sequenced,M. Johnson 206,M. Johnson,BGI
+ICUS,Core Eudicots/Rosids,Onagraceae,Oenothera laciniata,young true leaves from seedlings,sequenced,M. Johnson 98,M. Johnson,BGI
+FXJC,Core Eudicots/Rosids,Onagraceae,Oenothera rosea,young true leaves from seedlings,sequenced,M. Johnson 672,M. Johnson,BGI
+NQWS,Core Eudicots/Rosids,Onagraceae,Oenothera filiformis,young true leaves from seedlings,sequenced,M. Johnson 377,M. Johnson,BGI
+TGOP,Core Eudicots/Rosids,Onagraceae,Oenothera gaura,young true leaves from seedlings,sequenced,M. Johnson 402,M. Johnson,BGI
+GVCB,Core Eudicots/Rosids,Onagraceae,Oenothera affinis,young true leaves from seedlings,sequenced,M. Johnson 529,M. Johnson,M. Johnson
+HKMQ,Core Eudicots/Rosids,Onagraceae,Oenothera villaricae,young true leaves from seedlings,sequenced,M. Johnson 535,M. Johnson,M. Johnson
+KBRW,Core Eudicots/Rosids,Onagraceae,Oenothera clelandii,young true leaves from seedlings,sequenced,M. Johnson 390,M. Johnson,M. Johnson
+JKNQ,Core Eudicots/Rosids,Onagraceae,Oenothera suffulta suffulta,young true leaves from seedlings,sequenced,M. Johnson 92,M. Johnson,M. Johnson
+ECSL,Core Eudicots/Rosids,Onagraceae,Oenothera filiformis,young true leaves from seedlings,sequenced,M. Johnson 381,M. Johnson,M. Johnson
+LACT,Core Eudicots/Rosids,Onagraceae,Oenothera gaura,young true leaves from seedlings,sequenced,M. Johnson 651,M. Johnson,M. Johnson
+LHDP,Core Eudicots/Rosids,Onagraceae,Oenothera gaura,young true leaves from seedlings,sequenced,M. Johnson 673,M. Johnson,M. Johnson
+IIFB,Core Eudicots/Rosids,Onagraceae,Oenothera gaura,young true leaves from seedlings,sequenced,M. Johnson 677,M. Johnson,M. Johnson
+JYOB,Core Eudicots/Rosids,Onagraceae,Oenothera filiformis,young true leaves from seedlings,sequenced,M. Johnson 380,M. Johnson,M. Johnson
+IDAU,Core Eudicots/Rosids,Onagraceae,Oenothera elata hookeri,young true leaves from seedlings,sequenced,M. Johnson 664,M. Johnson,M. Johnson
+XSNO,Core Eudicots/Rosids,Onagraceae,Oenothera rosea,expanding 4th true leaf from seedling,sequenced,M. Johnson 71,M. Johnson,M. Johnson
+YHLF,Core Eudicots/Rosids,Onagraceae,Oenothera rhombipetala,expanding 4th true leaf from seedling,sequenced,M. Johnson 369,M. Johnson,M. Johnson
+DZLN,Core Eudicots/Rosids,Onagraceae,Oenothera picensis,expanding 4th true leaf from seedling,sequenced,M. Johnson 655,M. Johnson,M. Johnson
+CJGZ,Core Eudicots/Rosids,Onagraceae,Oenothera nana,expanding 4th true leaf from seedling,sequenced,M. Johnson 0233,M. Johnson,M. Johnson
+HPNZ,Core Eudicots/Rosids,Onagraceae,Oenothera longituba,expanding 4th true leaf from seedling,sequenced,M. Johnson 678,M. Johnson,M. Johnson
+DIBI,Core Eudicots/Rosids,Onagraceae,Oenothera laciniata,expanding 4th true leaf from seedling,sequenced,M. Johnson 218,M. Johnson,M. Johnson
+AQXA,Core Eudicots/Rosids,Onagraceae,Oenothera laciniata,expanding 4th true leaf from seedling,sequenced,M. Johnson 169,M. Johnson,M. Johnson
+QBRF,Core Eudicots/Rosids,Onagraceae,Oenothera laciniata,expanding 4th true leaf from seedling,sequenced,M. Johnson 100,M. Johnson,M. Johnson
+ONZG,Core Eudicots/Rosids,Onagraceae,Oenothera laciniata,expanding 4th true leaf from seedling,sequenced,M. Johnson 99,M. Johnson,M. Johnson
+EWHG,Core Eudicots/Rosids,Onagraceae,Oenothera grandis,expanding 4th true leaf from seedling,sequenced,M. Johnson 207,M. Johnson,M. Johnson
+TAHF,Core Eudicots/Rosids,Onagraceae,Oenothera grandis,expanding 4th true leaf from seedling,sequenced,M. Johnson 134,M. Johnson,M. Johnson
+WPUV,Core Eudicots/Rosids,Onagraceae,Oenothera grandis,expanding 4th true leaf from seedling,sequenced,M. Johnson 135,M. Johnson,M. Johnson
+CHTD,Core Eudicots/Rosids,Onagraceae,Oenothera grandis,expanding 4th true leaf from seedling,sequenced,M. Johnson 133,M. Johnson,M. Johnson
+EQYT,Core Eudicots/Rosids,Onagraceae,Oenothera berlandieri,expanding young leaf,sequenced,M. Johnson 65,M. Johnson,M. Johnson
+JMJV,Core Eudicots/Rosids,Onagraceae,Oenothera gaura,expanding 4th true leaf from seedling,sequenced,M. Johnson 671,M. Johnson,M. Johnson
+YIVZ,Core Eudicots/Rosids,Onagraceae,Oenothera rosea,expanding 4th true leaf from seedling,sequenced,M. Johnson 277,M. Johnson,M. Johnson
+KFAL,Core Eudicots/Rosids,Onagraceae,Oenothera rosea,expanding 4th true leaf from seedling,sequenced,M. Johnson 392,M. Johnson,M. Johnson
+SJAN,Core Eudicots/Rosids,Onagraceae,Oenothera serrulata,expanding 4th true leaf from seedling,sequenced,M. Johnson 70,M. Johnson,M. Johnson
+RLZU,Core Eudicots/Rosids,Onagraceae,Oenothera speciosa,expanding 4th true leaf from seedling,sequenced,M. Johnson 112,M. Johnson,M. Johnson
+UASK,Core Eudicots/Rosids,Onagraceae,Oenothera speciosa,expanding 4th true leaf from seedling,sequenced,M. Johnson 113,M. Johnson,M. Johnson
+XZPP,Core Eudicots/Rosids,Onagraceae,Oenothera speciosa,expanding 4th true leaf from seedling,sequenced,M. Johnson 114,M. Johnson,M. Johnson
+XZAQ,Core Eudicots/Rosids,Onagraceae,Oenothera speciosa,expanding 4th true leaf from seedling,sequenced,M. Johnson 116,M. Johnson,M. Johnson
+GBGW,Core Eudicots/Rosids,Onagraceae,Oenothera speciosa,expanding 4th true leaf from seedling,sequenced,M. Johnson 118,M. Johnson,M. Johnson
+AJBK,Core Eudicots/Rosids,Onagraceae,Oenothera elata,4th true leaf,sequenced,S. Greiner (M),S. Greiner,S. Greiner
+ROLB,Core Eudicots/Rosids,Onagraceae,Oenothera elata,pool of multiple tissues,sequenced,S. Greiner (M),S. Greiner,S. Greiner
+UDUT,Core Eudicots/Rosids,Zygophyllaceae,Larrea tridentata,woody seedling including leaves and root,sequenced,M.K. Deyholos 2016-106,M. Deyholos,M. Deyholos
+KVAY,Core Eudicots/Rosids,Zygophyllaceae,Tribulus eichlerianus,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+ZHMB,Core Eudicots/Rosids,Krameriaceae,Krameria lanceolata,"young leaves, flower buds",sequenced,Soltis and Miles 2991,D. Soltis,D. Soltis
+IHCQ,Core Eudicots/Rosids,Celastraceae,Crossopetalum rhacoma,"young leaves, a few flowers",sequenced,Soltis and Miles 2947,J. Leebens-Mack,J. Leebens-Mack
+MFEA,Core Eudicots/Rosids,Celastraceae,Stackhousia spathulata,young leaves,sequenced,D.O. Burge 1309 (NSW Pending),D. Burge,C. dePamphilis
+OCTM,Core Eudicots/Rosids,Begoniaceae,Begonia sp.,leaves,sequenced,Soltis and Miles 2769,D. Soltis,BGI
+AXAF,Core Eudicots/Rosids,Cucurbitaceae,Thladiantha villosula,leaves,sequenced,Chase 34473 K,M. Chase,BGI
+NNGU,Core Eudicots/Rosids,Coriariaceae,Coriaria nepalensis,leaves,sequenced,Chase 33161 K,M. Chase,BGI
+SUAK,Core Eudicots/Rosids,Fabaceae,Codariocalyx motorius,leaves and stems,sequenced,Stewart and Peng,N. Stewart,BGI
+RKLL,Core Eudicots/Rosids,Fabaceae,Copaifera officinalis,leaves,sequenced,Stewart and Burris,N. Stewart,BGI
+RMWJ,Core Eudicots/Rosids,Fabaceae,Wisteria floribunda,"flowers, leaves, stems",sequenced,Stewart and Burris,N. Stewart,BGI
+PEZP,Core Eudicots/Rosids,Fabaceae,Glycyrrhiza glabra,shoot (no flower) and root,sequenced,132733 (ALTA),M. Deyholos,M. Deyholos
+RKFX,Core Eudicots/Rosids,Fabaceae,Cercis canadensis,leaves and young flowers,sequenced,Cannon 0001,D. Soltis,BGI
+GEHT,Core Eudicots/Rosids,Fabaceae,Gleditsia triacanthos,leaves and young flowers,sequenced,Cannon 0002,S. Cannon,BGI
+QZXQ,Core Eudicots/Rosids,Fabaceae,Gymnocladus dioicus,leaves and young flowers,sequenced,Cannon 0003,S. Cannon,BGI
+KZED,Core Eudicots/Rosids,Fabaceae,Senna hebecarpa,young leaves and shoot,sequenced,Cannon 0005,S. Cannon,BGI
+XOOE,Core Eudicots/Rosids,Fabaceae,Desmanthus illinoensis,young leaves and shoot,low quality,Cannon 0006,S. Cannon,BGI
+NXOH,Core Eudicots/Rosids,Fabaceae,Apios americana,young shoot and tuber,sequenced,Cannon 0007,S. Cannon,BGI
+SLYR,Core Eudicots/Rosids,Fabaceae,Cladrastis lutea,leaves and young flowers,sequenced,Cannon 0004,S. Cannon,BGI
+KNMB,Core Eudicots/Rosids,Fabaceae,Lathyrus sativus,young shoot and tuber,sequenced,Cannon 25,S. Cannon,S. Cannon
+CMFF,Core Eudicots/Rosids,Fabaceae,Lupinus polyphyllus,high alkaloid – leaves and young flowers,sequenced,Cannon 0010,S. Cannon,BGI
+TTRG,Core Eudicots/Rosids,Fabaceae,Lupinus angustifolius,leaves,sequenced,83A:476 (UWA),M. Nelson,M. Nelson
+TVSH,Core Eudicots/Rosids,Fabaceae,Bituminaria bituminosa,leaves and buds,sequenced,M. Nelson & D. Real: 'Breeding line ,M. Nelson,C. Snowball
+HJMP,Core Eudicots/Rosids,Fabaceae,Astragalus membranaceus,shoot (no flower) and root,sequenced,132718 (ALTA),M. Deyholos,M. Deyholos
+JTQQ,Core Eudicots/Rosids,Fabaceae,Glycyrrhiza lepidota,shoot (no flower) and root,sequenced,132733 (ALTA),M. Deyholos,M. Deyholos
+VLNB,Core Eudicots/Rosids,Fabaceae,Gompholobium polymorphum,leaves and buds,sequenced,A. Smithson 1 (Perth),A. Smithson,A. Smithson
+ZUQW,Core Eudicots/Rosids,Fabaceae,Glycine soja,root,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+OAQS,Core Eudicots/Rosids,Fabaceae,Glycine soja,root + NaCl,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+LXGM,Core Eudicots/Rosids,Fabaceae,Glycine soja,root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+RIDD,Core Eudicots/Rosids,Fabaceae,Glycine soja,AB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+PFSA,Core Eudicots/Rosids,Fabaceae,Glycine soja,BB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+TJMB,Core Eudicots/Rosids,Fabaceae,Glycine soja,CB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+AKRH,Core Eudicots/Rosids,Fabaceae,Glycine soja,DB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+FPLR,Core Eudicots/Rosids,Fabaceae,Glycine soja,EB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+LQUX,Core Eudicots/Rosids,Fabaceae,Glycine soja,FB root + NaHCO3,sequenced,M.K. Deyholos 2016-127,Wang Yang,BGI
+JETM,Core Eudicots/Rosids,Fabaceae,Bauhinia tomentosa,leaf,sequenced,M.K. Deyholos 2016-107,M. Deyholos,Yu Yang
+ZSSR,Core Eudicots/Rosids,Fabaceae,Xanthocercis zambesiaca,leaf,sequenced,132769 (ALTA),M. Deyholos,Yu Yang
+ATQZ,Core Eudicots/Rosids,Fabaceae,Acacia pycnantha,,sequenced,DJ532A,A. Lowe,BGI
+MGBF,Core Eudicots/Rosids,Fabaceae,Acacia pycnantha,,sequenced,DJ489A,A. Lowe,BGI
+MYMP,Core Eudicots/Rosids,Fabaceae,Astragalus propinquus,leaves,sequenced,Wang 2141 (TAI),Chun-Neng Wang,Chun-Neng Wang
+VHZV,Core Eudicots/Rosids,Fabaceae,Gleditsia sinensis,leaves,sequenced,Wang 2148 (TAI),Chun-Neng Wang,Chun-Neng Wang
+ZCDJ,Core Eudicots/Rosids,Fabaceae,Acacia argyrophylla,,sequenced,HC423A,A. Lowe,BGI
+OHAE,Core Eudicots/Rosids,Polygalaceae,Polygala lutea,leaf buds and flowers,sequenced,JLM2013-59 (GA),J. Leebens-Mack,J. Leebens-Mack
+OQHZ,Core Eudicots/Rosids,Quillajaceae,Quillaja saponaria,leaves,sequenced,Chase 33146 ,M. Chase,BGI
+CWZU,Core Eudicots/Rosids,Betulaceae,Betula pendula,young leaves,sequenced,DWS NY 1471/95,D. W. Stevenson,BGI
+LWDA,Core Eudicots/Rosids,Betulaceae,Alnus serrulata,"young leaves, young inflorescence",sequenced,Soltis and Miles 2964,D. Soltis,D. Soltis
+LNER,Core Eudicots/Rosids,Casuarinacae,Casuarina equisetifolia,leaves,sequenced,Soltis and Miles 2773,D. Soltis,BGI
+SVVG,Core Eudicots/Rosids,Fagaceae,Fagus sylvatica,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+HENI,Core Eudicots/Rosids,Fagaceae,Quercus shumardii,"very young leaves, some staminate flowers",sequenced,Soltis and Miles 2780,D. Soltis,BGI
+UZWG,Core Eudicots/Rosids,Fagaceae,Castanea pumila,young leaves and flowers,sequenced,Soltis and Miles 2977,D. Soltis,D. Soltis
+NHUA,Core Eudicots/Rosids,Fagaceae,Castanea crenata,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+DXQW,Core Eudicots/Rosids,Juglandaceae,Juglans nigra,leaves,sequenced,Soltis and Miles 2798,D. Soltis,BGI
+VWIP,Core Eudicots/Rosids,Juglandaceae,Carya glabra,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+INSP,Core Eudicots/Rosids,Myricaceae,Myrica cerifera,leaves,sequenced,Soltis and Miles 2761,D. Soltis,BGI
+TJLC,Core Eudicots/Rosids,Nothofagaceae,Nothofagus obliqua,leaves,sequenced,Chase 33143 ,M. Chase,BGI
+NFXV,Core Eudicots/Rosids,Calophyllaceae,Mammea americana,young leaves,sequenced,Soltis & Miles 3003,D. Soltis,D. Soltis
+ZBVT,Core Eudicots/Rosids,Chrysobalanaceae,Chrysobalanus icaco,young leaves,sequenced,Soltis and Miles 2940,D. Soltis,D. Soltis
+HBUQ,Core Eudicots/Rosids,Chrysobalanaceae,Licania michauxii,young leaves,sequenced,Soltis & Miles 2990,D. Soltis,D. Soltis
+FWCQ,Core Eudicots/Rosids,Clusiaceae,Garcinia oblongifolia,young leaves,sequenced,T. Chen et. al. 2010090804,Tao Chen,BGI
+OSIP,Core Eudicots/Rosids,Clusiaceae,Garcinia livingstonei,leaves,sequenced,Chase 34490 K,M. Chase,BGI
+PAZJ,Core Eudicots/Rosids,Euphorbiaceae,Ricinus communis,leaves and flower buds,sequenced,Chase 34448 K,M. Chase,BGI
+XNLP,Core Eudicots/Rosids,Euphorbiaceae,Manihot grahamii,leaves,sequenced,Soltis and Miles 2767,D. Soltis,BGI
+VVPY,Core Eudicots/Rosids,Euphorbiaceae,Croton tiglium,leaves,sequenced,Wang 2146 (TAI),Chun-Neng Wang,Chun-Neng Wang
+PXYR,Core Eudicots/Rosids,Euphorbiaceae,Euphorbia pekinensis,"leaf, and inflorescence",sequenced,Chase 34441 K,M. Chase,BGI
+VPDX,Core Eudicots/Rosids,Euphorbiaceae,Euphorbia mesembryanthemifolia,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+LSLA,Core Eudicots/Rosids,Euphorbiaceae,Euphorbia mesembryanthemifolia,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+BNDE,Core Eudicots/Rosids,Hypericaceae,Hypericum perforatum,"shoot (young leaves, floral buds)",sequenced,132735 (ALTA),M. Deyholos,M. Deyholos
+MYVH,Core Eudicots/Rosids,Linaceae,Linum grandiflorum,"buds, stem, leaves, flowers",sequenced,132738 (ALTA),M. Deyholos,M. Deyholos
+MJAV,Core Eudicots/Rosids,Linaceae,Linum usitatissimum,stem apex,sequenced,132740 (ALTA),M. Deyholos,Lai To
+OZJZ,Core Eudicots/Rosids,Linaceae,Linum usitatissimum,stem region 3,sequenced,132740 (ALTA),M. Deyholos,Lai To
+OGSY,Core Eudicots/Rosids,Linaceae,Linum usitatissimum,stem region 4,sequenced,132740 (ALTA),M. Deyholos,Lai To
+HNCF,Core Eudicots/Rosids,Linaceae,Linum hirsutum,"stem apex, shoot, leaves",sequenced,M.K. Deyholos 2016-129,M. Deyholos,J. McDill
+BHYC,Core Eudicots/Rosids,Linaceae,Linum lewisii,"stem apex, shoot, leaves",sequenced,,M. Deyholos,J. McDill
+AEPI,Core Eudicots/Rosids,Linaceae,Linum leonii,"stem apex, shoot, leaves",sequenced,,M. Deyholos,J. McDill
+AXPJ,Core Eudicots/Rosids,Linaceae,Linum flavum,"stem apex, shoot, leaves",sequenced,,M. Deyholos,J. McDill
+KCPT,Core Eudicots/Rosids,Linaceae,Linum macraei,"stem apex, shoot, leaves",sequenced,M.K. Deyholos 2016-128,M. Deyholos,J. McDill
+XWMS,Core Eudicots/Rosids,Linaceae,Linum perenne,"stem apex, shoot, leaves, flower buds (in bud)",sequenced,M.K. Deyholos 2016-108,M. Deyholos,J. McDill
+LFII,Core Eudicots/Rosids,Linaceae,Linum perenne,"stem apex, shoot, leaves (veg.)",sequenced,M.K. Deyholos 2016-108,M. Deyholos,J. McDill
+OODC,Core Eudicots/Rosids,Linaceae,Linum bienne,"stem apex, shoot, leaves, flowers, developing ca..",sequenced,M.K. Deyholos 2016-109,M. Deyholos,J. McDill
+VXOD,Core Eudicots/Rosids,Linaceae,Linum tenuifolium,"stem apex, shoot, leaves",sequenced,132739 (ALTA),M. Deyholos,J. McDill
+TXMP,Core Eudicots/Rosids,Linaceae,Linum strictum,"stem apex, shoot, leaves, flowers, developing c...",sequenced,,M. Deyholos,J. McDill
+XPBC,Core Eudicots/Rosids,Malpighiaceae,Galphimia gracilis,leaves and young flowers,sequenced,Soltis and Miles 2770,D. Soltis,BGI
+COAQ,Core Eudicots/Rosids,Malesherbiaceae,Malesherbia fasciculata,shoot with flowers,sequenced,132743 (ALTA),M. Deyholos,M. Deyholos
+TVCU,Core Eudicots/Rosids,Ochnaceae,Ochna mossambicensis,leaves,low quality,Soltis and Miles 2786,D. Soltis,BGI
+CKDK,Core Eudicots/Rosids,Ochnaceae,Ochna serrulata,young shoots and flower buds,sequenced,JLM2013-53 (GA),J. Leebens-Mack,J. Leebens-Mack
+EZZT,Core Eudicots/Rosids,Passifloraceae,Passiflora edulis,young leaves,sequenced,Soltis and Miles 2907,D. Soltis,BGI
+SIZE,Core Eudicots/Rosids,Passifloraceae,Passiflora caerulea,leaf,sequenced,M.K. Deyholos 2016-110,M. Deyholos,Yu Yang
+YGAT,Core Eudicots/Rosids,Phyllanthaceae,Phyllanthus sp.,leaves,sequenced,Soltis and Miles 2856,D. Soltis,BGI
+VNMY,Core Eudicots/Rosids,Phyllanthaceae,Bischofia javanica,young leaves,sequenced,Soltis and Miles 2978,D. Soltis,D. Soltis
+RVGH,Core Eudicots/Rosids,Putranjivaceae,Drypetes deplanchei,leaves,sequenced,Chase 33148 ,M. Chase,BGI
+ZTLR,Core Eudicots/Rosids,Rhizophoraceae,Rhizophora mangle,leaves,sequenced,in preparation,D. Soltis,BGI
+RPPC,Core Eudicots/Rosids,[Erythroyxlaceae],Erythroxylum coca,leaves,sequenced,Soltis and Miles 2816,D. Soltis,J. Leebens-Mack
+INQX,Core Eudicots/Rosids,Salicaceae,Salix acutifolia,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+IEPQ,Core Eudicots/Rosids,Salicaceae,Salix dasyclados,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+GLVK,Core Eudicots/Rosids,Salicaceae,Salix eriocephala,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+LFOG,Core Eudicots/Rosids,Salicaceae,Salix purpurea,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+TDTF,Core Eudicots/Rosids,Salicaceae,Salix sachalinensis,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+KKDQ,Core Eudicots/Rosids,Salicaceae,Salix viminalis,shoot,sequenced,J. Cooke (no voucher),M. Deyholos,M. Deyholos
+RZTJ,Core Eudicots/Rosids,Salicaceae,Salix fargesii,young shoot,sequenced,R. Mindell & B.C. Zhuang 22112 (UBC),D. W. Stevenson,BGI
+LPGY,Core Eudicots/Rosids,Violaceae,Viola tricolor,"young leaves, some floral buds",sequenced,Soltis and Miles 2930,D. Soltis,J. Leebens-Mack
+NJLF,Core Eudicots/Rosids,Violaceae,Viola canadensis,"leaf, stem, flowers, developing fruits",sequenced,J.R. McDill 2011-4,M. Deyholos,M. Deyholos
+YZVJ,Core Eudicots/Rosids,Cephalotaceae,Cephalotus follicularis,leaves,sequenced,Miles 59,D. Soltis,BGI
+TIUZ,Core Eudicots/Rosids,Cunoniaceae,Cunonia capensis,leaves,sequenced,T. McLellan (J),Tracy McLellan,BGI
+THHD,Core Eudicots/Rosids,Elaeocarpaceae,Elaeocarpus sylvestris,,sequenced,JLM2013-39 (GA),J. Leebens-Mack,J. Leebens-Mack
+JHCN,Core Eudicots/Rosids,Oxalidaceae,Oxalis sp.,leaves and young flowers,sequenced,Soltis and Miles 2763,D. Soltis,BGI
+PDIE,Core Eudicots/Rosids,Cannabaceae,Cannabis sativa,xylem var. C,sequenced,registered variety ‘Carmen’,M. Deyholos,M. Deyholos
+PMRP,Core Eudicots/Rosids,Cannabaceae,Cannabis sativa,stem var. A,sequenced,registered variety ‘Carmen’,M. Deyholos,M. Deyholos
+DGNP,Core Eudicots/Rosids,Cannabaceae,Cannabis sativa,core var. A,sequenced,registered variety ‘Carmen’,M. Deyholos,M. Deyholos
+SFZX,Core Eudicots/Rosids,Cannabaceae,Cannabis sativa,stem peel var. A,sequenced,registered variety ‘Carmen’,M. Deyholos,M. Deyholos
+AQGE,Core Eudicots/Rosids,Cannabaceae,Humulus lupulus,young leaves,sequenced,Soltis and Miles 2903,D. Soltis,BGI
+KYAD,Core Eudicots/Rosids,Cannabaceae,Celtis occidentalis,young leaves and flowers,sequenced,Soltis and Miles 2916,J. Leebens-Mack,J. Leebens-Mack
+RBYC,Core Eudicots/Rosids,Elaeagnaceae,Elaeagnus pungens,young leaves,sequenced,Soltis and Miles 2951,D. Soltis,D. Soltis
+XVJB,Core Eudicots/Rosids,Moraceae,Morus nigra,"flower, stem, leaves",sequenced,132749 (ALTA),M. Deyholos,M. Deyholos
+EDHN,Core Eudicots/Rosids,Moraceae,Ficus religiosa,leaf,sequenced,132731 (ALTA),M. Deyholos,Yu Yang
+EILE,Core Eudicots/Rosids,Rhamnaceae,Rhamnus japonica,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+WVEF,Core Eudicots/Rosids,Rhamnaceae,Rhamnus caroliniana,young leaves,sequenced,Soltis and Miles 2952,D. Soltis,D. Soltis
+ZHEE,Core Eudicots/Rosids,Rhamnaceae,Ziziphus jujuba,young leaves,sequenced,Soltis & Miles 2956,D. Soltis,D. Soltis
+IANR,Core Eudicots/Rosids,Rosaceae,Rosa palustris,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+QNOC,Core Eudicots/Rosids,Rosaceae,Sanguisorba minor,young leaves,sequenced,Chase 38771,D. Soltis,D. Soltis
+DHAW,Core Eudicots/Rosids,Rosaceae,Geum quellyon,young leaves,sequenced,Chase 38770,D. Soltis,D. Soltis
+NCVK,Core Eudicots/Rosids,Rosaceae,Prunus prostrata,young leaves,sequenced,Chase 38785,D. Soltis,D. Soltis
+TJQY,Core Eudicots/Rosids,Rosaceae,Kerria japonica,young leaves,sequenced,Chase 38777,D. Soltis,D. Soltis
+VCIN,Core Eudicots/Rosids,Rosaceae,Malus baccata var. jackii,young leaves,sequenced,Chase 38773,D. Soltis,D. Soltis
+BLVL,Core Eudicots/Rosids,Rosaceae,Sorbus koehneana,young leaves,sequenced,Chase 38774,D. Soltis,D. Soltis
+EAVM,Core Eudicots/Rosids,Rosaceae,Amelanchier canadensis,young leaves,sequenced,Chase 38778,D. Soltis,D. Soltis
+QIEH,Core Eudicots/Rosids,Rosaceae,Cotoneaster transcaucasicus,young leaves,sequenced,Chase 38779,D. Soltis,D. Soltis
+SXCE,Core Eudicots/Rosids,Rosaceae,Physocarpus opulifolius,young leaves,sequenced,Chase 38776,D. Soltis,D. Soltis
+ZPKK,Core Eudicots/Rosids,Rosaceae,Aruncus dioicus,young leaves,sequenced,Chase 38772,D. Soltis,D. Soltis
+SQCF,Core Eudicots/Rosids,Rosaceae,Dryas octopetala,young leaves,sequenced,Chase 38781,D. Soltis,D. Soltis
+XFFT,Core Eudicots/Rosids,Rosaceae,Cercocarpus ledifolius,young leaves,sequenced,Chase 38780,D. Soltis,D. Soltis
+CQMG,Core Eudicots/Rosids,Ulmaceae,Ulmus alata alata,leaves,sequenced,Soltis and Miles 2779,D. Soltis,BGI
+ACFP,Core Eudicots/Rosids,Urticaceae,Boehmeria nivea,shoot apex including nascent leaves and woody stem,sequenced,132720 (ALTA),M. Deyholos,M. Deyholos
+WKCY,Core Eudicots/Rosids,Urticaceae,Urtica dioica,leaf,sequenced,132766 (ALTA),M. Deyholos,Yu Yang
+WWKL,Core Eudicots/Rosids,Tapisciaceae,Tapiscia sinensis,young shoot,sequenced,B.C. Zhuang & C. Gallant bg427/35230 (UBC),D. W. Stevenson,BGI
+HYZL,Core Eudicots/Rosids,Akaniaceae,Akania lucens,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+DZTK,Core Eudicots/Rosids,Bataceae,Batis maritima,leaves,sequenced,Soltis and Miles 2710,D. Soltis,BGI
+IPWB,Core Eudicots/Rosids,Brassicaceae,Brassica nigra,young leaves,sequenced,PPE-2012-1000-0001 (UMO),J. C. Pires,C. Pires
+VMNH,Core Eudicots/Rosids,Brassicaceae,Sinapis alba,leaves and buds,sequenced,M. Nelson & H. Liu: 'Viscount' (UWA),M. Nelson,M. Nelson
+CSUV,Core Eudicots/Rosids,Brassicaceae,Cochlearia officinalis,,sequenced,CheesemanUIUC010,J. Cheeseman,J. Cheeseman
+TZWR,Core Eudicots/Rosids,Brassicaceae,Arabis alpina,young leaves,sequenced,PPE-2012-1000-0003 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+HABV,Core Eudicots/Rosids,Brassicaceae,Draba aizoides,fresh young leaves ,sequenced,M. Koch 999773_E1_2 ,M. Koch,I. Jordan-Thaaden
+UVQL,Core Eudicots/Rosids,Brassicaceae,Draba magellanica,fresh young leaves  ,sequenced,M. Koch 916266_SA2_9 ,M. Koch,I. Jordan-Thaaden
+BXBF,Core Eudicots/Rosids,Brassicaceae,Draba sachalinensis,fresh young leaves ,sequenced,M. Koch 916893_AS3 ,M. Koch,I. Jordan-Thaaden
+GTSV,Core Eudicots/Rosids,Brassicaceae,Draba hispida,fresh young leaves ,sequenced,M. Koch 916263_C4_15_3 ,M. Koch,I. Jordan-Thaaden
+LAPO,Core Eudicots/Rosids,Brassicaceae,Draba oligosperma,fresh young leaves ,sequenced,M. Koch 913843_NA2 ,M. Koch,I. Jordan-Thaaden
+LJQF,Core Eudicots/Rosids,Brassicaceae,Draba ossetica,fresh young leaves ,sequenced,M. Koch 910789_C5_1 ,M. Koch,I. Jordan-Thaaden
+QSKP,Core Eudicots/Rosids,Cleomaceae,Polanisia trachysperma,young leaves,sequenced,PPE-2012-1000-0002 (UMO),J. C. Pires,C. Pires
+HELY,Core Eudicots/Rosids,Cleomaceae,Cleome violacea,leaves,sequenced,PPE-2012-1000-0004 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+EZXQ,Core Eudicots/Rosids,Cleomaceae,Cleome violacea,leaves,sequenced,PPE-2012-1000-0004 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+ZLOA,Core Eudicots/Rosids,Cleomaceae,Cleome gynandra,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+MBQU,Core Eudicots/Rosids,Cleomaceae,Cleome gynandra,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+UPZX,Core Eudicots/Rosids,Cleomaceae,Cleome viscosa,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+UAXP,Core Eudicots/Rosids,Gyrostemonaceae,Gyrostemon ramulosus,leaves and fruit,sequenced,M.D. Barrett 3202 (Perth),A. Smithson,A. Smithson
+JOIS,Core Eudicots/Rosids,Koeberliniaceae,Koeberlinia spinosa,young leaves,low quality,PPE-2012-1000-0005 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+CRNC,Core Eudicots/Rosids,Limnanthaceae,Limnanthes douglasii,young leaves,sequenced,PPE-2012-1000-0006 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+CZPV,Core Eudicots/Rosids,Moringaceae,Moringa oleifera,leaves and young flowers,sequenced,Soltis and Miles 2762,D. Soltis,BGI
+SWPE,Core Eudicots/Rosids,Resedaceae,Reseda odorata,young leaves,sequenced,PPE-2012-1000-0007 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+RTTY,Core Eudicots/Rosids,Salvadoraceae,Salvadora sp.,leaf shoots,sequenced,JLM2013-64 (GA),J. Leebens-Mack,J. Leebens-Mack
+MYZV,Core Eudicots/Rosids,Tropaeolaceae,Tropaeolum peregrinum,young leaves,sequenced,PPE-2012-1000-0008 (UMO),J. C. Pires and P. Edgar,J. C. Pires and P. Edgar
+KPTE,Core Eudicots/Rosids,Bixaceae,Bixa orellana,young leaves,sequenced,Soltis and Miles 2985,D. Soltis,D. Soltis
+PKMO,Core Eudicots/Rosids,Cistaceae,Cistus inflatus,young shoot,sequenced,JLM2013-28 (GA),J. Leebens-Mack,J. Leebens-Mack
+OLXF,Core Eudicots/Rosids,Malvaceae,Hibiscus cannabinus,shoot apex including nascent leaves and woody stem,sequenced,132734 (ALTA),M. Deyholos,M. Deyholos
+WYIG,Core Eudicots/Rosids,Malvaceae,Dombeya burgessiae,leaf and buds/flowers,sequenced,C. Skema & J. Tate 512 (MPN),J. Tate,BGI
+ZSAB,Core Eudicots/Rosids,Malvaceae,Hoheria angustifolia,leaf and buds/flowers,sequenced,C. Skema 499 (MPN),J. Tate,BGI
+ATFX,Core Eudicots/Rosids,Muntingiaceae,Muntingia calabura,young leaves,sequenced,Soltis & Miles 2984,D. Soltis,D. Soltis
+WMUK,Core Eudicots/Rosids,Sarcolaenaceae,Schizolaena sp.,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+QJXB,Core Eudicots/Rosids,Thymelaeaceae,Wikstroemia indica,young shoots,sequenced,JLM2013-74 (GA),J. Leebens-Mack,J. Leebens-Mack
+PUDI,Core Eudicots/Rosids,Thymelaeaceae,Daphne giraldii,leaves,sequenced,R. Mindell & B.C. Zhuang 35638 (UBC),S. Graham,S. Graham
+AWJM,Core Eudicots/Rosids,Thymelaeaceae,Edgeworthia papyrifera,flower buds,sequenced,JLM2013-38 (GA),J. Leebens-Mack,J. Leebens-Mack
+YUOM,Core Eudicots/Rosids,Anacardiaceae,Rhus radicans,leaves and stems,sequenced,Stewart and Burris,N. Stewart,BGI
+WAXR,Core Eudicots/Rosids,Anacardiaceae,Litchi chinensis,young leaves,sequenced,T. Chen et. al. 2010090807,Tao Chen,BGI
+JSZD,Core Eudicots/Rosids,Burseraceae,Bursera simaruba,,sequenced,Soltis and Miles 2649,D. Soltis,BGI
+FCCA,Core Eudicots/Rosids,Burseraceae,Boswellia sacra,leaves,sequenced,Chase 34495 K,M. Chase,BGI
+BCAA,Core Eudicots/Rosids,Kirkiacae,Kirkia wilmsii,young leaves,sequenced,Soltis and Miles 2982,D. Soltis,D. Soltis
+UVDC,Core Eudicots/Rosids,Meliaceae,Azadirachta indica,young leaf shoots/ lvs = flws,sequenced,Soltis and Miles 2828,D. Soltis,BGI
+CAIX,Core Eudicots/Rosids,Meliaceae,Melia azedarach,young leaves,sequenced,Soltis and Miles 2961,D. Soltis,D. Soltis
+VCCF,Core Eudicots/Rosids,Meliaceae,Melia azedarach,young leaves,sequenced,Soltis and Miles 2961,D. Soltis,D. Soltis
+OBTI,Core Eudicots/Rosids,Nitrariaceae,Peganum harmala,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+UHJR,Core Eudicots/Rosids,Rutaceae,Citrus x paradisi,leaves,sequenced,Soltis and Miles 2851,D. Soltis,BGI
+PGKL,Core Eudicots/Rosids,Rutaceae,Phellodendron amurense,leaves,sequenced,Chase 33160 K,M. Chase,BGI
+HBHB,Core Eudicots/Rosids,Sapindaceae,Aesculus pavia,very young lvs; possibly some v. young inflorescen,sequenced,Soltis and Miles 2821,D. Soltis,BGI
+VFFP,Core Eudicots/Rosids,Sapindaceae,Acer negundo,young leaves and flowers,sequenced,Soltis and Miles 2917,D. Soltis,BGI
+IKFD,Core Eudicots/Rosids,Simaroubaceae,Quassia amara,leaves,sequenced,Chase 34485 K,M. Chase,BGI
+QICX,Core Eudicots/Rosids,Simaroubaceae,Ailanthus altissima,leaves,sequenced,Soltis and Miles 2826,D. Soltis,BGI
+BFJL,Core Eudicots/Asterids,Cornaceae,Cornus florida,leaves,sequenced,Soltis and Miles 2781,D. Soltis,J. Leebens-Mack
+XONJ,Core Eudicots/Asterids,[Nyssaceae],Camptotheca acuminata,young leaves,sequenced,T. Chen et. al. 2010090801,Tao Chen,BGI
+VUSY,Core Eudicots/Asterids,[Nyssaceae],Nyssa ogeche,young leaves,sequenced,Soltis and Miles 2942,D. Soltis,D. Soltis
+UZNH,Core Eudicots/Asterids,Curtisiaceae,Curtisia dentata,leaves,sequenced,T. McLellan (J),Tracy McLellan,BGI
+QURC,Core Eudicots/Asterids,Hydrangeaceae,Dichroa febrifuga,leaf and flower buds,sequenced,ABG,D. Soltis,BGI
+ZETY,Core Eudicots/Asterids,Hydrangeaceae,Hydrangea quercifolia,emerging leaves,sequenced,Soltis and Miles 2854,J. Leebens-Mack,J. Leebens-Mack
+BTZX,Core Eudicots/Asterids,Hydrangeaceae,Philadelphus inodorus,young leaves,sequenced,Soltis and Miles 2953,D. Soltis,D. Soltis
+OTAN,Core Eudicots/Asterids,Hydrangeaceae,Deutzia scabra,young leaves flower buds,sequenced,Soltis and Miles 2965,D. Soltis,D. Soltis
+VTLJ,Core Eudicots/Asterids,Loasaceae,Caiophora chuquitensis,"leaves, stem, flower",sequenced,132723 (ALTA),M. Deyholos,M. Deyholos
+QAUE,Core Eudicots/Asterids,Actinidiaceae,Actinidia chinensis,young leaves,sequenced,Soltis and Miles 2848,D. Soltis,D. Soltis
+JEXA,Core Eudicots/Asterids,Balsaminaceae,Impatiens balsamifera,"shoot (flowers, floral buds, stem, leaves)",sequenced,132736 (ALTA),M. Deyholos,M. Deyholos
+YZGX,Core Eudicots/Asterids,Cyrillaceae,Cyrilla racemiflora,young leaves and young flowers,sequenced,Soltis and Miles 2923,D. Soltis,D. Soltis
+ADHK,Core Eudicots/Asterids,Diapensiaceae,Galax urceolata,leaves - diploid,sequenced,in preparation,D. Soltis,BGI
+UFHF,Core Eudicots/Asterids,Diapensiaceae,Galax urceolata,leaves - tetraploid,sequenced,in preparation,D. Soltis,BGI
+KVFU,Core Eudicots/Asterids,Ebenaceae,Diospyros malabarica,leaves,sequenced,Soltis and Miles 2765,D. Soltis,BGI
+WXVX,Core Eudicots/Asterids,Ericaceae,Ledum palustre,leaves,sequenced,132770 (ALTA),M. Deyholos,M. Deyholos
+AVJK,Core Eudicots/Asterids,Ericaceae,Cavendishia cuatrecasasii,vegetative shoots and flower buds,sequenced,JLM2013-26 (GA),J. Leebens-Mack,J. Leebens-Mack
+PPPZ,Core Eudicots/Asterids,Ericaceae,Rhododendron scopulorum,leaves,sequenced,Chase 34477 K,M. Chase,BGI
+SERM,Core Eudicots/Asterids,Ericaceae,Sarcodes sanguinea,above ground / infloresence,sequenced,CWD 2012.5,C. DePamphilis,C. DePamphilis
+LRTN,Core Eudicots/Asterids,Ericaceae,Monotropa uniflora,above ground tissue mix,sequenced,CWD 2012.8,C. DePamphilis,C. DePamphilis
+YSRZ,Core Eudicots/Asterids,Fouquieriaceae,Fouquieria macdougalii,young leaves,sequenced,Soltis and Miles 2920,D. Soltis,BGI
+DTOA,Core Eudicots/Asterids,Maesaceae,Maesa lanceolata,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+BNTL,Core Eudicots/Asterids,Marcgraviaceae,Souroubea exauriculata,leaves,sequenced,Soltis and Miles 2772,D. Soltis,BGI
+DAAD,Core Eudicots/Asterids,Myrsinaceae,Ardisia revoluta,leaves and flowers,sequenced,DWS FTG 59-825B,D. W. Stevenson,BGI
+ODDO,Core Eudicots/Asterids,Myrsinaceae,Ardisia humilis,young leaves,sequenced,Soltis and Miles 2925,D. Soltis,J. Leebens-Mack
+NGRR,Core Eudicots/Asterids,Pentaphylacaceae,Ternstroemia gymnanthera,leaves,sequenced,Soltis and Miles 2776,D. Soltis,BGI
+WVMY,Core Eudicots/Asterids,Polemoniaceae,Phlox drummondii,,sequenced,Soltis and Miles 2789,D. Soltis,BGI
+FNEN,Core Eudicots/Asterids,Polemoniaceae,Phlox sp.,young leaves and flower buds,sequenced,,D. Soltis,BGI
+OJCW,Core Eudicots/Asterids,Primulaceae,Maesa lanceolata,leaves,sequenced,Chase 34468 K,M. Chase,BGI
+HUSX,Core Eudicots/Asterids,Roridulaceae,Roridula gorgonias,leaves,sequenced,Chase 33140,M. Chase,BGI
+WRPP,Core Eudicots/Asterids,Sapotaceae,Synsepalum dulcificum,vegetative shoots and flower buds,sequenced,JLM2013-69 (GA),J. Leebens-Mack,J. Leebens-Mack
+BEFC,Core Eudicots/Asterids,Sapotaceae,Manilkara zapota,young leaves,sequenced,Soltis and Miles 2815,D. Soltis,BGI
+OXYP,Core Eudicots/Asterids,Sapotaceae,Sideroxylon reclinatum,young leaves,sequenced,Soltis and Miles 2900,D. Soltis,BGI
+AXBO,Core Eudicots/Asterids,Styracaceae,Sinojackia xylocarpa,"very young leaves, some flower buds",sequenced,Soltis and Miles 2782,J. Leebens-Mack,J. Leebens-Mack
+JPDJ,Core Eudicots/Asterids,Symplocaceae,Symplocos tinctoria,young leaves,sequenced,Soltis and Miles 2936,J. Leebens-Mack,J. Leebens-Mack
+PTFA,Core Eudicots/Asterids,Theophrastaceae,Jacquinia sp.,leaves,sequenced,Soltis and Miles 2775,D. Soltis,BGI
+VJSJ,Core Eudicots/Asterids,Boraginaceae,Heliotropium calcicola,leaves,sequenced,in preparation,R. Sage,BGI
+NJJO,Core Eudicots/Asterids,Apodanthaceae,Pilostyles thurberi,flower buds,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+JWEY,Core Eudicots/Asterids,Boraginaceae,Heliotropium tenuifolium,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+EIGQ,Core Eudicots/Asterids,Boraginaceae,Heliotropium calcicola,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+RGMN,Core Eudicots/Asterids,Boraginaceae,Heliotropium calcicola,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+OUER,Core Eudicots/Asterids,Boraginaceae,Heliotropium convolvulaceum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+XKVX,Core Eudicots/Asterids,Boraginaceae,Heliotropium filiforme,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+IPPG,Core Eudicots/Asterids,Boraginaceae,Heliotropium filiforme,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+ABEH,Core Eudicots/Asterids,Boraginaceae,Heliotropium greggii,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+NIGS,Core Eudicots/Asterids,Boraginaceae,Heliotropium karwinskyi,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+MZOB,Core Eudicots/Asterids,Boraginaceae,Heliotropium mendocinum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+IDGE,Core Eudicots/Asterids,Boraginaceae,Heliotropium racemosum,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DIHD,Core Eudicots/Asterids,Boraginaceae,Heliotropium tenellum,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+IWJG,Core Eudicots/Asterids,Boraginaceae,Heliotropium texanum,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+CSWE,Core Eudicots/Asterids,Boraginaceae,Heliotropium texanum,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+EMAL,Core Eudicots/Asterids,Boraginaceae,Ehretia acuminata,leaves,sequenced,Soltis and Miles 2838,D. Soltis,BGI
+DKFZ,Core Eudicots/Asterids,Boraginaceae,Mertensia paniculata,"flowers, stems, leaves",sequenced,132747 (ALTA),M. Deyholos,M. Deyholos
+YQIJ,Core Eudicots/Asterids,Boraginaceae,Phacelia campanularia,"stem apex, leaves, flowers",sequenced,M.K. Deyholos 2016-111,M. Deyholos,J. McDill
+SMUR,Core Eudicots/Asterids,Boraginaceae,Lennoa madreporoides,above ground / infloresence,sequenced,CWD 2012.6,C. DePamphilis,C. DePamphilis
+HANM,Core Eudicots/Asterids,Boraginaceae,Pholisma arenarium,above ground / infloresence,sequenced,CWD+RAS 2012.7,C. DePamphilis,C. DePamphilis
+QZZU,Core Eudicots/Asterids,Icacinaceae,Pyrenacantha malvifolia,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+SZUO,Core Eudicots/Asterids,Eucommiaceae,Eucommia ulmoides,leaves,sequenced,DWS NY 35191A,D. W. Stevenson,BGI
+GIPR,Core Eudicots/Asterids,Garryaceae,Aucuba japonica,young leaves and flowers,sequenced,DWS NY 994/96,D. W. Stevenson,BGI
+PVGM,Core Eudicots/Asterids,Oncothecaceae,Oncotheca balansae,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+MGVU,Core Eudicots/Asterids,Apocynaceae,Allamanda cathartica,"flower, floral buds, leaves and stem",sequenced,132715 (ALTA),M. Deyholos,M. Deyholos
+UOYN,Core Eudicots/Asterids,Apocynaceae,Catharanthus roseus,"flower, floral buds, leaves and stem",sequenced,132724 (ALTA),M. Deyholos,M. Deyholos
+JCLQ,Core Eudicots/Asterids,Apocynaceae,Apocynum androsaemifolium,shoot with flowers,sequenced,in preparation,M. Deyholos,M. Deyholos
+UFQC,Core Eudicots/Asterids,Apocynaceae,Apocynum androsaemifolium,shoot with flowers,sequenced,in preparation,M. Deyholos,M. Deyholos
+QEHE,Core Eudicots/Asterids,Apocynaceae,Rauvolfia tetraphylla,young leaves and flower buds,sequenced,Soltis and Miles 2812,D. Soltis,BGI
+YADI,Core Eudicots/Asterids,Apocynaceae,Asclepias syriaca,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+DSUV,Core Eudicots/Asterids,Apocynaceae,Asclepias curassavica,"flowers, young stem and young leaves",sequenced,132717 (ALTA),M. Deyholos,M. Deyholos
+EDEQ,Core Eudicots/Asterids,Apocynaceae,Wrightia natalensis,leaf,sequenced,,M. Deyholos,Yu Yang
+JGYZ,Core Eudicots/Asterids,Apocynaceae,Holarrhena pubescens,leaf,sequenced,,M. Deyholos,Yu Yang
+HGSM,Core Eudicots/Asterids,Gelsemiaceae,Gelsemium sempervirens,young leaves,sequenced,Soltis and Miles 2927,D. Soltis,D. Soltis
+KPUM,Core Eudicots/Asterids,Gentianaceae,Exacum affine,"flowers, floral buds, stem, leaves",sequenced,132730 (ALTA),M. Deyholos,M. Deyholos
+ECTD,Core Eudicots/Asterids,Gentianaceae,Gentiana acaulis,leaves and flower buds,sequenced,Chase 34438 K,M. Chase,BGI
+GGJD,Core Eudicots/Asterids,Loganiaceae,Strychnos spinosa,leaves,sequenced,Soltis and Miles 2825,D. Soltis,BGI
+BQEQ,Core Eudicots/Asterids,Rubiaceae,Psychotria ipecacuanha,invitro plantlet,sequenced,unvouchered culture,T. Kutchan,T. Kutchan
+JOPH,Core Eudicots/Asterids,Rubiaceae,Psychotria ipecacuanha,root culture,sequenced,unvouchered culture,T. Kutchan,T. Kutchan
+ULGV,Core Eudicots/Asterids,Rubiaceae,Morinda citrifolia,leaves,sequenced,Chase 34483 K,M. Chase,BGI
+WQRD,Core Eudicots/Asterids,Rubiaceae,Galium boreale,shoot and roots,sequenced,132732 (ALTA),M. Deyholos,M. Deyholos
+PCNH,Core Eudicots/Asterids,Rubiaceae,Psychotria marginata,Leaf and flower buds,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+DNQA,Core Eudicots/Asterids,Rubiaceae,Psychotria douarrei,seed,sequenced,,M. Villegente,M. Villegente
+WEAC,Core Eudicots/Asterids,Acanthaceae,Strobilanthes dyeriana,young leaves,sequenced,Soltis and Miles 2958,D. Soltis,D. Soltis
+AYIY,Core Eudicots/Asterids,Acanthaceae,Ruellia brittoniana,young leaves,sequenced,Soltis and Miles 2962,D. Soltis,BGI
+PCGJ,Core Eudicots/Asterids,Acanthaceae,Anisacanthus quadrifidus,young leaves,sequenced,Soltis and Miles 2970,D. Soltis,BGI
+NBMW,Core Eudicots/Asterids,Acanthaceae,Sanchezia sp.,leaf,sequenced,M.K. Deyholos 2016-112,M. Deyholos,Yu Yang
+UTQR,Core Eudicots/Asterids,Bignoniaceae,Tabebuia umbellata,young leaves,sequenced,Soltis and Miles 2926,J. Leebens-Mack,J. Leebens-Mack
+TKEK,Core Eudicots/Asterids,Bignoniaceae,Mansoa alliacea,young leaves,sequenced,Soltis and Miles 2915,D. Soltis,BGI
+SVQC,Core Eudicots/Asterids,Bignoniaceae,Kigelia africana,young leaves,sequenced,Soltis and Miles 2992,D. Soltis,D. Soltis
+QKEI,Core Eudicots/Asterids,Bignoniaceae,Kigelia africana,young leaves,sequenced,Soltis and Miles 2992,D. Soltis,D. Soltis
+GDZS,Core Eudicots/Asterids,Byblidaceae,Byblis gigantea,leaves and buds,sequenced,K.F. Kenneally 5868 (Perth),A. Smithson,A. Smithson
+DCCI,Core Eudicots/Asterids,Calceolariaceae,Calceolaria pinifolia,leaves,sequenced,Chase 34450 K,M. Chase,BGI
+DTNC,Core Eudicots/Asterids,Gesneriaceae,Sinningia tuberosa,leaves,sequenced,Soltis and Miles 2771,D. Soltis,BGI
+RWKR,Core Eudicots/Asterids,Gesneriaceae,Saintpaulia ionantha,leaves,sequenced,JLM2013-63 (GA),D. Soltis,BGI
+FDMM,Core Eudicots/Asterids,Lamiaceae,Rosmarinus officinalis,mature stem and leaves,sequenced,132757 (ALTA),M. Deyholos,M. Deyholos
+EQDA,Core Eudicots/Asterids,Lamiaceae,Salvia spp.,"flower, leaves",sequenced,132759 (ALTA),M. Deyholos,M. Deyholos
+PUCW,Core Eudicots/Asterids,Lamiaceae,Agastache rugosa,shoot (no flower) and root,sequenced,M.K. Deyholos 2016-113,M. Deyholos,M. Deyholos
+ATYL,Core Eudicots/Asterids,Lamiaceae,Scutellaria montana,young shoot,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+SNNC,Core Eudicots/Asterids,Lamiaceae,Leonurus japonicus,leaves,sequenced,Wang 2142 (TAI),Chun-Neng Wang,Chun-Neng Wang
+DYFF,Core Eudicots/Asterids,Lamiaceae,Pycnanthemum tenuifolium,leaves,sequenced,Soltis and Miles 2841,D. Soltis,BGI
+FYUH,Core Eudicots/Asterids,Lamiaceae,Lavandula angustifolia,"leaf, stem, flower",sequenced,132737 (ALTA),M. Deyholos,M. Deyholos
+BAHE,Core Eudicots/Asterids,Lamiaceae,Solenostemon scutellarioides,"leaves, stem, flowers",sequenced,132763 (ALTA),M. Deyholos,M. Deyholos
+DMLT,Core Eudicots/Asterids,Lamiaceae,Vitex agnus-castus,young leaves and flower buds,sequenced,Soltis and Miles 2912,D. Soltis,BGI
+IYDF,Core Eudicots/Asterids,Lamiaceae,Thymus vulgaris,young leaves,sequenced,Grant Godden GGT2,D. Soltis,I. Jordon-Thaden
+LRRR,Core Eudicots/Asterids,Lamiaceae,Teucrium chamaedrys,young leaves,sequenced,Grant Godden GGT3,D. Soltis,I. Jordon-Thaden
+GETL,Core Eudicots/Asterids,Lamiaceae,Pogostemon sp.,young leaves,sequenced,Grant Godden GGT4,D. Soltis,I. Jordon-Thaden
+WHNV,Core Eudicots/Asterids,Lamiaceae,Micromeria fruticosa,leaf,sequenced,132748 (ALTA),M. Deyholos,Yu Yang
+FUMQ,Core Eudicots/Asterids,Lamiaceae,Nepeta cataria,leaf,sequenced,132750 (ALTA),M. Deyholos,Yu Yang
+UCNM,Core Eudicots/Asterids,Lamiaceae,Ajuga reptans,leaf,sequenced,132714 (ALTA),M. Deyholos,Yu Yang
+EAAA,Core Eudicots/Asterids,Lamiaceae,Marrubium vulgare,leaf,sequenced,132744 (ALTA),M. Deyholos,Yu Yang
+TAGM,Core Eudicots/Asterids,Lamiaceae,Melissa officinalis,leaf,sequenced,132746 (ALTA),M. Deyholos,Yu Yang
+PHCE,Core Eudicots/Asterids,Lamiaceae,Prunella vulgaris,leaf,sequenced,132755 (ALTA),M. Deyholos,Yu Yang
+RTNA,Core Eudicots/Asterids,Lamiaceae,Oxera pulchella,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XMBA,Core Eudicots/Asterids,Lamiaceae,Poliomintha bustamanta,young leaves,sequenced,GGT1,D. Soltis,D. Soltis
+GNPX,Core Eudicots/Asterids,Lamiaceae,Oxera neriifolia,,sequenced,JLM2013-55 (GA),J. Leebens-Mack,J. Leebens-Mack
+HRUR,Core Eudicots/Asterids,Lentibulariaceae,Utricularia sp.,leaves,sequenced,Soltis and Miles 2987,D. Soltis,D. Soltis
+MXFG,Core Eudicots/Asterids,Lentibulariaceae,Pinguicula agnata,leaves,sequenced,,M. Deyholos,M. Deyholos
+JCMU,Core Eudicots/Asterids,Lentibulariaceae,Pinguicula caudata,leaf,sequenced,M.K. Deyholos 2012-28,M. Deyholos,Yu Yang
+TORX,Core Eudicots/Asterids,Oleaceae,Olea europaea,young leaves,sequenced,Soltis and Miles 2910,D. Soltis,BGI
+KTAR,Core Eudicots/Asterids,Oleaceae,Chionanthus retusus,young leaves,sequenced,Soltis and Miles 2943,J. Leebens-Mack,J. Leebens-Mack
+MZLD,Core Eudicots/Asterids,Oleaceae,Ligustrum sinense,stems and leaves,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+UEEN,Core Eudicots/Asterids,Oleaceae,Forestiera segregata,young leaves,sequenced,Soltis and Miles 2969,D. Soltis,D. Soltis
+FAMO,Core Eudicots/Asterids,Orobanchaceae,Conopholis americana,flower buds,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+WUZV,Core Eudicots/Asterids,Orobanchaceae,Lindenbergia philippensis,open flowers and flower buds,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+ZVFS,Core Eudicots/Asterids,Orobanchaceae,Lindenbergia philippensis,leaves,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+PHOQ,Core Eudicots/Asterids,Orobanchaceae,Orobanche fasciculata,stem (vegetative growth),sequenced,in preparation,C. dePamphilis,C. dePamphilis
+VTOK,Core Eudicots/Asterids,Orobanchaceae,Orobanche fasciculata,flower buds,sequenced,in preparation,C. dePamphilis,C. dePamphilis
+XMOG,Core Eudicots/Asterids,Orobanchaceae,Epifagus virginiana,buds,sequenced,2996 (PM 1800),D. Soltis,D. Soltis
+URZI,Core Eudicots/Asterids,Orobanchaceae,Epifagus virginiana,above ground tissues,sequenced,CWD 2012.2,C. DePamphilis,C. DePamphilis
+UMUL,Core Eudicots/Asterids,Paulowniaceae,Paulownia fargesii,leaves,sequenced,Chase 34432 K,M. Chase,BGI
+ZRIN,Core Eudicots/Asterids,Pedaliaceae,Uncarina grandidieri,"leaves, young flowers",sequenced,Soltis and Miles 2829,D. Soltis,BGI
+OWAS,Core Eudicots/Asterids,Rehmnniaceae,Rehmannia glutinosa,leaves,sequenced,Wang 2143 (TAI),Chun-Neng Wang,Chun-Neng Wang
+GNRI,Core Eudicots/Asterids,Plantaginaceae,Digitalis purpurea,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+DCVZ,Core Eudicots/Asterids,Plantaginaceae,Plantago coronopus,leaves,sequenced,Cheeseman UIUC001,J. Cheeseman,J. Cheeseman
+YKZB,Core Eudicots/Asterids,Plantaginaceae,Plantago maritima,leaves,sequenced,Cheeseman UIUC002,J. Cheeseman,J. Cheeseman
+PTBJ,Core Eudicots/Asterids,Plantaginaceae,Plantago virginica,leaves,sequenced,N. Garcia 4374,D. Soltis,D. Soltis
+TPUT,Core Eudicots/Asterids,Plantaginaceae,Antirrhinum majus,young leaves (a few flower buds),sequenced,Soltis and Miles 2963,D. Soltis,D. Soltis
+EBOL,Core Eudicots/Asterids,Plantaginaceae,Antirrhinum majus,young leaves (a few flower buds),sequenced,Soltis and Miles 2963,D. Soltis,D. Soltis
+YRHD,Core Eudicots/Asterids,Plantaginaceae,Antirrhinum braun-blanquetii,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+CLRW,Core Eudicots/Asterids,Plantaginaceae,Bacopa caroliniana,young leaves,sequenced,Soltis and Miles 2974,D. Soltis,D. Soltis
+EDXZ,Core Eudicots/Asterids,Schlegeliaceae,Schlegelia violacea,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+GAKQ,Core Eudicots/Asterids,Schlegeliaceae,Schlegelia parasitica,young leaves,sequenced,Soltis and Miles 2983,D. Soltis,D. Soltis
+CWLL,Core Eudicots/Asterids,Schlegeliaceae,Schlegelia parasitica,young leaves,sequenced,Soltis and Miles 2983,D. Soltis,D. Soltis
+XXYA,Core Eudicots/Asterids,Scrophulariaceae,Verbascum sp.,"leaves,stem, flowers",sequenced,,M. Deyholos,M. Deyholos
+SIBR,Core Eudicots/Asterids,Scrophulariaceae,Celsia arcturus,leaf,sequenced,132725 (ALTA),M. Deyholos,Yu Yang
+EJBY,Core Eudicots/Asterids,Scrophulariaceae,Anticharis glandulosa,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+XRLM,Core Eudicots/Asterids,Scrophulariaceae,Buddleja lindleyana,leaves and young flowers,sequenced,Soltis and Miles 2820,D. Soltis,BGI
+GRFT,Core Eudicots/Asterids,Scrophulariaceae,Buddleja sp.,shoot with flowers,sequenced,132721 (ALTA),M. Deyholos,M. Deyholos
+COBX,Core Eudicots/Asterids,Tetrachondraceae,Polypremum procumbens,young leaves,sequenced,Soltis and Miles 2989,D. Soltis,D. Soltis
+PSHB,Core Eudicots/Asterids,Verbenaceae,Lantana camara,"leaves, young flowers",sequenced,Soltis and Miles 2793,D. Soltis,BGI
+GCFE,Core Eudicots/Asterids,Verbenaceae,Verbena hastata,"shoot, roots",sequenced,132768 (ALTA),M. Deyholos,M. Deyholos
+MQIV,Core Eudicots/Asterids,Verbenaceae,Phyla dulcis,leaf,sequenced,132752 (ALTA),M. Deyholos,Yu Yang
+CPOC,Core Eudicots/Asterids,Convolvulaceae,Convolvulus arvensis,leaves and stems,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+VXKB,Core Eudicots/Asterids,Convolvulaceae,Ipomoea purpurea,"leaf, stem, flower",sequenced,107F/90M_R.Baucom,R. Baucom,BGI
+SDXI,Core Eudicots/Asterids,Convolvulaceae,Ipomoea purpurea,leaf,sequenced,107F/90M_R.Baucom,R. Baucom,BGI
+QSLH,Core Eudicots/Asterids,Convolvulaceae,Ipomoea hederacea,leaf,sequenced,B28_J.Stinchcombe,R. Baucom,BGI
+NHAG,Core Eudicots/Asterids,Convolvulaceae,Ipomoea nil,leaf,sequenced,515_R.Miller,R. Baucom,BGI
+ERWT,Core Eudicots/Asterids,Convolvulaceae,Ipomoea coccinea,leaf,sequenced,331_R.Miller,R. Baucom,BGI
+ALUC,Core Eudicots/Asterids,Convolvulaceae,Ipomoea quamoclit,leaf,sequenced,808_R.Miller,R. Baucom,BGI
+EMBR,Core Eudicots/Asterids,Convolvulaceae,Ipomoea pubescens,leaf,sequenced,113_R.Miller,R. Baucom,BGI
+NAUM,Core Eudicots/Asterids,Convolvulaceae,Ipomoea lindheimeri,leaf,sequenced,31_R.Miller,R. Baucom,BGI
+OQBM,Core Eudicots/Asterids,Convolvulaceae,Ipomoea indica,leaf,sequenced,121_R.Miller,R. Baucom,BGI
+IZNU,Core Eudicots/Asterids,Convolvulaceae,Ipomoea lobata,leaf,sequenced,R. Baucom,R. Baucom,BGI
+AHRN,Core Eudicots/Asterids,Convolvulaceae,Cuscuta pentagona,leaves,sequenced,in preparation,James H. Westwood,BGI
+KTWL,Core Eudicots/Asterids,Montiniaceae,Kaliphora madagascariensis,leaves,sequenced,Chase 33155 K,M. Chase,BGI
+BOLZ,Core Eudicots/Asterids,Solanaceae,Atropa belladonna,branch with developing fruit,sequenced,132719 (ALTA),M. Deyholos,M. Deyholos
+DLJZ,Core Eudicots/Asterids,Solanaceae,Solanum ptychanthum,leaves and stems,sequenced,Chance,N. Stewart,N. Stewart
+GHLP,Core Eudicots/Asterids,Solanaceae,Solanum dulcamara,shoot,sequenced,M.K. Deyholos 2016-114,M. Deyholos,M. Deyholos
+LQJY,Core Eudicots/Asterids,Solanaceae,Solanum xanthocarpum,shoot,sequenced,132762 (ALTA),M. Deyholos,M. Deyholos
+LWCK,Core Eudicots/Asterids,Solanaceae,Lycium barbarum,young leaves,sequenced,Soltis and Miles 2911,D. Soltis,BGI
+OSMU,Core Eudicots/Asterids,Solanaceae,Lycium sp.,"leaf, stem, flower",sequenced,M.K. Deyholos 2016-115,M. Deyholos,M. Deyholos
+UGJI,Core Eudicots/Asterids,Solanaceae,Lycopersicon cheesmanii,leaves,sequenced,CheesemanUIUC005,J. Cheeseman,J. Cheeseman
+JNVS,Core Eudicots/Asterids,Solanaceae,Datura metel,leaves,sequenced,Wang 2147 (TAI),Chun-Neng Wang,Chun-Neng Wang
+NMDZ,Core Eudicots/Asterids,Solanaceae,Solanum sisymbriifolium,leaves and flower buds,sequenced,Chase 34445 K,M. Chase,BGI
+DLAI,Core Eudicots/Asterids,Solanaceae,Solanum lasiophyllum,leaves,sequenced,CheesemanUIUC013,J. Cheeseman,J. Cheeseman
+MKZR,Core Eudicots/Asterids,Solanaceae,Nicotiana sylvestris,,sequenced,TR-1A,A. Leitch,BGI
+AIOU,Core Eudicots/Asterids,Solanaceae,Brugmansia sanguinea,young shoot,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+CLMX,Core Eudicots/Asterids,Escalloniaceae,Escallonia rubra,leaves,sequenced,Chase 34451 K,M. Chase,BGI
+CLNU,Core Eudicots/Asterids,Escalloniaceae,Escallonia sp. cv. Newport,leaves,sequenced,R. Mindell & B.C. Zhuang bg430/34133 (UBC),S. Graham,S. Graham
+TPEM,Core Eudicots/Asterids,Escalloniaceae,Platyspermation crassifolium,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+CWYJ,Core Eudicots/Asterids,Apiaceae,Heracleum lanatum,"flowers, stem, young leaves",sequenced,in preparation,M. Deyholos,M. Deyholos
+TQKZ,Core Eudicots/Asterids,Apiaceae,Angelica archangelica,leaf,sequenced,M.K. Deyholos 2016-116,M. Deyholos,Yu Yang
+EITK,Core Eudicots/Asterids,Araliaceae,Hedera helix,aerial root,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+JBYE,Core Eudicots/Asterids,Araliaceae,Hedera helix,ground root,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+EDBB,Core Eudicots/Asterids,Araliaceae,Polyscias fruticosa,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+OINM,Core Eudicots/Asterids,Araliaceae,Hydrocotyle umbellata,young leaves,sequenced,Soltis and Miles 2959,D. Soltis,D. Soltis
+MVSE,Core Eudicots/Asterids,Griseliniaceae,Griselinia littoralis,leaves,sequenced,J. Tate & C. Skema 112 (MPN),J. Tate,BGI
+QIKZ,Core Eudicots/Asterids,Griseliniaceae,Griselinia racemosa,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+WEQK,Core Eudicots/Asterids,Mackinlayaceae,Centella asiatica,"stem, leaf, fruit",sequenced,132726 (ALTA),M. Deyholos,M. Deyholos
+AJFN,Core Eudicots/Asterids,Myodocarpaceae,Myodocarpus sp.,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+SBZH,Core Eudicots/Asterids,Pennatiaceae,Pennantia corymbosa,leaves,sequenced,C. Skema & R. Dickson 513 (MPN),J. Tate,BGI
+NTEO,Core Eudicots/Asterids,Pittosporaceae,Pittosporum sahnianum,vegetative shoots,sequenced,JLM2013-57 (GA),J. Leebens-Mack,J. Leebens-Mack
+SALZ,Core Eudicots/Asterids,Pittosporaceae,Pittosporum resiniferum,fruit,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+DFYF,Core Eudicots/Asterids,Aquifoliaceae,Ilex sp.,young leaves,sequenced,Soltis and Miles 2909,D. Soltis,BGI
+ASMV,Core Eudicots/Asterids,Aquifoliaceae,Ilex vomitoria,young leaves,sequenced,Soltis and Miles 2840,D. Soltis,BGI
+SXML,Core Eudicots/Asterids,Aquifoliaceae,Ilex paraguariensis,leaves,sequenced,Stewart and Burris,N. Stewart,BGI
+QACK,Core Eudicots/Asterids,Helwingiaceae,Helwingia japonica,leaves and flowers,sequenced,Soltis and Miles 2791 and 2858,D. Soltis,BGI
+GIOY,Core Eudicots/Asterids,Argophyllaceae,Corokia cotoneaster,"leaves, veg buds",low quality,JLM2013-30 (GA),D. Soltis,BGI
+WSYE,Core Eudicots/Asterids,Asteraceae,Conyza canadensis,glyphosate suseptible,sequenced,Stewart and Peng,N. Stewart,N. Stewart
+NUSE,Core Eudicots/Asterids,Asteraceae,Conyza canadensis,glyphosate resistant,sequenced,Stewart and Peng,N. Stewart,N. Stewart
+UBLN,Core Eudicots/Asterids,Asteraceae,Xanthium strumarium,leaves and stems,sequenced,Chance,N. Stewart,N. Stewart
+AFQQ,Core Eudicots/Asterids,Asteraceae,Inula helenium,leaves and root,sequenced,M.K. Deyholos 2016-117,M. Deyholos,M. Deyholos
+DUQG,Core Eudicots/Asterids,Asteraceae,Tanacetum parthenium,"flower, floral buds, leaves and stem",sequenced,132765 (ALTA),M. Deyholos,M. Deyholos
+OAGK,Core Eudicots/Asterids,Asteraceae,Matricaria matricarioides,shoot with flowers,sequenced,132745 (ALTA),M. Deyholos,M. Deyholos
+TEZA,Core Eudicots/Asterids,Asteraceae,Solidago canadensis,shoot with flowers,sequenced,in preparation,M. Deyholos,M. Deyholos
+EYKJ,Core Eudicots/Asterids,Asteraceae,Silybum marianum,shoot with flower,sequenced,M.K. Deyholos 2016-118,M. Deyholos,M. Deyholos
+DUNJ,Core Eudicots/Asterids,Asteraceae,Helenium autumnale,leaves and flower buds,sequenced,Chase 34446 K,M. Chase,BGI
+DESP,Core Eudicots/Asterids,Asteraceae,Erigeron canadensis,"shoot, flower, root",sequenced,in preparation,M. Deyholos,M. Deyholos
+XRCX,Core Eudicots/Asterids,Asteraceae,Aster tataricus,leaves,sequenced,Wang 2145 (TAI),Chun-Neng Wang,Chun-Neng Wang
+UQAZ,Core Eudicots/Asterids,Asteraceae,Flaveria angustifolia,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+EXHX,Core Eudicots/Asterids,Asteraceae,Flaveria angustifolia,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+ZNZC,Core Eudicots/Asterids,Asteraceae,Flaveria bidentis,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+QBGG,Core Eudicots/Asterids,Asteraceae,Flaveria bidentis,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+LMXP,Core Eudicots/Asterids,Asteraceae,Flaveria brownii,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+IPUI,Core Eudicots/Asterids,Asteraceae,Flaveria brownii,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DSWR,Core Eudicots/Asterids,Asteraceae,Flaveria cronquistii,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+KJBH,Core Eudicots/Asterids,Asteraceae,Flaveria cronquistii,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+QXWF,Core Eudicots/Asterids,Asteraceae,Flaveria kochiana,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+NVSO,Core Eudicots/Asterids,Asteraceae,Flaveria palmeri,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+GFVW,Core Eudicots/Asterids,Asteraceae,Flaveria pringlei,juvenile leaf,sequenced,,J. Hibberd,J. Hibberd
+RZSW,Core Eudicots/Asterids,Asteraceae,Flaveria pringlei,mature leaf,sequenced,,J. Hibberd,J. Hibberd
+JZHZ,Core Eudicots/Asterids,Asteraceae,Flaveria pubescens,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+HXDV,Core Eudicots/Asterids,Asteraceae,Flaveria pubescens,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+UYED,Core Eudicots/Asterids,Asteraceae,Flaveria sonorensis,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+HRVY,Core Eudicots/Asterids,Asteraceae,Flaveria trinervia,mature leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+RLCS,Core Eudicots/Asterids,Asteraceae,Flaveria trinervia,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+HXCD,Core Eudicots/Asterids,Asteraceae,Flaveria vaginata,juvenile leaf,sequenced,in preparation,J. Hibberd,J. Hibberd
+DDRL,Core Eudicots/Asterids,Asteraceae,Tragopogon dubius,,sequenced,Soltis 2674-4,D. Soltis,BGI
+BMSE,Core Eudicots/Asterids,Asteraceae,Senecio rowleyanus,shoot (no flower),sequenced,132761 (ALTA),M. Deyholos,M. Deyholos
+FUPX,Core Eudicots/Asterids,Asteraceae,Tragopogon pratensis,young leaves,sequenced,Soltis 2689-17,D. Soltis,BGI
+KGJF,Core Eudicots/Asterids,Asteraceae,Tragopogon porrifolius,young leaves,sequenced,Soltis 2677-8,D. Soltis,BGI
+KFZY,Core Eudicots/Asterids,Asteraceae,Tragopogon castellanus,young leaves,sequenced,Soltis 2993,D. Soltis,I. Jordon-Thaden
+ZGDS,Core Eudicots/Asterids,Asteraceae,Lactuca graminifolia,young leaves,sequenced,E. Schilling LG-1,D. Soltis,I. Jordon-Thaden
+MMJI,Core Eudicots/Asterids,Asteraceae,Lactuca graminifolia,young leaves,sequenced,E. Schilling LG-1-2,D. Soltis,I. Jordon-Thaden
+CFRN,Core Eudicots/Asterids,Asteraceae,Carthamus lanatus,leaves,sequenced,M.K. Deyholos 2016-119,M. Deyholos,M. Deyholos
+JNKW,Core Eudicots/Asterids,Asteraceae,Cicerbita plumieri,young leaves,sequenced,E. Schilling 11-48,D. Soltis,I. Jordon-Thaden
+GUMF,Core Eudicots/Asterids,Asteraceae,Anthemis tinctoria,leaf,sequenced,M.K. Deyholos 2016-120,M. Deyholos,Yu Yang
+DOVJ,Core Eudicots/Asterids,Asteraceae,Leontopodium alpinum,leaf,sequenced,132741 (ALTA),M. Deyholos,Yu Yang
+IZLO,Core Eudicots/Asterids,Campanulaceae,Lobelia siphilitica,shoot,sequenced,132742 (ALTA),M. Deyholos,M. Deyholos
+IHPC,Core Eudicots/Asterids,Campanulaceae,Platycodon grandiflorus,leaf,sequenced,132754 (ALTA),M. Deyholos,Yu Yang
+HUQC,Core Eudicots/Asterids,Goodeniaceae,Scaevola mossambicensis,leaves,sequenced,Soltis and Miles 2787,D. Soltis,BGI
+IXVJ,Core Eudicots/Asterids,Menyanthaceae,Menyanthes trifoliata,leaves,sequenced,R. Mindell & B.C. Zhuang 12588 (UBC),S. Graham,S. Graham
+AUIP,Core Eudicots/Asterids,Phellinaceae,Phelline lucida,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+FXGI,Core Eudicots/Asterids,Stylidiaceae,Stylidium adnatum,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+HLJG,Core Eudicots/Asterids,Adoxaceae,Viburnum odoratissimum,young leaves,sequenced,Soltis and Miles 2950,D. Soltis,D. Soltis
+SNBI,Core Eudicots/Asterids,Adoxaceae,Sambucus canadensis,young leaves and flower buds,sequenced,Soltis and Miles 2955,D. Soltis,D. Soltis
+QRNU,Core Eudicots/Asterids,Adoxaceae,Sambucus canadensis,young leaves and flower buds,sequenced,Soltis and Miles 2955,D. Soltis,D. Soltis
+CAQZ,Core Eudicots/Asterids,Caprifoliaceae s. l.,Symphoricarpos sp.,shoot with flowers,sequenced,132764 (ALTA),M. Deyholos,M. Deyholos
+GSZA,Core Eudicots/Asterids,Caprifoliaceae,Lonicera japonica,young leaves (some floral buds),sequenced,Soltis and Miles 2929,D. Soltis,D. Soltis
+JTRM,Core Eudicots/Asterids,[Dipsacaceae],Dipsacus asper,shoot (no flower) and root,sequenced,132729 (ALTA),M. Deyholos,M. Deyholos
+FFFY,Core Eudicots/Asterids,[Valerianaceae],Valeriana officinalis,leaves,sequenced,132767 (ALTA),M. Deyholos,M. Deyholos
+MTII,Monocots,Acoraceae,Acorus americanus,whole shoot (no flower) and rhizome,sequenced,M.K. Deyholos 2016-121,M. Deyholos,M. Deyholos
+DWZT,Monocots,Alismataceae,Sagittaria latifolia,leaf shoots and flower buds,sequenced,in preparation,D. Soltis,BGI
+MFIN,Monocots,Araceae,Pistia stratiotes,"leaves, roots",sequenced,132713 (ALTA),M. Deyholos,M. Deyholos
+COCP,Monocots,Juncaginaceae,Triglochin maritima,leaves,sequenced,Cheeseman UIUC004,J. Cheeseman,J. Cheeseman
+BYQM,Monocots,Posidoniaceae,Posidonia australis,meristem and fruits,sequenced,E. A. Sinclair WB2/WB30 (Perth),A. Smithson,A. Smithson
+OCWZ,Monocots,Dioscoreaceae,Dioscorea villosa,"flower, floral buds, leaves and stem",sequenced,132728 (ALTA),M. Deyholos,M. Deyholos
+VVVV,Monocots,Cyclanthaceae,Ludovia sp.,young leaves and flower buds,sequenced,JLM2013-50 (GA),J. Leebens-Mack,J. Leebens-Mack
+DGXS,Monocots,Pandanaceae,Freycinetia multiflora,young shoot,sequenced,JLM2013-42 (GA),J. Leebens-Mack,J. Leebens-Mack
+VBHQ,Monocots,Stemonaceae,Stemona tuberosa,leaves,sequenced,Wang 2144 (TAI),Chun-Neng Wang,Chun-Neng Wang
+SILJ,Monocots,Velloziaceae,Talbotia elegans,young shoots,sequenced,JLM2013-71 (GA),J. Leebens-Mack,J. Leebens-Mack
+QOXT,Monocots,Velloziaceae,Xerophyta villosa,young shoots,sequenced,ABG2004044,J. Leebens-Mack,J. Leebens-Mack
+NHIX,Monocots,Colchicaceae,Colchicum autumnale,bulb and shoot,sequenced,132707 (ALTA),M. Deyholos,M. Deyholos
+OVRB,Monocots,Colchicaceae,Colchicum autumnale,"leaves, fine roots",sequenced,132707 (ALTA),M. Deyholos,M. Deyholos
+SFCT,Monocots,Colchicaceae,Colchicum autumnale,bulb,sequenced,132707 (ALTA),M. Deyholos,M. Deyholos
+GDKK,Monocots,Colchicaceae,Gloriosa superba,shoot (no flower) and root,sequenced,132709 (ALTA),M. Deyholos,M. Deyholos
+THEW,Monocots,Liliaceae,Lilium sargentiae,leaves,low quality,Chase 34452 K,M. Chase,BGI
+AFLV,Monocots,Melanthiaceae,Xerophyllum asphodeloides,vegetative shoot,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+OOSO,Monocots,Melanthiaceae,Helonias bullata,shoot emerging from bulb,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+MWYQ,Monocots,Smilacaceae,Smilax bona-nox,young leaf and tendril shoots,sequenced,in preparation,D. Soltis,BGI
+PRFO,Monocots,Agapanthaceae,Agapanthus africanus,leaves and buds,sequenced,JCP-2012-1000-0001 (UMO),J. C. Pires,BGI
+KXSK,Monocots,Agavaceae,Agave tequilana,whole plant,sequenced,Stewart and Burris,N. Stewart,BGI
+YBML,Monocots,Agavaceae,Yucca brevifolia,flower buds,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+ICNN,Monocots,Agavaceae,Yucca filamentosa,leaf shoots,sequenced,in preparation,J. Leebens-Mack,J. Leebens-Mack
+PLBZ,Monocots,Agavaceae,Chlorogalum pomeridianum,leaf shoots,sequenced,in preparation,J. Leebens-Mack,J. Leebens-Mack
+CMCY,Monocots,Agavaceae,Hesperaloe parviflora,leaf shoots,sequenced,in preparation,J. Leebens-Mack,J. Leebens-Mack
+GJPF,Monocots,Alliaceae,Allium sativum,,sequenced,JCP-2012-1000-0002 (UMO),J. C. Pires,BGI
+KBXS,Monocots,Alliaceae,Allium commutatum,leaves,sequenced,Chase 34437 K,M. Chase,BGI
+LDME,Monocots,Amaryllidaceae,Amaryllis belladonna,,sequenced,JCP-2012-1000-0003 (UMO),J. C. Pires,BGI
+XEUV,Monocots,Amaryllidaceae,Narcissus viridiflorus,young leaf,sequenced,Jury 12586,K. Konyves,K. Konyves
+IQYY,Monocots,Amaryllidaceae,Narcissus viridiflorus,young flower,sequenced,Jury 12586,K. Konyves,K. Konyves
+DMIN,Monocots,Amaryllidaceae,Phycella aff. cyrtanthoides,leaves,sequenced,N. Garcia G01,D. Soltis,J. Leebens-Mack
+JDTY,Monocots,Amaryllidaceae,Rhodophiala pratensis,leaves,sequenced,N. Garcia 4372 (G79),J. Leebens-Mack,J. Leebens-Mack
+ZKPF,Monocots,Amaryllidaceae,Traubia modesta,sepals,sequenced,Garcia 3014,D. Soltis,D. Soltis
+DPFW,Monocots,Amaryllidaceae,Zephyranthes treatiae,leaves and flower buds,sequenced,N. Garcia 4373,J. Leebens-Mack,J. Leebens-Mack
+FGRF,Monocots,Asparagaceae,Asparagus densiflorus,shoots with cladode and flower primordia,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XFJG,Monocots,Asparagaceae,Maianthemum canadense,"flowers, stems, leaves",sequenced,J.R. McDill 2011-6,M. Deyholos,M. Deyholos
+RCUX,Monocots,Asparagaceae,Maianthemum sp.,,sequenced,,D. Soltis,D. Soltis
+UZXL,Monocots,Asparagaceae,Disporopsis pernyi,young leaves,sequenced,M. Heaney JMH2546,D. Soltis,I. Jordon-Thaden
+JVBR,Monocots,Asphodelaceae,Aloe vera,,sequenced,JCP-2012-1000-0004 (UMO),J. C. Pires,BGI
+EMJJ,Monocots,Boryaceae,Borya sphaerocephala,leaves and buds,sequenced,M.D. Barrett & Smithson 3183 (Perth),A. Smithson,A. Smithson
+FCEL,Monocots,Hemerocallidaceae,Phormium tenax,,sequenced,JCP-2012-1000-0005 (UMO),J. C. Pires,BGI
+BLAJ,Monocots,Hemerocallidaceae,Hemerocallis spp.,leaves,sequenced,in preparation,D. Soltis,BGI
+JHUL,Monocots,Hemerocallidaceae,Hemerocallis sp.,leaves,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+KOFB,Monocots,Hyacinthaceae,Urginea maritima,young leaves,sequenced,JCP-2012-1000-0006 (UMO),J. C. Pires,C. Pires
+SVTS,Monocots,Hyacinthaceae,Drimia altissima,leaves,sequenced,JCP-2012-1000-0007 (UMO),J. C. Pires,BGI
+YJUG,Monocots,Hypoxidaceae,Curculigo sp.,,sequenced,JCP-2012-1000-0008 (UMO),J. C. Pires,J. C. Pires
+LTZF,Monocots,Iridaceae,Sisyrinchium angustifolium,,sequenced,JCP-2012-1000-0009 (UMO),J. C. Pires,J. C. Pires
+MUMD,Monocots,Laxmanniaceae,Lomandra longifolia,,sequenced,JCP-2012-1000-0010 (UMO),J. C. Pires,BGI
+VTUS,Monocots,Orchidaceae,Goodyera pubescens,young leaves,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+MTHW,Monocots,Orchidaceae,Platanthera clavellata,young leaves,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+THDM,Monocots,Orchidaceae,Vanilla planifolia,,sequenced,JCP-2012-1000-0011 (UMO),J. C. Pires,BGI
+XZME,Monocots,Orchidaceae,Drakaea elastica,"leaves, flowers, and buds",sequenced,M.D. Barrett 3297 (Perth),A. Smithson,A. Smithson
+CNTZ,Monocots,Orchidaceae,Oncidium sphacelatum,whole plant with flowers,low quality,132711 (ALTA),M. Deyholos,M. Deyholos
+JSAG,Monocots,Orchidaceae,Masdevallia yuangensis,"buds, leaves, roots",sequenced,M.K. Deyholos 2016-122,M. Deyholos,M. Deyholos
+LELS,Monocots,Orchidaceae,Haemaria discolor,leaf and flower,sequenced,,M. Deyholos,Yu Yang
+MVRF,Monocots,Ruscaceae,Sansevieria trifasciata,,sequenced,JCP-2012-1000-0012 (UMO),J. C. Pires,BGI
+HOKG,Monocots,Ruscaceae,Nolina atopocarpa,young leaves and flower buds,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+LSJW,Monocots,Ruscaceae,Ruscus sp.,"fruit, stem, leaves",sequenced,132758 (ALTA),M. Deyholos,M. Deyholos
+ONBE,Monocots,Ruscaceae,Eriospermum lancifolia,young leaves,sequenced,JCP-2012-1000-0013 (UMO),J. C. Pires,C. Pires
+RQZP,Monocots,Ruscaceae,Nolina bigelovii,young leaves,sequenced,M. Heaney JMH2984,D. Soltis,I. Jordon-Thaden
+TCYS,Monocots,Ruscaceae,Peliosanthes minor,young leaves,sequenced,M. Heaney JMH2549,D. Soltis,I. Jordon-Thaden
+RDYY,Monocots,Tecophilaeaceae,Cyanastrum cordifolium,,sequenced,JCP-2012-1000-0015 (UMO),J. C. Pires,BGI
+KYNE,Monocots,Tecophilaeaceae,Cyanella orchidiformis,,sequenced,JCP-2012-1000-0014 (UMO),J. C. Pires,J. C. Pires
+IXEM,Monocots,Themidaceae,Brodiaea sierrae,,sequenced,JCP-2012-1000-0016 (UMO),J. C. Pires,BGI
+WTDE,Monocots,Xanthorrhoeaceae,Johnsonia pubescens,flowers,sequenced,M.D. Barrett 3194 (Perth),A. Smithson,A. Smithson
+SART,Monocots,Xeronemataceae,Xeronema callistemon,,sequenced,JCP-2012-1000-0017 (UMO),J. C. Pires,BGI
+QGLJ,Monocots/Commelinids,Arecaceae,Cocos nucifera,leaves,sequenced,Chase 34489 K,M. Chase,BGI
+NSPR,Monocots/Commelinids,Arecaceae,Nypa fruticans,leaves,sequenced,Chase 34462 K,M. Chase,BGI
+HXJE,Monocots/Commelinids,Arecaceae,Serenoa repens,young leaves,sequenced,Soltis and Miles 2935,J. Leebens-Mack,J. Leebens-Mack
+HWUP,Monocots/Commelinids,Arecaceae,Sabal bermudana,leaf shoots,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+YMES,Monocots/Commelinids,Arecaceae,Typhonium blumei,leaves and buds,sequenced,M.D. Barrett 3242 (Perth),A. Smithson,A. Smithson
+TZNS,Monocots/Commelinids,Cannaceae,Canna sp.,young leaves,sequenced,Soltis and Miles 2928,D. Soltis,D. Soltis
+KNKV,Monocots/Commelinids,Heliconiaceae,Heliconia sp.,young leaves,sequenced,Soltis and Miles 2934,D. Soltis,D. Soltis
+TNWF,Monocots/Commelinids,Heliconiaceae,Heliconia sp.,young leaves,sequenced,Soltis and Miles 2934,J. Leebens-Mack,J. Leebens-Mack
+LSKK,Monocots/Commelinids,Lowiaceae,Orchidantha maxillarioides,flower and leaf buds,sequenced,JLM2013-54 (GA),D. Soltis,BGI
+JNUB,Monocots/Commelinids,Marantaceae,Maranta leuconeura,leaf and flower buds,sequenced,ABG,D. Soltis,BGI
+UOEL,Monocots/Commelinids,Strelitziaceae,Strelitzia reginae,leaves,sequenced,Chase 34470 K,M. Chase,BGI
+JQCX,Monocots/Commelinids,Zingiberaceae,Curcuma longa,young leaves,sequenced,Soltis and Miles 2933,D. Soltis,D. Soltis
+OYLU,Monocots/Commelinids,Zingiberaceae,Curcuma longa,young leaves,sequenced,,D. Soltis,Soltis Lab
+BDJQ,Monocots/Commelinids,Zingiberaceae,Zingiber officinale,young leaves,sequenced,T. Chen et. al. 2010090808,Tao Chen,BGI
+BYPY,Monocots/Commelinids,Bromeliaceae,Brocchinia reducta,young shoot,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+PWSG,Monocots/Commelinids,Cyperaceae,Cyperus papyrus,shoot (no flower),sequenced,M.K. Deyholos 2016-123,M. Deyholos,M. Deyholos
+XPAF,Monocots/Commelinids,Cyperaceae,Mapania palustris,leaf shoots,sequenced,in preparation,D. Soltis,BGI
+WBIB,Monocots/Commelinids,Cyperaceae,Lepidosperma gibsonii,leaves and buds,sequenced,M.D. Barrett 3201 (Perth),A. Smithson,A. Smithson
+WXNT,Monocots/Commelinids,Joinvilleaceae,Joinvillea ascendens,leaf,sequenced,800379,D. W. Stevenson,BGI
+CIEA,Monocots/Commelinids,Juncaceae,Juncus inflexus,leaves,sequenced,132710 (ALTA),M. Deyholos,M. Deyholos
+RMVB,Monocots/Commelinids,Poaceae,Avena fatua,young shoot,sequenced,"Zuidof-Lacombe AB, Wild oats #1",N. Stewart,BGI
+IADP,Monocots/Commelinids,Poaceae,Deschampsia cespitosa,leaves,sequenced,Chase 34433 K,M. Chase,BGI
+YPIC,Monocots/Commelinids,Poaceae,Microstegium vimineum,leaves and stems,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+YXNR,Monocots/Commelinids,Poaceae,Triodia aff. bynoei,leaves and buds,sequenced,M.D. Barrett 3198 (Perth),A. Smithson,A. Smithson
+SOHV,Monocots/Commelinids,Poaceae,Panicum miliaceum,mature leaf,sequenced,Kellogg PI536011 (MO),E. Kellogg,J. Hibberd
+ROEI,Monocots/Commelinids,Poaceae,Cymbopogon nardus,shoot (no flower),sequenced,132708 (ALTA),M. Deyholos,M. Deyholos
+ZENX,Monocots/Commelinids,Poaceae,Neurachne alopecuroidea,shoot,sequenced,TDM 5269 (Perth),M. Ludwig,H. Clayton
+VQYB,Monocots/Commelinids,Poaceae,Neurachne lanigera,shoot,sequenced,TDM 5177 (Perth),M. Ludwig,H. Clayton
+ZMGN,Monocots/Commelinids,Poaceae,Neurachne munroi,shoot,sequenced,TDM 5169 (Perth),M. Ludwig,H. Clayton
+BPKH,Monocots/Commelinids,Poaceae,Neurachne annularis,shoot,sequenced,TDM 5166 (Perth),M. Ludwig,M. Ludwig
+BXAY,Monocots/Commelinids,Poaceae,Neurachne minor,shoot,sequenced,TDM 5175 (Perth),M. Ludwig,M. Ludwig
+NNOK,Monocots/Commelinids,Poaceae,Neurachne tenuifolia,,sequenced,Latz 25064 (DNA),M. Ludwig,M. Ludwig
+XUAB,Monocots/Commelinids,Poaceae,Paraneurachne muelleri,,sequenced,Albrecht 13786 (Perth),M. Ludwig,M. Ludwig
+WCOR,Monocots/Commelinids,Poaceae,Thyridolepis multiculmis,shoot,sequenced,TDM 5172 (Perth),M. Ludwig,H. Clayton
+XBKS,Monocots/Commelinids,Poaceae,Thyridolepis mitchelliana,shoot,sequenced,TDM 5170 (Perth),M. Ludwig,H. Clayton
+HATH,Monocots/Commelinids,Poaceae,Aristida stricta,young leaves,sequenced,JDR 10,D. Soltis,BGI
+RCAH,Monocots/Commelinids,Poaceae,Uniola paniculata,young leaves,sequenced,R. Hodel RGJH1001,D. Soltis,I. Jordon-Thaden
+TIJL,Monocots/Commelinids,Poaceae,Eleusine coracana,leaf unstressed,sequenced,M.K. Deyholos 2016-124,M. Deyholos,Anupreeti Ramadoss
+OMXG,Monocots/Commelinids,Poaceae,Eleusine coracana,root unstressed,sequenced,M.K. Deyholos 2016-124,M. Deyholos,Anupreeti Ramadoss
+CXSJ,Monocots/Commelinids,Poaceae,Eleusine coracana,root drought,sequenced,M.K. Deyholos 2016-124,M. Deyholos,Anupreeti Ramadoss
+PZAP,Monocots/Commelinids,Poaceae,Eleusine coracana,flower,sequenced,M.K. Deyholos 2016-125,M. Deyholos,Anupreeti Ramadoss
+YLWW,Monocots/Commelinids,Poaceae,Uniola paniculata,young leaves,sequenced,R. Hodel RGJH1001-2,D. Soltis,I. Jordon-Thaden
+BSTR,Monocots/Commelinids,Restionaceae,Chondropetalum tectorum,young shoots,sequenced,JLM2013-27 (GA),J. Leebens-Mack,J. Leebens-Mack
+PPQR,Monocots/Commelinids,Typhaceae,Typha angustifolia,leaves,sequenced,Chase 34436 K,M. Chase,BGI
+BRUD,Monocots/Commelinids,Typhaceae,Typha latifolia,leaf and rhizome shoots,sequenced,in preparation,D. Soltis,BGI
+SGTW,Ginkgoales,Ginkgoaceae,Ginkgo biloba,developing shoots,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+VDAO,Gnetales,Ephedraceae,Ephedra sinica,shoot,sequenced,132703 (ALTA),M. Deyholos,M. Deyholos
+GTHK,Gnetales,Gnetaceae,Gnetum montanum,leaves,sequenced,in preparation,Tao Chen,BGI
+TOXE,Gnetales,Welwitschiaceae,Welwitschia mirabilis,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+XZUY,Cycadales,Cycadaceae,Cycas micholitzii,leaves,sequenced,in preparation,Tao Chen,BGI
+KAWQ,Cycadales,Stangeriaceae,Stangeria eriopus,Young Leaf,sequenced,Montgomery Botanical Center (#3),D. W. Stevenson,D.W. Stevenson
+WLIC,Cycadales,Zamiaceae,Dioon edule,leaf,sequenced,1576/87-G; NYBG,D. W. Stevenson,BGI
+GNQG,Cycadales,Zamiaceae,Encephalartos barteri,,sequenced,,D. W. Stevenson,BGI
+MIXZ,Conifers,Araucariaceae,Agathis robusta,Leaf,sequenced,87/98-A; (MBC),D. W. Stevenson,D.W. Stevenson
+XTZO,Conifers,Araucariaceae,Araucaria rulei,,sequenced,JLM2013-19 (GA),J. Leebens-Mack,J. Leebens-Mack
+ACWS,Conifers,Araucariaceae,Agathis macrophylla,Young Leaf,sequenced,88/53-A; (MBC),D. W. Stevenson,D.W. Stevenson
+RSCE,Conifers,Araucariaceae,Wollemia nobilis,leaves,sequenced,Susan Murch s.n. [not submitted to UBC yet],S. Graham,S. Graham
+WYAJ,Conifers,Cephalotaxaceae,Cephalotaxus harringtonia,branch apex including needles,sequenced,132700 (ALTA),M. Deyholos,M. Deyholos
+GJTI,Conifers,Cephalotaxaceae,Cephalotaxus harringtonia,leaves,sequenced,B.C. Zhuang & C. Gallant bg045/26003 (UBC),S. Graham,S. Graham
+IAJW,Conifers,Cephalotaxaceae,Amentotaxus argotaenia,leaf,sequenced,P. Thomas 19763949 (E),D. W. Stevenson,D. W. Stevenson
+XIRK,Conifers,Cupressaceae,Athrotaxis cupressoides,leaf,sequenced,P. Thomas 20052511 (E),S. Graham,L. DeGironimo
+YYPE,Conifers,Cupressaceae,Austrocedrus chilensis,leaves,sequenced,B.C. Zhuang & C. Gallant bg098/35210 (UBC),S. Graham,S. Graham
+IFLI,Conifers,Cupressaceae,Callitris gracilis,,sequenced,DJ533A,A. Lowe,BGI
+RMMV,Conifers,Cupressaceae,Callitris macleayana,,sequenced,,A. Lowe,BGI
+FRPM,Conifers,Cupressaceae,Calocedrus decurrens,leaves,sequenced,B.C. Zhuang & C. Gallant bg422/40057 (UBC),S. Graham,S. Graham
+AIGO,Conifers,Cupressaceae,Chamaecyparis lawsoniana,leaf,sequenced,546/65A,D. W. Stevenson,BGI
+DSXO,Conifers,Cupressaceae,Cryptomeria japonica,branch apex including needles and cones,sequenced,132702 (ALTA),M. Deyholos,M. Deyholos
+HOUF,Conifers,Cupressaceae,Cryptomeria japonica,leaf,sequenced,81/49A,D. W. Stevenson,BGI
+OUOI,Conifers,Cupressaceae,Cunninghamia lanceolata,young shoot,sequenced,B.C. Zhuang & C. Gallant bg109/30069 (UBC),S. Graham,BGI
+ESYX,Conifers,Cupressaceae,Cunninghamia lanceolata,branch apex incl. needles,sequenced,132701 (ALTA),M. Deyholos,M. Deyholos
+QNGJ,Conifers,Cupressaceae,Cupressus dupreziana,,sequenced,JLM2013-33 (GA),J. Leebens-Mack,J. Leebens-Mack
+GKCZ,Conifers,Cupressaceae,Diselma archeri,leaf,sequenced,P. Thomas 19802712 (E),D. W. Stevenson,D. W. Stevenson
+UEVI,Conifers,Cupressaceae,Fokienia hodginsii,leaf,sequenced,P. Thomas 19950510 (E),D. W. Stevenson,D. W. Stevenson
+OXGJ,Conifers,Cupressaceae,Glyptostrobus pensilis,young shoot,sequenced,B.C. Zhuang & C. Gallant bg107/949 (UBC),S. Graham,BGI
+XMGP,Conifers,Cupressaceae,Juniperus scopulorum,young shoot,sequenced,E. La Fountaine 2013-002 (UBC),S. Graham,BGI
+NRXL,Conifers,Cupressaceae,Metasequoia glyptostroboides,leaves,sequenced,B.C. Zhuang & C. Gallant bg094/16788 (UBC),S. Graham,S. Graham
+XQSG,Conifers,Cupressaceae,Microbiota decussata,leaves,sequenced,B.C. Zhuang & C. Gallant bg103/12701 (UBC),S. Graham,S. Graham
+JDQB,Conifers,Cupressaceae,Neocallitropsis pancheri,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+OVIJ,Conifers,Cupressaceae,Papuacedrus papuana,leaf,sequenced,P. Thomas 19682163 (E),D. W. Stevenson,D. W. Stevenson
+ETCJ,Conifers,Cupressaceae,Pilgerodendron uviferum,leaves,sequenced,B.C. Zhuang & C. Gallant bg099/35314 (UBC),S. Graham,S. Graham
+BUWV,Conifers,Cupressaceae,Platycladus orientalis,leaves,sequenced,B.C. Zhuang & C. Gallant bg424/29264 (UBC),S. Graham,S. Graham
+HBGV,Conifers,Cupressaceae,Sequoia sempervirens,branch apex including needles,sequenced,132704 (ALTA),M. Deyholos,M. Deyholos
+QFAE,Conifers,Cupressaceae,Sequoiadendron giganteum Glaucum,leaf,sequenced,1638/2002-A; NYBG,D. W. Stevenson,BGI
+QSNJ,Conifers,Cupressaceae,Taiwania cryptomerioides,leaves,sequenced,B.C. Zhuang & C. Gallant bg105/21199 (UBC),S. Graham,S. Graham
+FHST,Conifers,Cupressaceae,Taxodium distichum,leaves,sequenced,B.C. Zhuang & C. Gallant bg104/27812 (UBC),S. Graham,S. Graham
+CGDN,Conifers,Cupressaceae,Tetraclinis sp.,,sequenced,JLM2013-72 (GA),J. Leebens-Mack,J. Leebens-Mack
+VFYZ,Conifers,Cupressaceae,Thuja plicata,young shoot,sequenced,B.C. Zhuang & C. Gallant bg426/39575 (UBC),S. Graham,BGI
+NKIN,Conifers,Cupressaceae,Thujopsis dolabrata,young shoot,sequenced,B.C. Zhuang & C. Gallant bg096/14841 (UBC),S. Graham,BGI
+AUDE,Conifers,Cupressaceae,Widdringtonia cedarbergensis,young leaf,sequenced,L. DeGironimo 637/2004-B (NY),D. W. Stevenson,L. DeGironimo
+VSRH,Conifers,Pinaceae,Abies lasiocarpa,leaf,sequenced,2036/2007A,D. W. Stevenson,BGI
+NPRL,Conifers,Pinaceae,Cathaya argyrophylla,,sequenced,JLM2013-25 (GA),J. Leebens-Mack,J. Leebens-Mack
+GGEA,Conifers,Pinaceae,Cedrus libani,young shoot,sequenced,B.C. Zhuang & C. Gallant bg102/7617 (UBC),S. Graham,BGI
+JUWL,Conifers,Pinaceae,Keteleeria evelyniana,young shoot,sequenced,JLM2013-48 (GA),J. Leebens-Mack,J. Leebens-Mack
+WVWN,Conifers,Pinaceae,Larix speciosa,young shoot,sequenced,R. Mindell & B.C. Zhuang 36696 (UBC),S. Graham,S. Graham
+AREG,Conifers,Pinaceae,Nothotsuga longibracteata,,sequenced,JLM2013-51 (GA),J. Leebens-Mack,J. Leebens-Mack
+AWQB,Conifers,Pinaceae,Picea engelmannii,leaf,sequenced,80226B,D. W. Stevenson,BGI
+IIOL,Conifers,Pinaceae,Pinus parviflora,leaf,sequenced,P. Thomas 19721337 (E),D. W. Stevenson,D. W. Stevenson
+DZQM,Conifers,Pinaceae,Pinus radiata,leaf,sequenced,P. Thomas 20090072 (E),D. W. Stevenson,D. W. Stevenson
+JBND,Conifers,Pinaceae,Pinus ponderosa,stems and leaves,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+MFTM,Conifers,Pinaceae,Pinus jeffreyi,stems and leaves,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+AQFM,Conifers,Pinaceae,Pseudolarix amabilis,,sequenced,JLM2013-60 (GA),J. Leebens-Mack,J. Leebens-Mack
+IOVS,Conifers,Pinaceae,Pseudotsuga wilsoniana,young shoot,sequenced,R. Mindell & B.C. Zhuang 31183 (UBC),S. Graham,BGI
+GAMH,Conifers,Pinaceae,Tsuga heterophylla,leaf,sequenced,6182009A,D. W. Stevenson,BGI
+HILW,Conifers,Podocarpaceae,Acmopyle pancheri,,sequenced,JLM2013-15 (GA),J. Leebens-Mack,J. Leebens-Mack
+FMWZ,Conifers,Podocarpaceae,Dacrycarpus compactus,leaf,sequenced,P. Thomas 19643273 (E),D. W. Stevenson,D. W. Stevenson
+IZGN,Conifers,Podocarpaceae,Dacrydium balansae,,sequenced,JLM2013-34 (GA),J. Leebens-Mack,J. Leebens-Mack
+QHBI,Conifers,Podocarpaceae,Falcatifolium taxoides,,sequenced,JLM2013-40 (GA),J. Leebens-Mack,J. Leebens-Mack
+ROWR,Conifers,Podocarpaceae,Falcatifolium taxoides,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+OWFC,Conifers,Podocarpaceae,Halocarpus bidwillii,leaves,sequenced,B.C. Zhuang & C. Gallant bg101/18306 (UBC),S. Graham,S. Graham
+ZQWM,Conifers,Podocarpaceae,Lagarostrobos franklinii,young end shoots,sequenced,C.N. Page 19763971 A3 (E),M. Ruhsam,M. Ruhsam
+CDFR,Conifers,Podocarpaceae,Manoao colensoi,leaf,sequenced,P. Thomas 19842513 (E),D. W. Stevenson,BGI
+MHGD,Conifers,Podocarpaceae,Microcachrys tetragona,leaves,sequenced,B.C. Zhuang & C. Gallant bg048/38870 (UBC),S. Graham,S. Graham
+BBDD,Conifers,Podocarpaceae,Lepidothamnus sp.,young shoot,sequenced,B.C. Zhuang & C. Gallant bg049/25451 (UBC),S. Graham,BGI
+UUJS,Conifers,Podocarpaceae,Nageia nagi,leaf,sequenced,H226195,D. W. Stevenson,BGI
+JZVE,Conifers,Podocarpaceae,Parasitaxus usta,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+JRNA,Conifers,Podocarpaceae,Phyllocladus hypophyllus,leaf,sequenced,P. Thomas 19781711 (E),D. W. Stevenson,D. Stevenson
+SCEB,Conifers,Podocarpaceae,Podocarpus coriaceus,leaf,sequenced,P. Thomas 19901428 (E),P. Thomas,D. W. Stevenson
+XLGK,Conifers,Podocarpaceae,Podocarpus rubens,leaf,sequenced,P. Thomas  20000597*A4 (E),P. Thomas,D. W. Stevenson
+EGLZ,Conifers,Podocarpaceae,Prumnopitys andina,young shoot,sequenced,B.C. Zhuang & C. Gallant bg100/36610 (UBC),S. Graham,BGI
+VGSX,Conifers,Podocarpaceae,Retrophyllum minus,,sequenced,JLM2013-62 (GA),J. Leebens-Mack,J. Leebens-Mack
+QCGM,Conifers,Podocarpaceae,Saxegothaea conspicua,young shoot,sequenced,B.C. Zhuang & V. Lam 2012-bg072/20586 (UBC),D. W. Stevenson,BGI
+KLGF,Conifers,Podocarpaceae,Sundacarpus amarus,,sequenced,JLM2013-68 (GA),D. Soltis,D. Soltis
+YFZK,Conifers,Sciadopityaceae,Sciadopitys verticillata,young shoot,sequenced,B.C. Zhuang & C. Gallant bg108/11040 (UBC),S. Graham,BGI
+BTTS,Conifers,Taxaceae,Austrotaxus spicata,,sequenced,,J. Leebens-Mack,J. Leebens-Mack
+YLPM,Conifers,Taxaceae,Pseudotaxus chienii,,sequenced,JLM2013-61 (GA),J. Leebens-Mack,J. Leebens-Mack
+WWSS,Conifers,Taxaceae,Taxus baccata,mature leaves and small woody branch,sequenced,132705 (ALTA),M. Deyholos,M. Deyholos
+ZYAX,Conifers,Taxaceae,Taxus cuspidata,branch apex including needles,sequenced,132706 (ALTA),M. Deyholos,M. Deyholos
+HQOM,Conifers,Taxaceae,Torreya nucifera,young shoot,sequenced,B.C. Zhuang & C. Gallant bg106/6921 (UBC),S. Graham,BGI
+EFMS,Conifers,Taxaceae,Torreya taxifolia,young shoots,sequenced,JLM2013-73 (GA),J. Leebens-Mack,J. Leebens-Mack
+GAON,Lycophytes,Lycopodiaceae,Huperzia squarrosa,developing shoots,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+GKAG,Lycophytes,Lycopodiaceae,Huperzia lucidula,sterile leaves/branches,sequenced,Rothfels 4124 (DUKE),C. Rothfels,C. Rothfels
+NYBX,Lycophytes,Lycopodiaceae,Huperzia selago,tips of shoots,sequenced,A. Larsson 80 (UPS),A. Larsson,A. Larsson
+CBAE,Lycophytes,Huperziaceae,Huperzia myrsinites,Young Leaf,sequenced,269175-B; NYBG,D. W. Stevenson,D.W. Stevenson
+ZZEI,Lycophytes,Huperziaceae,Phylloglossum drummondii,Vegetative,sequenced,DWS Wild Collected Australia 2011,D. W. Stevenson,D.W. Stevenson
+GTUO,Lycophytes,Huperziaceae,Huperzia selago,tips of shoots,sequenced,AL80 (UPS),A. Larsson,A. Larsson
+ULKT,Lycophytes,Lycopodiaceae,Lycopodiella appressa,,sequenced,,S. Graham,BGI
+PQTO,Lycophytes,Lycopodiaceae,Lycopodium deuterodensum,Young leaves and stems,sequenced,D.O. Burge 1378 (NSW Pending),D.O. Burge,D.O. Burge
+ENQF,Lycophytes,Lycopodiaceae,Lycopodium annotinum,tips of shoots,sequenced,AL89 (UPS),A. Larsson,A. Larsson
+UPMJ,Lycophytes,Lycopodiaceae,Pseudolycopodiella caroliniana,sterile leaves/branches,sequenced,Rothfels 4130 (DUKE),C. Rothfels,C. Rothfels
+XNXF,Lycophytes,Lycopodiaceae,Dendrolycopodium obscurum,sterile leaves/branches,sequenced,Rothfels 4125 (DUKE),C. Rothfels,C. Rothfels
+WAFT,Lycophytes,Lycopodiaceae,Diphasiastrum digitatum,sterile leaves/branches,sequenced,Rothfels 4104 (DUKE),C. Rothfels,C. Rothfels
+PKOX,Lycophytes,Isoetaceae,Isoetes tegetiformans,,sequenced,JLM2013-47 (GA),J. Leebens-Mack,J. Leebens-Mack
+PYHZ,Lycophytes,Isoetaceae,Isoetes sp.,Vegetative,sequenced,,D. W. Stevenson,D.W. Stevenson
+LGDQ,Lycophytes,Selaginellaceae,Selaginella apoda,sterile leaves/branches,sequenced,Rothfels 4118 (DUKE),C. Rothfels,C. Rothfels
+JKAA,Lycophytes,Selaginellaceae,Selaginella wallacei,leaf,sequenced,,S. Graham,BGI
+ABIJ,Lycophytes,Selaginellaceae,Selaginella lepidophylla,Young fronds,sequenced,RBG 20101222 (NSW Pending),D.O. Burge,D.O. Burge
+ZYCD,Lycophytes,Selaginellaceae,Selaginella acanthonota,sterile leaves/branches,sequenced,Rothfels 4132 (DUKE),C. Rothfels,Grusz
+ZZOL,Lycophytes,Selaginellaceae,Selaginella stauntoniana,"Sterile and fertile material, and gemmae",sequenced,Rothfels 4116 (DUKE),C. Rothfels,C. Rothfels
+KUXM,Lycophytes,Selaginellaceae,Selaginella selaginoides,tips of shoots,sequenced,Weststrand 104 (UPS),A. Larsson,A. Larsson
+ZFGK,Lycophytes,Selaginellaceae,Selaginella kraussiana,tips of shoots,sequenced,Weststrand 105 (UPS),A. Larsson,A. Larsson
+KJYC,Lycophytes,Selaginellaceae,Selaginella willdenowii,tips of shoots,sequenced,Weststrand 107 (UPS),A. Larsson,A. Larsson
+CAPN,Eusporangiate Monilophytes,Equisetaceae,Equisetum diffusum,developing shoots,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+JVSZ,Eusporangiate Monilophytes,Equisetaceae,Equisetum hyemale,sterile leaves/branches,sequenced,Rothfels 4137 (DUKE),C. Rothfels,C. Rothfels
+NHCM,Eusporangiate Monilophytes,Marattiaceae,Angiopteris evecta,developing shoots,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+UXCS,Eusporangiate Monilophytes,Marattiaceae,Marattia sp.,leaf,sequenced,,D. W. Stevenson,BGI
+UGNK,Eusporangiate Monilophytes,Marattiaceae,Marattia attenuata,young leaf,sequenced,NYBG 1295/78-A,D. W. Stevenson,Lisa DeGironimo
+DFHO,Eusporangiate Monilophytes,Marattiaceae,Danaea nodosa,vegetative,sequenced,Vasco 879,Alejandra Vasco,Lisa DeGironimo
+BEGM,Eusporangiate Monilophytes,Ophioglossaceae,Botrypus virginianus,Young sterile leaf tissue,sequenced,Rothfels 4159 (DUKE),C. Rothfels,C. Rothfels
+WTJG,Eusporangiate Monilophytes,Ophioglossaceae,Ophioglossum petiolatum,"leaves, stalk, sporangia",sequenced,132699 (ALTA),M. Deyholos,M. Deyholos
+QHVS,Eusporangiate Monilophytes,Ophioglossaceae,Ophioglossum vulgatum,,sequenced,S.W. Graham 2014-1 (UBC),S. Graham,BGI
+EEAQ,Eusporangiate Monilophytes,Ophioglossaceae,Sceptridium dissectum,sterile leaf,sequenced,Rothfels 4102 and 4129 (DUKE),C. Rothfels,C. Rothfels
+QVMR,Eusporangiate Monilophytes,Psilotaceae,Psilotum nudum,developing shoots,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+ALVQ,Eusporangiate Monilophytes,Psilotaceae,Tmesipteris parva,Young fronds,sequenced,RBG 923285 (NSW Pending),D.O. Burge,D.O. Burge
+PNZO,Leptosporangiate Monilophytes,Culcitaceae,Culcita macrocarpa,young leaves,sequenced,"RBGE accession 19922977 F, (pending)",M. Ruhsam,M. Ruhsam
+GANB,Leptosporangiate Monilophytes,Cyatheaceae,Cyathea (Alsophila) spinulosa,leaves,sequenced,in preparation,Tao Chen,BGI
+EWXK,Leptosporangiate Monilophytes,Thyrsopteridaceae,Thyrsopteris elegans,young leaves,sequenced,"RBGE accession 19925041A, E00183382 ",M. Ruhsam,M. Ruhsam
+XDVM,Leptosporangiate Monilophytes,Gleicheniaceae,Sticherus lobatus,young fronds,sequenced,D.O. Burge 1380 (NSW Pending),D. Burge,C. dePamphilis
+MEKP,Leptosporangiate Monilophytes,Dipteridaceae,Dipteris conjugata,young leaves,sequenced,"RBGE accession 20021886 A, E00269760",M. Ruhsam,M. Ruhsam
+TWFZ,Leptosporangiate Monilophytes,Hymenophyllaceae,Crepidomanes venosum,young fronds,sequenced,D.O. Burge 1382 (NSW Pending),D. Burge,C. dePamphilis
+QIAD,Leptosporangiate Monilophytes,Hymenophyllaceae,Hymenophyllum bivalve,young fronds,sequenced,D.O. Burge 1356 (NSW Pending),D. Burge,C. dePamphilis
+TRPJ,Leptosporangiate Monilophytes,Hymenophyllaceae,Hymenophyllum cupressiforme,young fronds and sori,sequenced,D.O. Burge 1383 (NSW Pending),D. Burge,C. dePamphilis
+BIVQ,Leptosporangiate Monilophytes,Osmundaceae,Osmundastrum cinnamomeum,,sequenced,,D. W. Stevenson,BGI
+RFMZ,Leptosporangiate Monilophytes,Osmundaceae,Osmundastrum cinnamomeum,frond,sequenced,NYBG,D. W. Stevenson,Lisa DeGironimo
+YKSS,Leptosporangiate Monilophytes,Osmundaceae,Osmunda regalis,leaf,sequenced,RG,D. W. Stevenson,BGI
+UOMY,Leptosporangiate Monilophytes,Osmundaceae,Osmunda sp.,gametophyte,sequenced,,D. W. Stevenson,BGI
+VIBO,Leptosporangiate Monilophytes,Osmundaceae,Osmunda javanica,mature leaves,sequenced,M. Ruhsam 19933718 A (E),M. Ruhsam,M. Ruhsam
+UWOD,Leptosporangiate Monilophytes,Plagiogyriaceae,Plagiogyria japonica,young leaves,sequenced,"RBGE accession 20061485 A, (pending)",M. Ruhsam,M. Ruhsam
+IXLH,Leptosporangiate Monilophytes,Polypodiaceae,Polypodium hesperium,young sterile leaves - B type,sequenced,C.J. Rothfels 4086 (DUKE),C. Rothfels,C. Rothfels
+GYFU,Leptosporangiate Monilophytes,Polypodiaceae,Polypodium hesperium,young sterile leaves - A type,sequenced,E.M. Sigel 2011-04A (DUKE),C. Rothfels,C. Rothfels
+YLJA,Leptosporangiate Monilophytes,Polypodiaceae,Polypodium amorphum,young sterile leaves,sequenced,E.M. Sigel 2010-125 (DUKE),C. Rothfels,C. Rothfels
+CJNT,Leptosporangiate Monilophytes,Polypodiaceae,Polypodium glycyrrhiza,leaf (sterile?),sequenced,Rothfels 4086 (DUKE),C. Rothfels,C. Rothfels
+ZQYU,Leptosporangiate Monilophytes,Polypodiaceae,Phlebodium pseudoaureum,leaf,sequenced,Deyholos s.n (DUKE),M. Deyholos,Yu Yang
+UJWU,Leptosporangiate Monilophytes,Polypodiaceae,Pleopeltis polypodioides,dehydrating fronds,sequenced,Stewart and Burris,N. Stewart,BGI
+ORJE,Leptosporangiate Monilophytes,Polypodiaceae,Phymatosorus grossus,leaf,sequenced,"S.W. Shaw-Oahu, Hawaii",S. Shaw,L. DeGironimo
+OQWW,Leptosporangiate Monilophytes,Davalliaceae,Davallia fejeensis,leaf,sequenced,,D. W. Stevenson,BGI
+NWWI,Leptosporangiate Monilophytes,Lomariopsidaceae,Nephrolepis exaltata,young leaf,sequenced,L. DeGironimo 'Bostoniensis' (NY),D. W. Stevenson,L. DeGironimo
+JBLI,Leptosporangiate Monilophytes,Elaphoglossaceae,Bolbitis repanda,leaf,sequenced,,D. W. Stevenson,BGI
+FQGQ,Leptosporangiate Monilophytes,Dryopteridaceae,Polystichum acrostichoides,Mix of sterile and young fertile leaves.,sequenced,Rothfels 4160 (DUKE),C. Rothfels,C. Rothfels
+RFRB,Leptosporangiate Monilophytes,Hypodematiaceae,Didymochlaena truncatula,young fronds,sequenced,RBG 20001061 (NSW Pending),D. Burge,C. dePamphilis
+WGTU,Leptosporangiate Monilophytes,Hypodematiaceae,Leucostegia immersa,just unfurling leaf plus young leaf,sequenced,"RBGE accession, 20040613 D, E0029474",M. Ruhsam,M. Ruhsam
+PSKY,Leptosporangiate Monilophytes,Aspleniaceae,Asplenium nidus,leaf,sequenced,L. DeGironimo 1396/76-A (NY),D. W. Stevenson,L. DeGironimo
+KJZG,Leptosporangiate Monilophytes,Aspleniaceae,Asplenium platyneuron,leaves,sequenced,Stewart and Burris,N. Stewart,BGI
+OCZL,Leptosporangiate Monilophytes,Diplaziopsidaceae,Homalosorus pycnocarpos,sterile leaves (maybe a few sporangia),sequenced,Rothfels 4119 (DUKE),C. Rothfels,C. Rothfels
+MROH,Leptosporangiate Monilophytes,Thelypteridaceae,Thelypteris acuminata,young leaf,sequenced,L. DeGironimo  477/77-A (NY),D. W. Stevenson,L. DeGironimo
+YJJY,Leptosporangiate Monilophytes,Woodsiaceae,Woodsia scopulina,young sterile leaves,sequenced,E. M. Sigel 2011-42 (DUKE),C. Rothfels,C. Rothfels
+YQEC,Leptosporangiate Monilophytes,Woodsiaceae,Woodsia ilvensis,young leaves,sequenced,A. Larsson 79 (UPS),A. Larsson,A. Larsson
+HTFH,Leptosporangiate Monilophytes,Onocleaceae,Onoclea sensibilis,leaves,sequenced,Stewart and Burris,N. Stewart,BGI
+VITX,Leptosporangiate Monilophytes,Blechnaceae,Blechnum spicant,young leaf,sequenced,1746/2008-A NYBG,D. W. Stevenson,BGI
+AFPO,Leptosporangiate Monilophytes,Athyriaceae,Athyrium sp.,gametophyte,sequenced,,D. W. Stevenson,BGI
+URCP,Leptosporangiate Monilophytes,Athyriaceae,Athyrium filix-femina,young leaf,sequenced,L. DeGironimo 941/89-C (NY),D. W. Stevenson,L. DeGironimo
+FCHS,Leptosporangiate Monilophytes,Athyriaceae,Deparia lobato-crenata,fertile leaf,sequenced,Rothfels 4117 (DUKE),C. Rothfels,C. Rothfels
+UFJN,Leptosporangiate Monilophytes,Athyriaceae,Diplazium wichurae,fertile leaf,sequenced,Rothfels 4107 (DUKE),C. Rothfels,C. Rothfels
+HNDZ,Leptosporangiate Monilophytes,Cystopteridaceae,Cystopteris utahensis,Mostly sterile leaf tissue; possibly some fertile.,sequenced,Grown from spores from Rink 6566 (DU,C. Rothfels,C. Rothfels
+LHLE,Leptosporangiate Monilophytes,Cystopteridaceae,Cystopteris fragilis,young leaf+unfurling fiddlehead; appeared sterile,sequenced,E.M. Sigel 2011-49 (DUKE),C. Rothfels,C. Rothfels
+XXHP,Leptosporangiate Monilophytes,Cystopteridaceae,Cystopteris fragilis,fronds,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+RICC,Leptosporangiate Monilophytes,Cystopteridaceae,Cystopteris reevesiana,leaf (perhaps with some developing sporangia),sequenced,F.W. Li 1213 (DUKE),C. Rothfels,C. Rothfels
+YOWV,Leptosporangiate Monilophytes,Cystopteridaceae,Cystopteris protrusa,"sterile leaves, slightly older",sequenced,C.J. Rothfels 3842 (DUKE),C. Rothfels,C. Rothfels
+HEGQ,Leptosporangiate Monilophytes,Cystopteridaceae,Gymnocarpium dryopteris,young sterile leaves,sequenced,C.J.Rothfels 4068 w/S.Zylinski(DUKE),C. Rothfels,C. Rothfels
+MTGC,Leptosporangiate Monilophytes,Dennstaedtiaceae,Dennstaedtia davallioides,,sequenced,Burge s.n. (ACC16132),C. Rothfels,C. Rothfels
+WCLG,Leptosporangiate Monilophytes,Pteridaceae,Adiantum aleuticum,young sterile leaves,sequenced,C.J.Rothfels 4097 w/S.Zylinski(DUKE),C. Rothfels,C. Rothfels
+BMJR,Leptosporangiate Monilophytes,Pteridaceae,Adiantum raddianum,leaf,sequenced,132698 (ALTA),M. Deyholos,Yu Yang
+DCDT,Leptosporangiate Monilophytes,Pteridaceae,Gaga arizonica,"sterile leaves, some very young",sequenced,F.W. Li 1290 (DUKE),C. Rothfels,C. Rothfels
+WQML,Leptosporangiate Monilophytes,Pteridaceae,Cryptogramma acrostichoides,Mix of sterile and young fertile leaves.,sequenced,Rothfels 4060.2 (DUKE),C. Rothfels,C. Rothfels
+ZXJO,Leptosporangiate Monilophytes,Pteridaceae,Parahemionitis cordata,leaf,sequenced,L. DeGironimo 3.13.11 (NY),D. W. Stevenson,L. DeGironimo
+POPJ,Leptosporangiate Monilophytes,Pteridaceae,Pteris vittata,fronds,sequenced,Stewart and Burris,N. Stewart,N. Stewart
+FLTD,Leptosporangiate Monilophytes,Pteridaceae,Pteris ensiformis,young leaves,sequenced,Soltis and Miles 3001,D. Soltis,I. Jordon-Thaden
+UJTT,Leptosporangiate Monilophytes,Pteridaceae,Pityrogramma trifoliata,leaf (perhaps with some developing sporangia),sequenced,Rothfels 4109 (DUKE),C. Rothfels,C. Rothfels
+YCKE,Leptosporangiate Monilophytes,Pteridaceae,Notholaena montieliae,"young leaves, possibly fertile",sequenced,C.J. Rothfels 4098. (DUKE),C. Rothfels,C. Rothfels
+XDDT,Leptosporangiate Monilophytes,Pteridaceae,Argyrochosma nivea,young leaves probably sterile,sequenced,V. Reeb 26-V-02/12 (DUKE),C. Rothfels,C. Rothfels
+GSXD,Leptosporangiate Monilophytes,Pteridaceae,Myriopteris rufa,"young leaves, possibly fertile",sequenced,"C.J.Rothfels 3903, w/S.Zylinski(DUKE",C. Rothfels,C. Rothfels
+SKYV,Leptosporangiate Monilophytes,Pteridaceae,Vittaria lineata,"leaf, mostly or entirely sterile (hard to tell)",sequenced,Rothfels 4120 (DUKE),C. Rothfels,C. Rothfels
+NDUV,Leptosporangiate Monilophytes,Pteridaceae,Vittaria appalachiana,gametophyte,sequenced,F.W. Li 1568 (DUKE),Fay-Wei Li,Fay-Wei Li
+PIVW,Leptosporangiate Monilophytes,Pteridaceae,Ceratopteris thalictroides,young leaf,sequenced,NYBG,D. W. Stevenson,Lisa DeGironimo
+NOKI,Leptosporangiate Monilophytes,Lindsaeaceae,Lindsaea linearis,Young fronds and sori,sequenced,D.O. Burge 1381 (NSW Pending),D.O. Burge,D.O. Burge
+YIXP,Leptosporangiate Monilophytes,Lindsaeaceae,Lindsaea microphylla,Young fronds and sori,sequenced,D.O. Burge 1377 (NSW Pending),D.O. Burge,D.O. Burge
+BMIF,Leptosporangiate Monilophytes,Lindsaeaceae,Aspenium sp.,young leaf,sequenced,NYBG 911853,D. W. Stevenson,Lisa DeGironimo
+VVRN,Leptosporangiate Monilophytes,Lonchitidaceae,Lonchitis hirsuta,young leaf,sequenced,NYBG 331/81-A,D. W. Stevenson,Lisa DeGironimo
+CVEG,Leptosporangiate Monilophytes,Salviniaceae,Azolla cf. caroliniana,sterile plants (leaves),sequenced,Rothfels 4138 (DUKE),C. Rothfels,C. Rothfels
+KIIX,Leptosporangiate Monilophytes,Marsileaceae,Pilularia globulifera,young leaves,sequenced,"RBGE accession, 20040025 A, (pending",M. Ruhsam,M. Ruhsam
+CQPW,Leptosporangiate Monilophytes,Anemiaceae,Anemia tomentosa,sterile leaf,sequenced,Rothfels 4111 (DUKE),C. Rothfels,C. Rothfels
+PBUU,Leptosporangiate Monilophytes,Lygodiaceae,Lygodium japonicum,mix of fertile and sterile leaf tissue,sequenced,Rothfels 4110 (DUKE),C. Rothfels,C. Rothfels
+WOGB,Mosses,Andreaeaceae,Andreaea rupestris,"gametophyte, tip of shoots, possibly some developi",sequenced,AL604 (UPS),A. Larsson,A. Larsson
+ORKS,Mosses,Bartramiaceae,Philonotis fontana,gametophyte,sequenced,S. Joya 1068 (UBC),S. Graham,S. Graham
+BGXB,Mosses,Mielichhoferiaceae,Plagiomnium insigne,gametophyte,sequenced,S. Joya 623c (UBC),S. Graham,S. Graham
+JMXW,Mosses,Bryaceae,Bryum argenteum,"mostly gametophyte, but possibly sporophytic tissu",sequenced,Rothfels 4099 (DUKE),C. Rothfels,L. Pokorny
+WNGH,Mosses,Aulacomniaceae,Aulacomnium heterostichum,"Mostly sterile, stem-tips.",sequenced,Rothfels 4157 (DUKE),C. Rothfels,C. Rothfels
+VBMM,Mosses,Brachytheciaceae,Claopodium rostratum,"mostly gametophyte, possibly some sporophytic tiss",sequenced,Rothfels 4123 (DUKE),C. Rothfels,L. Pokorny
+QMWB,Mosses,Myuriaceae,Anomodon attenuatus,"mostly gametophyte, possibly some sporophytic tiss",sequenced,Rothfels 4122 (DUKE),C. Rothfels,C. Rothfels
+ABCD,Mosses,Grimmiaceae,Racomitrium elongatum,gametophyte,sequenced,S. Joya 1994 (UBC),S. Graham,S. Graham
+RDOO,Mosses,Grimmiaceae,Racomitrium varium,gametophyte,sequenced,CJR4359 (DUKE),C. Rothfels,C. Rothfels
+BPSG,Mosses,Scouleriaceae,Scouleria aquatica,gametophyte (possibly small number of capsules),sequenced,CJR4358 (DUKE),C. Rothfels,C. Rothfels
+HRWG,Mosses,Buxbaumiaceae,Buxbaumia aphylla,"6-7 sporophytes, possibly some gametophytic tissue",sequenced,AL606 (UPS),A. Larsson,A. Larsson
+NGTD,Mosses,Dicranaceae,Dicranum scoparium,gametophyte,sequenced,S. Joya 715a (UBC),S. Graham,S. Graham
+VMXJ,Mosses,Leucobryaceae,Leucobryum albidum,gametophyte,sequenced,Rothfels 4121 (DUKE),C. Rothfels,C. Rothfels
+RGKI,Mosses,Leucobryaceae,Leucobryum glaucum,"gametophyte, tip of shoots",sequenced,AL607 (UPS),A. Larsson,A. Larsson
+FFPD,Mosses,Ditrichaceae,Ceratodon purpureus,"gametophyte branches/leaves, possibly some sporeop",sequenced,Pokorny NC24 (DUKE),C. Rothfels,L. Pokorny
+AWOI,Mosses,Diphysciaceae,Diphyscium foliosum,Mostly the little turrets (so mix of young sporoph,sequenced,Rothfels 4153 (DUKE),C. Rothfels,C. Rothfels
+KEFD,Mosses,Encalyptaceae,Encalypta streptocarpa,"gametophyte, whole shoot/tip of shoots, possibly s",sequenced,AL600 (UPS),A. Larsson,A. Larsson
+XWHK,Mosses,Bryaceae,Rosulabryum cf. capillare,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC25 (DUKE),C. Rothfels,L. Pokorny
+YEPO,Mosses,Funariaceae,Physcomitrium sp.,"gametophyte, possibly some sporophytic tissue",sequenced,Rothfels 4136 (DUKE),C. Rothfels,L. Pokorny
+YWNF,Mosses,Hedwigiaceae,Hedwigia ciliata,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC15 (DUKE),C. Rothfels,C. Rothfels
+WSPM,Mosses,Hylocomiaceae,Loeskeobryum brevirostre,"gametophyte, possibly some sporophytic tissue",sequenced,Rothfels 4128 (DUKE),C. Rothfels,L. Pokorny
+ZACW,Mosses,Leucodontaceae,Leucodon brachypus,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC22 (DUKE),C. Rothfels,L. Pokorny
+LNSF,Mosses,Pylaisiaceae,Stereodon subimponens,gametophyte,sequenced,S. Joya 625a (UBC),S. Graham,S. Graham
+QKQO,Mosses,Plagiotheciaceae,Pseudotaxiphyllum elegans,"gametophyte, possibly some sporophytic tissue",sequenced,Rothfels 4126 (DUKE),C. Rothfels,C. Rothfels
+EEMJ,Mosses,Thuidiaceae,Thuidium delicatulum,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC12 (DUKE),C. Rothfels,L. Pokorny
+JADL,Mosses,Brachytheciaceae,Rhynchostegium serrulatum,"gametophyte, possibly some sporophytic tissue",sequenced,Rothfels 4100 (DUKE),C. Rothfels,L. Pokorny
+IGUH,Mosses,Leucodontaceae,Leucodon julaceus,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC13 (DUKE),C. Rothfels,C. Rothfels
+TAVP,Mosses,Calliergonaceae,Calliergon cordifolium,"gametophyte, whole shoot/tip of shoots",sequenced,AL609 (UPS),A. Larsson,A. Larsson
+MIRS,Mosses,Climaciaceae,Climacium dendroides,"gametophyte, whole shoot/tip of shoots",sequenced,AL603 (UPS),A. Larsson,A. Larsson
+DHWX,Mosses,Fontinalaceae,Fontinalis antipyretica,"gametophyte, whole shoot/tip of shoots",sequenced,AL608 (UPS),A. Larsson,A. Larsson
+TMAJ,Mosses,Neckeraceae,Neckera douglasii,gametophyte with gametangia,sequenced,CJR4361 (DUKE),C. Rothfels,C. Rothfels / Li
+CMEQ,Mosses,Orthotrichaceae,Orthotrichum lyellii,gametophyte,sequenced,S. Joya 623b (UBC),S. Graham,S. Graham
+SZYG,Mosses,Polytrichaceae,Polytrichum commune,gametophyte,sequenced,in preparation,D. W. Stevenson,M. Deyholos
+ZTHV,Mosses,Polytrichaceae,Atrichum angustatum,"Mostly sterile, stem-tips.",sequenced,Rothfels 4154 (DUKE),C. Rothfels,C. Rothfels
+GRKU,Mosses,Pottiaceae,Syntrichia princeps,gametophyte,sequenced,S. Joya 715 (UBC),S. Graham,S. Graham
+GOWD,Mosses,Sphagnaceae,Sphagnum lescurii,gametophyte,sequenced,in preparation,J. Shaw,M. Deyholos
+RCBT,Mosses,Sphagnaceae,Sphagnum palustre,"Mostly sterile, stem-tips.",sequenced,Rothfels 4143 (DUKE),C. Rothfels,C. Rothfels
+UHLI,Mosses,Sphagnaceae,Sphagnum recurvum,"Mostly sterile, stem-tips.",sequenced,Rothfels 4144 (DUKE),C. Rothfels,C. Rothfels
+SKQD,Mosses,Takakiaceae,Takakia lepidozioides,gametophyte,sequenced,Y. Chang 05-02 (UBC),D. W. Stevenson,BGI
+HVBQ,Mosses,Tetraphidaceae,Tetraphis pellucida,"gametophyte, mainly gemma-cup-shoots, whole shoot/",sequenced,AL605 (UPS),A. Larsson,A. Larsson
+ZQRI,Mosses,Timmiaceae,Timmia austriaca,gametophyte,sequenced,S. Joya 623a (UBC),S. Graham,S. Graham
+FANS,Hornworts,Leiosporocerotaceae,Leiosporoceros dussii,sporophytes,sequenced,Juan Carlos VIllarreal et al. 1285,J. C. Villarreal,BGI
+ANON,Hornworts,Leiosporocerotaceae,Leiosporoceros dussii,sporophyte,sequenced,,JC Villareal,Lisa DeGironimo
+IQJU,Hornworts,Anthoceroceae,Anthoceros angustus,,sequenced,,J. C. Villarreal,BGI
+TWUW,Hornworts,Anthoceroceae,Anthoceros agrestis,,sequenced,,Peter Szovenyi,Lisa DeGironimo
+BSNI,Hornworts,Anthoceroceae,Anthoceros agrestis,,sequenced,,Peter Szovenyi,Lisa DeGironimo
+FAJB,Hornworts,Notothyladaceae,Paraphymatoceros hallii,gametophyte,sequenced,Bill Doyle s.n. (ABSH),Fay-Wei Li,Fay-Wei Li
+WCZB,Hornworts,Notothyladaceae,Phaeoceros carolinianus,gametophyte,sequenced,F.W. Li 1570 (DUKE),Fay-Wei Li,Fay-Wei Li
+RXRQ,Hornworts,Notothyladaceae,Phaeoceros carolinianus,sporophyte,sequenced,F.W. Li 1570 (DUKE),Fay-Wei Li,Fay-Wei Li
+WEEQ,Hornworts,Notothyladaceae,Phaeoceros carolinianus,gametophyte,sequenced,F.-W. Li 1575 (DUKE),F.-W. Li,Lisa DeGironimo
+ZFRE,Hornworts,Notothyladaceae,Phaeoceros carolinianus,sporophyte,sequenced,F.-W. Li 1575 (DUKE),F.-W. Li,Lisa DeGironimo
+DXOU,Hornworts,Dendrocerotaceae,Nothoceros aenigmaticus,gametophyte,sequenced,J. C. VIllarreal 1026B (CONN),J. C. Villarreal,J. C. Villarreal
+TCBC,Hornworts,Dendrocerotaceae,Nothoceros vincentianus,gametophyte,sequenced,Villarreal 1280 (CONN),J. C. Villarreal,J. C. Villarreal
+UCRN,Hornworts,Dendrocerotaceae,Megaceros flagellaris,gametophyte,sequenced,B. Crandall-Stotler s.n. (ABSH),Fay-Wei Li,Fay-Wei Li
+AKXB,Hornworts,Dendrocerotaceae,Phaeomegaceros coriaceus,sporophyte,sequenced,,JC Villareal,Lisa DeGironimo
+AEXY,Liverworts,Blasiaceae,Blasia sp.,whole plant,sequenced,9-Sep,D. W. Stevenson,L. DeGironimo
+YBQN,Liverworts,Cephaloziaceae,Odontoschisma prostratum,Sterile (seemingly) branches,sequenced,Rothfels 4145 (DUKE),C. Rothfels,C. Rothfels
+WZYK,Liverworts,Lepidoziaceae,Bazzania trilobata,gametophyte,sequenced,in preparation,D. W. Stevenson,BGI
+RTMU,Liverworts,Calypogeiaceae,Calypogeia fissa,Sterile (seemingly) branches,sequenced,Rothfels 4156 (DUKE),C. Rothfels,C. Rothfels
+CHJJ,Liverworts,Frullaniaceae,Frullania spp.,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC14 (DUKE),C. Rothfels,C. Rothfels
+IRBN,Liverworts,Scapaniaceae,Scapania nemorosa,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC19 (DUKE),C. Rothfels,L. Pokorny
+OFTV,Liverworts,Scapaniaceae,Barbilophozia barbata,"gametophyte, whole shoot/tip of shoots, possibly s",sequenced,AL601 (UPS),A. Larsson,A. Larsson
+NWQC,Liverworts,Plagiochilaceae/Fissidentaceae,mixed species,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC17 (DUKE),C. Rothfels,C. Rothfels
+HPXA,Liverworts,Ptilidiaceae,Ptilidium pulcherrimum,"gametophyte, whole shoot/tip of shoots, possibly s",sequenced,AL602 (UPS),A. Larsson,A. Larsson
+LGOW,Liverworts,Schistochilaceae,Schistochila sp.,Vegetative,sequenced,Provided by Barbara Crandall-Stotler,D. W. Stevenson,D.W. Stevenson
+UUHD,Liverworts,Porellaceae,Porella pinnata,Sterile (seemingly) branches,sequenced,Rothfels 4155 (DUKE),C. Rothfels,C. Rothfels
+TGKW,Liverworts,Frullaniaceae,Frullania sp.,young leaves,sequenced,Von Konrat 10021,D. Soltis,D. Soltis
+JPYU,Liverworts,Marchantiaceae,Marchantia polymorpha,clean thalli without gemmules,sequenced,M.K. Deyholos 2016-126,M. Deyholos,M. Deyholos
+TFYI,Liverworts,Marchantiaceae,Marchantia emarginata,whole plant,sequenced,in preparation,Tao Chen,BGI
+HMHL,Liverworts,Marchantiaceae,Marchantia paleacea,young thallus edges - non_mycorrizal,sequenced,David Long (RBGE),D. Beerling,D. Beerling
+IHWO,Liverworts,Marchantiaceae,Marchantia paleacea,young thallus edges - mycorrizal,sequenced,David Long (RBGE),D. Beerling,D. Beerling
+ILBQ,Liverworts,Conocephalaceae,Conocephalum conicum,sterile thallus,sequenced,Pokorny NC18 (DUKE),C. Rothfels,C. Rothfels
+TXVB,Liverworts,Lunulariaceae,Lunularia cruciata,"gametophyte, but including those structures with the gemmae",sequenced,CJR4364 (DUKE),C. Rothfels,C. Rothfels
+TFDQ,Liverworts,Monocleaceae,Monoclea gottschei,Whole Plant,sequenced,SR6-2 #17,D. W. Stevenson,D.W. Stevenson
+WJLO,Liverworts,Ricciaceae,Ricciocarpos natans,"gametophyte, but possibly some sporophytic tissue ",sequenced,Rothfels 4133 (DUKE),C. Rothfels,L. Pokorny
+NRWZ,Liverworts,Metzgeriaceae,Metzgeria crassipilis,"gametophyte, possibly some sporophytic tissue",sequenced,Pokorny NC23 (DUKE),C. Rothfels,L. Pokorny
+YFGP,Liverworts,Pallaviciniaceae,Pallavicinia lyellii,Sterile (seemingly) branches,sequenced,Rothfels 4140 (DUKE),C. Rothfels,C. Rothfels
+PIUF,Liverworts,Pelliaceae,Pellia sp. (cf epiphylla (L.) Corda),Sterile (seemingly) branches,sequenced,Li 1292 (DUKE),C. Rothfels,C. Rothfels
+JHFI,Liverworts,Pelliaceae,Pellia neesiana,gametophyte,sequenced,CJR4357 (DUKE),C. Rothfels,C. Rothfels
+YPSN,Liverworts,Pelliaceae,Noteroclada confluens,vegetative,sequenced,,,
+KRUQ,Liverworts,Porellaceae,Porella navicularis,gametophyte,sequenced,S. Joya 725 (UBC),S. Graham,S. Graham
+BNCU,Liverworts,Radulaceae,Radula lindenbergiana,whole plant,sequenced,"Barbara Crandall-Stotler, SUIC; 4656",R. Stotler,L. DeGironimo
+HERT,Liverworts,Sphaerocarpaceae,Sphaerocarpos texanus,"gametophyte, possibly some sporophytic tissue",sequenced,Rothfels 4139 (DUKE),C. Rothfels,C. Rothfels
+FITN,Liverworts,Treubiaceae,Treubia lacunosa,whole plant,sequenced,38,S. Floyd,S. Floyd
+XMCL,Green Algae,Prasinococcaceae,Prasinococcus capsulatus,algal cells,sequenced,CCMP 1194,M. Melkonian,M. Melkonian
+XJGM,Green Algae,Prasinococcaceae,coccoid-prasinophyte,algal cells,sequenced,NBRC 102842,M. Melkonian,B. Melkonian
+HYHN,Green Algae,Prasinococcaceae,Prasinoderma coloniale,algal cells,sequenced,CCMP 1413,M. Melkonian,M. Melkonian
+MXEZ,Green Algae,Pycnococcaceae,Pycnococcus provasolii,algal cells,sequenced,CCMP 1203,M. Melkonian,M. Melkonian
+JMTE,Green Algae,Pycnococcaceae,Pseudoscourfieldia marina,algal cells,sequenced,SCCAP K-0017,M. Melkonian,M. Melkonian
+TNAW,Green Algae,Pyramimonadaceae,Pyramimonas parkeae,algal cells,sequenced,CCAC 0082 (M1663/1),M. Melkonian,M. Melkonian
+XIVI,Green Algae,Pyramimonadaceae,Cymbomonas sp.,algal cells,sequenced,M3265,M. Melkonian,B. Melkonian
+AYPS,Green Algae,incertae sedis,unidentified species,algal cells,sequenced,CCMP 1205,M. Melkonian,M. Melkonian
+MCPK,Green Algae,Mamiellaceae,Bathycoccus prasinos,algal cells,sequenced,SCCAP K-0417,M. Melkonian,M. Melkonian
+QXSZ,Green Algae,Mamiellaceae,Mantoniella squamata,algal cells,sequenced,CCAP 1965/1,M. Melkonian,M. Melkonian
+BTFM,Green Algae,Monomasticaceae,Monomastix opisthostigma,algal cells,sequenced,CCAC 0206 (M2844/1),M. Melkonian,M. Melkonian
+XOAL,Green Algae,Dolichomastigaceae,Dolichomastix tenuilepis,algal cells,sequenced,M1680,M. Melkonian,M. Melkonian
+MMKU,Green Algae,Nephroselmidaceae,Nephroselmis olivacea,algal cells,sequenced,CCAC 0105,M. Melkonian,M. Melkonian
+ISIM,Green Algae,Nephroselmidaceae,Nephroselmis pyriformis,algal cells,sequenced,CCMP 717,M. Melkonian,M. Melkonian
+FMVB,Green Algae,Chlorodendraceae,Scherffelia dubia,algal cells,sequenced,CCAC 0019 (M0795),M. Melkonian,M. Melkonian
+HVNO,Green Algae,Chlorodendraceae,Tetraselmis chui,cells grown on F/2 media,sequenced,UTEX LB 232,N. Clarke,N. Clarke
+DUMA,Green Algae,Chlorodendraceae,Tetraselmis cordiformis,algal cells,sequenced,CCAC 0051 (M1608/1),M. Melkonian,M. Melkonian
+HHXJ,Green Algae,Chlorodendraceae,Tetraselmis striata,algal cells,sequenced,PLY 443,M. Melkonian,M. Melkonian
+BAZF,Green Algae,Chaetopeltidaceae,Chaetopeltis orbicularis,algal cells,sequenced,SAG 21.98,M. Melkonian,M. Melkonian
+VFIV,Green Algae,Chaetophoraceae,Fritschiella tuberosa,algal cells,sequenced,SAG 112.8,M. Melkonian,M. Melkonian
+AJAU,Green Algae,Chaetophoraceae,Helicodictyon planctonicum,algal cells,sequenced,UTEX LB 1570,M. Melkonian,M. Melkonian
+NQYP,Green Algae,Chaetophoraceae,Pirula salina,algal cells,sequenced,SAG 1.95,M. Melkonian,M. Melkonian
+JMUI,Green Algae,Chaetophoraceae,Stigeoclonium helveticum,algal cells,sequenced,SAG 477-1,M. Melkonian,M. Melkonian
+RAWF,Green Algae,Chaetophoraceae,Uronema belkae,algal cells,sequenced,SAG 34.86,M. Melkonian,M. Melkonian
+ISGT,Green Algae,Chaetophoraceae,Uronema sp.,algal cells,sequenced,CCAP 334/1,M. Melkonian,M. Melkonian
+IJMT,Green Algae,Aphanochaetaceae,Aphanochaete repens,algal cells,sequenced,M2226,M. Melkonian,M. Melkonian
+GXBM,Green Algae,Coccomyxaceae,Coccomyxa pringsheimii,algal cells,sequenced,SAG 216-7,M. Melkonian,M. Melkonian
+BZSH,Green Algae,Golenkiniaceae,Golenkinia longispicula,algal cells,sequenced,SAG 73.80,M. Melkonian,M. Melkonian
+XKWQ,Green Algae,Hydrodictyaceae,Pediastrum duplex CCAC 0012,algal cells,sequenced,CCAC 0012 (M0549),M. Melkonian,M. Melkonian
+NLOM,Green Algae,Hydrodictyaceae,Pediastrum duplex CCAC 0012,algal cells,sequenced,CCAC 0012 (M0549),M. Melkonian,M. Melkonian
+XTON,Green Algae,Hydrodictyaceae,Pediastrum duplex CCAC 0147,algal cells,sequenced,CCAC 0147,M. Melkonian,M. Melkonian
+PZIF,Green Algae,Scenedesmaceae,Scenedesmus dimorphus,cells grown on 3N-BBM-V media,sequenced,UTEX 746,N. Clarke,N. Clarke
+ALZF,Green Algae,Chlorocystidaceae,Halochlorococcum marinum,algal cells,sequenced,SAG 10.90,M. Melkonian,M. Melkonian
+USIX,Green Algae,Chlorosarcinaceae,Neochlorosarcina sp.,"clonal culture, vegetative",sequenced,M 2315,M. Melkonian,M. Melkonian
+FOYQ,Green Algae,Microsporaceae,Microspora cf. tumidula,algal cells,sequenced,ASW 06004 (M1292),M. Melkonian,B. Melkonian
+DVYE,Green Algae,Oedogoniaceae,Oedogonium cardiacum,algal cells,sequenced,SAG 575-1a,M. Melkonian,M. Melkonian
+SDPC,Green Algae,Oedogoniaceae,Oedogonium foveolatum,algal cells,sequenced,UTEX LB 933,M. Melkonian,M. Melkonian
+KUJU,Green Algae,Goniaceae,Gonium pectorale,algal cells,sequenced,CCAC 0085,M. Melkonian,B. Melkonian
+EEJO,Green Algae,incertae sedis,Neochloris oleoabundans,cells grown on 3N-BBM-V media,sequenced,UTEX 1185,N. Clarke,N. Clarke
+KSFK,Green Algae,Chlorosarcinaceae,Chlorosarcinopsis halophila,algal cells,sequenced,UTEX 2073,M. Melkonian,B. Melkonian
+GJIY,Green Algae,Neochloridaceae,Neochloris sp.,algal cells,sequenced,UTEX LB 1445,M. Melkonian,M. Melkonian
+OTQG,Green Algae,Ankistrodesmaceae,Ankistrodesmus sp.,algal cells,sequenced,M3332,M. Melkonian,M. Melkonian
+JWGT,Green Algae,Volvocaceae,Volvox aureus,algal cells,sequenced,M1028,M. Melkonian,M. Melkonian
+WRSL,Green Algae,Volvocaceae,Volvox aureus,algal cells,sequenced,M2242,M. Melkonian,M. Melkonian
+ISPU,Green Algae,Volvocaceae,Volvox globator,algal cells,sequenced,ASW 05075,M. Melkonian,M. Melkonian
+RNAT,Green Algae,Volvocaceae,Eudorina elegans,algal cells,sequenced,CCAC 0011,M. Melkonian,M. Melkonian
+RYJX,Green Algae,Volvocaceae,Pandorina morum,algal cells,sequenced,CCAC 0063,M. Melkonian,M. Melkonian
+NTLE,Green Algae,Asteromonadaceae,Asteromonas gracilis,algal cells,sequenced,CCAC 0049 (M1491),M. Melkonian,M. Melkonian
+MNPL,Green Algae,Asteromonadaceae,Asteromonas gracilis,algal cells,sequenced,CCAC 0049 (M1491),M. Melkonian,M. Melkonian
+VIAU,Green Algae,Carteriaceae,Carteria crucifera,algal cells,sequenced,SAG 8-7a,M. Melkonian,M. Melkonian
+RUIF,Green Algae,Carteriaceae,Carteria obtusa,algal cells,sequenced,SAG 39.84,M. Melkonian,M. Melkonian
+MULF,Green Algae,Chlamydomonadaceae,Chlamydomonas bilatus,algal cells,sequenced,SAG 7.72,M. Melkonian,M. Melkonian
+OVHR,Green Algae,Chlamydomonadaceae,Chlamydomonas bilatus,algal cells,sequenced,SAG 7.72,M. Melkonian,M. Melkonian
+BCYF,Green Algae,Chlamydomonadaceae,Chlamydomonas cribrum,algal cells,sequenced,SAG 13.72,M. Melkonian,M. Melkonian
+JRGZ,Green Algae,Chlamydomonadaceae,Chlamydomonas moewusii,algal cells,sequenced,SAG 1.98,M. Melkonian,M. Melkonian
+VALZ,Green Algae,Chlamydomonadaceae,Chlamydomonas noctigama,algal cells,sequenced,SAG 36.72,M. Melkonian,M. Melkonian
+TSBQ,Green Algae,Chlamydomonadaceae,Chlamydomonas sp.,algal cells,sequenced,M2762,M. Melkonian,M. Melkonian
+AOUJ,Green Algae,Chlamydomonadaceae,Chlamydomonas sp.,algal cells,sequenced,M2779,M. Melkonian,M. Melkonian
+GUBD,Green Algae,Chlamydomonadaceae,Brachiomonas submarina,algal cells,sequenced,CCAC 0069 (M1823),M. Melkonian,M. Melkonian
+IHOI,Green Algae,Chlamydomonadaceae,Chloromonas oogama,algal cells,sequenced,SAG 9.79,M. Melkonian,M. Melkonian
+QRTH,Green Algae,Chlamydomonadaceae,Chlorococcum microstigmaticum,algal cells,sequenced,SAG 11.43,M. Melkonian,M. Melkonian
+LBRP,Green Algae,Chlamydomonadaceae,Chloromonas reticulata,algal cells,sequenced,SAG 26.86,M. Melkonian,M. Melkonian
+GDUD,Green Algae,Chlamydomonadaceae,Chloromonas reticulata,algal cells,sequenced,SAG 26.86,M. Melkonian,M. Melkonian
+AJUW,Green Algae,Chlamydomonadaceae,Chloromonas rosae v. psychrophila,algal cells,sequenced,UTEX SNO 47,M. Melkonian,M. Melkonian
+GFUR,Green Algae,Chlamydomonadaceae,Chloromonas subdivisa,algal cells,sequenced,SAG 67.72,M. Melkonian,M. Melkonian
+UTRE,Green Algae,Chlamydomonadaceae,Chloromonas tughillensis,algal cells,sequenced,UTEX SNO 88,M. Melkonian,M. Melkonian
+IRYH,Green Algae,Chlamydomonadaceae,Heterochlamydomonas inaequalis,algal cells,sequenced,SAG 4.75,M. Melkonian,M. Melkonian
+OFUE,Green Algae,Chlamydomonadaceae,Lobochlamys segnis,algal cells,sequenced,SAG 50.84,M. Melkonian,M. Melkonian
+JKKI,Green Algae,Chlamydomonadaceae,Lobomonas rostrata,algal cells,sequenced,SAG 45-1,E. Kazamia,E. Kazamia
+XDLL,Green Algae,Chlamydomonadaceae,Oogamochlamys gigantea,algal cells,sequenced,SAG 44.91,M. Melkonian,M. Melkonian
+MXDS,Green Algae,Chlamydomonadaceae,Spermatozopsis exsultans,algal cells,sequenced,M0562,M. Melkonian,M. Melkonian
+ENAU,Green Algae,Chlamydomonadaceae,Spermatozopsis similis,algal cells,sequenced,CCAC 0013 (M0563/1),M. Melkonian,M. Melkonian
+QWRA,Green Algae,Chlamydomonadaceae,Vitreochlamys sp.,algal cells,sequenced,M2074,M. Melkonian,M. Melkonian
+WDWX,Green Algae,Dunaliellaceae,Dunaliella tertiolecta,algal cells,sequenced,UTEX LB 1000,H. Sederoff,H. Sederoff
+RHVC,Green Algae,Dunaliellaceae,Dunaliella salina,algal cells,sequenced,SAG 42.88,M. Melkonian,M. Melkonian
+SYJM,Green Algae,Dunaliellaceae,Dunaliella viridis dumsii,algal cells,sequenced,UTEX LB 1644,H. Sederoff,H. Sederoff
+UKUC,Green Algae,Dunaliellaceae,Dunaliella salina,algal cells,sequenced,UTEX LB 200,H. Sederoff,H. Sederoff
+ZDIZ,Green Algae,Dunaliellaceae,Dunaliella tertiolecta,algal cells,sequenced,CCMP 364,H. Sederoff,H. Sederoff
+FXHG,Green Algae,Dunaliellaceae,Hafniomonas reticulata,algal cells,sequenced,M0530/1,M. Melkonian,M. Melkonian
+ODXI,Green Algae,Haematococcaceae,Haematococcus pluvialis,algal cells (red),sequenced,CCAC 0055,M. Melkonian,M. Melkonian
+AGIO,Green Algae,Haematococcaceae,Haematococcus pluvialis,algal cells,sequenced,CCAC 0055 (M0716/1),M. Melkonian,M. Melkonian
+ZLQE,Green Algae,Haematococcaceae,Stephanosphaera pluvialis,algal cells,sequenced,SAG 78-1a,M. Melkonian,M. Melkonian
+ZIVZ,Green Algae,Phacotaceae,Phacotus lenticularis,algal cells,sequenced,SAG 61-1,M. Melkonian,M. Melkonian
+LNIL,Green Algae,Phacotaceae,Pteromonas angulosa,algal cells,sequenced,M2612,M. Melkonian,M. Melkonian
+ACRY,Green Algae,Phacotaceae,Pteromonas sp.,algal cells,sequenced,M2761,M. Melkonian,M. Melkonian
+NKXU,Green Algae,Trebouxiaceae,Trebouxia arboricola,algal cells,sequenced,SAG 219-1a,M. Melkonian,M. Melkonian
+ETGN,Green Algae,Botryococcaceae,Botryococcus braunii,cells grown on 3N-BBM-V media,sequenced,UTEX 2441,N. Clarke,N. Clarke
+VJDZ,Green Algae,Botryococcaceae,Botryococcus sudeticus,algal cells,sequenced,UTEX 2629,N. Clarke,N. Clarke
+QYXY,Green Algae,Botryococcaceae,Botryococcus terribilis,algal cells,sequenced,ASW 05049,M. Melkonian,M. Melkonian
+MWAN,Green Algae,Chlorellaceae,Chlorella minutissima,cells grown on F/2 media,sequenced,UTEX 2219,N. Clarke,N. Clarke
+PFUD,Green Algae,Chlorellaceae,Geminella sp.,algal cells,sequenced,SAG 20.84,M. Melkonian,M. Melkonian
+MFYC,Green Algae,Chlorellaceae,Nannochloris atomus,algal cells,sequenced,SAG 14.87,M. Melkonian,M. Melkonian
+AKCR,Green Algae,Chlorellaceae,Parachlorella kessleri,algal cells,sequenced,SAG 10.80,M. Melkonian,M. Melkonian
+BILC,Green Algae,Chlorellaceae,Prototheca wickerhamii,algal cells,sequenced,SAG 263-11,M. Melkonian,M. Melkonian
+ZNUM,Green Algae,Leptosiraceae,Leptosira obovata,algal cells,sequenced,SAG 445-1,M. Melkonian,M. Melkonian
+MNCB,Green Algae,Oocystaceae,Eremosphaera viridis,algal cells,sequenced,M0511b,M. Melkonian,M. Melkonian
+DXNY,Green Algae,Microthamniaceae,Microthamnion kuetzingianum,algal cells,sequenced,CCAC 0054 (M0423),M. Melkonian,M. Melkonian
+ZDOF,Green Algae,Microthamniaceae,Microthamnion kuetzingianum,algal cells,sequenced,CCAC 0054 (M0423),M. Melkonian,M. Melkonian
+WCLV,Green Algae,Prasiolaceae,Prasiola crispa,algal cells,sequenced,SAG 43.96,M. Melkonian,M. Melkonian
+WXRI,Green Algae,Prasiolaceae,Stichococcus bacillaris,algal cells,sequenced,CCAC 0076 (M1897/1),M. Melkonian,M. Melkonian
+CQQP,Green Algae,Ulvaceae,Ochlochaete sp.,algal cells,sequenced,CCMP 2390,M. Melkonian,M. Melkonian
+OAEZ,Green Algae,Ulvaceae,Percursaria percursa,algal cells,sequenced,M1835,M. Melkonian,M. Melkonian
+LSHT,Green Algae,Bolbocoleonaceae,Bolbocoleon piliferum,algal cells,sequenced,CCMP 2371,M. Melkonian,B. Melkonian
+PZBH,Green Algae,Oltmannsiellopsidaceae,Oltmannsiellopsis viridis,algal cells,sequenced,NIES 360,M. Melkonian,B. Melkonian
+QJYX,Green Algae,Oltmannsiellopsidaceae,Oltmannsiellopsis viridis,algal cells,sequenced,NIES 360,M. Melkonian,B. Melkonian
+OQON,Green Algae,Ulvellaceae,Entocladia endozoica,algal cells,sequenced,UTEX B2352,M. Melkonian,M. Melkonian
+VBLH,Green Algae,Cladophoraceae,Cladophora glomerata,algal cells,sequenced,CPCC 13,M. Melkonian,M. Melkonian
+NATT,Green Algae,Trentepohliaceae,Trentepohlia annulata,algal cells,sequenced,SAG 20.94,M. Melkonian,M. Melkonian
+YDCQ,Green Algae,Trentepohliaceae,Cephaleuros virescens,algal cells,sequenced,SAG 28.93,M. Melkonian,M. Melkonian
+CBNG,Green Algae,Borodinellaceae,Planophila laetevirens,algal cells,sequenced,SAG 2008,M. Melkonian,M. Melkonian
+LETF,Green Algae,Borodinellaceae,Planophila terrestris,algal cells,sequenced,SAG 32.98,M. Melkonian,M. Melkonian
+DZPJ,Green Algae,Cylindrocapsaceae,Cylindrocapsa geminella,algal cells,sequenced,SAG 3.87,M. Melkonian,M. Melkonian
+JIWJ,Green Algae,Ulotrichaceae,Acrosiphonia sp.,algal cells,sequenced,SAG 127.80,M. Melkonian,M. Melkonian
+KADG,Green Algae,Ulotrichaceae,Ignatius tetrasporus,algal cells,sequenced,UTEX 2012,M. Melkonian,M. Melkonian
+FPCO,Green Algae,Ulotrichaceae,Interfilum paradoxum,algal cells,sequenced,SAG 338-1,M. Melkonian,M. Melkonian
+JTIG,Green Algae,Bryopsidaceae,Bryopsis plumosa,algal cells,sequenced,KU 272,M. Melkonian,M. Melkonian
+GYBH,Green Algae,Codiaceae,Codium fragile,algal cells,sequenced,KU 654,M. Melkonian,M. Melkonian
+VHIJ,Green Algae,Chaetosiphonaceae,Blastophysa cf. rhizopus,algal cells,sequenced,M3368 (BEA 0074B),M. Melkonian,B. Melkonian
+KYIO,Green Algae,Mesostigmataceae,Mesostigma viride,"clonal, axenic culture, vegetative",sequenced,SAG 50-1,M. Melkonian,M. Melkonian
+RRSV,Green Algae,Pedinomonadaceae,Pedinomonas minor,algal cells,sequenced,SAG 1965-3,M. Melkonian,M. Melkonian
+PUAN,Green Algae,Pedinomonadaceae,Pedinomonas tuberculata,algal cells,sequenced,CCAP 1965/2,M. Melkonian,M. Melkonian
+EGNB,Green Algae,Scourfieldiaceae,Scourfieldia sp.,algal cells,sequenced,M0560/2,M. Melkonian,M. Melkonian
+PRIQ,Green Algae,Pleurastraceae,Chlorococcum oleofaciens,algal cells,sequenced,SAG 30.93,M. Melkonian,M. Melkonian
+TGNL,Green Algae,incertae sedis,Picocystis salinarum,algal cells,sequenced,CCMP 1897,M. Melkonian,M. Melkonian
+MWXT,Green Algae,Characeae,Chara vulgaris,"clonal culture, vegetative",sequenced,M 3183,M. Melkonian,M. Melkonian
+QPDY,Green Algae,Coleochaetaceae,Coleochaete irregularis,algal cells,sequenced,UTEX LB 2790,M. Melkonian,M. Melkonian
+VQBJ,Green Algae,Coleochaetaceae,Coleochaete scutata,"clonal, axenic culture, vegetative",sequenced,SAG 110.80M (M 1311),M. Melkonian,M. Melkonian
+DRGY,Green Algae,Chaetosphaeridiaceae,Chaetosphaeridium globosum,"clonal, axenic culture, vegetative",sequenced,M 1311 (CCAC 0044),M. Melkonian,M. Melkonian
+FQLP,Green Algae,Klebsormidiaceae,Klebsormidium subtile,"clonal, axenic culture, vegetative",sequenced,M 1894/1 (CCAC 0119),M. Melkonian,M. Melkonian
+AZZW,Green Algae,Klebsormidiaceae,Chlorokybus atmophyticus,"clonal culture, vegetative",sequenced,M 2923,M. Melkonian,M. Melkonian
+BFIK,Green Algae,Klebsormidiaceae,Entransia fimbriata,algal cells,sequenced,UTEX LB 2353,M. Melkonian,M. Melkonian
+JOJQ,Green Algae,Zygnemataceae,Cylindrocystis cushleckae,algal cells,sequenced,M2158,M. Melkonian,M. Melkonian
+ZRMT,Green Algae,Zygnemataceae,Mougeotia sp.,algal cells,sequenced,CCAC 0197 (M2332/1),M. Melkonian,M. Melkonian
+HAOX,Green Algae,Zygnemataceae,Spirogyra sp.,"clonal culture, vegetative",sequenced,M 1810,M. Melkonian,M. Melkonian
+WGMD,Green Algae,Zygnemataceae,Zygnema sp.,algal cells,sequenced,M1384,M. Melkonian,M. Melkonian
+MFZO,Green Algae,Zygnemataceae,Zygnemopsis sp.,algal cells,sequenced,CCAP 699/1,M. Melkonian,M. Melkonian
+DRFX,Green Algae,Closteriaceae,Closterium lunula,algal cells,sequenced,M2156,M. Melkonian,M. Melkonian
+DFDS,Green Algae,Desmidiaceae,Desmidium aptogonum,algal cells,sequenced,ASW 07112,M. Melkonian,M. Melkonian
+QWFV,Green Algae,Desmidiaceae,Bambusina borreri,algal cells,sequenced,CCAC 0045 (M1320),M. Melkonian,M. Melkonian
+HIDG,Green Algae,Desmidiaceae,Cosmarium broomei,"clonal, axenic culture, vegetative",sequenced,M 2075/1 (CCAC 0143),M. Melkonian,M. Melkonian
+MNNM,Green Algae,Desmidiaceae,Cosmarium granatum,algal cells,sequenced,CCAC 0137 (M2127/1),M. Melkonian,M. Melkonian
+STKJ,Green Algae,Desmidiaceae,Cosmarium ochthodes,algal cells,sequenced,M1384,M. Melkonian,M. Melkonian
+HJVM,Green Algae,Desmidiaceae,Cosmarium ochthodes,algal cells,sequenced,ASW 07133,M. Melkonian,M. Melkonian
+WDGV,Green Algae,Desmidiaceae,Cosmarium subtumidum,algal cells,sequenced,M3067,M. Melkonian,M. Melkonian
+BHBK,Green Algae,Desmidiaceae,Cosmarium tinctum,algal cells,sequenced,M2301,M. Melkonian,M. Melkonian
+RQFE,Green Algae,Desmidiaceae,Cosmocladium cf. constrictum,algal cells,sequenced,ASW 07118 (M1361),M. Melkonian,M. Melkonian
+GYRP,Green Algae,Desmidiaceae,Euastrum affine,algal cells,sequenced,ASW 07012,M. Melkonian,M. Melkonian
+MCHJ,Green Algae,Desmidiaceae,Micrasterias fimbriata,algal cells,sequenced,ASW 07026 (M1188),M. Melkonian,M. Melkonian
+GGWH,Green Algae,Desmidiaceae,Onychonema laeve,algal cells,sequenced,CCAC 0151 (M2246/1),M. Melkonian,M. Melkonian
+RPQV,Green Algae,Desmidiaceae,Phymatodocis nordstedtiana,algal cells,sequenced,SVCK 327,M. Melkonian,M. Melkonian
+MOYY,Green Algae,Desmidiaceae,Pleurotaenium trabecula,algal cells,sequenced,CCAC 0163,M. Melkonian,M. Melkonian
+ISHC,Green Algae,Desmidiaceae,Staurastrum sebaldi,algal cells,sequenced,M1129,M. Melkonian,M. Melkonian
+WCQU,Green Algae,Desmidiaceae,Staurodesmus convergens,algal cells,sequenced,M2558,M. Melkonian,M. Melkonian
+RPRU,Green Algae,Desmidiaceae,Staurodesmus omearii,algal cells,sequenced,M0751,M. Melkonian,M. Melkonian
+GBGT,Green Algae,Desmidiaceae,Xanthidium antilopaeum,algal cells,sequenced,M1229,M. Melkonian,M. Melkonian
+WSJO,Green Algae,Mesotaeniaceae,Mesotaenium braunii,algal cells,sequenced,M2214,M. Melkonian,M. Melkonian
+HKZW,Green Algae,Mesotaeniaceae,Mesotaenium caldariorum,algal cells,sequenced,SAG 648-1,M. Melkonian,M. Melkonian
+WDCW,Green Algae,Mesotaeniaceae,Mesotaenium endlicherianum,algal cells,sequenced,SAG 12.97,M. Melkonian,M. Melkonian
+NBYP,Green Algae,Mesotaeniaceae,Mesotaenium kramstae,algal cells,sequenced,UTEX LB 1025,M. Melkonian,M. Melkonian
+YOXI,Green Algae,Mesotaeniaceae,Cylindrocystis brebissonii,algal cells,sequenced,M2213,M. Melkonian,M. Melkonian
+RPGL,Green Algae,Mesotaeniaceae,Cylindrocystis brebissonii,algal cells,sequenced,M2853,M. Melkonian,M. Melkonian
+VAZE,Green Algae,Mesotaeniaceae,Cylindrocystis sp.,algal cells,sequenced,M3015,M. Melkonian,M. Melkonian
+FFGR,Green Algae,Mesotaeniaceae,Netrium digitus,"clonal, axenic culture, vegetative",sequenced,M 1322/1 (CCAC 0148),M. Melkonian,M. Melkonian
+KMNX,Green Algae,Mesotaeniaceae,Nucleotaenium eifelense,algal cells,sequenced,M3006,M. Melkonian,M. Melkonian
+SNOX,Green Algae,Mesotaeniaceae,Planotaenium ohtanii,algal cells,sequenced,M 2697,M. Melkonian,M. Melkonian
+XRTZ,Green Algae,Mesotaeniaceae,Roya obtusa,algal cells,sequenced,M2403,M. Melkonian,M. Melkonian
+NNHQ,Green Algae,Mesotaeniaceae,Spirotaenia minuta,"clonal culture, vegetative",sequenced,M 2661,M. Melkonian,M. Melkonian
+TPHT,Green Algae,Mesotaeniaceae,Spirotaenia sp.,algal cells,sequenced,CCAC 0214,M. Melkonian,M. Melkonian
+YSQT,Green Algae,Peniaceae,Penium exiguum,algal cells,sequenced,CCAC 0142 (M2159/1),M. Melkonian,M. Melkonian
+AEKF,Green Algae,Peniaceae,Penium margaritaceum,algal cells,sequenced,SAG 22.82,M. Melkonian,M. Melkonian
+KEYW,Green Algae,Gonatozygaceae,Gonatozygon kinahanii,algal cells,sequenced,M2935,M. Melkonian,M. Melkonian
+POOW,Glaucophyta (Algae),Glaucocystaceae,Glaucocystis cf. nostochinearum,algal cells,sequenced,CCAC 0088 (M1106/1),M. Melkonian,M. Melkonian
+QFND,Glaucophyta (Algae),Glaucocystaceae,Cyanophora paradoxa CCAC 0074 (M0763),algal cells,sequenced,CCAC 0074 (M0763),M. Melkonian,M. Melkonian
+YTYU,Glaucophyta (Algae),Glaucocystaceae,Cyanophora paradoxa CCAC 0091 (M0507/1),algal cells,sequenced,CCAC 0091 M0507/1,M. Melkonian,M. Melkonian
+PQED,Glaucophyta (Algae),Glaucocystaceae,Gloeochaete wittrockiana,algal cells,sequenced,SAG 46.84,M. Melkonian,M. Melkonian
+JKHA,Glaucophyta (Algae),incertae sedis,Cyanoptyche gloeocystis,algal cells,sequenced,SAG 34.90 ,M. Melkonian,M. Melkonian
+OBUY,Red Algae,Porphyridiaceae,Porphyridium cruentum,cells grown on F/2 media,sequenced,UTEX 161,N. Clarke,N. Clarke
+PVGP,Red Algae,Porphyridiaceae,Porphyridium purpureum,algal cells,sequenced,SAG 1380-1c,M. Melkonian,M. Melkonian
+RSOF,Red Algae,Glaucosphaeraceae,Glaucosphaera vacuolata,algal cells,sequenced,SAG 13.82,M. Melkonian,M. Melkonian
+JJZR,Red Algae,Rhodochaetaceae,Rhodochaete parvula,algal cells,sequenced,SAG 8.99,M. Melkonian,M. Melkonian
+LLXJ,Red Algae,Stylonemataceae,Chroodactylon ornatum,algal cells,sequenced,CCAP 1364/1,M. Melkonian,M. Melkonian
+ZULJ,Red Algae,Bangiaceae,Pyropia yezoensis,blades,sequenced,Tao Liu 201104053,Jun Yu,Jun Yu
+VZWX,Red Algae,Ceramiaceae,Ceramium kondoi,branches,sequenced,Tao Liu 201202102,Jun Yu,Jun Yu
+YSBD,Red Algae,Dasyaceae,Heterosiphonia pulchra,branches,sequenced,Tao Liu 201203027,Jun Yu,Jun Yu
+XAXW,Red Algae,Rhodomelaceae,Neosiphonia japonica,branches and blades,sequenced,Tao Liu 201104042,Jun Yu,Jun Yu
+UYFR,Red Algae,Rhodomelaceae,Symphyocladia latiuscula,branches and blades,sequenced,Tao Liu 201108701,Jun Yu,Jun Yu
+IEHF,Red Algae,Dumontiaceae,Dumontia simplex,branches,sequenced,Tao Liu 201203026,Jun Yu,Jun Yu
+SBLT,Red Algae,Endocladiaceae,Gloiopeltis furcata,branches and blades,sequenced,Tao Liu 201104135,Jun Yu,Jun Yu
+UGPM,Red Algae,Gigartinaceae,Chondrus crispus,blades,sequenced,Tao Liu 201104049,Jun Yu,Jun Yu
+WEJN,Red Algae,Gigartinaceae,Mazzaella japonica,blades,sequenced,Tao Liu 201203020,Jun Yu,Jun Yu
+CKXF,Red Algae,Phyllophoraceae,Ahnfeltiopsis flabelliformis,branches and blades,sequenced,Tao Liu 201108707,Jun Yu,Jun Yu
+BWVJ,Red Algae,Solieriaceae,Betaphycus philippinensis,branches,sequenced,Tao Liu 2012020043,Jun Yu,Jun Yu
+JEBK,Red Algae,Solieriaceae,Eucheuma denticulatum,branches,sequenced,Tao Liu 201010021,Jun Yu,Jun Yu
+IHJY,Red Algae,Solieriaceae,Kappaphycus alvarezii,branches,sequenced,Tao Liu 201103110,Jun Yu,Jun Yu
+FTRP,Red Algae,Gracilariaceae,Gracilaria chouae,blades,sequenced,Tao Liu 201104180,Jun Yu,Jun Yu
+VNAL,Red Algae,Gracilariaceae,Gracilaria vermiculophylla,branches,sequenced,Tao Liu 201104055,Jun Yu,Jun Yu
+LJPN,Red Algae,Gracilariaceae,Gracilaria blodgettii,branches,sequenced,Tao Liu 201107006,Jun Yu,Jun Yu
+IKWM,Red Algae,Gracilariaceae,Gracilaria lemaneiformis,branches,sequenced,Tao Liu 201105036,Jun Yu,Jun Yu
+ZJOJ,Red Algae,Halymeniaceae,Grateloupia filicina,branches and blades,sequenced,Tao Liu 201104047,Jun Yu,Jun Yu
+IKIZ,Red Algae,Halymeniaceae,Grateloupia livida,blades,sequenced,Tao Liu 201104057,Jun Yu,Jun Yu
+URSB,Red Algae,Halymeniaceae,Grateloupia turuturu,blades,sequenced,Tao Liu 201104125,Jun Yu,Jun Yu
+PYDB,Red Algae,Halymeniaceae,Grateloupia catenata,branches and blades,sequenced,Tao Liu 201108705,Jun Yu,Jun Yu
+PWKQ,Red Algae,Halymeniaceae,Gracilaria sp.,branches and blades,sequenced,Tao Liu 201104064,Jun Yu,Jun Yu
+RTLC,Red Algae,Rhodellaceae,Rhodella violacea,algal cells,sequenced,SAG 115.79,M. Melkonian,M. Melkonian
+BAKF,Chromista (Algae),Cryptomonadaceae,Cryptomonas curvata,algal cells,sequenced,CCAC 0006 (M0420),M. Melkonian,M. Melkonian
+ROZZ,Chromista (Algae),Chroomonadaceae,Chroomonas sp.,algal cells,sequenced,M1312,M. Melkonian,M. Melkonian
+MJMQ,Chromista (Algae),Chroomonadaceae,Hemiselmis virescens,algal cells,sequenced,M1635,M. Melkonian,M. Melkonian
+IRZA,Chromista (Algae),Geminigeraceae,Proteomonas sulcata,algal cells,sequenced,CCMP 704,M. Melkonian,M. Melkonian
+IAYV,Chromista (Algae),Pyrenomonadaceae,Rhodomonas sp.,algal cells,sequenced,M1630,M. Melkonian,M. Melkonian
+BAJW,Chromista (Algae),Isochrysidaceae,Isochrysis sp.,algal cells,sequenced,CCAP 927/14,M. Melkonian,M. Melkonian
+APTP,Chromista (Algae),Ishigeaceae,Ishige okamurae,branches,sequenced,Tao Liu 201202108,Jun Yu,Jun Yu
+LXRN,Chromista (Algae),Prymnesiaceae,Prymnesium parvum,algal cells,sequenced,SAG 127.79,M. Melkonian,M. Melkonian
+NMAK,Chromista (Algae),Pavlovaceae,Pavlova lutheri,cells grown on F/2 media,sequenced,UTEX LB 1293,N. Clarke,N. Clarke
+RFAD,Chromista (Algae),Pavlovaceae,Pavlova lutheri CCAC 0028,algal cells,sequenced,CCAC 0028 (M1025),M. Melkonian,M. Melkonian
+LLEN,Chromista (Algae),Pavlovaceae,Pavlova lutheri SAG 926-1,algal cells,sequenced,SAG 926-1,M. Melkonian,M. Melkonian
+RAPY,Chromista (Algae),Laminariaceae,Saccharina sculpera,blades,sequenced,Tao Liu 201107019,Jun Yu,Jun Yu
+OGZM,Chromista (Algae),Laminariaceae,Saccharina japonica,blades,sequenced,Tao Liu 2011040101,Jun Yu,Jun Yu
+QDTV,Chromista (Algae),Laminariaceae,Saccharina japonica,blades,sequenced,Tao Liu 2011040101,Jun Yu,Jun Yu
+FIDQ,Chromista (Algae),Alariacea,Undaria pinnatifida,leaves,sequenced,Tao Liu 201203002,Jun Yu,Jun Yu
+EBWI,Chromista (Algae),Chromulinaceae,Ochromonas sp.,algal cells,sequenced,M1920,M. Melkonian,M. Melkonian
+JQFK,Chromista (Algae),Monodopsidaceae,Picochlorum atomus,cells grown on F/2 media,sequenced,UTEX LB 1998,N. Clarke,N. Clarke
+BOGT,Chromista (Algae),Mallomonadaceae,Mallomonas sp.,algal cells,sequenced,CCAC 0094,M. Melkonian,M. Melkonian
+VKVG,Chromista (Algae),Mallomonadaceae,Synura sp.,algal cells,sequenced,M0796,M. Melkonian,B. Melkonian
+DBYD,Chromista (Algae),Mallomonadaceae,Synura petersenii,algal cells,sequenced,CCAC 0052,M. Melkonian,B. Melkonian
+FSQE,Chromista (Algae),Desmarestiaceae,Desmarestia viridis,branches and blades,sequenced,Tao Liu 201203022,Jun Yu,Jun Yu
+LIRF,Chromista (Algae),Dictyotaceae,Dictyopteris undulata,blades,sequenced,Tao Liu 201203023,Jun Yu,Jun Yu
+QLMZ,Chromista (Algae),Scytosiphonaceae,Colpomenia sinuosa,blades,sequenced,Tao Liu 2012020101,Jun Yu,Jun Yu
+JCXF,Chromista (Algae),Scytosiphonaceae,Scytosiphon lomentaria,blades,sequenced,Tao Liu 2012020100,Jun Yu,Jun Yu
+ASZK,Chromista (Algae),Chordariacea,Punctaria latifolia,leaves,sequenced,Tao Liu 201203011,Jun Yu,Jun Yu
+ULXR,Chromista (Algae),Scytosiphonacea,Scytosiphon dotyi,leaves,sequenced,Tao Liu 201203012,Jun Yu,Jun Yu
+VRGZ,Chromista (Algae),Scytosiphonacea,Petalonia fascia,leaves,sequenced,Tao Liu 201203013,Jun Yu,Jun Yu
+LDRY,Chromista (Algae),Sargassaceae,Sargassum fusiforme,branches and blades,sequenced,Tao Liu 2011040004,Jun Yu,Jun Yu
+VYER,Chromista (Algae),Sargassaceae,Sargassum hemiphyllum,branches and blades,sequenced,Tao Liu 2011120023,Jun Yu,Jun Yu
+FIKG,Chromista (Algae),Sargassaceae,Sargassum henslowianum,branches and blades,sequenced,Tao Liu 2011120024,Jun Yu,Jun Yu
+RWXW,Chromista (Algae),Sargassaceae,Sargassum horneri,branches and blades,sequenced,Tao Liu 2011050003,Jun Yu,Jun Yu
+FOMH,Chromista (Algae),Sargassaceae,Sargassum integerrimum,branches and blades,sequenced,,Jun Yu,Jun Yu
+YRMA,Chromista (Algae),Sargassaceae,Sargassum thunbergii,branches and blades,sequenced,Tao Liu 201104041,Jun Yu,Jun Yu
+HFIK,Chromista (Algae),Sargassaceae,Sargassum vachellianum,branches and blades,sequenced,Tao Liu 201102023,Jun Yu,Jun Yu
+JGGD,Chromista (Algae),Sargassacea,Sargassum muticum,branches and leaves,sequenced,Tao Liu 201203003,Jun Yu,Jun Yu
+TZJQ,Dinophyceae,Prorocentraceae,Prorocentrum micans,cells,sequenced,M2394,M. Melkonian,B. Melkonian
+UNBZ,Euglenozoa,Euglenacaea,Euglena sp.,cells,sequenced,M2084,M. Melkonian,B. Melkonian
