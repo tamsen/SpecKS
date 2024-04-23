@@ -25,6 +25,7 @@ class BatchAnalyser(unittest.TestCase):
         full_path = os.path.join(output_folder, csv_file)
         hist_data = read_hist_csv(full_path)
         polyploid_params_by_name = get_truth_from_name_list([csv_file])
+        max_Ks=1.0
         params = polyploid_params_by_name[csv_file]
         out_file_name = full_path.replace(".csv", "_Ks_hist_fit" + str(max_Ks) + ".png")
         fit_results = analyze_histogram(*hist_data, params.WGD_time_MYA, params.SPC_time_MYA,
@@ -99,7 +100,7 @@ def read_hist_csv(csv_file):
 
 
 def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
-                      kernel_size, maxY, hist_plot_color, out_file_name):
+                      kernel_size, maxY, right_most_ssd_peak, out_file_name):
 
     polyploid_name=os.path.basename(out_file_name).replace(".png","")
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -122,7 +123,8 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
 
     smoothed_minima = find_local_minima(bins, smoothed_ys)
-    smoothed_maxima = find_global_maxima(bins, smoothed_ys, 0.075)
+    #right_most_ssd_peak=0.075
+    smoothed_maxima = find_global_maxima(bins, smoothed_ys, right_most_ssd_peak)
     plt.scatter([m[0] for m in smoothed_minima], [m[1] for m in smoothed_minima], color="red", label="minima", marker='*')
 
     ssd_end, next_min =smallest_min(smoothed_minima,smoothed_maxima)
@@ -252,11 +254,14 @@ def smallest_min(minima,peak_max):
     next_min=False
     for i in range(0, len(minima) - 1):
         m = minima[i]
-
+        #print("minima to test" + str(m))
         # presuming the peak max is the WGD and not the SSD
         # dont look left of the peak maximum
         if peak_max and (peak_max[0] > 0.1):
+            #print("peak_max:" + str(peak_max))
+            #print("..is greater than 0.1. should break if we go past this x="+str(peak_max[0]) )
             if ( m[0] > peak_max[0]):
+                #print("breaking now!")
                 break
 
         if smallest_min_y > m[1]:

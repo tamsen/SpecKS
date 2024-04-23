@@ -179,7 +179,7 @@ def get_metric2(run_metrics):
 
 def get_metric3(run_metrics):
 
-    print(run_metrics.sim_name)
+    #print(run_metrics.sim_name)
     ln_mode=run_metrics.lognorm_fit_data.mode
     ln_cm=run_metrics.lognorm_fit_data.cm
     m3 = ln_cm-ln_mode
@@ -264,7 +264,7 @@ def read_data_csv(csv_file):
                 break
 
             data = line.strip().split(",")
-            print(str(data))
+            #print(str(data))
 
             if "NA" in line:
                 sims_without_clear_wgd.append(data[1])

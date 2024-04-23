@@ -24,11 +24,13 @@ class Test1KP(unittest.TestCase):
             os.makedirs(output_folder)
 
         reanalyze=True
-        bin_size = 0.002#0.02
-        kernel_size = 25
+        bin_size=0.001
+        right_most_ssd_peak = 0.08
+        bin_sizex1000=bin_size*1000.0
+        kernel_size = int(50*(1.0/bin_sizex1000))
         max_Ks = 1.0
         KS_data_files = [Ks_file_1 ] + [f for f in os.listdir(kp_directory) if ".fa" in f]
-        max_to_process=50
+        max_to_process=2000
         i=0
         curated_samples= ['OBUY']#known_auto_examples+known_allo_examples+required
         results_by_file={}
@@ -52,10 +54,6 @@ class Test1KP(unittest.TestCase):
             sample_name=species
             fig, ax = plt.subplots(1, 1, figsize=(10, 10))
             fig.suptitle(sample_name)
-            fig.suptitle(sample_name)
-            ax.set_title("Allopolyploid\n", fontsize=20)
-            ax.set_title("Autopolyploid\n", fontsize=20)
-
             params=config.PolyploidParams(-1, -1, sample_name)
             hist_data=batch_histogrammer.make_histogram_subplot(ax,  sample_name,ks_values,
                                         bin_size, params,
@@ -73,8 +71,9 @@ class Test1KP(unittest.TestCase):
             hist_data3 =  batch_analyzer.read_hist_csv(csv_file_name)
             out_fit_png = os.path.join(output_folder, "fit" + "_plot_" +  sample_name+
                                          "_" + species_code + "_"+ str(max_Ks) + ".png")
+
             fit_results = batch_analyzer.analyze_histogram(*hist_data3, params.WGD_time_MYA, params.SPC_time_MYA,
-                                            kernel_size, False, 'tan', out_fit_png)
+                                            kernel_size, False, right_most_ssd_peak, out_fit_png)
 
             results_by_file[Ks_file]=fit_results
             print(Ks_file + " analyzed")
@@ -84,7 +83,13 @@ class Test1KP(unittest.TestCase):
         if reanalyze:
             batch_analyzer.plot_and_save_metrics(results_by_file, csv_file_name)
 
-        analyze_metric_results(csv_file_name,output_folder)
+        well_behaved_wgd_histograms=analyze_metric_results(csv_file_name,output_folder)
+        curated_wgd_name = os.path.join(output_folder,"curated_WGD.csv")
+        with open(curated_wgd_name, 'w') as f:
+            f.writelines("well-behaved WGD\n")
+            for wgd_hist in well_behaved_wgd_histograms:
+                f.writelines(",".join(wgd_hist) + "\n")
+
 
 def analyze_metric_results(input_metrics_file, out_folder):
 
@@ -99,61 +104,64 @@ def analyze_metric_results(input_metrics_file, out_folder):
             y_method=plot_to_make[0][1]
             plot_name = plot_to_make[3]
             species_with_WGD_detected_in_1KP=list(metric_data_for_batch.keys())
-            plot_data = [[k,x_method(metric_data_for_batch[k]),y_method(metric_data_for_batch[k]) ] for k in
+            wgd_plot_data = [[k,x_method(metric_data_for_batch[k]),y_method(metric_data_for_batch[k]) ] for k in
                          species_with_WGD_detected_in_1KP]
-            plot_data= plot_data + [[s,"No WGD detected","NA"] for s in sims_without_clear_wgd]
+            plot_data= wgd_plot_data + [[s,"No WGD detected","NA"] for s in sims_without_clear_wgd]
 
-            print(plot_data)
+            #print(plot_data)
             data_file_name=plot_name.replace(".png",".csv")
             out_file_path=os.path.join(out_folder,data_file_name)
             plot_data_by_batch = {batch_name: plot_data}
             batch_aggregator.save_metrics_to_csv(plot_data_by_batch, out_file_path)
-            colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
-            categories=colors_by_category.keys()
-            data=[]
-            data_labels=[]
-            colors=[]
-            for c in categories:
-                test_for_data=[d[2] for d in plot_data if d[1]==c]
-                if len(test_for_data)> 0:
-                    data.append(test_for_data)
-                    data_labels.append(c)
-                    colors.append(colors_by_category[c])
 
-            ticks=[i+1 for i in range(0,len(data))]
-            #[d[2] for d in plot_data if d[1] == "Medium"],
-            #https://matplotlib.org/stable/gallery/statistics/violinplot.html
-            #https://stackoverflow.com/questions/33864578/matplotlib-making-labels-for-violin-plots
-            #colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
-            #colors=["gray","blue"]
+            make_violin_plot(out_folder, plot_data, plot_name, plot_to_make)
+            well_behaved_wgd_histograms = []
+            for s in wgd_plot_data:
+                str_s1=str(s[1])
+                if str_s1 != "nan":
+                    well_behaved_wgd_histograms.append([s[0],s[1]])
 
-            fig, ax = plt.subplots(1, 1, figsize=(8, 10))
-            plots=plt.violinplot(data, ticks,showmeans=True, showextrema=True,
-                                 )
-            for pc, color in zip(plots['bodies'], colors):
-                pc.set_facecolor(color)
+            return well_behaved_wgd_histograms
 
-            ax.axhline(y=get_low_to_medium_threshold(), color='cyan', linestyle='--', label="lvm disc. criteria"
-                                                                         + " ({0})".format(
-                round(get_low_to_medium_threshold(), 2)))
+def make_violin_plot(out_folder, plot_data, plot_name, plot_to_make):
+    colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
+    categories = colors_by_category.keys()
+    data = []
+    data_labels = []
+    colors = []
+    for c in categories:
+        test_for_data = [d[2] for d in plot_data if d[1] == c]
+        if len(test_for_data) > 0:
+            data.append(test_for_data)
+            data_labels.append(c)
+            colors.append(colors_by_category[c])
+    ticks = [i + 1 for i in range(0, len(data))]
+    # [d[2] for d in plot_data if d[1] == "Medium"],
+    # https://matplotlib.org/stable/gallery/statistics/violinplot.html
+    # https://stackoverflow.com/questions/33864578/matplotlib-making-labels-for-violin-plots
+    # colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
+    # colors=["gray","blue"]
+    fig, ax = plt.subplots(1, 1, figsize=(8, 10))
+    plots = plt.violinplot(data, ticks, showmeans=True, showextrema=True,
+                           )
+    for pc, color in zip(plots['bodies'], colors):
+        pc.set_facecolor(color)
+    ax.axhline(y=get_low_to_medium_threshold(), color='cyan', linestyle='--', label="lvm disc. criteria"
+                                                                                    + " ({0})".format(
+        round(get_low_to_medium_threshold(), 2)))
+    ax.axhline(y=get_medium_to_high_threshold(), color='blue', linestyle='--', label="lvm disc. criteria"
+                                                                                     + " ({0})".format(
+        round(get_medium_to_high_threshold(), 2)))
+    fig.suptitle(plot_to_make[2])
+    ax.set(xlabel=plot_to_make[1])
+    ax.set(ylabel="log(fit cm-mode)")
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(data_labels)
+    plt.legend()
+    violin_plot_file_path = os.path.join(out_folder, plot_name)
+    plt.savefig(violin_plot_file_path)
+    plt.close()
 
-            ax.axhline(y=get_medium_to_high_threshold(), color='cyan', linestyle='--', label="lvm disc. criteria"
-                                                                         + " ({0})".format(
-                round(get_medium_to_high_threshold(), 2)))
-
-            fig.suptitle(plot_to_make[2])
-            ax.set(xlabel=plot_to_make[1])
-            ax.set(ylabel="log(fit cm-mode)")
-
-            ax.set_xticks(ticks)
-            ax.set_xticklabels(data_labels)
-
-            #labels = ['Low', 'High']
-            #ax.set_xticks(labels)
-            #plt.legend()
-            violin_plot_file_path = os.path.join(out_folder, plot_name)
-            plt.savefig(violin_plot_file_path)
-            plt.close()
 
 def get_low_to_medium_threshold():
     return -4.53
@@ -164,8 +172,25 @@ def get_medium_to_high_threshold():
 def get_log_metric3(run_metrics):
 
     metric_3_result = batch_aggregator.get_metric3(run_metrics)
-    if metric_3_result <= 0:
-        return math.nan
+
+
+    #if metric_3_result ~= 0 then we have symmetry, or
+    # if the mean and are reversed, the lognorm fit got fit backwards,
+    # (which is only possible due to machine error or a major fit fail)
+    if metric_3_result == 0:
+        return get_low_to_medium_threshold() - 1
+
+    acceptable_error=0.00001
+    if metric_3_result < 0:
+
+        #error= run_metrics.lognorm_fit_data.RMSE
+        if metric_3_result > (-1*acceptable_error):
+            #this should classify as Low
+            return get_low_to_medium_threshold() - 1
+        else:
+            # I will curate out any major fit fails..
+            return math.nan
+
 
     return math.log(metric_3_result)
 def get_classification(run_metrics):

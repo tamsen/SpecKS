@@ -24,8 +24,8 @@ def get_Ks_from_file(Kp_out_file):
         if len(data) < 4:
             break
         if len(data[2]) < 2:
-            print("strange line!")
-            print("line: " + l)
+            #print("strange line!")
+            #print("line: " + l)
             continue
         try:
             Ks=float(data[2])
