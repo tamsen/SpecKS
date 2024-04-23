@@ -161,7 +161,7 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
 
     if gaussian_fit_curve_ys1 and (hist_maximum>0):
             rmse_str= str(round(gaussian_goodness_of_fit.RMSE,4))
-            pser_str= str(round(lognorm_goodness_of_fit.pearsons_corr_result[2],4))
+            pser_str= str(round(gaussian_goodness_of_fit.pearsons_corr_result[2],4))
             plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
                  color='blue', linestyle=':',
                      label="gaussian fit \n(RMSE={0})\n(PRSE={1})".format(rmse_str,pser_str))
