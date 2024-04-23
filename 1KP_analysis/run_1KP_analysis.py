@@ -1,6 +1,8 @@
+import math
 import os
 import unittest
 
+import numpy as np
 from matplotlib import pyplot as plt
 import config
 import kp_reader
@@ -8,6 +10,7 @@ from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting
 
 
 class Test1KP(unittest.TestCase):
+
     def test_1KP_analysis(self):
         data_directory = "/home/tamsen/Data/1KP_classfier"
         Ks_file_1 = "final_ks_values_CSUV.fa"
@@ -29,8 +32,9 @@ class Test1KP(unittest.TestCase):
         i=0
         curated_samples= ['OBUY']#known_auto_examples+known_allo_examples+required
 
-        for Ks_file in KS_data_files:
+        for i in range(0,len(KS_data_files)):
 
+            Ks_file = KS_data_files[i]
             if i > max_to_process:
                 break
             Ks_file_path = os.path.join(kp_directory, Ks_file)
@@ -56,22 +60,18 @@ class Test1KP(unittest.TestCase):
             plt.savefig(out_file_name)
             plt.close()
 
-            out_file_name = os.path.join(out_data_directory, sample_name + ".hist.csv")
-            batch_histogrammer.save_hist_to_csv(hist_data, out_file_name)
+            csv_file_name = os.path.join(out_data_directory, sample_name + ".hist.csv")
+            batch_histogrammer.save_hist_to_csv(hist_data, csv_file_name)
 
             #analyze hist data
-            hist_data2 =  batch_analyzer.read_hist_csv(out_file_name)
+            hist_data2 =  batch_analyzer.read_hist_csv(csv_file_name)
             ys=hist_data2[0][0:len(hist_data2[0])-1]
             ns = hist_data2[1][0:len(hist_data2[1]) - 1]
             hist_data3=[ys,ns]
-            out_fit_png = out_file_name.replace(".csv", "_Ks_hist_fit" + str(max_Ks) + ".png")
+            out_fit_png = os.path.join(out_data_directory, "fit" + "_plot_" +  sample_name+
+                                         "_" + species_code + "_"+ str(max_Ks) + ".png")
             fit_results = analyze_histogram2(*hist_data3, params.WGD_time_MYA, params.SPC_time_MYA,
                                             max_Ks, False, 'tan', out_fit_png)
-
-            #results_by_file = {"test": fit_results}
-            #out_csv = "{0}_metrics.csv".format("test")
-            #out_file_name = os.path.join(out_data_directory, out_csv)
-            #batch_analyzer.plot_and_save_metrics(results_by_file, out_file_name)
 
 
 def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
@@ -107,6 +107,19 @@ def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
     plt.scatter(ssd_end[0],3*ssd_end[1],color="black", label="wgd_start",marker='*',s=50)
     #super_smoothed_ys=smooth_data(200, n)
     ssd_xs, ssd_ys, wgd_xs, wgd_ys = batch_analyzer.sort_ssds_and_wgds(bins, n, ssd_end, ssds_ys_to_subtract)
+    #ssd_xs=ssd_xs[1:len(ssd_xs)-1]
+    #ssd_ys=ssd_ys[1:len(ssd_ys)-1]
+
+
+    #exp_fit_curve_ys1, xs_for_exp,exp_goodness_of_fit = \
+    #   curve_fitting.fit_curve_to_xs_and_ys(ssd_xs, ssd_ys, curve_fitting.logfit)
+
+    #if exp_fit_curve_ys1 and (hist_maximum>0):
+    #        rmse_str= str(round(exp_goodness_of_fit.RMSE,4))
+    #        pser_str= str(round(exp_goodness_of_fit.pearsons_corr_result[2],4))
+    #        plt.plot(xs_for_exp,exp_fit_curve_ys1,
+    #             color='k', linestyle=':',
+    #                 label="exp fit \n(RMSE={0})\n(PRSE={1})".format(rmse_str,pser_str))
 
     wgd_maxima = batch_analyzer.find_global_maxima(wgd_xs, wgd_ys, 0.075)
     plt.scatter(wgd_maxima[0], -0.05 * maxY,
@@ -126,7 +139,6 @@ def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
     lognorm_fit_curve_ys1, xs_for_wgd,lognorm_goodness_of_fit =  \
             curve_fitting.fit_curve_to_xs_and_ys(wgd_xs, wgd_ys, curve_fitting.wgd_lognorm )
 
-
     if lognorm_fit_curve_ys1 and (hist_maximum>0):
             rmse_str= str(round(lognorm_goodness_of_fit.RMSE,4))
             pser_str= str(round(lognorm_goodness_of_fit.pearsons_corr_result[2],4))
@@ -140,6 +152,7 @@ def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
             plt.plot(xs_for_wgd,gaussian_fit_curve_ys1,
                  color='blue', linestyle=':',
                      label="gaussian fit \n(RMSE={0})\n(PRSE={1})".format(rmse_str,pser_str))
+
 
 
     if lognorm_fit_curve_ys1 and (hist_maximum>0):
@@ -157,7 +170,7 @@ def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
 
     #plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
     #plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
-    #plt.bar(ssds_xs_to_subtract, ssds_ys_to_subtract, width=0.001, color="lightgray", label="ssd under wgd")
+    #plt.bar(ssds_xs_to_subtract, ssds_ys_to_subtract, width=0.02, color="pink", label="ssd under wgd")
 
     plt.legend()
     plt.savefig(out_file_name)

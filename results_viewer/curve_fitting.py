@@ -13,6 +13,9 @@ def sigmoid(x, a, c):
     return 1 / (1 + math.exp(-a*x +c))
 def logfit(x, m, b, c):
     return b - m * np.log(c*x)
+
+def logfit2(x, m, b, c, d):
+    return b - m * np.log(c*x) -d*x
 def linear(x, m, b):
     return m * x + b
 def wgd_gaussian(x, amp, mu, sig):
@@ -21,6 +24,15 @@ def wgd_gaussian(x, amp, mu, sig):
 def wgd_lognorm(x, amp, scale, x_shift,skew):
     return amp * lognorm.pdf(scale * x + x_shift, skew)
 
+def logfit_lognorm(x, m, b, c, amp, scale, x_shift,skew):
+    return b - m * np.log(c*x) + amp * lognorm.pdf(scale * x + x_shift, skew)
+def my_exp(x, Ao,k,b,c):
+    return Ao * math.exp(-k*(x-c)) + b
+def my_line(x, m, b):
+    return m*x+b
+
+def my_decay(x, Ao,k, r):
+    return Ao*((1-r)**(k*x))
 
 def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     
