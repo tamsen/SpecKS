@@ -179,6 +179,7 @@ def get_metric2(run_metrics):
 
 def get_metric3(run_metrics):
 
+    print(run_metrics.sim_name)
     ln_mode=run_metrics.lognorm_fit_data.mode
     ln_cm=run_metrics.lognorm_fit_data.cm
     m3 = ln_cm-ln_mode
@@ -252,6 +253,7 @@ def get_max_d(run_metrics):
 def read_data_csv(csv_file):
 
     data_by_sim_name={}
+    sims_without_clear_wgd=[]
     with open(csv_file, "r") as f:
 
         while True:
@@ -260,10 +262,14 @@ def read_data_csv(csv_file):
                 continue
             if len(line)==0:
                 break
-            if "NA" in line:
-                continue
+
             data = line.strip().split(",")
             print(str(data))
+
+            if "NA" in line:
+                sims_without_clear_wgd.append(data[1])
+                continue
+
             sim_type=data[0]
             if sim_type=='':
                 continue
@@ -272,7 +278,7 @@ def read_data_csv(csv_file):
             run_name=metrics_for_run.sim_name
             data_by_sim_name[run_name]=metrics_for_run
 
-    return data_by_sim_name
+    return data_by_sim_name, sims_without_clear_wgd
 
 
 def plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,

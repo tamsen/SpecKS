@@ -2,7 +2,7 @@
 import os
 import unittest
 import kp_reader
-from kp_classifier import KP_classifier
+from graveyard.kp_classifier import KP_classifier
 from kp_data_to_process import data_to_process
 
 class TestClassifyKP(unittest.TestCase):

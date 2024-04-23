@@ -19,7 +19,7 @@ class BatchAnalyser(unittest.TestCase):
 
     def test_compute_metrics_for_csv(self):
         csv_file = "Allo2_S070W060.hist.csv"  # "Allo6_S030W010.hist.csv"
-        max_Ks = 1.0
+        kernel_size = 50
         output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim37_N1/analysis"
         # /home/tamsen/Data/Specks_outout_from_mesx/sim36_N10/analysis/Allo1_S080W075.hist.csv
         full_path = os.path.join(output_folder, csv_file)
@@ -28,7 +28,7 @@ class BatchAnalyser(unittest.TestCase):
         params = polyploid_params_by_name[csv_file]
         out_file_name = full_path.replace(".csv", "_Ks_hist_fit" + str(max_Ks) + ".png")
         fit_results = analyze_histogram(*hist_data, params.WGD_time_MYA, params.SPC_time_MYA,
-                                        max_Ks, False, 'tan', out_file_name)
+                                        kernel_size, False, 'tan', out_file_name)
 
         results_by_file = {"test": fit_results}
         out_csv = "{0}_metrics.csv".format("test")
@@ -40,7 +40,7 @@ def compute_metrics_for_batch(batch_name,base_output_folder):
 
     analysis_folder="analysis"
     output_folder=os.path.join(base_output_folder,batch_name,analysis_folder)
-
+    kernel_size = 50
     files = os.listdir(output_folder)
     max_Ks=2.0
     maxY= False
@@ -66,7 +66,7 @@ def compute_metrics_for_batch(batch_name,base_output_folder):
         print("starting " + file_path)
         out_file_name = file_path.replace(".csv", "_Ks_hist_fit" + str(max_Ks) + ".png")
         fit_results = analyze_histogram(*hist_data, params.WGD_time_MYA, params.SPC_time_MYA,
-                                        max_Ks, maxY, 'blue', out_file_name)
+                                        kernel_size, maxY, 'blue', out_file_name)
         results_by_file[file]=fit_results
         print(file_path + " analyzed")
 
@@ -99,7 +99,7 @@ def read_hist_csv(csv_file):
 
 
 def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
-                      max_Ks, maxY, hist_plot_color, out_file_name):
+                      kernel_size, maxY, hist_plot_color, out_file_name):
 
     polyploid_name=os.path.basename(out_file_name).replace(".png","")
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -115,7 +115,7 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
     ax.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time, " + str(WGD_time_MYA) + " MYA")
     ax.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time, " + str(SPC_time_MYA) + " MYA")
 
-    kernel_size=50
+    #kernel_size=50
     smoothed_color='gray'
     smoothed_ys = smooth_data(kernel_size, n)
     plt.plot(bins, smoothed_ys,color=smoothed_color, label="smoothed data")
@@ -140,8 +140,9 @@ def analyze_histogram(bins, n, WGD_time_MYA, SPC_time_MYA,
     raw_cm, raw_x_value_of_ymax = curve_fitting.get_mode_and_cm(wgd_ys, wgd_xs)
     ax.set(xlabel="Ks")
     ax.set(ylabel="# paralogs")
-    plt.bar(ssd_xs, ssd_ys, width=0.001, color="lightgray", label="ssd")
-    plt.bar(wgd_xs, wgd_ys, width=0.001, color="gray", label="wgd")
+    width=wgd_xs[2]-wgd_xs[1]
+    plt.bar(ssd_xs, ssd_ys, width=width, color="lightgray", label="ssd")
+    plt.bar(wgd_xs, wgd_ys, width=width, color="gray", label="wgd")
     #plt.bar(ssds_xs_to_subtract, ssds_ys_to_subtract, width=0.001, color="lightgray", label="ssd under wgd")
 
     gaussian_fit_curve_ys1, xs_for_wgd, gaussian_goodness_of_fit = \
