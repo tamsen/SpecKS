@@ -24,11 +24,11 @@ class Test1KP(unittest.TestCase):
             os.makedirs(output_folder)
 
         reanalyze=True
-        bin_size = 0.001#0.02
-        kernel_size = 50
-        max_Ks = 2.0
+        bin_size = 0.002#0.02
+        kernel_size = 25
+        max_Ks = 1.0
         KS_data_files = [Ks_file_1 ] + [f for f in os.listdir(kp_directory) if ".fa" in f]
-        max_to_process=100
+        max_to_process=50
         i=0
         curated_samples= ['OBUY']#known_auto_examples+known_allo_examples+required
         results_by_file={}
@@ -89,7 +89,7 @@ class Test1KP(unittest.TestCase):
 def analyze_metric_results(input_metrics_file, out_folder):
 
         batch_name = "1KP"
-        plots_to_make=[([get_classification, batch_aggregator.get_metric3],
+        plots_to_make=[([get_classification, get_log_metric3],
                         "categories", "allo vs auto metric3 (fit cm-mode)",
                         "1KP_allo_vs_auto_classification.png")]
         metric_data_for_batch,sims_without_clear_wgd = batch_aggregator.read_data_csv(input_metrics_file)
@@ -108,29 +108,45 @@ def analyze_metric_results(input_metrics_file, out_folder):
             out_file_path=os.path.join(out_folder,data_file_name)
             plot_data_by_batch = {batch_name: plot_data}
             batch_aggregator.save_metrics_to_csv(plot_data_by_batch, out_file_path)
+            colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
+            categories=colors_by_category.keys()
+            data=[]
+            data_labels=[]
+            colors=[]
+            for c in categories:
+                test_for_data=[d[2] for d in plot_data if d[1]==c]
+                if len(test_for_data)> 0:
+                    data.append(test_for_data)
+                    data_labels.append(c)
+                    colors.append(colors_by_category[c])
 
-            data_by_category=[[d[2] for d in plot_data if d[1]=="Low"],
-                              [d[2] for d in plot_data if d[1] == "High"]]
+            ticks=[i+1 for i in range(0,len(data))]
             #[d[2] for d in plot_data if d[1] == "Medium"],
             #https://matplotlib.org/stable/gallery/statistics/violinplot.html
             #https://stackoverflow.com/questions/33864578/matplotlib-making-labels-for-violin-plots
             #colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
-            colors=["gray","blue"]
+            #colors=["gray","blue"]
 
             fig, ax = plt.subplots(1, 1, figsize=(8, 10))
-            plots=plt.violinplot(data_by_category, [1,2],showmeans=True, showextrema=True,
+            plots=plt.violinplot(data, ticks,showmeans=True, showextrema=True,
                                  )
             for pc, color in zip(plots['bodies'], colors):
                 pc.set_facecolor(color)
+
+            ax.axhline(y=get_low_to_medium_threshold(), color='cyan', linestyle='--', label="lvm disc. criteria"
+                                                                         + " ({0})".format(
+                round(get_low_to_medium_threshold(), 2)))
+
+            ax.axhline(y=get_medium_to_high_threshold(), color='cyan', linestyle='--', label="lvm disc. criteria"
+                                                                         + " ({0})".format(
+                round(get_medium_to_high_threshold(), 2)))
+
             fig.suptitle(plot_to_make[2])
             ax.set(xlabel=plot_to_make[1])
             ax.set(ylabel="log(fit cm-mode)")
-            #ax.set_xtickslabels(['Low', 'High'])
-            farmers = ["Farmer Joe", "Upland Bros.", "Smith Gardening",
-                       "Agrifun", "Organiculture", "BioGoods Ltd.", "Cornylee Corp."]
-            #ax.set_xticklabels(farmers)
-            ax.set_xticks([1,2])
-            ax.set_xticklabels(['Low', 'High'])
+
+            ax.set_xticks(ticks)
+            ax.set_xticklabels(data_labels)
 
             #labels = ['Low', 'High']
             #ax.set_xticks(labels)
@@ -138,22 +154,34 @@ def analyze_metric_results(input_metrics_file, out_folder):
             violin_plot_file_path = os.path.join(out_folder, plot_name)
             plt.savefig(violin_plot_file_path)
             plt.close()
-def get_classification(run_metrics):
+
+def get_low_to_medium_threshold():
+    return -4.53
+
+def get_medium_to_high_threshold():
+    return -3.12
+
+def get_log_metric3(run_metrics):
 
     metric_3_result = batch_aggregator.get_metric3(run_metrics)
     if metric_3_result <= 0:
-        return "Low"
+        return math.nan
 
-    metric_3_result_as_log=math.log(metric_3_result )
-    low_to_medium_threshold=-3.12
-    medium_to_high_threshold=-4.53
+    return math.log(metric_3_result)
+def get_classification(run_metrics):
+
+    metric_3_result_as_log = get_log_metric3(run_metrics)
+    low_to_medium_threshold=get_low_to_medium_threshold()
+    medium_to_high_threshold=get_medium_to_high_threshold()
 
     if metric_3_result_as_log < low_to_medium_threshold:
         return "Low"
+    if metric_3_result_as_log < medium_to_high_threshold:
+        return "Medium"
     if metric_3_result_as_log >= medium_to_high_threshold:
         return "High"
     #else
-    return "Medium"
+    return math.nan
 
 if __name__ == '__main__':
     unittest.main()
