@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import config
 import kp_reader
-from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting
+from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, batch_aggregator
 
 
 class Test1KP(unittest.TestCase):
@@ -15,13 +15,13 @@ class Test1KP(unittest.TestCase):
         data_directory = "/home/tamsen/Data/1KP_classfier"
         Ks_file_1 = "final_ks_values_CSUV.fa"
         kp_directory = os.path.join(data_directory, "1KP_final_ks_files")
-        out_data_directory = os.path.join(data_directory, "1KP_classifier_out_Apr21")
+        output_folder = os.path.join(data_directory, "1KP_classifier_out_Apr21")
 
         lookup_file = "1KP-Sample-List.csv"
         sample_lookup = kp_reader.get_sample_code_lookup(lookup_file)
 
-        if not os.path.exists(out_data_directory):
-            os.makedirs(out_data_directory)
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
 
         original_bin_size=2.0/50
         print(original_bin_size)
@@ -31,7 +31,7 @@ class Test1KP(unittest.TestCase):
         max_to_process=5
         i=0
         curated_samples= ['OBUY']#known_auto_examples+known_allo_examples+required
-
+        results_by_file={}
         for i in range(0,len(KS_data_files)):
 
             Ks_file = KS_data_files[i]
@@ -55,12 +55,12 @@ class Test1KP(unittest.TestCase):
                                         bin_size, params,
                                         max_Ks, False,"blue")
             #hist_data2=[hist_data[0],hist_data[1][0:len(hist_data[1])-1]]
-            out_file_name = os.path.join(out_data_directory, "histogram" + "_plot_" +  sample_name+
+            out_file_name = os.path.join(output_folder, "histogram" + "_plot_" +  sample_name+
                                          "_" + species_code + "_"+ str(max_Ks) + ".png")
             plt.savefig(out_file_name)
             plt.close()
 
-            csv_file_name = os.path.join(out_data_directory, sample_name + ".hist.csv")
+            csv_file_name = os.path.join(output_folder, sample_name + ".hist.csv")
             batch_histogrammer.save_hist_to_csv(hist_data, csv_file_name)
 
             #analyze hist data
@@ -68,11 +68,20 @@ class Test1KP(unittest.TestCase):
             ys=hist_data2[0][0:len(hist_data2[0])-1]
             ns = hist_data2[1][0:len(hist_data2[1]) - 1]
             hist_data3=[ys,ns]
-            out_fit_png = os.path.join(out_data_directory, "fit" + "_plot_" +  sample_name+
+            out_fit_png = os.path.join(output_folder, "fit" + "_plot_" +  sample_name+
                                          "_" + species_code + "_"+ str(max_Ks) + ".png")
             fit_results = analyze_histogram2(*hist_data3, params.WGD_time_MYA, params.SPC_time_MYA,
                                             max_Ks, False, 'tan', out_fit_png)
 
+            results_by_file[Ks_file]=fit_results
+            print(Ks_file + " analyzed")
+
+        batch_name = "1KP"
+        out_csv = "{0}_metrics.csv".format(batch_name)
+        csv_file_name = os.path.join(output_folder, out_csv)
+        batch_analyzer.plot_and_save_metrics(results_by_file, csv_file_name)
+
+        analyze_metric_results(csv_file_name,output_folder)
 
 def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
                       max_Ks, maxY, hist_plot_color, out_file_name):
@@ -183,6 +192,41 @@ def analyze_histogram2(bins, n, WGD_time_MYA, SPC_time_MYA,
                            lognorm_goodness_of_fit, gaussian_goodness_of_fit)
 
     return fit_data
+
+
+def analyze_metric_results(input_metrics_file, out_folder):
+
+        batch_names = ["1KP"]
+        plots_to_make=[([get_classification, batch_aggregator.get_metric3],
+                        "spec time (MYA)", "allo vs auto metric3 (fit cm-mode)", "metric3.png"),
+                      ]
+        metric_data_by_batch = {}
+        marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
+        metric_data_for_batch = batch_aggregator.read_data_csv(input_metrics_file)
+        metric_data_by_batch[batch_names[0]]=  metric_data_for_batch
+
+        i=0; marker_styles_by_batch={}
+        for batch_name in batch_names:
+            marker_styles_by_batch[batch_name]=marker_styles_for_batches[i]
+            i=i+1
+
+        for plot_to_make in plots_to_make:
+            plot_name = plot_to_make[3]
+            plot_data=batch_aggregator.plot_allo_vs_auto_metrics(metric_data_by_batch,marker_styles_by_batch,
+                                                *plot_to_make,out_folder)
+            if "metric" in plot_name:
+                log_plot_to_make=[d for d in plot_to_make]
+                log_plot_to_make[3] =plot_name.replace(".png","_log.png")
+                batch_aggregator.plot_allo_vs_auto_metrics(metric_data_by_batch, marker_styles_by_batch,
+                                          *log_plot_to_make, out_folder, ylog=True)
+            data_file_name=plot_name.replace(".png",".csv")
+            out_file_path=os.path.join(out_folder,data_file_name)
+            batch_aggregator.save_metrics_to_csv(plot_data, out_file_path)
+
+def get_classification(run_metrics):
+
+    #ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
+    return "Low"
 
 if __name__ == '__main__':
     unittest.main()
