@@ -15,32 +15,35 @@ class Test1KP(unittest.TestCase):
         data_directory = "/home/tamsen/Data/1KP_classfier"
         Ks_file_1 = "final_ks_values_CSUV.fa"
         kp_directory = os.path.join(data_directory, "1KP_final_ks_files")
-        output_folder = os.path.join(data_directory, "1KP_classifier_out_Apr21")
-
+        output_folder = os.path.join(data_directory, "1KP_classifier_out_Apr23b")
         lookup_file = "1KP-Sample-List.csv"
         sample_lookup = kp_reader.get_sample_code_lookup(lookup_file)
 
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-
         reanalyze=True
+        use_only_curated_data=False
         bin_size=0.001
         right_most_ssd_peak = 0.08
         bin_sizex1000=bin_size*1000.0
         kernel_size = int(50*(1.0/bin_sizex1000))
         max_Ks = 1.0
-        KS_data_files = [Ks_file_1 ] + [f for f in os.listdir(kp_directory) if ".fa" in f]
-        max_to_process=2000
-        i=0
-        curated_samples= ['OBUY']#known_auto_examples+known_allo_examples+required
+        max_to_process=4000
+
         results_by_file={}
+        saved_curated_wgd_name = "saved_curated_WGD.csv"
+        ks_files_to_reanalyze=[]
 
-        if not reanalyze:
-            KS_data_files=[]
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
 
-        for i in range(0,len(KS_data_files)):
+        if reanalyze:
+         if use_only_curated_data:
+            ks_files_to_reanalyze=read_list_of_curated_WGD_to_use_for_analysis(saved_curated_wgd_name)
+         else:
+            ks_files_to_reanalyze= [Ks_file_1 ] + [f for f in os.listdir(kp_directory) if ".fa" in f]
 
-            Ks_file = KS_data_files[i]
+        for i in range(0,len(ks_files_to_reanalyze)):
+
+            Ks_file = ks_files_to_reanalyze[i]
             if i > max_to_process:
                 break
 
@@ -85,10 +88,54 @@ class Test1KP(unittest.TestCase):
 
         well_behaved_wgd_histograms=analyze_metric_results(csv_file_name,output_folder)
         curated_wgd_name = os.path.join(output_folder,"curated_WGD.csv")
-        with open(curated_wgd_name, 'w') as f:
-            f.writelines("well-behaved WGD\n")
-            for wgd_hist in well_behaved_wgd_histograms:
-                f.writelines(",".join(wgd_hist) + "\n")
+        metrics_for_hist = save_list_of_well_behaved_WGD(curated_wgd_name, well_behaved_wgd_histograms)
+        plot_histogram_of_metric3_over1KP(metrics_for_hist, output_folder)
+
+def read_list_of_curated_WGD_to_use_for_analysis(saved_curated_wgd_name):
+    curated_fa_files = []
+    with open(saved_curated_wgd_name, 'r') as f:
+        lines = f.readlines()
+        for l in lines:
+            splat = l.split(",")[0].split("_")
+            if len(splat) > 3:
+                code = splat[3]
+                #print(code)
+                file_to_find = 'final_ks_values_' + code + '.fa'
+                curated_fa_files.append(file_to_find)
+    return curated_fa_files
+
+
+def plot_histogram_of_metric3_over1KP(metrics_for_hist, output_folder):
+
+    fig = plt.figure(figsize=(10, 10), dpi=100)
+    n, bins, patches = plt.hist(metrics_for_hist, bins=100, facecolor='b', alpha=0.25, label='histogram data')
+    lmt=get_low_to_medium_threshold()
+    mht=get_medium_to_high_threshold()
+    plt.axvline(x=lmt, color='cyan', linestyle='--', label="lvm disc. criteria"
+                  + " ({0})".format(round(lmt, 2)))
+    plt.axvline(x=mht, color='blue', linestyle='--', label="lvm disc. criteria"
+                  + " ({0})".format(round(mht, 2)))
+
+    for i in range(0,len(patches)):
+        bini=bins[i]
+        if bini <=lmt:
+            patches[i].set_facecolor('gray')
+        elif bini <= mht:
+            patches[i].set_facecolor('cyan')
+        else:
+            patches[i].set_facecolor('blue')
+
+    plt.title("Metric3 data for 1KP data")
+    plt.savefig(os.path.join(output_folder, "metric3_hist.png"))
+    plt.clf()
+    plt.close()
+def save_list_of_well_behaved_WGD(curated_wgd_name, well_behaved_wgd_histograms):
+    metrics_for_hist = [w[2] for w in well_behaved_wgd_histograms]
+    with open(curated_wgd_name, 'w') as f:
+        f.writelines("well-behaved WGD\n")
+        for wgd_hist in well_behaved_wgd_histograms:
+            f.writelines(",".join([str(s) for s in wgd_hist]) + "\n")
+    return metrics_for_hist
 
 
 def analyze_metric_results(input_metrics_file, out_folder):
@@ -119,7 +166,7 @@ def analyze_metric_results(input_metrics_file, out_folder):
             for s in wgd_plot_data:
                 str_s1=str(s[1])
                 if str_s1 != "nan":
-                    well_behaved_wgd_histograms.append([s[0],s[1]])
+                    well_behaved_wgd_histograms.append([s[0],s[1],s[2]])
 
             return well_behaved_wgd_histograms
 
@@ -136,11 +183,6 @@ def make_violin_plot(out_folder, plot_data, plot_name, plot_to_make):
             data_labels.append(c)
             colors.append(colors_by_category[c])
     ticks = [i + 1 for i in range(0, len(data))]
-    # [d[2] for d in plot_data if d[1] == "Medium"],
-    # https://matplotlib.org/stable/gallery/statistics/violinplot.html
-    # https://stackoverflow.com/questions/33864578/matplotlib-making-labels-for-violin-plots
-    # colors_by_category = {"Low": "gray", "Medium": "cyan", "High": "blue"}
-    # colors=["gray","blue"]
     fig, ax = plt.subplots(1, 1, figsize=(8, 10))
     plots = plt.violinplot(data, ticks, showmeans=True, showextrema=True,
                            )
