@@ -8,7 +8,7 @@ class BatchHistogrammer(unittest.TestCase):
 
     def test_make_histograms_for_batch(self):
 
-        batch_name="sim37_N0p1" ##"sim37_N20" #sim37_N0p1,sim37_N5
+        batch_name="sim39_0p1" ##"sim37_N20" #sim37_N0p1,sim37_N5
         plot_title=("Simulation with custom GBD model, \n" +\
                     "with Ne-driven allopolyploid ortholog divergence ({0})".format(batch_name))
 
