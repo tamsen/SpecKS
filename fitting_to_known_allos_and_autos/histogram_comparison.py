@@ -9,6 +9,30 @@ from fitting_to_known_allos_and_autos.fit_to_ks_rates_data import parse_ks
 from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, batch_aggregator
 
 class MyTestCase(unittest.TestCase):
+
+
+    def test_olive_histogram(self):
+
+        hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
+        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
+
+        specks_out_folder="/home/tamsen/Data/SpecKS_output/" + \
+                    "SpecKS_m04d26y2024_h13m45s40/Auto_Olive/8_final_results"
+
+        specks_csv_file = "Auto_Olive_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        ksrates_csv_file="final_ks_values_TORX.fa"
+
+        splat=specks_csv_file.split("_")
+        species_run_name=splat[0]+splat[1]
+        specks_full_path=os.path.join(specks_out_folder,specks_csv_file)
+        real_full_path=os.path.join(ksrates_out_folder,ksrates_csv_file)
+
+        bin_size=0.002
+        max_Ks=0.5
+        color='blue'
+
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+                         species_run_name, specks_full_path)
     def test_Single_histogram(self):
 
         hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
@@ -16,37 +40,48 @@ class MyTestCase(unittest.TestCase):
                     "SpecKS_m04d25y2024_h17m47s14/Allo_Maize/8_final_results"
 
         specks_out_folder="/home/tamsen/Data/SpecKS_output/" + \
-                    "SpecKS_m04d26y2024_h12m21s55/Auto_Poplar/8_final_results"
+                    "SpecKS_m04d26y2024_h12m30s41/Auto_Poplar/8_final_results"
         #specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize"
 
+        specks_out_folder="/home/tamsen/Data/SpecKS_output/" + \
+                    "SpecKS_m04d26y2024_h13m45s40/Auto_Olive/8_final_results"
 
         ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
         #specks_csv_file="Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        #specks_csv_file = "Auto_Poplar_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
         specks_csv_file = "Auto_Poplar_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
-
         ksrates_csv_file="mays.ks.tsv"
         ksrates_csv_file="poplar.ks.tsv"
 
         splat=specks_csv_file.split("_")
         species_run_name=splat[0]+splat[1]
         specks_full_path=os.path.join(specks_out_folder,specks_csv_file)
-        specks_ks_results = batch_histogrammer.read_Ks_csv(specks_full_path)
 
         real_full_path=os.path.join(ksrates_out_folder,ksrates_csv_file)
+
+        specks_ks_results = batch_histogrammer.read_Ks_csv(specks_full_path)
         real_ks_results = parse_external_ksfile(real_full_path)
 
         bin_size=0.002
         max_Ks=0.3
         color='blue'
 
-        if not os.path.exists(hist_comparison_out_folder):
-            os.makedirs(hist_comparison_out_folder)
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_ks_results,
+                                  species_run_name, specks_ks_results)
 
-        out_png = os.path.join(hist_comparison_out_folder, "specks_"+ species_run_name + "_out.png")
-        make_simple_histogram(specks_ks_results, bin_size, color, max_Ks, out_png)
+def make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+                         species_run_name, specks_full_path):
 
-        out_png = os.path.join(hist_comparison_out_folder, "real_"+ species_run_name + "_out.png")
-        make_simple_histogram(real_ks_results, bin_size, color, max_Ks, out_png)
+    specks_ks_results = batch_histogrammer.read_Ks_csv(specks_full_path)
+    real_ks_results = parse_external_ksfile(real_full_path)
+
+    if not os.path.exists(hist_comparison_out_folder):
+        os.makedirs(hist_comparison_out_folder)
+    out_png = os.path.join(hist_comparison_out_folder, "specks_" + species_run_name + "_out.png")
+    make_simple_histogram(specks_ks_results, bin_size, color, max_Ks, out_png)
+    out_png = os.path.join(hist_comparison_out_folder, "real_" + species_run_name + "_out.png")
+    make_simple_histogram(real_ks_results, bin_size, color, max_Ks, out_png)
+
 
 def make_simple_histogram(Ks_results, bin_size, color, max_Ks, out_png):
 

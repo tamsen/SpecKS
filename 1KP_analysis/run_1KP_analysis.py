@@ -11,16 +11,19 @@ from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, ba
 
 class Test1KP(unittest.TestCase):
 
+
+
+
     def test_1KP_analysis(self):
+
         data_directory = "/home/tamsen/Data/1KP_classfier"
-        Ks_file_1 = "final_ks_values_CSUV.fa"
         kp_directory = os.path.join(data_directory, "1KP_final_ks_files")
         output_folder = os.path.join(data_directory, "1KP_classifier_out_Apr23b")
         lookup_file = "1KP-Sample-List.csv"
         sample_lookup = kp_reader.get_sample_code_lookup(lookup_file)
 
         reanalyze=True
-        use_only_curated_data=False
+        use_only_curated_data=True
         bin_size=0.001
         right_most_ssd_peak = 0.08
         bin_sizex1000=bin_size*1000.0
@@ -29,17 +32,17 @@ class Test1KP(unittest.TestCase):
         max_to_process=4000
 
         results_by_file={}
-        saved_curated_wgd_name = "saved_curated_WGD.csv"
+        saved_curated_wgd_name = "twice_curated_WGD.csv"
         ks_files_to_reanalyze=[]
 
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
         if reanalyze:
-         if use_only_curated_data:
-            ks_files_to_reanalyze=read_list_of_curated_WGD_to_use_for_analysis(saved_curated_wgd_name)
-         else:
-            ks_files_to_reanalyze= [Ks_file_1 ] + [f for f in os.listdir(kp_directory) if ".fa" in f]
+            if use_only_curated_data:
+                ks_files_to_reanalyze=read_list_of_curated_WGD_to_use_for_analysis(saved_curated_wgd_name)
+            else:
+                ks_files_to_reanalyze= [f for f in os.listdir(kp_directory) if ".fa" in f]
 
         for i in range(0,len(ks_files_to_reanalyze)):
 
