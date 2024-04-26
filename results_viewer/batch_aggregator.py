@@ -223,6 +223,13 @@ def get_metric6_pearsons_pv(run_metrics):
     log_pr=math.log(ln_pearsons_pv)
     #ratio=ga_pearsons_pv/ln_pearsons_pv
     return log_ga - log_pr
+
+def get_metric9_(run_metrics):
+
+    #AUC infont of mode vs behind mode..
+    #ln_pearsons_cc=float(run_metrics.lognorm_fit_data.get_pearsons_corr_coef())
+    #ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
+    return math.log( ln_pearsons_cc / ga_pearsons_cc )
 def get_genes_shed(run_metrics):
     pairs_remaining=run_metrics.lognorm_fit_data.num_paralogs
     num_paralogs_at_WGD=3000

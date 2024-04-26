@@ -59,6 +59,39 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
 
 
+def get_asymmetry_ratio(fit_curve_ys, xs_for_wgd, peak_x_value):
+    left_AUC,right_AUC =asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value)
+    total_AUC=sum([left_AUC,right_AUC])
+    diff=right_AUC-left_AUC
+    return diff/total_AUC
+
+def asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value):
+
+    rectangle_width=xs_for_wgd[2]-xs_for_wgd[1]
+    quarter_maxima= (0.25) * max(fit_curve_ys)
+    hit_peak=False
+    left_AUC=0
+    right_AUC=0
+    for i in range(0, len(xs_for_wgd)):
+        x = xs_for_wgd[i]
+        y = fit_curve_ys[i]
+
+        #dont count tails, too noisy
+        if y > quarter_maxima:
+            continue
+
+        if not hit_peak:
+            if x >= peak_x_value:
+                hit_peak=True
+
+        new_area=rectangle_width * y
+        if hit_peak:
+            right_AUC = right_AUC+new_area
+        else:
+            left_AUC = left_AUC+new_area
+
+
+    return left_AUC,right_AUC
 def get_mode_and_cm(fit_curve_ys, xs_for_wgd):
     ymax = max(fit_curve_ys)
     xs_of_ymax = []

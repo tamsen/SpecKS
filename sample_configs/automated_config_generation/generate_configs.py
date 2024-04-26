@@ -13,7 +13,7 @@ class Generate_Config_Files(unittest.TestCase):
     def test_making_configs(self):
 
 
-        sim_subfolder="sim38_test" #folder to make, to put put the shell scrips & qsub output
+        sim_subfolder="sim40_1p0" #folder to make, to put put the shell scrips & qsub output
         me_at_remote_URL='tdunn@mesx.sdsu.edu'
         template_xml_file="mesx-template.xml"
         template_sh_file="qsub-template.sh"
@@ -39,9 +39,9 @@ class Generate_Config_Files(unittest.TestCase):
         #all distributions
 
         #for fig 5.
-        spec_times= [50,40,30,20,15,10,5]
-        wgd_offsets=[0,5]
-        full_sim_time=str(100)
+        spec_times= [1,2,3,4,5,7,10,15]
+        wgd_offsets=[0,1]
+        full_sim_time=str(50)
         #dist N=5
 
         imp_distribution = "impulse,1,1"
@@ -52,7 +52,7 @@ class Generate_Config_Files(unittest.TestCase):
         expon_10p0 = "expon,0,10"
         expon_20p0 = "expon,0,20"
         expon_100p0 = "expon,0,100"
-        coalescent_distribution=expon_5p0
+        coalescent_distribution=expon_1p0
 
         poly_params_by_name={}
         out_folder_by_name={}
@@ -71,8 +71,8 @@ class Generate_Config_Files(unittest.TestCase):
                 spec_time = spec_times[i]
                 wgd_time = spec_time-wgd_offset
 
-                if wgd_time < 5:
-                    continue
+                #if wgd_time < 5:
+                #    continue
 
                 job_name = job_type + job_str + "_S" + formatter.format(spec_time) + "W" + formatter.format(wgd_time)
                 job_params = PolyploidParams(spec_time, wgd_time, job_name)

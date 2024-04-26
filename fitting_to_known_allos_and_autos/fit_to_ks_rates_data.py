@@ -17,7 +17,7 @@ from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, ba
 
 class TestAgainstKnownAlloAndAutos(unittest.TestCase):
 
-    def test_parse_ks2(self):
+    def test_parse_ks2_old_way(self):
 
         output_folder = "/home/tamsen/Data/Test"
         input_folder="/home/tamsen/Data/SpecKS_input/ks_data"
@@ -145,7 +145,7 @@ def plot_ks_histogram(ks_data, plot_title, num_bins, max_value):
     plt.title(plot_title)
     plt.xlabel('Ks')
     plt.ylabel('density')
-    plt.show()
+    #plt.show()
     return counts, bins
 
 
@@ -331,7 +331,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
 
         print("WGD#" + str(i + 1) + " range:" + str(wgd_range))
         remainder = [ys_400[i] - mix_model_so_far[i] for i in range(0, len(xs_400))]
-        xss, yss_remainder_in_ranged= limit_to_range(xs_400,remainder , wgd_range)
+        xss, yss= limit_to_range(xs_400,remainder , wgd_range)
 
         #plt.plot(xss, yss,
         #         color=colors[i], linewidth=3, label="fit WGD#" + str(i+1), )
@@ -341,9 +341,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             full_wgd_ys = [wgd_lognorm(x, *popt_wgd) for x in xs_400]
             center_of_mass, x_value_of_ymax = curve_fitting.get_mode_and_cm(full_wgd_ys, xs_400)
             metric3=center_of_mass-x_value_of_ymax
-            #left_sum=0
-            #right_sum=0
-            #space_to_the_left=
+            metric9 = curve_fitting.get_asymmetry_ratio(full_wgd_ys, xs_400, x_value_of_ymax)
             #for i in range(0,len(full_wgd_ys)):
             #    xi=xs_400[i]
             #    yi=full_wgd_ys[i]
@@ -357,7 +355,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             else:
                 ln_metric3=math.log(metric3)
             xss, fit_in_ranged = limit_to_range(xs_400, full_wgd_ys, wgd_range)
-            lg_rms = mean_squared_error(yss_remainder_in_ranged, fit_in_ranged , squared=False)
+            lg_rms = mean_squared_error(yss, fit_in_ranged , squared=False)
             label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)))
             plt.plot(xs_400, full_wgd_ys, label=label, color=colors[i])
 
@@ -369,8 +367,11 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             ga_full_wgd_ys = [curve_fitting.wgd_gaussian(x, *ga_popt_wgd) for x in xs_400]
 
             xss, ga_fit_in_ranged = limit_to_range(xs_400, ga_full_wgd_ys, wgd_range)
-            ga_rms = mean_squared_error(yss_remainder_in_ranged,ga_fit_in_ranged, squared=False)
-            label = ("GA WGD#" + str(i + 1) + " RMSE=" + str(round(ga_rms, 3)))
+            ga_rms = mean_squared_error(yss,ga_fit_in_ranged, squared=False)
+            label = ("GA WGD#" + str(i + 1) + " RMSE=" + str(round(ga_rms, 3)) +
+                     "\nM9="+str(round(metric9, 3)) +
+                     "\nM3="+str(round(metric3, 3))
+                     )
             plt.plot(xs_400, ga_full_wgd_ys, label=label, color=colors[i])
             wgd_fits.append(full_wgd_ys)
             wgd_parameters.append(popt_wgd)
@@ -421,7 +422,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
     plt.xlim(0, x_max)
     plt.ylim(0, 10)
     plt.savefig(out_file)
-    plt.show()
+    #plt.show()
     # plt.clf()
     plt.close()
     return xs_400, wgd_parameters

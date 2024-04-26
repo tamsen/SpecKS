@@ -13,9 +13,12 @@ class BatchAnalyser(unittest.TestCase):
 
     def test_compute_metrics_for_batch(self):
 
-        batch_name= "sim37_N100"
+        batches= ['sim40_5p0']#['sim40_1p0', 'sim40_5p0', 'sim40_10p0']
+        #batch_name= "sim37_N100"
         base_output_folder = "/home/tamsen/Data/Specks_outout_from_mesx/"
-        compute_metrics_for_batch(batch_name,base_output_folder )
+
+        for batch_name in batches:
+            compute_metrics_for_batch(batch_name,base_output_folder )
 
     def test_compute_metrics_for_csv(self):
         csv_file = "Allo2_S070W060.hist.csv"  # "Allo6_S030W010.hist.csv"
@@ -48,7 +51,7 @@ def compute_metrics_for_batch(batch_name,base_output_folder):
     hist_data_by_file={}
     polyploid_names=[]
     results_by_file={}
-
+    right_most_ssd_peak=    0.075
     #gather data
     for file in files:
         if not ".hist.csv" in file:
@@ -66,8 +69,9 @@ def compute_metrics_for_batch(batch_name,base_output_folder):
         params =polyploid_params_by_name[file]
         print("starting " + file_path)
         out_file_name = file_path.replace(".csv", "_Ks_hist_fit" + str(max_Ks) + ".png")
+
         fit_results = analyze_histogram(*hist_data, params.WGD_time_MYA, params.SPC_time_MYA,
-                                        kernel_size, maxY, 'blue', out_file_name)
+                                        kernel_size, maxY, right_most_ssd_peak, out_file_name)
         results_by_file[file]=fit_results
         print(file_path + " analyzed")
 

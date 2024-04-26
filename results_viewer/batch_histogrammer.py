@@ -8,7 +8,7 @@ class BatchHistogrammer(unittest.TestCase):
 
     def test_make_histograms_for_batch(self):
 
-        batch_name="sim39_0p1" ##"sim37_N20" #sim37_N0p1,sim37_N5
+        batch_name="sim40_5p0" ##"sim37_N20" #sim37_N0p1,sim37_N5,sim40_1p0,sim40_5p0,sim40_10p0"
         plot_title=("Simulation with custom GBD model, \n" +\
                     "with Ne-driven allopolyploid ortholog divergence ({0})".format(batch_name))
 
@@ -27,15 +27,49 @@ class BatchHistogrammer(unittest.TestCase):
 
         print("Making plots..")
         bin_size = 0.001
-        max_Ks = 2.0
-
+        max_Ks = 0.1
+        max_Y = False
         for spec in ['polyploid']:#species:
             print(spec)
             for replicate in replicates:
                 get_histograms_for_runs_in_batch(output_folder, plot_title,
                                                      csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
-                                                     replicate, alg, params_by_polyploid, max_Ks, bin_size)
+                                                     replicate, alg, params_by_polyploid,
+                                                 max_Ks, max_Y, bin_size)
 
+    def test_Single_histogram(self):
+
+        out_folder=("/home/tamsen/Data/SpecKS_output/" +
+                    "SpecKS_m04d25y2024_h16m55s36/Allo_Maize/8_final_results")
+        csv_file="Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        out_png=os.path.join(out_folder,"out.png")
+        full_path=os.path.join(out_folder,csv_file)
+        Ks_results = read_Ks_csv(full_path)
+
+        bin_size=0.01
+        max_Ks=1
+        color='blue'
+
+        fig = plt.figure(figsize=(10, 10), dpi=100)
+        x = Ks_results
+        #print(PAML_hist_out_file)
+
+        if max_Ks:
+            bins = np.arange(0, max_Ks + 0.1, bin_size)
+            n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
+            plt.xlim([0, max_Ks * (1.1)])
+        #plt.ylim([0, max_y])
+
+        #plt.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time as Ks")
+        #plt.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time as Ks")
+        plt.legend()
+        plt.xlabel("Ks")
+        plt.ylabel("Count in Bin")
+        #plt.title("Ks histogram for " + species_name + ", last ~" + str(max_Ks * 100) + " MY\n" +
+        #          "algorithm: PAML " + alg_name)
+        plt.savefig(out_png)
+        plt.clf()
+        plt.close()
 def get_truth_from_name_dict(dict_by_name):
     names=dict_by_name.keys()
     return get_truth_from_name_list(names)
@@ -133,7 +167,7 @@ def read_Ks_csv(csv_file):
 
 def get_histograms_for_runs_in_batch(out_folder, sample_name, csvfiles_by_polyploid_by_rep_by_algorthim,
                                      spec, replicate, alg, params_by_polyploid, max_Ks_for_x_axis,
-                                     bin_size):
+                                        max_Y_for_y_axis,bin_size):
 
     result_names=(list(csvfiles_by_polyploid_by_rep_by_algorthim.keys()))
     result_names.sort()
@@ -176,7 +210,7 @@ def get_histograms_for_runs_in_batch(out_folder, sample_name, csvfiles_by_polypl
             params=params_by_polyploid[allo_result_name]
             hist_data=make_histogram_subplot(this_ax, spec, ks_for_allo_result,
                                         bin_size, params,
-                                        max_Ks_for_x_axis, False,"blue")
+                                        max_Ks_for_x_axis, max_Y_for_y_axis,"blue")
 
             out_file_name = os.path.join(out_folder, allo_result_name + ".hist.csv")
             save_hist_to_csv(hist_data, out_file_name)
@@ -227,12 +261,12 @@ def make_histogram_subplot(this_ax, spec, Ks_results, bin_size, params,
 
     #this_ax.legend()
     this_ax.set(ylim=[0, yaxis_limit])
-    #this_ax.set(ylim=[0, 150])
+
 
     if max_Ks:
         this_ax.set(xlim=[0, max_Ks * 1.1])
-        if max_Ks < 0.51:
-            this_ax.set(ylim=[0, 5])
+        #if max_Ks < 0.51:
+        #    this_ax.set(xlim=[0, 5])
     else:
         this_ax.set(xlim=[0, default_xaxis_limit])
 
