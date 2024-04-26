@@ -53,9 +53,11 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
 
     pearson_result=do_pearsons_corr(fit_curve_ys, ys_for_wgd)
     center_of_mass, x_value_of_ymax = get_mode_and_cm(fit_curve_ys, xs_for_wgd)
+    asymmetry_ratio = asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd,x_value_of_ymax )
 
     num_paralogs = sum(ys_for_wgd)
-    goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt, RMSE, pearson_result)
+    goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt,
+                                        RMSE, pearson_result, asymmetry_ratio)
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
 
 
@@ -145,13 +147,14 @@ class curve_fit_metrics():
     popt=[]
     RMSE = 0
     pearsons_corr_result = [] # (corr_coef, p_value, se)
-    def __init__(self,mode,cm,num_paralogs,popt, RMSE, pearson_result):
+    asymmetry_ratio = -1
+    def __init__(self,mode,cm,num_paralogs,popt, RMSE, pearson_result, asymmetry_ratio):
         self.mode = float(mode)
         self.cm = float(cm)
         self.num_paralogs = int(num_paralogs)
         self.popt = popt
         self.RMSE = RMSE
-
+        self.asymmetry_ratio = asymmetry_ratio
         res = isinstance(pearson_result, str)
         if res:
             splat=pearson_result.replace("[","").replace("]","").split(" ")
@@ -161,7 +164,8 @@ class curve_fit_metrics():
             self.pearsons_corr_result = pearson_result
 
     def to_data_list(self):
-        return [self.mode,self.cm,self.num_paralogs,self.popt,self.RMSE,self.pearsons_corr_result]
+        return [self.mode,self.cm,self.num_paralogs,self.popt,self.RMSE,
+                self.pearsons_corr_result, self.asymmetry_ratio]
 
     def get_pearsons_corr_coef(self):
         return self.pearsons_corr_result[0]
@@ -172,4 +176,5 @@ class curve_fit_metrics():
     def get_pearsons_std_error(self):
         return self.pearsons_corr_result[2]
 def col_headers_for_curve_fit_metrics():
-        return ["mode","cm","num_paralogs","popt","RMSE","pearsons_corr_result (ccoef pv prse)"]
+        return ["mode","cm","num_paralogs","popt","RMSE",
+                "pearsons_corr_result (ccoef pv prse)","asymmetry_ratio"]

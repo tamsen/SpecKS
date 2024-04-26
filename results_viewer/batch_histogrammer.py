@@ -36,40 +36,6 @@ class BatchHistogrammer(unittest.TestCase):
                                                      csvfiles_by_polyploid_by_species_rep_by_algorithm, spec,
                                                      replicate, alg, params_by_polyploid,
                                                  max_Ks, max_Y, bin_size)
-
-    def test_Single_histogram(self):
-
-        out_folder=("/home/tamsen/Data/SpecKS_output/" +
-                    "SpecKS_m04d25y2024_h16m55s36/Allo_Maize/8_final_results")
-        csv_file="Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
-        out_png=os.path.join(out_folder,"out.png")
-        full_path=os.path.join(out_folder,csv_file)
-        Ks_results = read_Ks_csv(full_path)
-
-        bin_size=0.01
-        max_Ks=1
-        color='blue'
-
-        fig = plt.figure(figsize=(10, 10), dpi=100)
-        x = Ks_results
-        #print(PAML_hist_out_file)
-
-        if max_Ks:
-            bins = np.arange(0, max_Ks + 0.1, bin_size)
-            n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
-            plt.xlim([0, max_Ks * (1.1)])
-        #plt.ylim([0, max_y])
-
-        #plt.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time as Ks")
-        #plt.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time as Ks")
-        plt.legend()
-        plt.xlabel("Ks")
-        plt.ylabel("Count in Bin")
-        #plt.title("Ks histogram for " + species_name + ", last ~" + str(max_Ks * 100) + " MY\n" +
-        #          "algorithm: PAML " + alg_name)
-        plt.savefig(out_png)
-        plt.clf()
-        plt.close()
 def get_truth_from_name_dict(dict_by_name):
     names=dict_by_name.keys()
     return get_truth_from_name_list(names)
