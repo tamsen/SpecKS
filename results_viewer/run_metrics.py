@@ -57,8 +57,8 @@ def get_metric_result_data_headers():
 def get_metrics_from_data_line(data_list):
 
     simple_data=data_list[0:8]
-    ln_data=data_list[8:14]
-    ga_data=data_list[14:20]
+    ln_data=data_list[8:15]
+    ga_data=data_list[15:22]
     lognorm_data=curve_fit_metrics(*ln_data)
     gaussian_data=curve_fit_metrics(*ga_data)
     metrics=run_metrics(*simple_data,lognorm_data,gaussian_data)

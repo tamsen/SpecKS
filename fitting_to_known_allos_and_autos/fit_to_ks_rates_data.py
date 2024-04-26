@@ -21,12 +21,13 @@ class TestAgainstKnownAlloAndAutos(unittest.TestCase):
 
         output_folder = "/home/tamsen/Data/Test"
         input_folder="/home/tamsen/Data/SpecKS_input/ks_data"
-        #ks_files = ["actinidia.ks.tsv","coffea.ks.tsv",
-        #            "poplar.ks.tsv","triticum.ks.tsv","mays.ks.tsv","final_ks_values_TORX.fa"]
-        ks_files = ["mays.ks.tsv"]
+        ks_files = ["actinidia.ks.tsv","coffea.ks.tsv",
+                    "poplar.ks.tsv","triticum.ks.tsv","mays.ks.tsv","final_ks_values_TORX.fa"]
+        ks_files = ["coffea.ks.tsv"]
 
         full_paths=[os.path.join(input_folder,f) for f in ks_files]
         x_max = 1.0
+
         for ks_file in full_paths:
 
             if ".fa" in ks_file: #1KP file
@@ -37,8 +38,13 @@ class TestAgainstKnownAlloAndAutos(unittest.TestCase):
                 ks_data = parse_ks(ks_file)
             species_name = ks_file.split(".")[0]
 
+            #parameters for all except coffee:1000, 40,x_max = 1.0
+            #for coffee
+            x_max = 0.5
+            fine_points = 1000
+            course_points=40
             out_file = os.path.join(output_folder,species_name + "_xmax" + str(x_max) + ".png")
-            xs = fit_fxns_to_Ks(ks_data, species_name, 1000, 40,
+            xs = fit_fxns_to_Ks(ks_data, species_name, fine_points, course_points,
                             x_max, out_file)
 
     def test_parse_ks1(self):
@@ -342,37 +348,34 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             center_of_mass, x_value_of_ymax = curve_fitting.get_mode_and_cm(full_wgd_ys, xs_400)
             metric3=center_of_mass-x_value_of_ymax
             metric9 = curve_fitting.get_asymmetry_ratio(full_wgd_ys, xs_400, x_value_of_ymax)
-            #for i in range(0,len(full_wgd_ys)):
-            #    xi=xs_400[i]
-            #    yi=full_wgd_ys[i]
-            #    if i < x_value_of_ymax:
-            #        left_sum=left_sum+yi
-            #    else:
-            #        left_sum=left_sum+yi
-
             if metric3 <=0:
                 ln_metric3=-10
             else:
                 ln_metric3=math.log(metric3)
             xss, fit_in_ranged = limit_to_range(xs_400, full_wgd_ys, wgd_range)
             lg_rms = mean_squared_error(yss, fit_in_ranged , squared=False)
-            label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)))
+            #label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)))
+            label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)) +
+                     "\nM9=" + str(round(metric9, 3)) +
+                     "\nlnM3=" + str(round(ln_metric3, 3))
+                     )
+
             plt.plot(xs_400, full_wgd_ys, label=label, color=colors[i])
 
-            if (i + 1) ==2:
-                plt.plot(xs_400, remainder, label="remainder"+ str(i + 1) , color='k')
+            #if (i + 1) ==2:
+            #    plt.plot(xs_400, remainder, label="remainder"+ str(i + 1) , color='k')
 
             ga_xs_wgd, ga_ys_wgd, ga_popt_wgd = fit_fxn_to_data(xs_400, remainder, wgd_range,
                                                        curve_fitting.wgd_gaussian)
-            ga_full_wgd_ys = [curve_fitting.wgd_gaussian(x, *ga_popt_wgd) for x in xs_400]
-
-            xss, ga_fit_in_ranged = limit_to_range(xs_400, ga_full_wgd_ys, wgd_range)
-            ga_rms = mean_squared_error(yss,ga_fit_in_ranged, squared=False)
-            label = ("GA WGD#" + str(i + 1) + " RMSE=" + str(round(ga_rms, 3)) +
+            if ga_xs_wgd:
+                ga_full_wgd_ys = [curve_fitting.wgd_gaussian(x, *ga_popt_wgd) for x in xs_400]
+                xss, ga_fit_in_ranged = limit_to_range(xs_400, ga_full_wgd_ys, wgd_range)
+                ga_rms = mean_squared_error(yss,ga_fit_in_ranged, squared=False)
+                label = ("GA WGD#" + str(i + 1) + " RMSE=" + str(round(ga_rms, 3)) +
                      "\nM9="+str(round(metric9, 3)) +
-                     "\nM3="+str(round(metric3, 3))
+                     "\nlnM3="+str(round(ln_metric3, 3))
                      )
-            plt.plot(xs_400, ga_full_wgd_ys, label=label, color=colors[i])
+                plt.plot(xs_400, ga_full_wgd_ys, label=label, color=colors[i])
             wgd_fits.append(full_wgd_ys)
             wgd_parameters.append(popt_wgd)
             mix_model_so_far = [mix_model_so_far[i] + full_wgd_ys[i] for i in range(0, len(xs_400))]
@@ -387,7 +390,18 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
                     xs_wgd, ys_wgd, popt_wgd = fit_fxn_to_data(xs_400, smoothed_remainer,
                                                                wgd_range, wgd_lognorm)
                     full_wgd_ys = [wgd_lognorm(x, *popt_wgd) for x in xs_400]
-                    plt.plot(xs_400, full_wgd_ys, label="WGD#" + str(i + 1) + "?", color=colors[i])
+                    center_of_mass, x_value_of_ymax = curve_fitting.get_mode_and_cm(full_wgd_ys, xs_400)
+                    metric3 = center_of_mass - x_value_of_ymax
+                    metric9 = curve_fitting.get_asymmetry_ratio(full_wgd_ys, xs_400, x_value_of_ymax)
+                    if metric3 <= 0:
+                        ln_metric3 = -10
+                    else:
+                        ln_metric3 = math.log(metric3)
+                    label = ("GA WGD#" + str(i + 1) + "? RMSE=" + str(round(ga_rms, 3)) +
+                             "\nM9=" + str(round(metric9, 3)) +
+                             "\nlnM3=" + str(round(ln_metric3, 3))
+                             )
+                    plt.plot(xs_400, full_wgd_ys, label=label, color=colors[i])
                     wgd_fits.append(full_wgd_ys)
                     wgd_parameters.append(popt_wgd)
                     mix_model_so_far = [mix_model_so_far[i] for i in range(0, len(xs_400))]

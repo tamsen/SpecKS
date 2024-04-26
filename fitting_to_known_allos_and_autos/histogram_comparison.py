@@ -14,10 +14,21 @@ class MyTestCase(unittest.TestCase):
         hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
         specks_out_folder="/home/tamsen/Data/SpecKS_output/" + \
                     "SpecKS_m04d25y2024_h17m47s14/Allo_Maize/8_final_results"
-        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
-        specks_csv_file="Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
-        ksrates_csv_file="mays.ks.tsv"
 
+        specks_out_folder="/home/tamsen/Data/SpecKS_output/" + \
+                    "SpecKS_m04d26y2024_h12m21s55/Auto_Poplar/8_final_results"
+        #specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize"
+
+
+        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
+        #specks_csv_file="Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_csv_file = "Auto_Poplar_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+
+        ksrates_csv_file="mays.ks.tsv"
+        ksrates_csv_file="poplar.ks.tsv"
+
+        splat=specks_csv_file.split("_")
+        species_run_name=splat[0]+splat[1]
         specks_full_path=os.path.join(specks_out_folder,specks_csv_file)
         specks_ks_results = batch_histogrammer.read_Ks_csv(specks_full_path)
 
@@ -25,16 +36,16 @@ class MyTestCase(unittest.TestCase):
         real_ks_results = parse_external_ksfile(real_full_path)
 
         bin_size=0.002
-        max_Ks=0.5
+        max_Ks=0.3
         color='blue'
 
         if not os.path.exists(hist_comparison_out_folder):
             os.makedirs(hist_comparison_out_folder)
 
-        out_png = os.path.join(hist_comparison_out_folder, "specks_out.png")
+        out_png = os.path.join(hist_comparison_out_folder, "specks_"+ species_run_name + "_out.png")
         make_simple_histogram(specks_ks_results, bin_size, color, max_Ks, out_png)
 
-        out_png = os.path.join(hist_comparison_out_folder, "real_out.png")
+        out_png = os.path.join(hist_comparison_out_folder, "real_"+ species_run_name + "_out.png")
         make_simple_histogram(real_ks_results, bin_size, color, max_Ks, out_png)
 
 def make_simple_histogram(Ks_results, bin_size, color, max_Ks, out_png):

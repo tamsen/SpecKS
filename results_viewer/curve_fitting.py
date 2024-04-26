@@ -53,21 +53,28 @@ def fit_curve_to_xs_and_ys(xs_for_wgd, ys_for_wgd, fit_fxn ):
 
     pearson_result=do_pearsons_corr(fit_curve_ys, ys_for_wgd)
     center_of_mass, x_value_of_ymax = get_mode_and_cm(fit_curve_ys, xs_for_wgd)
-    asymmetry_ratio = asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd,x_value_of_ymax )
-
+    left_and_right_asymmetry = left_and_right_asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, x_value_of_ymax)
+    left_and_right_asymmetry_array=np.array(left_and_right_asymmetry)
     num_paralogs = sum(ys_for_wgd)
     goodness_of_fit = curve_fit_metrics(x_value_of_ymax,center_of_mass,num_paralogs,popt,
-                                        RMSE, pearson_result, asymmetry_ratio)
+                                        RMSE, pearson_result, left_and_right_asymmetry_array)
     return fit_curve_ys, xs_for_wgd, goodness_of_fit
 
 
 def get_asymmetry_ratio(fit_curve_ys, xs_for_wgd, peak_x_value):
-    left_AUC,right_AUC =asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value)
-    total_AUC=sum([left_AUC,right_AUC])
-    diff=right_AUC-left_AUC
-    return diff/total_AUC
+    left_AUC,right_AUC =left_and_right_asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value)
+    ratio_metric = left_and_right_area_to_ratio(left_AUC, right_AUC)
+    return ratio_metric
 
-def asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value):
+
+def left_and_right_area_to_ratio(left_AUC, right_AUC):
+    total_AUC = sum([left_AUC, right_AUC])
+    diff = right_AUC - left_AUC
+    ratio_metric = diff / total_AUC
+    return ratio_metric
+
+
+def left_and_right_asymmetry_based_on_AUC(fit_curve_ys, xs_for_wgd, peak_x_value):
 
     rectangle_width=xs_for_wgd[2]-xs_for_wgd[1]
     quarter_maxima= (0.25) * max(fit_curve_ys)
@@ -147,21 +154,24 @@ class curve_fit_metrics():
     popt=[]
     RMSE = 0
     pearsons_corr_result = [] # (corr_coef, p_value, se)
-    asymmetry_ratio = -1
+    asymmetry_ratio = []
     def __init__(self,mode,cm,num_paralogs,popt, RMSE, pearson_result, asymmetry_ratio):
         self.mode = float(mode)
         self.cm = float(cm)
         self.num_paralogs = int(num_paralogs)
         self.popt = popt
         self.RMSE = RMSE
-        self.asymmetry_ratio = asymmetry_ratio
+        self.pearsons_corr_result=self.change_string_to_floats(pearson_result)
+        self.asymmetry_ratio=self.change_string_to_floats(asymmetry_ratio)
+    def change_string_to_floats(self, pearson_result):
         res = isinstance(pearson_result, str)
         if res:
-            splat=pearson_result.replace("[","").replace("]","").split(" ")
+            splat = pearson_result.replace("[", "").replace("]", "").split(" ")
             data = [float(s) for s in splat if not s == '']
-            self.pearsons_corr_result = data
+            # self.pearsons_corr_result = data
         else:
-            self.pearsons_corr_result = pearson_result
+            data = pearson_result
+        return data
 
     def to_data_list(self):
         return [self.mode,self.cm,self.num_paralogs,self.popt,self.RMSE,

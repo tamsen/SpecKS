@@ -2,7 +2,7 @@ import math
 import os
 import unittest
 from matplotlib import pyplot as plt
-from results_viewer import run_metrics
+from results_viewer import run_metrics, curve_fitting
 from results_viewer.batch_analyzer import compute_metrics_for_batch
 
 
@@ -13,11 +13,9 @@ class BatchAggregator(unittest.TestCase):
         #batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
         #               "sim37_N20","sim37_N100","sim35_log"]
 
-        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10",
-                       "sim37_N20","sim35_log"]
+        batch_names = ["sim37_N0p1","sim37_N1","sim37_N5","sim36_N10","sim37_N20","sim35_log"]
 
         reprocess=False
-        #batch_names = ["sim37_N1","sim37_N20","sim37_N100"]
         out_folder = "/home/tamsen/Data/Specks_outout_from_mesx"
         plots_to_make=[([get_spec_time,get_lognorm_RMSE],"spec time (MYA)","lognormRMSE","lognormRMSE.png"),
                        ([get_spec_time,get_gaussian_RMSE], "spec time (MYA)","guassianRMSE","guassianRMSE.png"),
@@ -45,6 +43,8 @@ class BatchAggregator(unittest.TestCase):
                         "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
                        ([get_spec_time, get_metric8_pearsons_ratio],"spec time (MYA)",
                        "Pearson corr_coef ratio","metric8.png"),
+                       ([get_spec_time, get_metric9_asymmetry_ratio], "spec time (MYA)",
+                        "metric9_asymmetry_ratio", "metric9.png"),
                         ]
                        #([get_wgd_time, get_mode, get_max_RMSE], "wgd time (MYA)", "mode vs wgd time",
                        # "mode_vs_wgd_time.png"),
@@ -52,7 +52,6 @@ class BatchAggregator(unittest.TestCase):
                        # "max_vs_spec_time.png"),
                        #([get_spec_time, get_metric4, get_max_RMSE], "spec time (MYA)",
                        # "allo vs auto metric4 (raw cm-mode)", "metric4.png"),
-
 
         marker_styles_for_batches = [".", "+", "*", ">","<", "^", "*", ">"]
 
@@ -90,7 +89,7 @@ class BatchAggregator(unittest.TestCase):
                 if ("metrics.csv" in file):# and ("polyploid" in file) and ("batch_processed" in file):
                     full_file_path = os.path.join(batch_folder, file)
                     print("full_file_path:\t" + full_file_path)
-                    metric_data_for_batch = read_data_csv(full_file_path)
+                    metric_data_for_batch, sims_without_clear_wgd = read_data_csv(full_file_path)
                     metric_data_by_batch[batch_name] = metric_data_for_batch
         return metric_data_by_batch
 
@@ -224,12 +223,12 @@ def get_metric6_pearsons_pv(run_metrics):
     #ratio=ga_pearsons_pv/ln_pearsons_pv
     return log_ga - log_pr
 
-def get_metric9_(run_metrics):
+def get_metric9_asymmetry_ratio(run_metrics):
 
     #AUC infont of mode vs behind mode..
-    #ln_pearsons_cc=float(run_metrics.lognorm_fit_data.get_pearsons_corr_coef())
-    #ga_pearsons_cc=float(run_metrics.gaussian_fit_data.get_pearsons_corr_coef())
-    return math.log( ln_pearsons_cc / ga_pearsons_cc )
+    [left_area,right_area] = run_metrics.lognorm_fit_data.asymmetry_ratio
+    ratio_metric = curve_fitting.left_and_right_area_to_ratio(left_area,right_area)
+    return ratio_metric
 def get_genes_shed(run_metrics):
     pairs_remaining=run_metrics.lognorm_fit_data.num_paralogs
     num_paralogs_at_WGD=3000

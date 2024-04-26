@@ -8,6 +8,9 @@
                 <name>Allo_Maize</name>
                 <SPC_time_MYA>15</SPC_time_MYA>
                 <WGD_time_MYA>11</WGD_time_MYA>
+                <!--  <SSD_half_life_MY>10</SSD_half_life_MY>
+        <WGD_half_life_MY>10</WGD_half_life_MY>-->
+
          </polyploid>
         <full_sim_time>30</full_sim_time>
     </SpeciesTree>
