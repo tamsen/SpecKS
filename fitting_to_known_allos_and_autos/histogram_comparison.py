@@ -10,7 +10,66 @@ from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, ba
 
 class MyTestCase(unittest.TestCase):
 
+    def test_coffee_histogram(self):
 
+        hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
+        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
+
+        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_coffee"
+        specks_csv_file = "Allo_Coffea1_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        ksrates_csv_file="coffea.ks.tsv"
+
+        splat=specks_csv_file.split("_")
+        species_run_name=splat[0]+splat[1]
+        specks_full_path=os.path.join(specks_out_folder,specks_csv_file)
+        real_full_path=os.path.join(ksrates_out_folder,ksrates_csv_file)
+
+        bin_size=0.002
+        max_Ks=0.5
+        color='blue'
+
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+                         species_run_name, specks_full_path)
+
+    def test_poplar_histogram(self):
+        hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
+        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
+
+        specks_out_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim41_poplar"
+        specks_csv_file = "Allo_Poplar1_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        ksrates_csv_file = "poplar.ks.tsv"
+
+        splat = specks_csv_file.split("_")
+        species_run_name = splat[0] + splat[1]
+        specks_full_path = os.path.join(specks_out_folder, specks_csv_file)
+        real_full_path = os.path.join(ksrates_out_folder, ksrates_csv_file)
+
+        bin_size = 0.002
+        max_Ks = 0.5
+        color = 'blue'
+
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+                             species_run_name, specks_full_path)
+    def test_maize_histogram(self):
+
+        hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
+        ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
+
+        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize"
+        specks_csv_file = "Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        ksrates_csv_file="mays.ks.tsv"
+
+        splat=specks_csv_file.split("_")
+        species_run_name=splat[0]+splat[1]
+        specks_full_path=os.path.join(specks_out_folder,specks_csv_file)
+        real_full_path=os.path.join(ksrates_out_folder,ksrates_csv_file)
+
+        bin_size=0.002
+        max_Ks=0.5
+        color='blue'
+
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+                         species_run_name, specks_full_path)
     def test_olive_histogram(self):
 
         hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
@@ -89,9 +148,10 @@ def make_simple_histogram(Ks_results, bin_size, color, max_Ks, out_png):
     fig = plt.figure(figsize=(10, 10), dpi=100)
     x = Ks_results
     # print(PAML_hist_out_file)
+    label="hist for " + os.path.basename(out_png).replace("_out.png","")
     if max_Ks:
         bins = np.arange(bin_size, max_Ks + 0.1, bin_size)
-        n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label='histogram data')
+        n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label=label)
         plt.xlim([0, max_Ks * (1.1)])
     # plt.ylim([0, max_y])
     # plt.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time as Ks")
