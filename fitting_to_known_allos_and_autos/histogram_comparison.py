@@ -4,8 +4,7 @@ import unittest
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-
-from fitting_to_known_allos_and_autos.fit_to_ks_rates_data import parse_ks
+from fitting_to_known_allos_and_autos.fit_to_ks_rates_data import parse_ks, fit_fxns_to_Ks
 from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, batch_aggregator
 
 class MyTestCase(unittest.TestCase):
@@ -25,10 +24,10 @@ class MyTestCase(unittest.TestCase):
         real_full_path=os.path.join(ksrates_out_folder,ksrates_csv_file)
 
         bin_size=0.002
-        max_Ks=0.5
+        max_Ks=0.2
         color='blue'
-
-        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+        wgd_ks=0.002
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, wgd_ks, max_Ks, real_full_path,
                          species_run_name, specks_full_path)
 
     def test_poplar_histogram(self):
@@ -47,16 +46,18 @@ class MyTestCase(unittest.TestCase):
         bin_size = 0.002
         max_Ks = 0.5
         color = 'blue'
+        wgd_ks=0.18
 
-        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, wgd_ks, max_Ks, real_full_path,
                              species_run_name, specks_full_path)
     def test_maize_histogram(self):
 
         hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
         ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
 
-        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize"
-        specks_csv_file = "Allo2_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize/Maize1"
+        #specks_csv_file = "Allo2_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_csv_file = "Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
         ksrates_csv_file="mays.ks.tsv"
 
         splat=specks_csv_file.split("_")
@@ -67,8 +68,9 @@ class MyTestCase(unittest.TestCase):
         bin_size=0.002
         max_Ks=0.3
         color='blue'
+        wgd_ks=0.125
 
-        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, wgd_ks, max_Ks, real_full_path,
                          species_run_name, specks_full_path)
     def test_olive_histogram(self):
 
@@ -123,12 +125,13 @@ class MyTestCase(unittest.TestCase):
 
         bin_size=0.002
         max_Ks=0.3
+        WGD_ks=0.001
         color='blue'
 
-        make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_ks_results,
+        make_both_histograms(bin_size, color, hist_comparison_out_folder, WGD_ks,max_Ks, real_ks_results,
                                   species_run_name, specks_ks_results)
 
-def make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, real_full_path,
+def make_both_histograms(bin_size, color, hist_comparison_out_folder, WGD_ks, max_Ks, real_full_path,
                          species_run_name, specks_full_path):
 
     specks_ks_results = batch_histogrammer.read_Ks_csv(specks_full_path)
@@ -136,14 +139,20 @@ def make_both_histograms(bin_size, color, hist_comparison_out_folder, max_Ks, re
 
     if not os.path.exists(hist_comparison_out_folder):
         os.makedirs(hist_comparison_out_folder)
-    out_png = os.path.join(hist_comparison_out_folder, "specks_" + species_run_name + "_out.png")
-    make_simple_histogram(specks_ks_results, bin_size, color, max_Ks, out_png)
-    out_png = os.path.join(hist_comparison_out_folder, "real_" + species_run_name + "_out.png")
-    make_simple_histogram(real_ks_results, bin_size, color, max_Ks, out_png)
+    out_png1 = os.path.join(hist_comparison_out_folder, "specks_" + species_run_name + "_out.png")
+    out_png2 = os.path.join(hist_comparison_out_folder, "specks_" + species_run_name + "_fit.png")
+    make_simple_histogram(specks_ks_results, species_run_name, bin_size, color, WGD_ks, max_Ks, out_png1)
+    #fit_fxns_to_Ks(specks_ks_results, species_run_name,5000,400,
+    #               max_Ks, out_png2)
+
+    out_png1 = os.path.join(hist_comparison_out_folder, "real_" + species_run_name + "_out.png")
+    out_png2 = os.path.join(hist_comparison_out_folder, "real_" + species_run_name + "_fit.png")
+    make_simple_histogram(real_ks_results, species_run_name, bin_size, color, WGD_ks ,max_Ks, out_png1)
+    #fit_fxns_to_Ks(real_ks_results, species_run_name,1000,40,
+    #               max_Ks, out_png2)
 
 
-def make_simple_histogram(Ks_results, bin_size, color, max_Ks, out_png):
-
+def make_simple_histogram(Ks_results, species_name, bin_size, color,WGD_ks, max_Ks, out_png):
 
     fig = plt.figure(figsize=(10, 10), dpi=100)
     x = Ks_results
@@ -153,14 +162,16 @@ def make_simple_histogram(Ks_results, bin_size, color, max_Ks, out_png):
         bins = np.arange(bin_size, max_Ks + 0.1, bin_size)
         n, bins, patches = plt.hist(x, bins=bins, facecolor=color, alpha=0.25, label=label)
         plt.xlim([0, max_Ks * (1.1)])
-    # plt.ylim([0, max_y])
-    # plt.axvline(x=WGD_as_Ks, color='b', linestyle='-', label="WGD time as Ks")
-    # plt.axvline(x=SPEC_as_Ks, color='r', linestyle='--', label="SPEC time as Ks")
+
+
+    plt.axvline(x=WGD_ks, color='b', linestyle='-', label="WGD paralog start")
+    num_pairs=sum(n)
+    num_after_wgd=sum([n[i] for i in range(0,len(n)) if bins[i] > WGD_ks])
     plt.legend()
     plt.xlabel("Ks")
     plt.ylabel("Count in Bin")
-    # plt.title("Ks histogram for " + species_name + ", last ~" + str(max_Ks * 100) + " MY\n" +
-    #          "algorithm: PAML " + alg_name)
+    plt.title("Ks histogram for {0}.\n{1} pairs of genes. ~{2} retained from WGD.".format(
+        species_name,num_pairs,num_after_wgd))
     plt.savefig(out_png)
     plt.clf()
     plt.close()

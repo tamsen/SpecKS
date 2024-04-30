@@ -17,6 +17,16 @@ from results_viewer import batch_analyzer, batch_histogrammer, curve_fitting, ba
 
 class TestAgainstKnownAlloAndAutos(unittest.TestCase):
 
+    def test_parse_coffee(self):
+
+        output_folder = "/home/tamsen/Data/Test"
+        input_folder="/home/tamsen/Data/SpecKS_input/ks_data"
+        ks_file = os.path.join(input_folder,"coffea.ks.tsv")
+        ks_data = parse_ks(ks_file)
+        counts, bins, bars = plt.hist(ks_data)
+
+        total_counts=sum(counts)
+        print(total_counts)
     def test_parse_ks2_old_way(self):
 
         output_folder = "/home/tamsen/Data/Test"
@@ -273,6 +283,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
     AUC=sum(ys_400)
     print("len_ks_data\t" + str(len_ks_data))
     print("AUC\t" + str(AUC))
+    print("scaled total AUC\t" + str(AUC*bin_size))
 
     plt.hist(ks_data, num_fine_points, density=1,
              color='green',
@@ -299,6 +310,8 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
         print("SSD range:" + str(ssd_range) + "\n")
         xs_ssd, ys_ssd, popt_ssd = fit_fxn_to_data(xs_400, ys_400, ssd_range, ssd_func)
         full_ssd_ys = [ssd_func(x, *popt_ssd) for x in xs_400]
+        ssd_AUC=sum(full_ssd_ys)*bin_size
+        print("scaled ssd AUC\t" + str(ssd_AUC))
         # xs_ssd,ys_ssd,popt_ssd=fit_fxn_to_data(xs_400,ys_400,ssd_range,wgd_lognorm)
         # full_ssd_ys = [wgd_lognorm(x, *popt_ssd) for x in xs_400]
     else:
@@ -347,7 +360,8 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
         #         color=colors[i], linewidth=3, label="fit WGD#" + str(i+1), )
         try:
             xs_wgd, ys_wgd, popt_wgd = fit_fxn_to_data(xs_400, remainder, wgd_range, wgd_lognorm)
-            AUC_wgd = sum(ys_wgd)
+            AUC_wgd = sum(ys_wgd)*bin_size
+            print("scaled wgd AUC\t" + str(AUC_wgd))
             plt.plot(xs_wgd,[6 for x in xs_wgd], color=colors[i], linewidth=3, label="WGD range" + str(i+1), )
             full_wgd_ys = [wgd_lognorm(x, *popt_wgd) for x in xs_400]
             center_of_mass, x_value_of_ymax = curve_fitting.get_mode_and_cm(full_wgd_ys, xs_400)
@@ -361,11 +375,11 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             lg_rms = mean_squared_error(yss, fit_in_ranged , squared=False)
             #label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)))
             label = ("LG WGD#" + str(i + 1) +
-                     " \nAUC=" + str(round(AUC_wgd, 3)) +
-                     " \nRMSE=" + str(round(lg_rms, 3)) +
-                     "\nM9=" + str(round(metric9, 3)) +
-                     "\nlnM3=" + str(round(ln_metric3, 3))
-                     )
+                     " \nAUC=" + str(round(AUC_wgd, 3)))# +
+                     #" \nRMSE=" + str(round(lg_rms, 3)) +
+                     #"\nM9=" + str(round(metric9, 3)) +
+                     #"\nlnM3=" + str(round(ln_metric3, 3))
+                     #)
 
             plt.plot(xs_400, full_wgd_ys, label=label, color=colors[i])
 
