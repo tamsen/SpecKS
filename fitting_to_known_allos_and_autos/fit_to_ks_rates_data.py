@@ -269,6 +269,10 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
     ys_400, bins_400 = plot_ks_histogram(ks_data, sci_name, num_fine_points, max_ks_value)
     xs_400 = bins_to_xs(bins_400)
     bin_size = xs_400[1] - xs_400[0]
+    len_ks_data=len(ks_data)
+    AUC=sum(ys_400)
+    print("len_ks_data\t" + str(len_ks_data))
+    print("AUC\t" + str(AUC))
 
     plt.hist(ks_data, num_fine_points, density=1,
              color='green',
@@ -343,6 +347,7 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
         #         color=colors[i], linewidth=3, label="fit WGD#" + str(i+1), )
         try:
             xs_wgd, ys_wgd, popt_wgd = fit_fxn_to_data(xs_400, remainder, wgd_range, wgd_lognorm)
+            AUC_wgd = sum(ys_wgd)
             plt.plot(xs_wgd,[6 for x in xs_wgd], color=colors[i], linewidth=3, label="WGD range" + str(i+1), )
             full_wgd_ys = [wgd_lognorm(x, *popt_wgd) for x in xs_400]
             center_of_mass, x_value_of_ymax = curve_fitting.get_mode_and_cm(full_wgd_ys, xs_400)
@@ -355,7 +360,9 @@ def fit_fxns_to_Ks(ks_data, sci_name, num_fine_points,
             xss, fit_in_ranged = limit_to_range(xs_400, full_wgd_ys, wgd_range)
             lg_rms = mean_squared_error(yss, fit_in_ranged , squared=False)
             #label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)))
-            label = ("LG WGD#" + str(i + 1) + " RMSE=" + str(round(lg_rms, 3)) +
+            label = ("LG WGD#" + str(i + 1) +
+                     " \nAUC=" + str(round(AUC_wgd, 3)) +
+                     " \nRMSE=" + str(round(lg_rms, 3)) +
                      "\nM9=" + str(round(metric9, 3)) +
                      "\nlnM3=" + str(round(ln_metric3, 3))
                      )
