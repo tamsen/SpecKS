@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
         ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
 
         specks_out_folder = "/home/tamsen/Data/Specks_outout_from_mesx/sim41_poplar"
-        specks_csv_file = "Allo_Poplar1_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_csv_file = "Allo_Poplar2_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
         ksrates_csv_file = "poplar.ks.tsv"
 
         splat = specks_csv_file.split("_")
@@ -55,9 +55,9 @@ class MyTestCase(unittest.TestCase):
         hist_comparison_out_folder = "/home/tamsen/Data/SpecKS_output/hist_comparison"
         ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
 
-        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize/Maize1"
+        specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_maize"
         #specks_csv_file = "Allo2_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
-        specks_csv_file = "Allo_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_csv_file = "Allo2_Maize_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
         ksrates_csv_file="mays.ks.tsv"
 
         splat=specks_csv_file.split("_")
