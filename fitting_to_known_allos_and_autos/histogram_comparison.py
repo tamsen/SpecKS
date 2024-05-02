@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         ksrates_out_folder = "/home/tamsen/Data/SpecKS_input/ks_data"
 
         specks_out_folder="/home/tamsen/Data/Specks_outout_from_mesx/sim41_coffee"
-        specks_csv_file = "Allo_Coffea4_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
+        specks_csv_file = "Allo_Coffea5_ML_rep0_LCA_to_Ortholog_Ks_by_GeneTree.csv"
         ksrates_csv_file="coffea.ks.tsv"
 
         splat=specks_csv_file.split("_")
@@ -199,9 +199,12 @@ def overlay_histogram(species_name, bin_size, color, list_of_hist_data, WGD_ks,o
     for i in range(0,len(list_of_hist_data)):
         hist_data =list_of_hist_data[i]
         [n, bins]=hist_data
-        width=bins[2]-bins[1]
-        plt.bar(bins[0:len(bins)-1],n,width=width,
+        width=(bins[2]-bins[1])/2
+        xs=[b + i*width for b in bins[0:len(bins)-1]]
+        plt.bar(xs,n,width=width,
                 color=colors[i], alpha=0.5, label=labels[i])
+        #plt.bar(bins[0:len(bins)-1],n,width=width,
+        #        color=colors[i], alpha=0.5, label=labels[i])
 
     plt.axvline(x=WGD_ks, color='b', linestyle='-', label="WGD paralog start")
     num_pairs = sum(n)
