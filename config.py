@@ -8,7 +8,7 @@ class SpecKS_config:
     # output_folder_root="/Users/tamsen/Data/SpecKS_output"
 
     full_sim_time = 500
-    divergence_distribution_parameters=['lognorm',0.5, 5.27]
+    #divergence_distribution_parameters=['lognorm',0.5, 5.27]
     mean_gene_birth_rate = 0.001359
     mean_SSD_life_span= 5 #MY
     mean_WGD_life_span= 500 #MY
@@ -76,14 +76,18 @@ class SpecKS_config:
                     if (incoming_tag == "full_sim_time"):
                         self.full_sim_time = int(incoming_txt)
                     if (incoming_tag == "polyploid"):
-                        new_params = PolyploidParams(-1, -1, "foo")
+                        new_params = PolyploidParams(-1, -1, "foo", None)
                         for poly_layer in inner_layer:
                             incoming_txt = poly_layer.text.strip()
                             incoming_tag = poly_layer.tag.strip()
                             if (incoming_tag == "SPC_time_MYA"):
-                                new_params.SPC_time_MYA = int(incoming_txt)
+                                new_params.SPC_time_MYA = float(incoming_txt)
                             if (incoming_tag == "WGD_time_MYA"):
-                                new_params.WGD_time_MYA = int(incoming_txt)
+                                new_params.WGD_time_MYA = float(incoming_txt)
+                            if (incoming_tag == "gene_div_time_distribution_parameters"):
+                                new_params.divergence_distribution_parameters = (
+                                    parse_comma_separated_values(incoming_txt))
+
                             if (incoming_tag == "name"):
                                 new_params.name = incoming_txt
                         self.params_for_polyploids.append(new_params)
@@ -107,8 +111,6 @@ class SpecKS_config:
                         self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
                         self.num_gene_trees_per_species_tree = int(incoming_txt)
-                    if (incoming_tag == "gene_div_time_distribution_parameters"):
-                        self.divergence_distribution_parameters = parse_comma_separated_values(incoming_txt)
 
             if (incoming_tag == "SequenceEvolution"):
                 for inner_layer in top_layer:
@@ -122,11 +124,6 @@ class SpecKS_config:
                         self.Ks_per_Myr = float(incoming_txt)
                     if (incoming_tag == "per_site_evolutionary_distance"):
                         self.per_site_evolutionary_distance = float(incoming_txt)
-
-        delta_per_site_evolutionary_distance= self.per_site_evolutionary_distance-0.012
-        #adjusted_delta=1.414213562*delta_per_site_evolutionary_distance #from sqrt(2)
-        adjusted_delta = 2.0 * delta_per_site_evolutionary_distance
-        self.P1_to_O1_per_site_evolutionary_distance=0.012+adjusted_delta
 
 def parse_tuple_string(tuple_string):
     if tuple_string.upper() == "FALSE":
@@ -162,16 +159,19 @@ def parse_comma_separated_values(input_string):
 class PolyploidParams:
     SPC_time_MYA = 0
     WGD_time_MYA = 0
+    divergence_distribution_parameters = None
     name = False
 
-    def __init__(self, SPC_time_MYA, WGD_time_MYA, name):
+    def __init__(self, SPC_time_MYA, WGD_time_MYA, divergence_distribution_parameters , name):
         self.SPC_time_MYA = SPC_time_MYA
         self.WGD_time_MYA = WGD_time_MYA
+        self.divergence_distribution_parameters = divergence_distribution_parameters
         self.name = name
 
-    def to_xml(self):
-        s1="\t<name>{0}</name>".format(self.name)
-        s2="\t<SPC_time_MYA>{0}</SPC_time_MYA>".format(self.SPC_time_MYA)
-        s3="\t<WGD_time_MYA>{0}</WGD_time_MYA>".format(self.WGD_time_MYA)
-        return "\n".join([s1,s2,s3])
+    # not used?
+    #def to_xml(self):
+    #    s1="\t<name>{0}</name>".format(self.name)
+    #    s2="\t<SPC_time_MYA>{0}</SPC_time_MYA>".format(self.SPC_time_MYA)
+    #    s3="\t<WGD_time_MYA>{0}</WGD_time_MYA>".format(self.WGD_time_MYA)
+    #    return "\n".join([s1,s2,s3])
 

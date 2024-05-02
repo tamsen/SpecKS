@@ -4,7 +4,9 @@ GLOBAL_git_URL = "https://github.com/tamsen/SpecKS"
 GLOBAL_public_version_info = [
     ["Initiated. ", "March 15, 2024", "v1.0.0.0"],
     ["Dev complete, added final shedding module. ", "March 29, 2024", "v1.1.0.0"],
-    ["Fixed per_site_evolutionary_distance, to match Tiley's 0.01268182. ", "Apr 3, 2024", "v1.2.0.0"]
+    ["Fixed per_site_evolutionary_distance, to match Tiley's 0.01268182. ", "Apr 3, 2024", "v1.2.0.0"],
+    ["Made gene_div_time_distribution_parameters be a polyploid-level param, not sim-level. ",
+     "May 2, 2024", "v1.3.0.0"]
 ]
 
 

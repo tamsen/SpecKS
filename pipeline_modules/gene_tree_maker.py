@@ -134,7 +134,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     config = polyploid.general_sim_config
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
-    gene_divergence_distribution_parameters = config.divergence_distribution_parameters
+    gene_divergence_distribution_parameters = polyploid.divergence_distribution_parameters
     base_speciation_time=polyploid.SPC_time_MYA
     time_span=polyploid.FULL_time_MYA
     gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
@@ -143,14 +143,12 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    if polyploid.is_auto():
-        log.write_to_log("All gene trees diverge at the same instant for an autopolyploid. Nothing to do here.")
-        gene_divergence_distribution_parameters = ["impulse",1,1]
-    elif not gene_divergence_distribution_parameters:
+    if not gene_divergence_distribution_parameters:
         log.write_to_log("Config specifies no variation in divergence time for orthologs.")
+        log.write_to_log("Defaulting to force all gene trees to diverge at the same instant.")
         gene_divergence_distribution_parameters = ["impulse",1,1]
     else:
-        log.write_to_log("Calculating randomized divergence times for gene trees within allopolyploid species tree")
+        log.write_to_log("Calculating randomized divergence times for gene trees within species tree")
 
     variations_in_gene_div_time = get_per_gene_tree_variation_on_speciation_time(
             subfolder,num_gene_trees_needed,gene_divergence_distribution_parameters, include_visualizations)
