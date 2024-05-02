@@ -134,7 +134,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     config = polyploid.general_sim_config
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
-    gene_divergence_distribution_parameters = polyploid.divergence_distribution_parameters
+    gene_divergence_distribution_parameters_list = polyploid.list_of_divergence_distribution_parameters
     base_speciation_time=polyploid.SPC_time_MYA
     time_span=polyploid.FULL_time_MYA
     gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
@@ -143,21 +143,45 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    if not gene_divergence_distribution_parameters:
+    if (not gene_divergence_distribution_parameters_list) or (len(gene_divergence_distribution_parameters_list)==0):
         log.write_to_log("Config specifies no variation in divergence time for orthologs.")
         log.write_to_log("Defaulting to force all gene trees to diverge at the same instant.")
-        gene_divergence_distribution_parameters = ["impulse",1,1]
+        gene_divergence_distribution_parameters_list = [["impulse",1,1,1]]
     else:
         log.write_to_log("Calculating randomized divergence times for gene trees within species tree")
 
-    variations_in_gene_div_time = get_per_gene_tree_variation_on_speciation_time(
-            subfolder,num_gene_trees_needed,gene_divergence_distribution_parameters, include_visualizations)
+    num_gt_needed_per_distribution=[]
+    for gene_divergence_distribution_parameters in gene_divergence_distribution_parameters_list:
+
+        if len(gene_divergence_distribution_parameters) < 4:
+            percent_genes_to_follow_this_distribution = 1.0
+        else:
+            percent_genes_to_follow_this_distribution=float(gene_divergence_distribution_parameters[3])
+
+        num_gene_trees_needed_for_this_distribution=(round(percent_genes_to_follow_this_distribution*
+                                                          num_gene_trees_needed))
+        num_gt_needed_per_distribution.append(num_gene_trees_needed_for_this_distribution)
+
+    #don't accidentally loose s single gt due to integer roudning issues
+    deficit= num_gene_trees_needed - sum(num_gt_needed_per_distribution)
+    num_gt_needed_per_distribution[0]=num_gt_needed_per_distribution[0]+deficit
+
+    #accpet that the GT variations might come from different distributions
+    # ie, segmental allo/autopolyploid
+
+    variations_including_all_distributions=[]
+    for i in range(0,len(gene_divergence_distribution_parameters_list)):
+        gene_divergence_distribution_parameters= gene_divergence_distribution_parameters_list[i]
+        variations_in_gene_div_time_for_dist = get_per_gene_tree_variation_on_speciation_time(
+            subfolder,
+            num_gt_needed_per_distribution[i],gene_divergence_distribution_parameters, include_visualizations)
+        variations_including_all_distributions=variations_including_all_distributions+variations_in_gene_div_time_for_dist
 
     gene_tree_newicks_by_tree_name={}
     for i in range(0, num_gene_trees_needed):
 
         gt_name = "GeneTree" +  gt_index_formatter.format(i)
-        variation=round(variations_in_gene_div_time[i],3)
+        variation=round(variations_including_all_distributions[i],3)
 
         if gene_divergence_distribution_parameters[0] == "impulse":
             #In this case, the gene trees will be identical to the species tree.

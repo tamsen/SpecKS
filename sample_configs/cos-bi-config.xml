@@ -14,7 +14,8 @@
                 <name>Auto1_S070W070</name>
                 <SPC_time_MYA>70.5</SPC_time_MYA>
                 <WGD_time_MYA>070</WGD_time_MYA>
-            <gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>
+                <gene_div_time_distribution_parameters>lognorm,0.5,5.27,0.33</gene_div_time_distribution_parameters>
+                <gene_div_time_distribution_parameters>impulse,0,1,0.66</gene_div_time_distribution_parameters>
         </polyploid>
         <full_sim_time>100</full_sim_time>
     </SpeciesTree>
@@ -23,8 +24,6 @@
         <SSD_half_life_MY>10</SSD_half_life_MY>
         <WGD_half_life_MY>10</WGD_half_life_MY>
         <num_gene_trees_per_species_tree>1000</num_gene_trees_per_species_tree>
-        <gene_div_time_distribution_parameters>lognorm,0.5,5.27</gene_div_time_distribution_parameters>
-         <!--<gene_div_time_distribution_parameters>impulse,0,1</gene_div_time_distribution_parameters>-->
        <num_gene_trees_per_species_tree>5</num_gene_trees_per_species_tree>
     </GeneTree>
     <SequenceEvolution>

@@ -76,7 +76,7 @@ class SpecKS_config:
                     if (incoming_tag == "full_sim_time"):
                         self.full_sim_time = int(incoming_txt)
                     if (incoming_tag == "polyploid"):
-                        new_params = PolyploidParams(-1, -1, "foo", None)
+                        new_params = PolyploidParams(-1, -1, [],"foo")
                         for poly_layer in inner_layer:
                             incoming_txt = poly_layer.text.strip()
                             incoming_tag = poly_layer.tag.strip()
@@ -85,7 +85,7 @@ class SpecKS_config:
                             if (incoming_tag == "WGD_time_MYA"):
                                 new_params.WGD_time_MYA = float(incoming_txt)
                             if (incoming_tag == "gene_div_time_distribution_parameters"):
-                                new_params.divergence_distribution_parameters = (
+                                new_params.divergence_distribution_parameters_list.append(
                                     parse_comma_separated_values(incoming_txt))
 
                             if (incoming_tag == "name"):
@@ -159,13 +159,13 @@ def parse_comma_separated_values(input_string):
 class PolyploidParams:
     SPC_time_MYA = 0
     WGD_time_MYA = 0
-    divergence_distribution_parameters = None
+    divergence_distribution_parameters_list = []
     name = False
 
-    def __init__(self, SPC_time_MYA, WGD_time_MYA, divergence_distribution_parameters , name):
+    def __init__(self, SPC_time_MYA, WGD_time_MYA, divergence_distribution_parameters_list, name):
         self.SPC_time_MYA = SPC_time_MYA
         self.WGD_time_MYA = WGD_time_MYA
-        self.divergence_distribution_parameters = divergence_distribution_parameters
+        self.divergence_distribution_parameters_list = divergence_distribution_parameters_list
         self.name = name
 
     # not used?
