@@ -4,18 +4,17 @@ import xml.etree.ElementTree as ET
 
 
 class SpecKS_config:
-    output_folder_root = "/home/tamsen/Data/SpecKS_output"
-    # output_folder_root="/Users/tamsen/Data/SpecKS_output"
 
-    full_sim_time = 500
-    #divergence_distribution_parameters=['lognorm',0.5, 5.27]
-    mean_gene_birth_rate = 0.001359
-    mean_SSD_life_span= 5 #MY
-    mean_WGD_life_span= 500 #MY
-    num_gene_trees_per_species_tree = 4  # 10
-    num_replicates_per_gene_tree = 3  # 10
-    num_codons = 10  # 1000
-    Ks_per_Myr = 0.01#0.01268182
+    output_folder_root = "/home"
+    full_sim_time = 100 #MY
+
+    mean_gene_birth_rate = 0.001359 #Ya-Long Guo reference
+    mean_SSD_life_span= 5.77 #a half-life of 4 MY = mean life span of 5.77078016 ML
+    mean_WGD_life_span= 44.72 #a half-life of 31 MY = mean life span of 44.723
+    num_gene_trees_per_species_tree = 1000
+    num_replicates_per_gene_tree = 0
+    num_codons = 1000
+    Ks_per_Myr = 0.01
     per_site_evolutionary_distance = 0.01268182
     evolver_random_seed = 137
 
@@ -26,7 +25,7 @@ class SpecKS_config:
     # debugging options
     stop_at_step = 999
     log_file_name = "log.txt"
-    include_visualizations = True
+    include_visualizations = False
 
     def __init__(self, config_file):
 
@@ -107,8 +106,6 @@ class SpecKS_config:
                         self.mean_SSD_life_span = half_life_to_mean_life(incoming_txt)
                     if (incoming_tag == "WGD_half_life_MY"):
                         self.mean_WGD_life_span = half_life_to_mean_life(incoming_txt)
-                    if (incoming_tag == "branch_relaxer_parameters"):
-                        self.branch_relaxation_parameters = parse_comma_separated_values(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
                         self.num_gene_trees_per_species_tree = int(incoming_txt)
 
@@ -124,7 +121,8 @@ class SpecKS_config:
                         self.Ks_per_Myr = float(incoming_txt)
                     if (incoming_tag == "per_site_evolutionary_distance"):
                         self.per_site_evolutionary_distance = float(incoming_txt)
-
+                    if (incoming_tag == "evolver_random_seed"):
+                        self.evolver_random_seed = int(incoming_txt)
 def parse_tuple_string(tuple_string):
     if tuple_string.upper() == "FALSE":
         return False
@@ -167,11 +165,4 @@ class PolyploidParams:
         self.WGD_time_MYA = WGD_time_MYA
         self.divergence_distribution_parameters_list = divergence_distribution_parameters_list
         self.name = name
-
-    # not used?
-    #def to_xml(self):
-    #    s1="\t<name>{0}</name>".format(self.name)
-    #    s2="\t<SPC_time_MYA>{0}</SPC_time_MYA>".format(self.SPC_time_MYA)
-    #    s3="\t<WGD_time_MYA>{0}</WGD_time_MYA>".format(self.WGD_time_MYA)
-    #    return "\n".join([s1,s2,s3])
 
