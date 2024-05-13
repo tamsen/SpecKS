@@ -166,3 +166,8 @@ class PolyploidParams:
         self.divergence_distribution_parameters_list = divergence_distribution_parameters_list
         self.name = name
 
+    def to_xml(self):
+        s1="\t<name>{0}</name>".format(self.name)
+        s2="\t<SPC_time_MYA>{0}</SPC_time_MYA>".format(self.SPC_time_MYA)
+        s3="\t<WGD_time_MYA>{0}</WGD_time_MYA>".format(self.WGD_time_MYA)
+        return "\n".join([s1,s2,s3])

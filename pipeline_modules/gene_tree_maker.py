@@ -27,20 +27,8 @@ def get_mode_and_cm(xs, pdfs):
 
 def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
                                                    distribution_parameters, include_vis):
-    # for 90% < 0.55MY
-    # shape_parameter = 0.8
-    # xscale = 0.2
-    # start = -0.55
-    
-    #for 10 MY spread
-    # for 90% < 10MY
-    time_span_MY = 10 * 1.1
-    #shape_parameter=0.5
-    #xscale = 5.27
-    #start = -4.1
-    #loc=start
-    start=0
 
+    start=0
     distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
     loc=float(distribution_parameters[1])
     xscale = float(distribution_parameters[2])
@@ -162,11 +150,11 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
                                                           num_gene_trees_needed))
         num_gt_needed_per_distribution.append(num_gene_trees_needed_for_this_distribution)
 
-    #don't accidentally loose s single gt due to integer roudning issues
+    #don't accidentally loose a single gt due to integer roudning issues
     deficit= num_gene_trees_needed - sum(num_gt_needed_per_distribution)
     num_gt_needed_per_distribution[0]=num_gt_needed_per_distribution[0]+deficit
 
-    #accpet that the GT variations might come from different distributions
+    #accept that the GT variations might come from different distributions
     # ie, segmental allo/autopolyploid
 
     variations_including_all_distributions=[]

@@ -40,7 +40,6 @@ class polyploid_data():
     WGD_time_MYA=0
     FULL_time_MYA=0
     list_of_divergence_distribution_parameters = [['lognorm', 0.5, 5.27,1.0]]
-    #divergence_distribution_parameters = ['lognorm', 0.5, 5.27]
     subgenome_names = ["P1", "P2"]
     original_genome_name = ["P"]
     mode="TBD"

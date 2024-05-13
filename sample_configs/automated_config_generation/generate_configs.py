@@ -75,7 +75,8 @@ class Generate_Config_Files(unittest.TestCase):
                 #    continue
 
                 job_name = job_type + job_str + "_S" + formatter.format(spec_time) + "W" + formatter.format(wgd_time)
-                job_params = PolyploidParams(spec_time, wgd_time, job_name)
+                distribution_params=[]
+                job_params = PolyploidParams(spec_time, wgd_time, distribution_params,job_name)
                 poly_params_by_name[job_name] = job_params
                 out_folder_by_name[job_name] = os.path.join(specks_output_path_on_mesx, "specks_" + job_name)
 
