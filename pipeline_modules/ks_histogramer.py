@@ -38,7 +38,7 @@ def get_Ks_from_folder(paml_out_folder, replicate, alg_name, version_string):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dS")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
-                                           "_LCA_to_Ortholog_Ks_by_GeneTree.csv")
+                                           "_Ks_by_GeneTree.csv")
     KS_values = extract_K_values(csv_file_out, res_files, version_string)
 
     return KS_values,csv_file_out
@@ -46,7 +46,7 @@ def get_Kn_from_folder(paml_out_folder, replicate, alg_name, version_string):
 
     res_files = glob.glob(paml_out_folder + "/*"+alg_name+".dN")
     csv_file_out=os.path.join(paml_out_folder,alg_name+ "_rep" +str(replicate) +
-                                           "__LCA_to_Ortholog_Kn_by_GeneTree.csv")
+                                           "_Kn_by_GeneTree.csv")
     KS_values = extract_K_values(csv_file_out, res_files, version_string)
 
     return KS_values,csv_file_out
@@ -55,8 +55,8 @@ def extract_K_values(csv_file_out, res_files, version_string):
     KS_values = []
     with open(csv_file_out, 'w') as f:
 
-        f.writelines("SpecKS version " + version_string)  # version_info.to_string())
-        f.writelines("GeneTree,Ks,full_path\n")
+        f.writelines("SpecKS " + version_string + "\n")  # version_info.to_string())
+        f.writelines("GeneTree,leaf names,Ks,path to original output file\n")
         for paml_out_file in res_files:
             log.write_to_log(paml_out_file)
             base_name = os.path.basename(paml_out_file)
@@ -75,7 +75,6 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
 
     fig = plt.figure(figsize=(10, 10), dpi=100)
     x = Ks_results
-    #print(PAML_hist_out_file)
 
     if max_Ks:
         bins = np.arange(0, max_Ks + 0.1, bin_size)
@@ -102,7 +101,10 @@ def plot_Ks_histogram(PAML_hist_out_file, species_name, Ks_results, WGD_as_Ks, S
 def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_species_by_replicate_num):
 
     config = polyploid.general_sim_config
-    specks_version = config.version_info.to_string()
+    specks_repo= config.version_info.repo_url
+    specks_version_num= config.version_info.version_num
+    specks_version = str(specks_version_num) +"," +specks_repo
+
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_ks_histograms")
 
     if not os.path.exists(subfolder):
@@ -158,7 +160,8 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
 
     polyploid.analysis_step_num=polyploid.analysis_step_num+1
     return results_files_by_species_by_replicate
-def summarize_ks(paml_out_folder, specks_version, replicate, species_name, WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
+def summarize_ks(paml_out_folder, specks_version, replicate, species_name,
+                 WGD_as_Ks, SPEC_as_Ks, max_ks, max_y, color, bin_size):
 
     outfiles=[]
     #for alg_name in ["ML","NG"]:

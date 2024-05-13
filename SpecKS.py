@@ -63,5 +63,3 @@ def setup(arguments):
 
 if __name__ == '__main__':
     run_sim()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

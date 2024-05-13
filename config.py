@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 class SpecKS_config:
 
-    output_folder_root = "/home"
+    output_folder_root = "/home/SpecKS_output"
     full_sim_time = 100 #MY
 
     mean_gene_birth_rate = 0.001359 #Ya-Long Guo reference
