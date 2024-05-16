@@ -23,7 +23,7 @@ SpecKS is a pipeline application, with the following steps:
 <br>
 
 ## Prerequisites
-* Run on an environment with PAML installed. We suggest v4.10.7 but have found that versions also work. 
+* Run on an environment with PAML installed. We suggest v4.10.7 but have found that other versions also work. 
 * We give directions for configuring an appropriate conda environment below.
 
 <br>
