@@ -29,7 +29,7 @@ SpecKS is a pipeline application, with the following steps:
 
 ## Configuration
 To automatically configure a conda environment suitable for SpecKS, use "specks_environment.yml" 
-included in the sample_configs folder. Example commands to install and do a short run are below. 
+included in the "sample_configs folder". Example commands to install and do a short run are below.
 "my-test-run.xml" should be a copy of "short-run.xml" with the paths modifed as needed.
 
 > conda env create -f /PathToSpecKS/sample_configs/SpecKs_environment.yml
@@ -40,5 +40,12 @@ included in the sample_configs folder. Example commands to install and do a shor
 
 <br>
 
+## Help
+There are example config files and an overview of the parameters in the "sample_configs" folder.
+
 ## OS
 * Tested on a mac and linux (ubuntu)
+
+## Referencing SpecKS
+* Publication forthcoming. Please reference "Accurately Inferring Ancient Auto and Allopolyploidization Events using Forward-time Simulations"
+* by T. Dunn and A. Sethuraman
