@@ -1,4 +1,4 @@
-name: specks_test
+name: specks_env
 channels:
   - conda-forge
   - bioconda

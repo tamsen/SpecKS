@@ -22,7 +22,18 @@ SpecKS is a pipeline application, with the following steps:
 <br>
 
 ## Prerequisites
-* Run on an environment with PAML 4.10.7 installed
+* Run on an environment with PAML installed
+* We suggest v4.10.7 but older versions also work. 
+
+<br>
+## Configuration
+To automatically configure a conda environment suitable for SpecKS, use "specks_environment.yml" 
+included in the sample_configs folder. Example commands to install and do a short run are below. 
+"my-test-run.xml" should be a copy of "short-run.xml" with the paths modifed as needed.
+
+> conda env create -f /PathToSpecKS/sample_configs/SpecKs_environment.yml 
+> conda activate specks_env
+> python3 /PathToSpecKS/SpecKS.py my-test-run.xml 
 
 <br>
 
