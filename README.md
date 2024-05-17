@@ -28,6 +28,12 @@ SpecKS is a pipeline application, with the following steps:
 
 <br>
 
+## Installation
+
+> git clone https://github.com/tamsen/SpecKS
+
+<br>
+
 ## Configuration
 To automatically configure a conda environment suitable for SpecKS, use the "specks_environment.yml" 
 included in the "sample_configs" folder. Example commands to install and do a short run are below.
