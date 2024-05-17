@@ -39,7 +39,7 @@ To automatically configure a conda environment suitable for SpecKS, use the "spe
 included in the "sample_configs" folder. Example commands to install and do a short run are below.
 "my-test-run.xml" should be a copy of "short-run.xml" with the paths modifed as needed.
 
-> conda env create -f /PathToSpecKS/sample_configs/SpecKs_environment.yml
+> conda env create -f /PathToSpecKS/sample_configs/SpecKS_environment.yml
 
 > conda activate specks_env
 
