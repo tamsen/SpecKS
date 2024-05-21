@@ -33,6 +33,8 @@ class version_info:
         most_recent_update = GLOBAL_public_version_info[-1]
         self.version_num = most_recent_update[-1]
         self.public_comments = most_recent_update
+        self.reference = "'Accurately Inferring Ancient Auto and Allopolyploidization Events using Forward-time Simulations' "+\
+            "by T. Dunn and A. Sethuraman, 2024. Draft currently available at https://www.biorxiv.org/content/10.1101/2024.05.17.594724v1"
 
     def most_recent_comment(self):
         return self.public_comments[-1][0]
@@ -41,7 +43,7 @@ class version_info:
 
         data = ["\n\nGit repo:\t\t" + self.repo_url,
                 "Version number:\t" + str(self.version_num),
-                "Version notes:\t" + self.most_recent_comment()]
+                "Reference:\t" + self.reference ]
 
         if self.repo:
             data.append("Git changeset:\t" + self.sha + "\t" + self.when)
