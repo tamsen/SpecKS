@@ -151,7 +151,7 @@ def run_Ks_histogramer(polyploid,genomes_of_interest_by_species,Ks_results_by_sp
             species_str="between subgenomes " + "and".join(subgenomes_of_concern)
             log.write_to_log("making histograms " + species_str + ", replicate " + replicate_string )
             WGD_as_Ks=polyploid.WGD_time_as_ks()
-            SPEC_as_Ks=polyploid.SPEC_time_as_ks()
+            SPEC_as_Ks=polyploid.DIV_time_as_ks()
             outfiles = summarize_ks(rep_subfolder, specks_version, replicate_string, polyploid.species_name, WGD_as_Ks, SPEC_as_Ks,
                      config.max_ks_for_hist_plot, config.max_y_for_hist_plot,"pink", bin_size)
             results_files_for_species_by_replicate[replicate]=outfiles

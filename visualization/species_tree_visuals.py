@@ -7,7 +7,7 @@ from visualization.combined_tree_view import tree_viz_data
 def plot_species_tree(file_to_save, polyploid):
 
     time_before_WGD = polyploid.FULL_time_MYA - polyploid.WGD_time_MYA
-    time_before_SPEC = polyploid.FULL_time_MYA - polyploid.SPC_time_MYA
+    time_before_SPEC = polyploid.FULL_time_MYA - polyploid.DIV_time_MYA
     time_span = polyploid.FULL_time_MYA
 
     fig, ax = plt.subplots()

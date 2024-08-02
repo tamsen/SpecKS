@@ -79,8 +79,10 @@ class SpecKS_config:
                         for poly_layer in inner_layer:
                             incoming_txt = poly_layer.text.strip()
                             incoming_tag = poly_layer.tag.strip()
+                            if (incoming_tag == "DIV_time_MYA"):
+                                new_params.DIV_time_MYA = float(incoming_txt)
                             if (incoming_tag == "SPC_time_MYA"):
-                                new_params.SPC_time_MYA = float(incoming_txt)
+                                new_params.DIV_time_MYA = float(incoming_txt)
                             if (incoming_tag == "WGD_time_MYA"):
                                 new_params.WGD_time_MYA = float(incoming_txt)
                             if (incoming_tag == "gene_div_time_distribution_parameters"):
@@ -155,19 +157,19 @@ def parse_comma_separated_values(input_string):
 
 
 class PolyploidParams:
-    SPC_time_MYA = 0
+    DIV_time_MYA = 0
     WGD_time_MYA = 0
     divergence_distribution_parameters_list = []
     name = False
 
-    def __init__(self, SPC_time_MYA, WGD_time_MYA, divergence_distribution_parameters_list, name):
-        self.SPC_time_MYA = SPC_time_MYA
+    def __init__(self, DIV_time_MYA, WGD_time_MYA, divergence_distribution_parameters_list, name):
+        self.DIV_time_MYA = DIV_time_MYA
         self.WGD_time_MYA = WGD_time_MYA
         self.divergence_distribution_parameters_list = divergence_distribution_parameters_list
         self.name = name
 
     def to_xml(self):
         s1="\t<name>{0}</name>".format(self.name)
-        s2="\t<SPC_time_MYA>{0}</SPC_time_MYA>".format(self.SPC_time_MYA)
+        s2="\t<DIV_time_MYA>{0}</DIV_time_MYA>".format(self.DIV_time_MYA)
         s3="\t<WGD_time_MYA>{0}</WGD_time_MYA>".format(self.WGD_time_MYA)
         return "\n".join([s1,s2,s3])

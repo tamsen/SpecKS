@@ -123,7 +123,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
     gene_divergence_distribution_parameters_list = polyploid.list_of_divergence_distribution_parameters
-    base_speciation_time=polyploid.SPC_time_MYA
+    base_speciation_time=polyploid.DIV_time_MYA
     time_span=polyploid.FULL_time_MYA
     gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
     subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_randomized_gene_trees")

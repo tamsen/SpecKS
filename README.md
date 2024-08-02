@@ -54,4 +54,4 @@ included in the "sample_configs" folder. Example commands to install and do a sh
 * Tested on a mac and linux (ubuntu)
 
 ## Referencing SpecKS
-* Publication forthcoming. Please reference "Accurately Inferring Ancient Auto and Allopolyploidization Events using Forward-time Simulations" by T. Dunn and A. Sethuraman, currently available at https://www.biorxiv.org/content/10.1101/2024.05.17.594724v1
+* Publication forthcoming. Please reference "Accurate Inference of the Polyploid Continuum using Forward-time Simulations" by T. Dunn and A. Sethuraman

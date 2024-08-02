@@ -29,7 +29,7 @@ def histogram_node_distances(polyploid, gt_tree_viz_data_by_gene_tree,
     n_bins=50
     n, bins, patches = plt.hist(MYA_list, bins=n_bins, facecolor='b', alpha=0.25, label='histogram data')
     plt.axvline(x=polyploid.WGD_time_MYA, color='r', linestyle='--', label="WGD")
-    plt.axvline(x=polyploid.SPC_time_MYA, color='b', linestyle='--', label="SPEC")
+    plt.axvline(x=polyploid.DIV_time_MYA, color='b', linestyle='--', label="SPEC")
     plt.legend()
     plt.xlim(0,polyploid.FULL_time_MYA + 50)
     plt.xlabel("Node dist (MYA)")
@@ -54,16 +54,16 @@ def plot_gene_trees_on_top_of_species_trees(polyploid,
     max_num_gt_to_visualize=5
     s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
                                                polyploid.species_name + "_species_and_5gt_by_specks.png")
-    combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
-                            polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
-                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name,
-                                               max_num_gt_to_visualize )
+    combined_tree_view.plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_name,
+                                               polyploid.WGD_time_MYA, polyploid.DIV_time_MYA,
+                                               polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name,
+                                               max_num_gt_to_visualize)
 
     s_and_gt_tree_out_file_name = os.path.join(out_folder, file_prefix + "_" +
                                                polyploid.species_name + "_species_and_all_gt_by_specks.png")
-    combined_tree_view.plot_combined_tree_view(species_tree_viz_data,gt_tree_viz_data_by_name,
-                            polyploid.WGD_time_MYA, polyploid.SPC_time_MYA,
-                            polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name)
+    combined_tree_view.plot_combined_tree_view(species_tree_viz_data, gt_tree_viz_data_by_name,
+                                               polyploid.WGD_time_MYA, polyploid.DIV_time_MYA,
+                                               polyploid.FULL_time_MYA, polyploid.species_name, s_and_gt_tree_out_file_name)
 
 
 def plot_polyploid_gene_tree_alone(simulation_leg, leaf_map, tree_as_newick,

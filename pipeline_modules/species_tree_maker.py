@@ -31,7 +31,7 @@ def make_species_trees(polyploid):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    species_trees = get_polyploid_species_tree(time_span, polyploid.SPC_time_MYA)
+    species_trees = get_polyploid_species_tree(time_span, polyploid.DIV_time_MYA)
     out_file_png = polyploid.species_name + "_tree_WGD{0}of{1}MY.png".format(polyploid.WGD_time_MYA, time_span)
     out_file_tree = out_file_png.replace(".png", ".tree")
 

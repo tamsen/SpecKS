@@ -6,7 +6,7 @@
     <SpeciesTree>
         <polyploid>
                 <name>Allo1_S070W065</name>
-                <SPC_time_MYA>70</SPC_time_MYA>
+                <DIV_time_MYA>70</DIV_time_MYA>
                 <WGD_time_MYA>65</WGD_time_MYA>
                 <gene_div_time_distribution_parameters>expon,0,10</gene_div_time_distribution_parameters>
         </polyploid>
