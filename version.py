@@ -8,7 +8,9 @@ GLOBAL_public_version_info = [
     ["Made gene_div_time_distribution_parameters be a polyploid-level param, not sim-level. ",
      "May 2, 2024", "v1.3.0.0"],
     ["Adding capacity to model segmental allo/autopolyploids. ",
-     "May 2, 2024", "v1.4.0.0"]
+     "May 2, 2024", "v1.4.0.0"],
+    ["Retooling with empahsis on 2D continuum. And changed SPC terminology to DIV. ",
+    "Aug 6, 2024", "v1.5.0.0"]
 ]
 
 
@@ -33,8 +35,8 @@ class version_info:
         most_recent_update = GLOBAL_public_version_info[-1]
         self.version_num = most_recent_update[-1]
         self.public_comments = most_recent_update
-        self.reference = "'Accurately Inferring Ancient Auto and Allopolyploidization Events using Forward-time Simulations' "+\
-            "by T. Dunn and A. Sethuraman, 2024. Draft currently available at https://www.biorxiv.org/content/10.1101/2024.05.17.594724v1"
+        self.reference = "'Accurate Inference of the Polyploid Continuum using Forward-time Simulations' "+\
+            "by T. Dunn and A. Sethuraman, 2024. Draft currently available at https://www.biorxiv.org/content/10.1101/2024.05.17.594724v2"
 
     def most_recent_comment(self):
         return self.public_comments[-1][0]
