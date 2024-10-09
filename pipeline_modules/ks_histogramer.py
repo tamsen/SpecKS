@@ -1,3 +1,7 @@
+"""ks_histogrammer.py
+Generates a pretty cursory Ks histogram. I suggest you roll your own.
+"""
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

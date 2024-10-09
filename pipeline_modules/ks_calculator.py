@@ -1,3 +1,7 @@
+"""ks_calculator.py
+Calculates Ks between paralogs using PAML's CODEML
+"""
+
 import os
 import shutil
 from pathlib import Path

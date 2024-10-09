@@ -1,3 +1,10 @@
+# """gene_tree_maker.py
+# Builds initial gene trees based on a given species tree.
+# Gene trees are unique, each individually perturbed from the species
+# tree, with the variation drawn from a distribution given by the
+# gene_div_time_distribution_parameters stipulated in the config file
+# """
+
 import os
 from scipy.stats import lognorm, expon
 import numpy as np

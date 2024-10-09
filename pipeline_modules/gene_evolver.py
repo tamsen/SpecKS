@@ -1,12 +1,11 @@
-import os
+"""gene_evolver.py
+Evolves sequences along gene trees using PAML's EVOLVER
+"""
 
+import os
 import log
 import process_wrapper
-import shutil
 from pathlib import Path
-from Bio import Phylo
-from io import StringIO
-
 from visualization import tree_visuals_by_phylo
 
 

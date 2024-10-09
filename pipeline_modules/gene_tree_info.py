@@ -1,3 +1,7 @@
+# """gene_tree_info.py
+# A utility-class to manipulate information specific to a given gene tree.
+# """
+
 from io import StringIO
 from Bio import Phylo
 

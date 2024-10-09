@@ -1,5 +1,9 @@
-import os
+"""species_tree_maker.py
+ Generates the original species tree for a given polyploid,
+ as stipulated by the config file
+"""
 
+import os
 import log
 from visualization import tree_visuals_by_phylo
 from visualization.species_tree_visuals import plot_species_tree

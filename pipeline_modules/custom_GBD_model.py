@@ -1,3 +1,7 @@
+"""custom_GBD_model.py
+Adds and prunes branches of gene trees, simulating gene birth and death
+"""
+
 
 import os
 import random

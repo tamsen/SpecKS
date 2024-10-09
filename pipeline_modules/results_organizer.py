@@ -1,9 +1,11 @@
+"""results_organizer.py
+Pulls results from all the pipeline modules and places them conveniently
+together in the final output folder.
+"""
+
 import os
 import shutil
-
 import log
-
-
 def collate_results(polyploid, ks_results_files_by_species_by_replicate_num):
 
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_final_results")

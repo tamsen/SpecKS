@@ -1,13 +1,15 @@
+"""gene_shedder.py
+Prunes a randomized set of ohnologs from the gene trees,
+according to an exponential decay model.
+"""
+
 import os
 import random
-from random import sample
 from io import StringIO
 from matplotlib import pyplot as plt
 from scipy.stats import expon
 import numpy as np
 from Bio import Phylo
-
-import config
 import log
 from pipeline_modules import gene_tree_info, custom_GBD_model
 from pipeline_modules.gene_tree_maker import plot_distribution
