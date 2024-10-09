@@ -26,9 +26,7 @@ class SpecKS_config:
     max_y_for_hist_plot = False
     params_for_polyploids = []
 
-    #default random number generation (seed can be overwritten)
-    specks_random_seed = False
-    #rng = np.random.default_rng(seed=specks_random_seed)
+    specks_random_seed = False #will be overwritten by a random number if not set by the user
     evolver_random_seed = False #will be overwritten by a random number if not set by the user
 
     # debugging options
