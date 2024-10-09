@@ -20,6 +20,25 @@ def run_sim():
     log.write_start_to_log(conf.output_folder,conf.log_file_name, conf.version_info)
     log.write_to_log('Command Arguments Given: %s' % sys.argv)
 
+
+    if not conf.evolver_random_seed: #if not set by the user...
+        log.write_to_log('evolver_random_seed not set by user')
+        conf.evolver_random_seed = 137
+        log.write_to_log('evolver_random_seed set to ' + str(conf.evolver_random_seed)
+                         + " by default.")
+    else:
+        log.write_to_log('evolver_random_seed set to ' + str(conf.evolver_random_seed)
+                         + " by user.")
+
+    if not conf.specks_random_seed: #if not set by the user...
+        log.write_to_log('specks_random_seed not set by user')
+        conf.evolver_random_seed = 84
+        log.write_to_log('specks_random_seed set to ' + str(conf.specks_random_seed)
+                         + " by default.")
+    else:
+        log.write_to_log('specks_random_seed set to ' + str(conf.specks_random_seed)
+                         + " by user.")
+
     #run the sim
     list_of_polyploids = make_polyploids(conf)
     for polyploid in list_of_polyploids:

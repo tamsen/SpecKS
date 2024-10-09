@@ -1,4 +1,5 @@
 import os
+import random
 from random import sample
 from io import StringIO
 from matplotlib import pyplot as plt
@@ -23,15 +24,14 @@ def shed_genes(polyploid, gene_data_by_gt_name, leaf_to_prune):
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)
 
-    print("choosing GT")
-    gene_trees_to_loose_a_duplicate_gene = choose_trees_to_loose_duplicate(gene_data_by_gt_name,
-                                                                                           polyploid, subfolder)
-    print("done choosing GT")
+
+    gene_trees_to_loose_a_duplicate_gene = choose_trees_to_loose_duplicate(
+        gene_data_by_gt_name, polyploid, subfolder)
     gt_after_everyone_that_needed_pruning_is_pruned={}
     pruned_gt=[]
     for gt in gene_data_by_gt_name.keys():
 
-            print("gt: " + str(gt))
+            #print("gt: " + str(gt))
             if gt in gene_trees_to_loose_a_duplicate_gene:
                 original_gt_newick=gene_data_by_gt_name[gt]
                 #print("pruning time!")
@@ -71,7 +71,10 @@ def choose_trees_to_loose_duplicate(gene_data_by_gt_name, polyploid, subfolder):
     all_gt_newicks = list(gene_data_by_gt_name.keys())
     num_original_gt = float(len(all_gt_newicks))
     num_genes_to_shed = int(num_original_gt * (1.0 - fraction_WGD_genes_remaining_at_time_since_WGD))
-    gene_trees_to_loose_a_duplicate_gene = sample(all_gt_newicks, num_genes_to_shed)
+    random.seed(polyploid.general_sim_config.specks_random_seed)
+    gene_trees_to_loose_a_duplicate_gene = random.sample(all_gt_newicks, num_genes_to_shed)
+
+
     return gene_trees_to_loose_a_duplicate_gene
 
 

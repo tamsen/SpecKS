@@ -18,6 +18,7 @@ def run_custom_GBD_model(polyploid, all_genomes_of_interest, simulation_leg, bas
     length_of_leg = simulation_leg.interval_end_time_MY-simulation_leg.interval_start_time_MY
     gt_index_formatter = gene_tree_maker.get_gt_index_format(num_gene_trees_needed)
     subfolder = os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_custom_GBD")
+    random.seed(polyploid.general_sim_config.specks_random_seed)
 
     if not os.path.exists(subfolder):
         os.makedirs(subfolder)

@@ -9,8 +9,10 @@ GLOBAL_public_version_info = [
      "May 2, 2024", "v1.3.0.0"],
     ["Adding capacity to model segmental allo/autopolyploids. ",
      "May 2, 2024", "v1.4.0.0"],
-    ["Retooling with empahsis on 2D continuum. And changed SPC terminology to DIV. ",
-    "Aug 6, 2024", "v1.5.0.0"]
+    ["Retooling with emphasis on 2D continuum. And changed SPC terminology to DIV. ",
+    "Aug 6, 2024", "v1.5.0.0"],
+    ["Adding reviewer 3 minor suggestions. Affects comments & exposes varaibles, no change to results.",
+    "Aug 6, 2024", "v1.5.0.1"]
 ]
 
 

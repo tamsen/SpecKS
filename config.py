@@ -2,6 +2,8 @@
 import math
 import xml.etree.ElementTree as ET
 
+import numpy as np
+
 
 class SpecKS_config:
 
@@ -16,11 +18,16 @@ class SpecKS_config:
     num_codons = 1000
     Ks_per_Myr = 0.01
     per_site_evolutionary_distance = 0.01268182
-    evolver_random_seed = 137
+
 
     max_ks_for_hist_plot = 5
     max_y_for_hist_plot = False
     params_for_polyploids = []
+
+    #default random number generation (seed can be overwritten)
+    specks_random_seed = False
+    #rng = np.random.default_rng(seed=specks_random_seed)
+    evolver_random_seed = False #will be overwritten by a random number if not set by the user
 
     # debugging options
     stop_at_step = 999
@@ -38,6 +45,10 @@ class SpecKS_config:
             incoming_txt = top_layer.text.strip()
             if (incoming_tag == "StopAtStep"):
                 self.stop_at_step = int(incoming_txt)
+            if (incoming_tag == "SpecKS_random_seed"):
+                    self.specks_random_seed  = int(incoming_txt)
+                    self.rng = np.random.default_rng(seed=self.specks_random_seed)
+
             if (incoming_tag == "LogFileName"):
                 if incoming_txt.upper() == "FALSE":
                     self.log_file_name = False
@@ -125,6 +136,8 @@ class SpecKS_config:
                         self.per_site_evolutionary_distance = float(incoming_txt)
                     if (incoming_tag == "evolver_random_seed"):
                         self.evolver_random_seed = int(incoming_txt)
+
+
 def parse_tuple_string(tuple_string):
     if tuple_string.upper() == "FALSE":
         return False

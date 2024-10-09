@@ -31,4 +31,5 @@
     <StopAtStep>999</StopAtStep>
     <LogFileName>SpecKS_log.txt</LogFileName>
     <IncludeVisuals>False</IncludeVisuals>
+    <SpecKS_random_seed>175</SpecKS_random_seed>
 </metadata>
