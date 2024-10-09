@@ -1,10 +1,11 @@
+"""process_wrapper.py
+Helpful wrapper for wrapping the calling of external processes
+"""
+
 import os
 import subprocess
 import time
-
 import log
-
-
 def run_and_wait_with_retry(cmd, folder, excuse, num_retries_allowed, sleepy_time):
 
     num_tries=0

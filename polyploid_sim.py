@@ -1,3 +1,7 @@
+"""polyploid_sim.py
+Simulates the genome evolution of a single polyploid, as a step-by-step process.
+"""
+
 import log
 from pipeline_modules import ks_histogramer, ks_calculator, gene_evolver, \
     species_tree_maker, results_organizer, gene_tree_maker, custom_GBD_model, gene_shedder

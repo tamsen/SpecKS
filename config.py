@@ -1,7 +1,9 @@
-# eventually this should be read in from an xml config or similar
+"""config.py
+Parses and holds the config information needed for running the sim
+"""
+
 import math
 import xml.etree.ElementTree as ET
-
 import numpy as np
 
 

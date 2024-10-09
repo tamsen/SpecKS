@@ -1,3 +1,6 @@
+"""version.py
+Handles and reports version information
+"""
 #import git
 
 GLOBAL_git_URL = "https://github.com/tamsen/SpecKS"

@@ -1,6 +1,9 @@
+"""log.py
+Very light-weight logger
+"""
+
 import os
 from datetime import datetime
-
 
 log_file_path = ""
 

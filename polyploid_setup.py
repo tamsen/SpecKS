@@ -1,7 +1,9 @@
+"""polyploid_setup.py
+Reads the config file and instantiates all the polyploids specified.
+"""
+
 import os
-
 import log
-
 
 def make_polyploids(config):
 
