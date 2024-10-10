@@ -35,6 +35,7 @@ def get_mode_and_cm(xs, pdfs):
 def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
                                                    distribution_parameters, include_vis):
 
+    #TODO consider moving distribution_parameters parsing / sanitization to the config class.
     start=0
     distribution_name=distribution_parameters[0].upper() #exponential, lognorm..
     loc=float(distribution_parameters[1])
@@ -187,8 +188,15 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
             gene_div_time=base_speciation_time+variation
 
             if gene_div_time > time_span:
-                log.write_to_log("The coalescent for this gene tree reaches further back than the sim time")
-                log.write_to_log("Please increase your sim time")
+                message=["The coalescent for this gene tree reaches further back than the sim time",
+                         "Please increase your sim time",
+                         "gene tree divergence time, MYA: " + str(gene_div_time ),
+                         "earliest sim time, MYA: " + str(time_span),]
+                log.write_to_log(message[0])
+                log.write_to_log(message[1])
+                log.write_to_log(message[2])
+                log.write_to_log(message[3])
+                raise ValueError(" ".join(message))
 
             [new_newick_string] = species_tree_maker.get_polyploid_species_tree(time_span, gene_div_time)
 

@@ -14,8 +14,8 @@ GLOBAL_public_version_info = [
      "May 2, 2024", "v1.4.0.0"],
     ["Retooling with emphasis on 2D continuum. And changed SPC terminology to DIV. ",
     "Aug 6, 2024", "v1.5.0.0"],
-    ["Adding reviewer 3 minor suggestions. Affects comments & exposes varaibles, no change to results.",
-    "Aug 6, 2024", "v1.5.0.1"]
+    ["Adding reviewer's' minor suggestions. Affects comments, exposes variables, adds warnings.",
+    "Oct 10, 2024", "v1.5.0.1"]
 ]
 
 

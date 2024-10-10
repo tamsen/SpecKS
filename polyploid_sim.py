@@ -67,7 +67,7 @@ def run_sim(polyploid):
     log.write_to_log("\n\n" + polyploid.species_name + " complete.\n\n")
 
 
-#debugging code..
+#utility for debugging code..not actually part of the execution path
 def check_for_gt_disparity(gene_tree_results_by_tree_name):
     for gt_name, gene_tree_result in gene_tree_results_by_tree_name.items():
         test_tree = Phylo.read(StringIO(gene_tree_result.simple_newick), "newick")
@@ -79,3 +79,4 @@ def check_for_gt_disparity(gene_tree_results_by_tree_name):
         print("nodes2=\t" + str(len_nodes2))
         if len_nodes1 != len_nodes2:
             print("big problem here!!")
+            raise ValueError("caught the bug")
