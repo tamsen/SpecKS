@@ -33,7 +33,8 @@ def get_mode_and_cm(xs, pdfs):
 
 
 def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
-                                                   distribution_parameters, include_vis):
+                                                   distribution_parameters, include_vis,
+                                                   center_distribution_on_cm):
 
     #TODO consider moving distribution_parameters parsing / sanitization to the config class.
     start=0
@@ -83,6 +84,7 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
     plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, random_draws_from_distribution, start,
                       x_value_of_ymax, xaxis_limit, xs, ys, "Distribution in bifurcation time of gene trees for orthologs.png")
 
+    #Todo, make using x_value_of_ymax configurable.
     bifurcaton_variations=[ri-x_value_of_ymax for  ri in random_draws_from_distribution ]
 
     if include_vis:
@@ -130,6 +132,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     config = polyploid.general_sim_config
     include_visualizations = config.include_visualizations
     num_gene_trees_needed = config.num_gene_trees_per_species_tree
+    center_distribution_on_cm = config.recenter_gene_divergence_distribution_on_cm
     gene_divergence_distribution_parameters_list = polyploid.list_of_divergence_distribution_parameters
     base_speciation_time=polyploid.DIV_time_MYA
     time_span=polyploid.FULL_time_MYA
@@ -170,7 +173,8 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
         gene_divergence_distribution_parameters= gene_divergence_distribution_parameters_list[i]
         variations_in_gene_div_time_for_dist = get_per_gene_tree_variation_on_speciation_time(
             subfolder,
-            num_gt_needed_per_distribution[i],gene_divergence_distribution_parameters, include_visualizations)
+            num_gt_needed_per_distribution[i],gene_divergence_distribution_parameters, include_visualizations,
+            center_distribution_on_cm)
         variations_including_all_distributions=variations_including_all_distributions+variations_in_gene_div_time_for_dist
 
     gene_tree_newicks_by_tree_name={}

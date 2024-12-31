@@ -20,7 +20,7 @@ class SpecKS_config:
     num_codons = 1000
     Ks_per_Myr = 0.01
     per_site_evolutionary_distance = 0.01268182
-
+    recenter_gene_divergence_distribution_on_cm = True
 
     max_ks_for_hist_plot = 5
     max_y_for_hist_plot = False
