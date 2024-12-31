@@ -121,6 +121,11 @@ class SpecKS_config:
                         self.mean_WGD_life_span = half_life_to_mean_life(incoming_txt)
                     if (incoming_tag == "num_gene_trees_per_species_tree"):
                         self.num_gene_trees_per_species_tree = int(incoming_txt)
+                    if (incoming_tag == "recenter_gene_divergence"):
+                        if incoming_txt.upper() == "FALSE":
+                            self.recenter_gene_divergence_distribution_on_cm = False
+                        else:
+                            self.recenter_gene_divergence_distribution_on_cm = True
 
             if (incoming_tag == "SequenceEvolution"):
                 for inner_layer in top_layer:

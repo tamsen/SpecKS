@@ -85,7 +85,10 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
                       x_value_of_ymax, xaxis_limit, xs, ys, "Distribution in bifurcation time of gene trees for orthologs.png")
 
     #Todo, make using x_value_of_ymax configurable.
-    bifurcaton_variations=[ri-x_value_of_ymax for  ri in random_draws_from_distribution ]
+    if center_distribution_on_cm:
+        bifurcaton_variations=[ri-x_value_of_ymax for  ri in random_draws_from_distribution ]
+    else:
+        bifurcaton_variations=[ri for  ri in random_draws_from_distribution ]
 
     if include_vis:
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
