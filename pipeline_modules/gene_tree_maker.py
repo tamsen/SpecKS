@@ -120,7 +120,8 @@ def plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, r
                color='darkgreen', marker='^', label="mode=" + str(round(x_value_of_ymax, 2)), s=100)
     ax.scatter(center_of_mass, 0.01,
                color='lightgreen', marker='^', label="mean=" + str(round(center_of_mass, 2)), s=100)
-    out_file_name = os.path.join(out_folder, "Raw data " + distribution_name +title+ ".png")
+    out_file_name = os.path.join(out_folder, "Raw data for gene tree distribution " +
+                                 distribution_name + ".png")
                                 # " Distribution in bifurcation time of gene trees for orthologs.png")
     title = distribution_name + title #' Distribution in bifurcation time of gene trees for orthologs'
     fig.suptitle(title)
@@ -141,6 +142,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     base_speciation_time=polyploid.DIV_time_MYA
     time_span=polyploid.FULL_time_MYA
     gt_index_formatter = get_gt_index_format(num_gene_trees_needed)
+    decimal_places_to_keep_for_gene_tree_divergence = 5
     subfolder=os.path.join(polyploid.species_subfolder, str(polyploid.analysis_step_num) + "_randomized_gene_trees")
 
     if not os.path.exists(subfolder):
@@ -185,7 +187,8 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
     for i in range(0, num_gene_trees_needed):
 
         gt_name = "GeneTree" +  gt_index_formatter.format(i)
-        variation=round(variations_including_all_distributions[i],3)
+        variation=round(variations_including_all_distributions[i],
+                        decimal_places_to_keep_for_gene_tree_divergence)
 
         if gene_divergence_distribution_parameters[0] == "impulse":
             #In this case, the gene trees will be identical to the species tree.
@@ -214,8 +217,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
         with open(delta_path, 'a') as f:
             f.writelines(str(variation) + "\n")
 
-        #TODO - rename this. Its not nec. a lognorm. It could be what ever is specified.
-        tree_path = os.path.join(subfolder, "gene_trees_with_lognorm_distributed_div_time.txt")
+        tree_path = os.path.join(subfolder, "gene_trees_with_variations_in_div_time.txt")
         with open(tree_path, 'a') as f:
             f.writelines(new_newick_string + "\n")
 
