@@ -81,7 +81,6 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
 
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
-    #TODO - fix that plot name.. "Distribution in bifurcation time of gene trees for orthologs.png"
     plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, random_draws_from_distribution, start,
                       x_value_of_ymax, xaxis_limit, xs, ys, "Distribution in bifurcation time of gene trees for orthologs.png")
 
