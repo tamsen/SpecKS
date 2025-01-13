@@ -81,6 +81,7 @@ def get_per_gene_tree_variation_on_speciation_time(out_folder,num_gt_needed,
 
     center_of_mass, x_value_of_ymax = get_mode_and_cm(xs, ys)
 
+    #TODO - fix that plot name.. "Distribution in bifurcation time of gene trees for orthologs.png"
     plot_distribution(bin_size, center_of_mass, distribution_name, out_folder, random_draws_from_distribution, start,
                       x_value_of_ymax, xaxis_limit, xs, ys, "Distribution in bifurcation time of gene trees for orthologs.png")
 
@@ -213,6 +214,7 @@ def make_randomized_gene_trees(polyploid, species_tree_newick):
         with open(delta_path, 'a') as f:
             f.writelines(str(variation) + "\n")
 
+        #TODO - rename this. Its not nec. a lognorm. It could be what ever is specified.
         tree_path = os.path.join(subfolder, "gene_trees_with_lognorm_distributed_div_time.txt")
         with open(tree_path, 'a') as f:
             f.writelines(new_newick_string + "\n")
