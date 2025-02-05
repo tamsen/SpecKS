@@ -54,6 +54,4 @@ included in the "sample_configs" folder. Example commands to install and do a sh
 * Tested on a mac and linux (ubuntu)
 
 ## Referencing SpecKS
-* Publication forthcoming. Please reference "Accurate Inference of the Polyploid Continuum using Forward-time Simulations"
-* ["Accurate Inference of the Polyploid Continuum using Forward-time Simulations"](https://academic.oup.com/mbe/article/41/12/msae241/7902053)
-* by T. Dunn and A. Sethuraman
+* Publication forthcoming. Please reference ["Accurate Inference of the Polyploid Continuum using Forward-time Simulations"](https://academic.oup.com/mbe/article/41/12/msae241/7902053) by T. Dunn and A. Sethuraman
